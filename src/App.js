@@ -8,15 +8,15 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Cross-platform schedule and battle statistic client of Splatoon 2.
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://ikas.ink"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          ikas.ink
         </a>
       </header>
     </div>
