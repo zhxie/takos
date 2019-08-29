@@ -18,11 +18,6 @@ class Sidebar extends React.Component {
 
   onBreakpoint = broken => {
     console.log(broken);
-    if (broken) {
-      this.setState({
-        collapsed: true,
-      });
-    }
   }
 
   render() {
