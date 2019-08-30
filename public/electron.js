@@ -6,8 +6,10 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({
+        autoHideMenuBar: true,
         width: 960,
         height: 600,
+        icon: './public/favicon.ico',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
