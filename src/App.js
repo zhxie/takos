@@ -1,7 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ReactDOM from 'react-dom';
 import { Layout, Menu, Icon } from 'antd';
+import logo from './logo.svg';
+import logo_grayscale from './logo-grayscale.svg';
+import './App.css';
+import { Mode } from './class/Mode.js';
+import Dashboard from "./Dashboard";
+import Schedules from "./Schedules";
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -18,7 +23,23 @@ class App extends React.Component {
 
   onBreakpoint = broken => {
     console.log(broken);
-  }
+  };
+
+  showDashboard = () => {
+    ReactDOM.render(<Dashboard />, document.getElementById('App-content'));
+  };
+
+  showSchedules = mode => {
+    switch(mode) {
+      case Mode.regular:
+      case Mode.ranked:
+      case Mode.league:
+        ReactDOM.render(<Schedules mode={mode} />, document.getElementById('App-content'));
+        break;
+      default:
+        console.error('App -> showSchedules(mode) -> mode: invalid value');
+    }
+  };
 
   render() {
     return (
@@ -37,10 +58,13 @@ class App extends React.Component {
             <div className="App-logo">
               <img src={logo} alt="logo" />
             </div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1">
-                <Icon type="home" />
-                <span>Home</span>
+            <Menu theme="dark" mode="inline">
+              <Menu.Item
+                key="1"
+                onClick={this.showDashboard}
+              >
+                <Icon type="dashboard" />
+                <span>Dashboard</span>
               </Menu.Item>
               <SubMenu
                 key="sub1"
@@ -51,9 +75,24 @@ class App extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="2">Regular Battle</Menu.Item>
-                <Menu.Item key="3">Ranked Battle</Menu.Item>
-                <Menu.Item key="4">League Battle</Menu.Item>
+                <Menu.Item
+                  key="2"
+                  onClick={this.showSchedules.bind(this, Mode.regular)}
+                >
+                  Regular Battle
+                </Menu.Item>
+                <Menu.Item
+                  key="3"
+                  onClick={this.showSchedules.bind(this, Mode.ranked)}
+                >
+                  Ranked Battle
+                </Menu.Item>
+                <Menu.Item
+                  key="4"
+                  onClick={this.showSchedules.bind(this, Mode.league)}
+                >
+                  League Battle
+                </Menu.Item>
                 <Menu.Item key="5">Salmon Run</Menu.Item>
               </SubMenu>
               <SubMenu
@@ -85,8 +124,10 @@ class App extends React.Component {
             </Menu>
           </Sider>
         </div>
-        <Content className="App-content" style={{ height: '100vh' }}>
-          <Content style={{ background: '#fff', height: '2000px', margin: '16px' }} />
+        <Content id="App-content" className="App-content" style={{ height: '100vh' }}>
+          <div className="App-content-logo-container">
+            <img src={logo_grayscale} className="App-content-logo" alt="logo" />
+          </div>
         </Content>
       </Layout>
     );

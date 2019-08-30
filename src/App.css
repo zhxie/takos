@@ -6,3 +6,16 @@
   padding: 10%;
   pointer-events: none;
 }
+
+.App-content-logo-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.App-content-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
