@@ -1,3 +1,7 @@
+.App-sider-container {
+  overflow: auto;
+}
+
 .App-logo {
   padding: 10%;
   pointer-events: none;
