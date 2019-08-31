@@ -1,9 +1,12 @@
 const { override, addLessLoader, fixBabelImports } = require('customize-cra');
 module.exports = override(
-    addLessLoader({
-        strictMath: true,
-        noIeCompat: true
-    }),
-    fixBabelImports('import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' })
+  addLessLoader({
+    strictMath: true,
+    noIeCompat: true
+  }),
+  fixBabelImports('import', {
+    libraryName: 'antd',
+    libraryDirectory: 'es',
+    style: 'css'
+  })
 );
-

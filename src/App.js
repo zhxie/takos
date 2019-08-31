@@ -5,15 +5,15 @@ import logo from './logo.svg';
 import logo_grayscale from './logo-grayscale.svg';
 import './App.css';
 import { Mode } from './class/Mode.js';
-import Dashboard from "./Dashboard";
-import Schedules from "./Schedules";
+import Dashboard from './Dashboard';
+import Schedules from './Schedules';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 class App extends React.Component {
   state = {
-    collapsed: false,
+    collapsed: false
   };
 
   onCollapse = collapsed => {
@@ -30,11 +30,14 @@ class App extends React.Component {
   };
 
   showSchedules = mode => {
-    switch(mode) {
+    switch (mode) {
       case Mode.regular:
       case Mode.ranked:
       case Mode.league:
-        ReactDOM.render(<Schedules mode={mode} />, document.getElementById('App-content'));
+        ReactDOM.render(
+          <Schedules mode={mode} />,
+          document.getElementById('App-content')
+        );
         break;
       default:
         console.error('App -> showSchedules(mode) -> mode: invalid value');
@@ -46,8 +49,9 @@ class App extends React.Component {
       <Layout>
         <div className="App-sider-container">
           <Sider
-            breakpoint='md'
-            collapsible collapsed={this.state.collapsed}
+            breakpoint="md"
+            collapsible
+            collapsed={this.state.collapsed}
             onBreakpoint={this.onBreakpoint}
             onCollapse={this.onCollapse}
             style={{
@@ -59,10 +63,7 @@ class App extends React.Component {
               <img src={logo} alt="logo" />
             </div>
             <Menu theme="dark" mode="inline">
-              <Menu.Item
-                key="1"
-                onClick={this.showDashboard}
-              >
+              <Menu.Item key="1" onClick={this.showDashboard}>
                 <Icon type="dashboard" />
                 <span>Dashboard</span>
               </Menu.Item>
@@ -124,7 +125,11 @@ class App extends React.Component {
             </Menu>
           </Sider>
         </div>
-        <Content id="App-content" className="App-content" style={{ height: '100vh' }}>
+        <Content
+          id="App-content"
+          className="App-content"
+          style={{ height: '100vh' }}
+        >
           <div className="App-content-logo-container">
             <img src={logo_grayscale} className="App-content-logo" alt="logo" />
           </div>
