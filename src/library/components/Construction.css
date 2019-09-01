@@ -1,0 +1,15 @@
+.Construction-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.anticon.Construction-cotent-result-icon.svg {
+  background: #000;
+  color: #000;
+}
+
+.Construction-content-result-icon {
+  stroke-width: 0.5px;
+}
