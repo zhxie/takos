@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Layout, Menu, Icon } from 'antd';
-import logo from './logo.svg';
-import logo_grayscale from './logo-grayscale.svg';
+
+import logo from './assets/images/logo.svg';
+import logo_grayscale from './assets/images/logo-grayscale.svg';
 import './App.css';
-import { Mode } from './class/Mode.js';
-import Dashboard from './Dashboard';
+import Mode from './library/Mode';
 import Schedules from './Schedules';
+import Construction from './library/components/Construction';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -25,10 +26,6 @@ class App extends React.Component {
     console.log(broken);
   };
 
-  showDashboard = () => {
-    ReactDOM.render(<Dashboard />, document.getElementById('App-content'));
-  };
-
   showSchedules = mode => {
     switch (mode) {
       case Mode.regular:
@@ -42,6 +39,10 @@ class App extends React.Component {
       default:
         console.error('App -> showSchedules(mode) -> mode: invalid value');
     }
+  };
+
+  showConstruction = () => {
+    ReactDOM.render(<Construction />, document.getElementById('App-content'));
   };
 
   render() {
@@ -63,7 +64,7 @@ class App extends React.Component {
               <img src={logo} alt="logo" />
             </div>
             <Menu theme="dark" mode="inline">
-              <Menu.Item key="1" onClick={this.showDashboard}>
+              <Menu.Item key="1" onClick={this.showConstruction}>
                 <Icon type="dashboard" />
                 <span>Dashboard</span>
               </Menu.Item>
@@ -105,20 +106,32 @@ class App extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="6">Stages</Menu.Item>
-                <Menu.Item key="7">Weapons</Menu.Item>
-                <Menu.Item key="8">Battle</Menu.Item>
-                <Menu.Item key="9">Salmon Run</Menu.Item>
+                <Menu.Item key="6" onClick={this.showConstruction}>
+                  Stage
+                </Menu.Item>
+                <Menu.Item key="7" onClick={this.showConstruction}>
+                  Weapon
+                </Menu.Item>
+                <Menu.Item key="8" onClick={this.showConstruction}>
+                  Battles
+                </Menu.Item>
+                <Menu.Item key="9" onClick={this.showConstruction}>
+                  Salmon Run
+                </Menu.Item>
               </SubMenu>
-              <Menu.Item key="10">
+              <Menu.Item key="10" onClick={this.showConstruction}>
                 <Icon type="menu" />
                 <span>Battle</span>
               </Menu.Item>
-              <Menu.Item key="11">
+              <Menu.Item key="11" onClick={this.showConstruction}>
                 <Icon type="menu" />
                 <span>Salmon Run</span>
               </Menu.Item>
-              <Menu.Item key="12">
+              <Menu.Item key="12" onClick={this.showConstruction}>
+                <Icon type="shopping" />
+                <span>Gear Shop</span>
+              </Menu.Item>
+              <Menu.Item key="13" onClick={this.showConstruction}>
                 <Icon type="setting" />
                 <span>Settings</span>
               </Menu.Item>

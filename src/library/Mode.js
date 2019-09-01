@@ -21,4 +21,4 @@ Mode.splatfest = new Mode('splatfest', 5);
 
 Object.freeze(Mode);
 
-export { Mode };
+export default Mode;
