@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
-import logo_grayscale from './assets/images/logo-grayscale.svg';
 import './App.css';
 import Mode from './library/Mode';
 import Schedules from './Schedules';
@@ -144,7 +143,7 @@ class App extends React.Component {
           style={{ height: '100vh' }}
         >
           <div className="App-content-logo-container">
-            <img src={logo_grayscale} className="App-content-logo" alt="logo" />
+            <img src={logo} className="App-content-logo" alt="logo" />
           </div>
         </Content>
       </Layout>
