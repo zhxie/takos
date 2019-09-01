@@ -62,7 +62,7 @@ class App extends React.Component {
             <div className="App-logo">
               <img src={logo} alt="logo" />
             </div>
-            <Menu theme="dark" mode="inline">
+            <Menu theme="dark" mode="vertical">
               <Menu.Item key="1" onClick={this.showConstruction}>
                 <Icon type="dashboard" />
                 <span>Dashboard</span>

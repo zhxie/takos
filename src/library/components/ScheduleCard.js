@@ -20,6 +20,7 @@ class ScheduleCard extends React.Component {
         }}
       >
         <Card
+          hoverable
           className="ScheduleCard-schedule-stage"
           bodyStyle={{
             padding: '6px'
@@ -37,6 +38,7 @@ class ScheduleCard extends React.Component {
           />
         </Card>
         <Card
+          hoverable
           className="ScheduleCard-schedule-stage"
           bodyStyle={{
             padding: '6px'
