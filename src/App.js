@@ -46,7 +46,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Layout>
+      <Layout style={{ display: 'block' }}>
         <div className="App-sider-container">
           <Sider
             breakpoint="md"
@@ -137,11 +137,7 @@ class App extends React.Component {
             </Menu>
           </Sider>
         </div>
-        <Content
-          id="App-content"
-          className="App-content"
-          style={{ height: '100vh' }}
-        >
+        <Content id="App-content" style={{ height: '100vh' }}>
           <div className="App-content-logo-container">
             <img src={logo} className="App-content-logo" alt="logo" />
           </div>

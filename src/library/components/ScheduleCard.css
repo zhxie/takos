@@ -1,0 +1,24 @@
+.ScheduleCard-schedule {
+  display: inline-block;
+  width: 438px;
+  margin: 6px;
+}
+
+.ScheduleCard-schedule-stage {
+  display: inline-block;
+  margin: 6px;
+  width: 200px;
+}
+
+.ScheduleCard-schedule-stage-meta {
+  margin: 6px;
+}
+
+.ScheduleCard-schedule-meta {
+  margin: 6px;
+}
+
+.ScheduleCard-schedule-meta-image {
+  height: 32px;
+  width: 32px;
+}

@@ -1,4 +1,5 @@
 .App-sider-container {
+  float: left;
   overflow: auto;
 }
 
