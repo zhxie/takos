@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Avatar } from 'antd';
+import { Card } from 'antd';
 
 import './ScheduleCard.css';
 import turfWarIcon from '../../assets/images/mode-regular.png';
@@ -65,7 +65,7 @@ class ScheduleCard extends React.Component {
             />
           }
           title="Turf War"
-          description="12:00 - 14:00 (in 1 hour 36 mins)"
+          description="12:00 - 14:00"
         />
       </Card>
     );

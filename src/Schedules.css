@@ -1,6 +1,38 @@
+.Schedules-header {
+  align-items: center;
+  background: #fff;
+  display: flex;
+  padding: 0 16px;
+  position: fixed;
+  width: 100%;
+}
+
+.Schedules-header-icon {
+  display: inline-block;
+  margin-right: 24px;
+  width: 32px;
+}
+
+.Schedules-header-title {
+  color: rgba(0, 0, 0, 0.85);
+  display: inline-block;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+  padding-right: 12px;
+}
+
+.Schedules-header-subtitle {
+  color: rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  font-size: 14px;
+  margin: 0;
+  padding-right: 12px;
+}
+
 .Schedules-content {
   background: #fff;
-  margin: 16px;
+  margin: 80px 16px 16px 16px;
   padding: 16px;
   width: calc(100% - 32px);
 }
