@@ -7,6 +7,7 @@ import './App.css';
 import Mode from './library/Mode';
 import Schedules from './Schedules';
 import Construction from './library/components/Construction';
+import { ArgumentOutOfRangeError } from 'rxjs';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -27,16 +28,16 @@ class App extends React.Component {
 
   showSchedules = mode => {
     switch (mode) {
-      case Mode.regular:
-      case Mode.ranked:
-      case Mode.league:
+      case Mode.regularBattle:
+      case Mode.rankedBattle:
+      case Mode.leagueBattle:
         ReactDOM.render(
           <Schedules mode={mode} />,
           document.getElementById('App-content')
         );
         break;
       default:
-        console.error('App -> showSchedules(mode) -> mode: invalid value');
+        throw new ArgumentOutOfRangeError();
     }
   };
 
@@ -78,23 +79,25 @@ class App extends React.Component {
               >
                 <Menu.Item
                   key="2"
-                  onClick={this.showSchedules.bind(this, Mode.regular)}
+                  onClick={this.showSchedules.bind(this, Mode.regularBattle)}
                 >
                   Regular Battle
                 </Menu.Item>
                 <Menu.Item
                   key="3"
-                  onClick={this.showSchedules.bind(this, Mode.ranked)}
+                  onClick={this.showSchedules.bind(this, Mode.rankedBattle)}
                 >
                   Ranked Battle
                 </Menu.Item>
                 <Menu.Item
                   key="4"
-                  onClick={this.showSchedules.bind(this, Mode.league)}
+                  onClick={this.showSchedules.bind(this, Mode.leagueBattle)}
                 >
                   League Battle
                 </Menu.Item>
-                <Menu.Item key="5">Salmon Run</Menu.Item>
+                <Menu.Item key="5" onClick={this.showConstruction}>
+                  Salmon Run
+                </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub2"
