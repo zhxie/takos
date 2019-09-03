@@ -1,7 +1,112 @@
+import { ArgumentOutOfRangeError } from 'rxjs';
+
 class Stage {
   constructor(name, value) {
     this.name = name;
     this.value = value;
+  }
+
+  static parse(id) {
+    switch (id) {
+      case 0:
+        return Stage.theReef;
+      case 1:
+        return Stage.musselforgeFitness;
+      case 2:
+        return Stage.starfishMainstage;
+      case 3:
+        return Stage.sturgeonShipyard;
+      case 4:
+        return Stage.inkblotArtAcademy;
+      case 5:
+        return Stage.humpbackPumpTrack;
+      case 6:
+        return Stage.mantaMaria;
+      case 7:
+        return Stage.portMackerel;
+      case 8:
+        return Stage.morayTowers;
+      case 9:
+        return Stage.snapperCanal;
+      case 10:
+        return Stage.kelpDome;
+      case 11:
+        return Stage.blackbellySkatepark;
+      case 12:
+        return Stage.shellendorfInstitute;
+      case 13:
+        return Stage.makomart;
+      case 14:
+        return Stage.walleyeWarehouse;
+      case 15:
+        return Stage.arowanaMall;
+      case 16:
+        return Stage.campTriggerfish;
+      case 17:
+        return Stage.piranhaPit;
+      case 18:
+        return Stage.gobyArena;
+      case 19:
+        return Stage.newAlbacoreHotel;
+      case 20:
+        return Stage.wahooWorld;
+      case 21:
+        return Stage.anchovGames;
+      case 22:
+        return Stage.skipperPavilion;
+      case 100:
+        return Stage.windmillHouseOnThePearlie;
+      case 101:
+        return Stage.wayslideCool;
+      case 102:
+        return Stage.theSecretOfSplat;
+      case 103:
+        return Stage.goosponge;
+      case 105:
+        return Stage.cannonFirePearl;
+      case 106:
+        return Stage.zoneOfGlass;
+      case 107:
+        return Stage.fancySpew;
+      case 108:
+        return Stage.grapplinkGirl;
+      case 109:
+        return Stage.zappyLongshocking;
+      case 110:
+        return Stage.theBunkerGames;
+      case 111:
+        return Stage.aSwiftlyTiltingBalance;
+      case 112:
+        return Stage.theSwitches;
+      case 113:
+        return Stage.sweetValleyTentacles;
+      case 114:
+        return Stage.theBounceyTwins;
+      case 115:
+        return Stage.railwayChillin;
+      case 116:
+        return Stage.gusherTowns;
+      case 117:
+        return Stage.theMazeDasher;
+      case 118:
+        return Stage.floodersInTheAttic;
+      case 119:
+        return Stage.theSplatInOurZones;
+      case 120:
+        return Stage.theInkIsSpreading;
+      case 121:
+        return Stage.bridgeToTentaswitchia;
+      case 122:
+        return Stage.theChroniclesOfRolonium;
+      case 123:
+        return Stage.furlerInTheAshes;
+      case 124:
+        return Stage.mcPrincessDiaries;
+      case 9999:
+        return Stage.shiftyStation;
+      default:
+        throw new ArgumentOutOfRangeError();
+    }
   }
 }
 
@@ -59,19 +164,4 @@ Stage.shiftyStation = new Stage('shifty_station', 9999);
 
 Object.freeze(Stage);
 
-class ScheduledStage {
-  constructor(stage, url) {
-    this.stage = stage;
-    this.url = url;
-  }
-
-  getStage = () => {
-    return this.stage;
-  };
-
-  getUrl = () => {
-    return this.url;
-  };
-}
-
-export { Stage, ScheduledStage };
+export default Stage;

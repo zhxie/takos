@@ -1,15 +1,30 @@
+import { ArgumentOutOfRangeError } from 'rxjs';
+
 class Mode {
   constructor(name, value) {
     this.name = name;
     this.value = value;
   }
+
+  static parse(data) {
+    switch (data.key) {
+      case 'regular':
+        return Mode.regularBattle;
+      case 'gachi':
+        return Mode.rankedBattle;
+      case 'league':
+        return Mode.leagueBattle;
+      default:
+        throw new ArgumentOutOfRangeError();
+    }
+  }
 }
 
-Mode.regularBattle = new Mode('regular_battle', 1);
-Mode.rankedBattle = new Mode('ranked_battle', 2);
-Mode.leagueBattle = new Mode('league_battle', 3);
-Mode.privateBattle = new Mode('private_battle', 4);
-Mode.splatfest = new Mode('splatfest', 5);
+Mode.regularBattle = new Mode('regular_battle', 0);
+Mode.rankedBattle = new Mode('ranked_battle', 1);
+Mode.leagueBattle = new Mode('league_battle', 2);
+Mode.privateBattle = new Mode('private_battle', 3);
+Mode.splatfest = new Mode('splatfest', 4);
 
 Object.freeze(Mode);
 
