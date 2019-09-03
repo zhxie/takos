@@ -1,20 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Layout, Menu, Icon } from 'antd';
+import { ArgumentOutOfRangeError } from 'rxjs';
 
 import logo from './assets/images/logo.svg';
 import './App.css';
 import Mode from './library/Mode';
 import Schedules from './Schedules';
 import Construction from './library/components/Construction';
-import { ArgumentOutOfRangeError } from 'rxjs';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 class App extends React.Component {
   state = {
-    collapsed: false
+    collapsed: false,
+    index: 0
   };
 
   onCollapse = collapsed => {
@@ -29,12 +29,13 @@ class App extends React.Component {
   showSchedules = mode => {
     switch (mode) {
       case Mode.regularBattle:
+        this.setState({ index: 2 });
+        break;
       case Mode.rankedBattle:
+        this.setState({ index: 3 });
+        break;
       case Mode.leagueBattle:
-        ReactDOM.render(
-          <Schedules mode={mode} />,
-          document.getElementById('App-content')
-        );
+        this.setState({ index: 4 });
         break;
       default:
         throw new ArgumentOutOfRangeError();
@@ -42,7 +43,7 @@ class App extends React.Component {
   };
 
   showConstruction = () => {
-    ReactDOM.render(<Construction />, document.getElementById('App-content'));
+    this.setState({ index: -1 });
   };
 
   render() {
@@ -141,9 +142,27 @@ class App extends React.Component {
           </Sider>
         </div>
         <Content id="App-content" style={{ height: '100vh' }}>
-          <div className="App-content-logo-container">
-            <img src={logo} className="App-content-logo" alt="logo" />
-          </div>
+          {(() => {
+            console.log(this.state.index);
+            switch (this.state.index) {
+              case -1:
+                return <Construction />;
+              case 0:
+                return (
+                  <div className="App-content-logo-container">
+                    <img src={logo} className="App-content-logo" alt="logo" />
+                  </div>
+                );
+              case 2:
+                return <Schedules mode={Mode.regularBattle} />;
+              case 3:
+                return <Schedules mode={Mode.rankedBattle} />;
+              case 4:
+                return <Schedules mode={Mode.leagueBattle} />;
+              default:
+                throw new ArgumentOutOfRangeError();
+            }
+          })()}
         </Content>
       </Layout>
     );
