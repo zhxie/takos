@@ -40,8 +40,6 @@ class Schedules extends React.Component {
   render() {
     return this.state.error ? (
       this.state.errorLog
-    ) : !this.state.loaded ? (
-      'Loading'
     ) : (
       <Layout>
         <Header className="Schedules-header" style={{ zIndex: 1 }}>
@@ -54,26 +52,36 @@ class Schedules extends React.Component {
           <p className="Schedules-header-subtitle">{this.props.mode.name}</p>
         </Header>
         <Content className="Schedules-content">
-          <PageHeader title="Current" />
-          <ScheduleCard schedule={this.state.data[0]} />
-          <PageHeader
-            title="Next"
-            subTitle={TimeConverter.getRemainedTime(
-              this.state.data[1].startTime
-            )}
-          />
-          <ScheduleCard schedule={this.state.data[1]} />
-          <PageHeader title="Future" />
-          <ScheduleCard schedule={this.state.data[2]} />
-          <ScheduleCard schedule={this.state.data[3]} />
-          <ScheduleCard schedule={this.state.data[4]} />
-          <ScheduleCard schedule={this.state.data[5]} />
-          <ScheduleCard schedule={this.state.data[6]} />
-          <ScheduleCard schedule={this.state.data[7]} />
-          <ScheduleCard schedule={this.state.data[8]} />
-          <ScheduleCard schedule={this.state.data[9]} />
-          <ScheduleCard schedule={this.state.data[10]} />
-          <ScheduleCard schedule={this.state.data[11]} />
+          {(() => {
+            if (!this.state.loaded) {
+              return 'Loading...';
+            } else {
+              return (
+                <div>
+                  <PageHeader title="Current" />
+                  <ScheduleCard schedule={this.state.data[0]} />
+                  <PageHeader
+                    title="Next"
+                    subTitle={TimeConverter.getRemainedTime(
+                      this.state.data[1].startTime
+                    )}
+                  />
+                  <ScheduleCard schedule={this.state.data[1]} />
+                  <PageHeader title="Future" />
+                  <ScheduleCard schedule={this.state.data[2]} />
+                  <ScheduleCard schedule={this.state.data[3]} />
+                  <ScheduleCard schedule={this.state.data[4]} />
+                  <ScheduleCard schedule={this.state.data[5]} />
+                  <ScheduleCard schedule={this.state.data[6]} />
+                  <ScheduleCard schedule={this.state.data[7]} />
+                  <ScheduleCard schedule={this.state.data[8]} />
+                  <ScheduleCard schedule={this.state.data[9]} />
+                  <ScheduleCard schedule={this.state.data[10]} />
+                  <ScheduleCard schedule={this.state.data[11]} />
+                </div>
+              );
+            }
+          })()}
         </Content>
       </Layout>
     );
