@@ -11,6 +11,8 @@ import {
 import Mode from './library/Mode';
 import Schedule from './library/Schedule';
 import TimeConverter from './library/components/TimeConverter';
+import LoadingResult from './library/components/LoadingResult';
+import ErrorResult from './library/components/ErrorResult';
 import regularIcon from './assets/images/mode-regular.png';
 import rankedIcon from './assets/images/mode-ranked.png';
 import leagueIcon from './assets/images/mode-league.png';
@@ -39,7 +41,7 @@ class Schedules extends React.Component {
 
   render() {
     return this.state.error ? (
-      this.state.errorLog
+      <ErrorResult error={this.state.errorLog} />
     ) : (
       <Layout>
         <Header className="Schedules-header" style={{ zIndex: 1 }}>
@@ -54,7 +56,7 @@ class Schedules extends React.Component {
         <Content className="Schedules-content">
           {(() => {
             if (!this.state.loaded) {
-              return 'Loading...';
+              return <LoadingResult />;
             } else {
               return (
                 <div>

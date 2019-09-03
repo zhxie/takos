@@ -6,7 +6,7 @@ import logo from './assets/images/logo.svg';
 import './App.css';
 import Mode from './library/Mode';
 import Schedules from './Schedules';
-import Construction from './library/components/Construction';
+import ConstructionResult from './library/components/ConstructionResult';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -143,10 +143,9 @@ class App extends React.Component {
         </div>
         <Content id="App-content" style={{ height: '100vh' }}>
           {(() => {
-            console.log(this.state.index);
             switch (this.state.index) {
               case -1:
-                return <Construction />;
+                return <ConstructionResult />;
               case 0:
                 return (
                   <div className="App-content-logo-container">
