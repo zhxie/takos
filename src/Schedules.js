@@ -56,21 +56,35 @@ class Schedules extends React.Component {
                 }
                 return (
                   <div>
-                    <PageHeader title="Current" />
-                    <ScheduleCard schedule={this.state.data[0]} />
-                    <PageHeader title="Next" subTitle={TimeConverter.getRemainedTime(this.state.data[1].startTime)} />
-                    <ScheduleCard schedule={this.state.data[1]} />
-                    <PageHeader title="Future" />
-                    <ScheduleCard schedule={this.state.data[2]} />
-                    <ScheduleCard schedule={this.state.data[3]} />
-                    <ScheduleCard schedule={this.state.data[4]} />
-                    <ScheduleCard schedule={this.state.data[5]} />
-                    <ScheduleCard schedule={this.state.data[6]} />
-                    <ScheduleCard schedule={this.state.data[7]} />
-                    <ScheduleCard schedule={this.state.data[8]} />
-                    <ScheduleCard schedule={this.state.data[9]} />
-                    <ScheduleCard schedule={this.state.data[10]} />
-                    <ScheduleCard schedule={this.state.data[11]} />
+                    <div>
+                      <PageHeader title="Current" />
+                      <ScheduleCard key="1" schedule={this.state.data[0]} />
+                    </div>
+                    {(() => {
+                      if (this.state.data.length > 1) {
+                        return (
+                          <div>
+                            <PageHeader
+                              title="Next"
+                              subTitle={TimeConverter.getRemainedTime(this.state.data[1].startTime)}
+                            />
+                            <ScheduleCard key="2" schedule={this.state.data[1]} />
+                          </div>
+                        );
+                      }
+                    })()}
+                    {(() => {
+                      if (this.state.data.length > 2) {
+                        return (
+                          <div>
+                            <PageHeader title="Future" />
+                            {this.state.data.slice(2).map((item, index) => {
+                              return <ScheduleCard key={2 + index} schedule={item} />;
+                            })}
+                          </div>
+                        );
+                      }
+                    })()}
                   </div>
                 );
               }
@@ -119,8 +133,12 @@ class Schedules extends React.Component {
             }
             schedules.push(schedule);
           }
-          if (schedules.length === 12) {
+          if (schedules.length > 0) {
             this.setState({ data: schedules, loaded: true });
+            // Set update interval
+            this.timer = setInterval(() => {
+              this.forceUpdate();
+            }, 60000);
           } else {
             this.setState({ errorLog: 'can_not_parse_schedules', error: true });
           }
@@ -133,10 +151,6 @@ class Schedules extends React.Component {
         console.error(e);
         this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
       });
-    // Set update interval
-    this.timer = setInterval(() => {
-      this.forceUpdate();
-    }, 60000);
   }
 
   componentDidUpdate(prevProps) {
