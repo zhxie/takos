@@ -133,10 +133,7 @@ Stage.newAlbacoreHotel = new Stage('new_albacore_hotel', 19);
 Stage.wahooWorld = new Stage('wahoo_world', 20);
 Stage.anchovGames = new Stage('anchov_games', 21);
 Stage.skipperPavilion = new Stage('skipper_pavilion', 22);
-Stage.windmillHouseOnThePearlie = new Stage(
-  'windmill_house_on_the_pearlie',
-  100
-);
+Stage.windmillHouseOnThePearlie = new Stage('windmill_house_on_the_pearlie', 100);
 Stage.wayslideCool = new Stage('wayslide_cool', 101);
 Stage.theSecretOfSplat = new Stage('the_secret_of_splat', 102);
 Stage.goosponge = new Stage('goosponge', 103);

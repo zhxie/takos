@@ -28,12 +28,8 @@ const SpinSvg = () => (
   </svg>
 );
 
-const OctolingsKillIcon = props => (
-  <Icon component={OctolingsKillSvg} {...props} />
-);
-const OctolingsDeathIcon = props => (
-  <Icon component={OctolingsDeathSvg} {...props} />
-);
+const OctolingsKillIcon = props => <Icon component={OctolingsKillSvg} {...props} />;
+const OctolingsDeathIcon = props => <Icon component={OctolingsDeathSvg} {...props} />;
 const SpinIcon = props => <Icon component={SpinSvg} {...props} />;
 
 export { OctolingsKillIcon, OctolingsDeathIcon, SpinIcon };

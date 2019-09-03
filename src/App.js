@@ -78,22 +78,13 @@ class App extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item
-                  key="2"
-                  onClick={this.showSchedules.bind(this, Mode.regularBattle)}
-                >
+                <Menu.Item key="2" onClick={this.showSchedules.bind(this, Mode.regularBattle)}>
                   Regular Battle
                 </Menu.Item>
-                <Menu.Item
-                  key="3"
-                  onClick={this.showSchedules.bind(this, Mode.rankedBattle)}
-                >
+                <Menu.Item key="3" onClick={this.showSchedules.bind(this, Mode.rankedBattle)}>
                   Ranked Battle
                 </Menu.Item>
-                <Menu.Item
-                  key="4"
-                  onClick={this.showSchedules.bind(this, Mode.leagueBattle)}
-                >
+                <Menu.Item key="4" onClick={this.showSchedules.bind(this, Mode.leagueBattle)}>
                   League Battle
                 </Menu.Item>
                 <Menu.Item key="5" onClick={this.showConstruction}>

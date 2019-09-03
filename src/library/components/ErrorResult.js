@@ -31,19 +31,15 @@ class ErrorResult extends React.Component {
               </Text>
             </Paragraph>
             <Paragraph>
-              <Icon style={{ color: 'red' }} type="info-circle" /> Your network
-              connection and proxy settings
+              <Icon style={{ color: 'red' }} type="info-circle" /> Your network connection and proxy settings
             </Paragraph>
             <Paragraph>
-              <Icon style={{ color: 'red' }} type="info-circle" /> Your SplatNet
-              cookie
+              <Icon style={{ color: 'red' }} type="info-circle" /> Your SplatNet cookie
             </Paragraph>
             <Paragraph>
               <Text style={{ fontSize: 14 }}>
                 If the problem persists, please consider{' '}
-                <a href="https://github.com/zhxie/takos/issues">
-                  Reporting it in Github &gt;
-                </a>
+                <a href="https://github.com/zhxie/takos/issues">Reporting it in Github &gt;</a>
               </Text>
             </Paragraph>
           </div>

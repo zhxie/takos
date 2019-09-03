@@ -46,17 +46,9 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={
-            <img
-              alt="stage 1"
-              src={SPLATNET_API + this.props.schedule.stage1.url}
-            />
-          }
+          cover={<img alt="stage 1" src={SPLATNET_API + this.props.schedule.stage1.url} />}
         >
-          <Meta
-            className="ScheduleCard-schedule-stage-meta"
-            title={this.props.schedule.stage1.stage.name}
-          />
+          <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage1.stage.name} />
         </Card>
         <Card
           hoverable
@@ -64,32 +56,15 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={
-            <img
-              alt="stage 2"
-              src={SPLATNET_API + this.props.schedule.stage2.url}
-            />
-          }
+          cover={<img alt="stage 2" src={SPLATNET_API + this.props.schedule.stage2.url} />}
         >
-          <Meta
-            className="ScheduleCard-schedule-stage-meta"
-            title={this.props.schedule.stage2.stage.name}
-          />
+          <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage2.stage.name} />
         </Card>
         <Meta
           className="ScheduleCard-schedule-meta"
-          avatar={
-            <img
-              className="ScheduleCard-schedule-meta-image"
-              src={this.iconSelector()}
-              alt="mode"
-            />
-          }
+          avatar={<img className="ScheduleCard-schedule-meta-image" src={this.iconSelector()} alt="mode" />}
           title={this.props.schedule.rule.name}
-          description={TimeConverter.getSchedulePeriod(
-            this.props.schedule.startTime,
-            this.props.schedule.endTime
-          )}
+          description={TimeConverter.getSchedulePeriod(this.props.schedule.startTime, this.props.schedule.endTime)}
         />
       </Card>
     );

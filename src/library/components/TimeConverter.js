@@ -8,9 +8,7 @@ class TimeConverter {
   };
 
   static getSchedulePeriod = (startTime, endTime) => {
-    return (
-      this.getScheduleTime(startTime) + ' - ' + this.getScheduleTime(endTime)
-    );
+    return this.getScheduleTime(startTime) + ' - ' + this.getScheduleTime(endTime);
   };
 
   static getRemainedTime = time => {
@@ -21,9 +19,7 @@ class TimeConverter {
     } else {
       var days = Math.floor(diff / (24 * 3600 * 1000));
       var hours = Math.floor((diff - days * 24 * 3600 * 1000) / (3600 * 1000));
-      var minutes = Math.floor(
-        (diff - days * 24 * 3600 * 1000 - hours * 3600 * 1000) / (60 * 1000)
-      );
+      var minutes = Math.floor((diff - days * 24 * 3600 * 1000 - hours * 3600 * 1000) / (60 * 1000));
       if (days > 0) {
         return 'in ' + days + ' day ' + hours + ' hour ' + minutes + ' min';
       } else if (hours > 0) {
