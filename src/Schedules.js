@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, PageHeader, message } from 'antd';
+import { Layout, PageHeader, Alert } from 'antd';
 import { ArgumentOutOfRangeError } from 'rxjs';
 
 import './Schedules.css';
@@ -19,7 +19,8 @@ const { Header, Content } = Layout;
 class Schedules extends React.Component {
   state = {
     loaded: false,
-    error: false
+    error: false,
+    expired: false
   };
 
   iconSelector = () => {
@@ -32,6 +33,14 @@ class Schedules extends React.Component {
         return leagueIcon;
       default:
         throw new ArgumentOutOfRangeError();
+    }
+  };
+
+  timeout = () => {
+    if (new Date(this.state.data[0].endTime * 1000) - new Date() < 0) {
+      this.setState({ expired: true });
+    } else {
+      this.forceUpdate();
     }
   };
 
@@ -51,11 +60,20 @@ class Schedules extends React.Component {
               if (!this.state.loaded) {
                 return <LoadingResult />;
               } else {
-                if (new Date(this.state.data[1].startTime * 1000) - new Date() < 0) {
-                  message.info('The schedules have expired');
-                }
                 return (
                   <div>
+                    {(() => {
+                      if (this.state.expired) {
+                        return (
+                          <Alert
+                            message="Warning"
+                            description="These schedules have expired, please refresh this page to update."
+                            type="warning"
+                            showIcon
+                          />
+                        );
+                      }
+                    })()}
                     <div>
                       <PageHeader title="Current" />
                       <ScheduleCard key="1" schedule={this.state.data[0]} />
@@ -66,7 +84,7 @@ class Schedules extends React.Component {
                           <div>
                             <PageHeader
                               title="Next"
-                              subTitle={TimeConverter.getRemainedTime(this.state.data[1].startTime)}
+                              subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
                             />
                             <ScheduleCard key="2" schedule={this.state.data[1]} />
                           </div>
@@ -136,9 +154,7 @@ class Schedules extends React.Component {
           if (schedules.length > 0) {
             this.setState({ data: schedules, loaded: true });
             // Set update interval
-            this.timer = setInterval(() => {
-              this.forceUpdate();
-            }, 60000);
+            this.timer = setInterval(this.timeout, 60000);
           } else {
             this.setState({ errorLog: 'can_not_parse_schedules', error: true });
           }
@@ -155,7 +171,7 @@ class Schedules extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.mode !== prevProps.mode) {
-      this.setState({ loaded: false, error: false });
+      this.setState({ loaded: false, error: false, expired: false });
       this.componentDidMount();
     }
   }
