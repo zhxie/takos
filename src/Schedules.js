@@ -1,13 +1,9 @@
 import React from 'react';
-import { Layout, PageHeader } from 'antd';
+import { Layout, PageHeader, message } from 'antd';
 import { ArgumentOutOfRangeError } from 'rxjs';
 
 import './Schedules.css';
-import {
-  USER_AGENT,
-  SPLATOON2_INK_API,
-  SPLATOON2_INK_SCHEDULES
-} from './library/FileFolderUrl';
+import { USER_AGENT, SPLATOON2_INK_API, SPLATOON2_INK_SCHEDULES } from './library/FileFolderUrl';
 import Mode from './library/Mode';
 import Schedule from './library/Schedule';
 import TimeConverter from './library/components/TimeConverter';
@@ -40,53 +36,49 @@ class Schedules extends React.Component {
   };
 
   render() {
-    return this.state.error ? (
-      <ErrorResult error={this.state.errorLog} />
-    ) : (
-      <Layout>
-        <Header className="Schedules-header" style={{ zIndex: 1 }}>
-          <img
-            className="Schedules-header-icon"
-            src={this.iconSelector()}
-            alt="mode"
-          />
-          <p className="Schedules-header-title">Schedules</p>
-          <p className="Schedules-header-subtitle">{this.props.mode.name}</p>
-        </Header>
-        <Content className="Schedules-content">
-          {(() => {
-            if (!this.state.loaded) {
-              return <LoadingResult />;
-            } else {
-              return (
-                <div>
-                  <PageHeader title="Current" />
-                  <ScheduleCard schedule={this.state.data[0]} />
-                  <PageHeader
-                    title="Next"
-                    subTitle={TimeConverter.getRemainedTime(
-                      this.state.data[1].startTime
-                    )}
-                  />
-                  <ScheduleCard schedule={this.state.data[1]} />
-                  <PageHeader title="Future" />
-                  <ScheduleCard schedule={this.state.data[2]} />
-                  <ScheduleCard schedule={this.state.data[3]} />
-                  <ScheduleCard schedule={this.state.data[4]} />
-                  <ScheduleCard schedule={this.state.data[5]} />
-                  <ScheduleCard schedule={this.state.data[6]} />
-                  <ScheduleCard schedule={this.state.data[7]} />
-                  <ScheduleCard schedule={this.state.data[8]} />
-                  <ScheduleCard schedule={this.state.data[9]} />
-                  <ScheduleCard schedule={this.state.data[10]} />
-                  <ScheduleCard schedule={this.state.data[11]} />
-                </div>
-              );
-            }
-          })()}
-        </Content>
-      </Layout>
-    );
+    if (this.state.error) {
+      return <ErrorResult error={this.state.errorLog} />;
+    } else {
+      return (
+        <Layout>
+          <Header className="Schedules-header" style={{ zIndex: 1 }}>
+            <img className="Schedules-header-icon" src={this.iconSelector()} alt="mode" />
+            <p className="Schedules-header-title">Schedules</p>
+            <p className="Schedules-header-subtitle">{this.props.mode.name}</p>
+          </Header>
+          <Content className="Schedules-content">
+            {(() => {
+              if (!this.state.loaded) {
+                return <LoadingResult />;
+              } else {
+                if (new Date(this.state.data[1].startTime * 1000) - new Date() < 0) {
+                  message.info('The schedules have expired');
+                }
+                return (
+                  <div>
+                    <PageHeader title="Current" />
+                    <ScheduleCard schedule={this.state.data[0]} />
+                    <PageHeader title="Next" subTitle={TimeConverter.getRemainedTime(this.state.data[1].startTime)} />
+                    <ScheduleCard schedule={this.state.data[1]} />
+                    <PageHeader title="Future" />
+                    <ScheduleCard schedule={this.state.data[2]} />
+                    <ScheduleCard schedule={this.state.data[3]} />
+                    <ScheduleCard schedule={this.state.data[4]} />
+                    <ScheduleCard schedule={this.state.data[5]} />
+                    <ScheduleCard schedule={this.state.data[6]} />
+                    <ScheduleCard schedule={this.state.data[7]} />
+                    <ScheduleCard schedule={this.state.data[8]} />
+                    <ScheduleCard schedule={this.state.data[9]} />
+                    <ScheduleCard schedule={this.state.data[10]} />
+                    <ScheduleCard schedule={this.state.data[11]} />
+                  </div>
+                );
+              }
+            })()}
+          </Content>
+        </Layout>
+      );
+    }
   }
 
   componentDidMount() {
@@ -141,6 +133,10 @@ class Schedules extends React.Component {
         console.error(e);
         this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
       });
+    // Set update interval
+    this.timer = setInterval(() => {
+      this.forceUpdate();
+    }, 60000);
   }
 
   componentDidUpdate(prevProps) {
@@ -148,6 +144,10 @@ class Schedules extends React.Component {
       this.setState({ loaded: false, error: false });
       this.componentDidMount();
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 }
 
