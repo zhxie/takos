@@ -145,7 +145,7 @@ class Schedules extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.mode !== prevProps.mode) {
-      this.setState({ loaded: false });
+      this.setState({ loaded: false, error: false });
       this.componentDidMount();
     }
   }
