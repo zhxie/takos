@@ -45,6 +45,22 @@ class App extends React.Component {
     this.setState({ index: -1 });
   };
 
+  renderConstruction = () => {
+    return <ConstructionResult />;
+  };
+
+  renderLogo = () => {
+    return (
+      <div className="App-content-logo-container">
+        <img src={logo} className="App-content-logo" alt="logo" />
+      </div>
+    );
+  };
+
+  renderSchedules = mode => {
+    return <Schedules mode={mode} />;
+  };
+
   render() {
     return (
       <Layout style={{ display: 'block' }}>
@@ -135,19 +151,15 @@ class App extends React.Component {
           {(() => {
             switch (this.state.index) {
               case -1:
-                return <ConstructionResult />;
+                return this.renderConstruction();
               case 0:
-                return (
-                  <div className="App-content-logo-container">
-                    <img src={logo} className="App-content-logo" alt="logo" />
-                  </div>
-                );
+                return this.renderLogo();
               case 2:
-                return <Schedules mode={Mode.regularBattle} />;
+                return this.renderSchedules(Mode.regularBattle);
               case 3:
-                return <Schedules mode={Mode.rankedBattle} />;
+                return this.renderSchedules(Mode.rankedBattle);
               case 4:
-                return <Schedules mode={Mode.leagueBattle} />;
+                return this.renderSchedules(Mode.leagueBattle);
               default:
                 throw new RangeError();
             }

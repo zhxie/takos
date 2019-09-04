@@ -43,9 +43,62 @@ class Schedules extends React.Component {
     }
   };
 
+  renderError = () => {
+    return <ErrorResult error={this.state.errorLog} />;
+  };
+
+  renderLoading = () => {
+    return <LoadingResult />;
+  };
+
+  renderContent = () => {
+    return (
+      <div>
+        {(() => {
+          if (this.state.expired) {
+            return (
+              <Alert
+                message="Warning"
+                description="These schedules have expired, please refresh this page to update."
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        <div>
+          <PageHeader title="Current" />
+          <ScheduleCard key="1" schedule={this.state.data[0]} />
+        </div>
+        {(() => {
+          if (this.state.data.length > 1) {
+            return (
+              <div>
+                <PageHeader title="Next" subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)} />
+                <ScheduleCard key="2" schedule={this.state.data[1]} />
+              </div>
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.data.length > 2) {
+            return (
+              <div>
+                <PageHeader title="Future" />
+                {this.state.data.slice(2).map((item, index) => {
+                  return <ScheduleCard key={2 + index} schedule={item} />;
+                })}
+              </div>
+            );
+          }
+        })()}
+      </div>
+    );
+  };
+
   render() {
     if (this.state.error) {
-      return <ErrorResult error={this.state.errorLog} />;
+      return this.renderError();
     } else {
       return (
         <Layout>
@@ -57,53 +110,9 @@ class Schedules extends React.Component {
           <Content className="Schedules-content">
             {(() => {
               if (!this.state.loaded) {
-                return <LoadingResult />;
+                return this.renderLoading();
               } else {
-                return (
-                  <div>
-                    {(() => {
-                      if (this.state.expired) {
-                        return (
-                          <Alert
-                            message="Warning"
-                            description="These schedules have expired, please refresh this page to update."
-                            type="warning"
-                            showIcon
-                          />
-                        );
-                      }
-                    })()}
-                    <div>
-                      <PageHeader title="Current" />
-                      <ScheduleCard key="1" schedule={this.state.data[0]} />
-                    </div>
-                    {(() => {
-                      if (this.state.data.length > 1) {
-                        return (
-                          <div>
-                            <PageHeader
-                              title="Next"
-                              subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
-                            />
-                            <ScheduleCard key="2" schedule={this.state.data[1]} />
-                          </div>
-                        );
-                      }
-                    })()}
-                    {(() => {
-                      if (this.state.data.length > 2) {
-                        return (
-                          <div>
-                            <PageHeader title="Future" />
-                            {this.state.data.slice(2).map((item, index) => {
-                              return <ScheduleCard key={2 + index} schedule={item} />;
-                            })}
-                          </div>
-                        );
-                      }
-                    })()}
-                  </div>
-                );
+                return this.renderContent();
               }
             })()}
           </Content>
