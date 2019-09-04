@@ -59,7 +59,7 @@ class Schedules extends React.Component {
             return (
               <Alert
                 message="Warning"
-                description="These schedules have expired, please refresh this page to update."
+                description="It seems that these schedules have expired, please refresh this page to update."
                 type="warning"
                 showIcon
               />
