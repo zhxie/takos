@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from 'antd';
-import { ArgumentOutOfRangeError } from 'rxjs';
 
 import './ScheduleCard.css';
 import { SPLATNET_API } from '../FileFolderUrl';
@@ -28,7 +27,7 @@ class ScheduleCard extends React.Component {
       case Rule.clamBlitz:
         return clamBlitzIcon;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   };
 

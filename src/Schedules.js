@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout, PageHeader, Alert } from 'antd';
-import { ArgumentOutOfRangeError } from 'rxjs';
 
 import './Schedules.css';
 import { USER_AGENT, SPLATOON2_INK_API, SPLATOON2_INK_SCHEDULES } from './library/FileFolderUrl';
@@ -32,7 +31,7 @@ class Schedules extends React.Component {
       case Mode.leagueBattle:
         return leagueIcon;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   };
 
@@ -140,7 +139,7 @@ class Schedules extends React.Component {
             schedulesData = data.league;
             break;
           default:
-            throw new ArgumentOutOfRangeError();
+            throw new RangeError();
         }
         try {
           for (let i in schedulesData) {

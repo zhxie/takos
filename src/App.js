@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
-import { ArgumentOutOfRangeError } from 'rxjs';
 
 import logo from './assets/images/logo.svg';
 import './App.css';
@@ -38,7 +37,7 @@ class App extends React.Component {
         this.setState({ index: 4 });
         break;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   };
 
@@ -150,7 +149,7 @@ class App extends React.Component {
               case 4:
                 return <Schedules mode={Mode.leagueBattle} />;
               default:
-                throw new ArgumentOutOfRangeError();
+                throw new RangeError();
             }
           })()}
         </Content>

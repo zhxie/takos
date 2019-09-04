@@ -1,5 +1,3 @@
-import { ArgumentOutOfRangeError } from 'rxjs';
-
 class Stage {
   constructor(name, value) {
     this.name = name;
@@ -105,7 +103,7 @@ class Stage {
       case 9999:
         return Stage.shiftyStation;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   }
 }

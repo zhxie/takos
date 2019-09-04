@@ -1,5 +1,3 @@
-import { ArgumentOutOfRangeError } from 'rxjs';
-
 class Mode {
   constructor(name, value) {
     this.name = name;
@@ -15,7 +13,7 @@ class Mode {
       case 'league':
         return Mode.leagueBattle;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   }
 }

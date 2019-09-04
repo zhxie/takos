@@ -1,5 +1,3 @@
-import { ArgumentOutOfRangeError } from 'rxjs';
-
 class Rule {
   constructor(name, value) {
     this.name = name;
@@ -19,7 +17,7 @@ class Rule {
       case 'clam_blitz':
         return Rule.clamBlitz;
       default:
-        throw new ArgumentOutOfRangeError();
+        throw new RangeError();
     }
   }
 }
