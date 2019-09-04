@@ -27,7 +27,7 @@ class ErrorResult extends React.Component {
           <div className="desc">
             <Paragraph>
               <Text strong style={{ fontSize: 16 }}>
-                Takos met a problem, please check the following:
+                Takos has encountered a prolem, please check the following to troubleshoot the issue:
               </Text>
             </Paragraph>
             <Paragraph>
@@ -38,8 +38,8 @@ class ErrorResult extends React.Component {
             </Paragraph>
             <Paragraph>
               <Text style={{ fontSize: 14 }}>
-                If the problem persists, please consider{' '}
-                <a href="https://github.com/zhxie/takos/issues">Reporting it in Github &gt;</a>
+                If the problem persists, you can{' '}
+                <a href="https://github.com/zhxie/takos/issues">Report the issue on Github &gt;</a>
               </Text>
             </Paragraph>
           </div>
