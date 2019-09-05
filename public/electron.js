@@ -1,6 +1,31 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+
 const isDev = require('electron-is-dev');
+const contextMenu = require('electron-context-menu');
+
+contextMenu({
+  menu: actions => [
+    actions.copyLink({
+      transform: content => `${content}`
+    }),
+    actions.separator(),
+    actions.copyImage({
+      transform: content => `${content}`
+    }),
+    actions.separator(),
+    actions.copy({
+      transform: content => `${content}`
+    }),
+    {
+      label: 'Invisible',
+      visible: false
+    },
+    actions.paste({
+      transform: content => `${content}`
+    })
+  ]
+});
 
 let mainWindow;
 

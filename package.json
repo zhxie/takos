@@ -5,6 +5,7 @@
   "main": "public/electron.js",
   "dependencies": {
     "antd": "^3.22.2",
+    "electron-context-menu": "^0.15.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1"
