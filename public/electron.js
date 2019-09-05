@@ -36,7 +36,8 @@ function createWindow() {
     height: 720,
     icon: './public/favicon.ico',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false
     }
   });
   if (isDev) {
