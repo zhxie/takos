@@ -1,0 +1,102 @@
+.Login-main {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  margin: 16px 16px 16px 16px;
+  min-height: calc(100vh - 32px);
+  padding: 16px;
+  width: calc(100% - 32px);
+}
+
+.Login-steps {
+  margin: 8px;
+  max-width: calc(100% - 16px);
+}
+
+.Login-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 96px;
+}
+
+.Login-content-welcome {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.Login-content-welcome-logo {
+  height: 256px;
+  margin-bottom: 24px;
+  pointer-events: none;
+}
+
+.Login-content-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.Login-content-input {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 48px 96px 0 96px;
+}
+
+.Login-content-input-form {
+  margin: 24px 0 0 0;
+}
+
+.Login-content-button {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.Login-content-button2 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Login-content-done-icon {
+  stroke-width: 0.5px;
+}
+
+@media screen and (max-width: 480px) {
+  .Login-content {
+    padding: 0;
+  }
+
+  .Login-content-welcome-logo {
+    height: 192px;
+    margin-bottom: 12px;
+  }
+
+  .Login-content-login {
+    text-align: left;
+  }
+
+  .Login-content-input {
+    margin: 24px 0 0 0;
+  }
+
+  .Login-content-input-form {
+    margin: 12px 0 0 0;
+  }
+
+  .Login-content-button {
+    margin-top: 24px;
+  }
+}
