@@ -41,9 +41,9 @@ function createWindow() {
     }
   });
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3000/');
+    mainWindow.loadURL('http://localhost:3000/', { userAgent: 'Takos/0.1.0' });
   } else {
-    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'), { userAgent: 'Takos/0.1.0' });
   }
   mainWindow.on('closed', function() {
     mainWindow = null;
