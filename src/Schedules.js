@@ -122,15 +122,13 @@ class Schedules extends React.Component {
   }
 
   componentDidMount() {
-    var url = SPLATOON2_INK_API + SPLATOON2_INK_SCHEDULES;
-    var headers = new Headers({
-      'User-Agent': USER_AGENT
-    });
     var init = {
       method: 'GET',
-      headers: headers
+      headers: new Headers({
+        'User-Agent': USER_AGENT
+      })
     };
-    fetch(url, init)
+    fetch(SPLATOON2_INK_API + SPLATOON2_INK_SCHEDULES, init)
       .then(res => res.json())
       .then(data => {
         console.log(data);
