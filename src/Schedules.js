@@ -130,20 +130,20 @@ class Schedules extends React.Component {
     };
     fetch(SPLATOON2_INK_API + SPLATOON2_INK_SCHEDULES, init)
       .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        // Parse data
+      .then(res => {
+        console.log(res);
+        // Parse response
         var schedulesData;
         var schedules = [];
         switch (this.props.mode) {
           case Mode.regularBattle:
-            schedulesData = data.regular;
+            schedulesData = res.regular;
             break;
           case Mode.rankedBattle:
-            schedulesData = data.gachi;
+            schedulesData = res.gachi;
             break;
           case Mode.leagueBattle:
-            schedulesData = data.league;
+            schedulesData = res.league;
             break;
           default:
             throw new RangeError();
