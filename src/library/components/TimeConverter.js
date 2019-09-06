@@ -4,7 +4,7 @@ class TimeConverter {
     var hours = date.getHours();
     var minutes = '0' + date.getMinutes();
     var seconds = '0' + date.getSeconds();
-    return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return '{0}:{1}:{2}'.formet(hours, minutes.substr(-2), seconds.substr(-2));
   };
 
   static getSchedulePeriod = (startTime, endTime) => {
@@ -21,11 +21,11 @@ class TimeConverter {
       var hours = Math.floor((diff - days * 24 * 3600 * 1000) / (3600 * 1000));
       var minutes = Math.floor((diff - days * 24 * 3600 * 1000 - hours * 3600 * 1000) / (60 * 1000));
       if (days > 0) {
-        return 'in ' + days + ' day ' + hours + ' hour ' + minutes + ' min';
+        return 'in {0} day {1} hour {2} min'.format(days, hours, minutes);
       } else if (hours > 0) {
-        return 'in ' + hours + ' hour ' + minutes + ' min';
+        return 'in {0} hour {1} min'.format(hours, minutes);
       } else {
-        return 'in ' + minutes + ' min';
+        return 'in {0} min'.format(minutes);
       }
     }
   };
