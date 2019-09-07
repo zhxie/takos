@@ -16,15 +16,15 @@ class Schedule extends Base {
 
   static parse(data) {
     try {
-      var mode = Mode.parse(data.game_mode);
-      var rule = Rule.parse(data.rule);
-      var startTime = parseInt(data.start_time);
-      var endTime = parseInt(data.end_time);
-      var stage1 = ScheduledStage.parse(data.stage_a);
+      const mode = Mode.parse(data.game_mode);
+      const rule = Rule.parse(data.rule);
+      const startTime = parseInt(data.start_time);
+      const endTime = parseInt(data.end_time);
+      const stage1 = ScheduledStage.parse(data.stage_a);
       if (stage1.e != null) {
         return new Schedule(stage1.e);
       }
-      var stage2 = ScheduledStage.parse(data.stage_b);
+      const stage2 = ScheduledStage.parse(data.stage_b);
       if (stage2.e != null) {
         return new Schedule(stage2.e);
       }

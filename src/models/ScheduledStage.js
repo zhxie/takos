@@ -10,7 +10,7 @@ class ScheduledStage extends Base {
 
   static parse(data) {
     try {
-      var stage = Stage.parse(parseInt(data.id));
+      const stage = Stage.parse(parseInt(data.id));
       return new ScheduledStage(null, stage, data.image);
     } catch (e) {
       console.error(e);

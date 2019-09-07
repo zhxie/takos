@@ -122,7 +122,7 @@ class Schedules extends React.Component {
   }
 
   componentDidMount() {
-    var init = {
+    const init = {
       method: 'GET',
       headers: new Headers({
         'User-Agent': USER_AGENT
@@ -133,8 +133,8 @@ class Schedules extends React.Component {
       .then(res => {
         console.log(res);
         // Parse response
-        var schedulesData;
-        var schedules = [];
+        let schedulesData;
+        let schedules = [];
         switch (this.props.mode) {
           case Mode.regularBattle:
             schedulesData = res.regular;
@@ -149,8 +149,8 @@ class Schedules extends React.Component {
             throw new RangeError();
         }
         try {
-          for (let i in schedulesData) {
-            var schedule = Schedule.parse(schedulesData[i]);
+          for (const i in schedulesData) {
+            const schedule = Schedule.parse(schedulesData[i]);
             if (schedule.e != null) {
               this.setState({ errorLog: schedule.e, error: true });
               return;

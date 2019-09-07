@@ -33,24 +33,24 @@ class LoginHelper {
 
   static generateParameters = () => {
     // Generate state and code verifier
-    var state = this.random(36);
-    var codeVerifier = this.random(32);
+    const state = this.random(36);
+    const codeVerifier = this.random(32);
     // Generate code challenge
-    var hash = createHash('sha256');
+    let hash = createHash('sha256');
     hash.update(codeVerifier);
-    var codeChallenge = this.safeBase64(hash.digest('base64'));
+    const codeChallenge = this.safeBase64(hash.digest('base64'));
     console.log({ state, codeVerifier, codeChallenge });
     return { state, codeVerifier, codeChallenge };
   };
 
   static getSessionToken = (sessionTokenCode, codeVerifier) => {
     console.log({ sessionTokenCode, codeVerifier });
-    var body = {
+    const body = {
       client_id: '71b963c1b7b6d119',
       session_token_code: sessionTokenCode,
       session_token_code_verifier: codeVerifier
     };
-    var init = {
+    const init = {
       method: 'POST',
       body: JSON.stringify(body),
       headers: new Headers({
@@ -75,12 +75,12 @@ class LoginHelper {
 
   static updateCookie = sessionToken => {
     console.log(sessionToken);
-    var body1 = {
+    const body1 = {
       client_id: '71b963c1b7b6d119',
       session_token: sessionToken,
       grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer-session-token'
     };
-    var init1 = {
+    const init1 = {
       method: 'POST',
       body: JSON.stringify(body1),
       headers: new Headers({
@@ -108,7 +108,7 @@ class LoginHelper {
           });
       })
       .then(data => {
-        let timestamp = Math.floor(Date.now() / 1000).toString();
+        const timestamp = Math.floor(Date.now() / 1000).toString();
         let body = {
           naIdToken: data.idToken,
           timestamp: timestamp
@@ -139,9 +139,6 @@ class LoginHelper {
           });
       })
       .then(data => {
-        let country = data.country;
-        let birthday = data.birthday;
-        let language = data.language;
         let init = {
           method: 'GET',
           headers: new Headers({
@@ -158,9 +155,9 @@ class LoginHelper {
           .then(res => {
             console.log(res);
             return {
-              country,
-              birthday,
-              language,
+              country: data.country,
+              birthday: data.birthday,
+              language: data.language,
               loginNso: {
                 f: res.login_nso.f,
                 p1: res.login_nso.p1,
