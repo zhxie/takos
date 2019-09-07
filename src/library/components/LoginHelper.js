@@ -237,7 +237,7 @@ class LoginHelper {
             'X-GameWebToken': data.accessToken
           })
         };
-        return fetch(SPLATNET, init).then(res => {
+        return fetch(SPLATNET + '/Cookie', init).then(res => {
           console.log(res);
           const re = /iksm_session=([a-f0-9]+);/;
           return re.exec(res.headers.get('X-Cookie'))[1];
