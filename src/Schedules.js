@@ -2,16 +2,16 @@ import React from 'react';
 import { Layout, PageHeader, Alert } from 'antd';
 
 import './Schedules.css';
-import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './library/FileFolderUrl';
-import Mode from './library/Mode';
-import Schedule from './library/Schedule';
-import TimeConverter from './library/components/TimeConverter';
-import LoadingResult from './library/components/LoadingResult';
-import ErrorResult from './library/components/ErrorResult';
+import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
+import Mode from './models/Mode';
+import Schedule from './models/Schedule';
+import TimeConverter from './utils/TimeConverter';
+import LoadingResult from './components/LoadingResult';
+import ErrorResult from './components/ErrorResult';
+import ScheduleCard from './components/ScheduleCard';
 import regularIcon from './assets/images/mode-regular.png';
 import rankedIcon from './assets/images/mode-ranked.png';
 import leagueIcon from './assets/images/mode-league.png';
-import ScheduleCard from './library/components/ScheduleCard';
 
 const { Header, Content } = Layout;
 

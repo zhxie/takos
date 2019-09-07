@@ -3,10 +3,10 @@ import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, 
 
 import logo from './assets/images/logo.svg';
 import './Login.css';
-import './library/components/StringHelper';
-import { OctolingsKillIcon } from './library/components/CustomIcons';
-import { NINTENDO_ACCOUNTS_AUTHORIZE } from './library/FileFolderUrl';
-import LoginHelper from './library/components/LoginHelper';
+import './utils/StringHelper';
+import { OctolingsKillIcon } from './components/CustomIcons';
+import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import LoginHelper from './utils/LoginHelper';
 
 const { Content } = Layout;
 const { Step } = Steps;

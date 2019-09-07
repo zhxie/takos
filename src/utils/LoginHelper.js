@@ -17,7 +17,7 @@ import {
   NINTENDO_SERVICE_LOGIN,
   NINTENDO_SERVICE_WEB_SERVICE_TOKEN,
   SPLATNET
-} from '../FileFolderUrl';
+} from './FileFolderUrl';
 
 class LoginHelper {
   static random = size => {

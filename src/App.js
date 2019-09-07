@@ -3,9 +3,9 @@ import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
 import './App.css';
-import Mode from './library/Mode';
+import Mode from './models/Mode';
 import Schedules from './Schedules';
-import ConstructionResult from './library/components/ConstructionResult';
+import ConstructionResult from './components/ConstructionResult';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
