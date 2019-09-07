@@ -23,8 +23,8 @@ class Login extends React.Component {
   };
 
   toNext = () => {
-    if (this.state.step === 2) {
-      window.cookie = this.state.input;
+    if (this.state.step === 1) {
+      window.localStorage.cookie = this.state.input;
     }
     this.setState({ step: this.state.step + 1 });
   };
@@ -53,14 +53,14 @@ class Login extends React.Component {
           });
           return;
         } else {
-          window.sessionToken = result;
+          window.localStorage.sessionToken = result;
           return this.updateCookie();
         }
       }
     );
   };
 
-  updateCookie = (sessionToken = window.sessionToken) => {
+  updateCookie = (sessionToken = window.localStorage.sessionToken) => {
     return LoginHelper.updateCookie(sessionToken).then(result => {
       if (!result) {
         Modal.error({
@@ -93,8 +93,8 @@ class Login extends React.Component {
         },
         onCancel() {}
       });
-    } else if (this.state.isCookie) {
-      if (!window.sessionToken) {
+    } else {
+      if (!window.localStorage.sessionToken) {
         Modal.error({
           title: 'Can not update cookie',
           content: 'Takos can not update cookie unless you use automatic cookie generation.'
@@ -116,8 +116,6 @@ class Login extends React.Component {
           onCancel() {}
         });
       }
-    } else {
-      this.setState({ isValid: false });
     }
   };
 
@@ -296,6 +294,8 @@ class Login extends React.Component {
 
   componentDidMount() {
     this.loginParameters = LoginHelper.generateParameters();
+    console.log({ sessionToken: window.localStorage.sessionToken, cookie: window.localStorage.cookie });
+    this.inputOnChange(window.localStorage.cookie);
   }
 }
 
