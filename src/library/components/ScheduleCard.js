@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 
 import './ScheduleCard.css';
-import { SPLATNET_API } from '../FileFolderUrl';
+import { SPLATNET } from '../FileFolderUrl';
 import Rule from '../Rule';
 import TimeConverter from '../components/TimeConverter';
 import turfWarIcon from '../../assets/images/mode-regular.png';
@@ -45,7 +45,7 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={<img alt="stage 1" src={SPLATNET_API + this.props.schedule.stage1.url} />}
+          cover={<img alt="stage 1" src={SPLATNET + this.props.schedule.stage1.url} />}
         >
           <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage1.stage.name} />
         </Card>
@@ -55,7 +55,7 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={<img alt="stage 2" src={SPLATNET_API + this.props.schedule.stage2.url} />}
+          cover={<img alt="stage 2" src={SPLATNET + this.props.schedule.stage2.url} />}
         >
           <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage2.stage.name} />
         </Card>

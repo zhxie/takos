@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, PageHeader, Alert } from 'antd';
 
 import './Schedules.css';
-import { USER_AGENT, SPLATOON2_INK_API, SPLATOON2_INK_SCHEDULES } from './library/FileFolderUrl';
+import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './library/FileFolderUrl';
 import Mode from './library/Mode';
 import Schedule from './library/Schedule';
 import TimeConverter from './library/components/TimeConverter';
@@ -128,7 +128,7 @@ class Schedules extends React.Component {
         'User-Agent': USER_AGENT
       })
     };
-    fetch(SPLATOON2_INK_API + SPLATOON2_INK_SCHEDULES, init)
+    fetch(SPLATOON2_INK + SPLATOON2_INK_SCHEDULES, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);

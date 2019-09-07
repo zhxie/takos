@@ -5,7 +5,7 @@ import logo from './assets/images/logo.svg';
 import './Login.css';
 import './library/components/StringHelper';
 import { OctolingsKillIcon } from './library/components/CustomIcons';
-import { NINTENDO_AUTHORIZE } from './library/FileFolderUrl';
+import { NINTENDO_ACCOUNTS_AUTHORIZE } from './library/FileFolderUrl';
 import LoginHelper from './library/components/LoginHelper';
 
 const { Content } = Layout;
@@ -170,7 +170,12 @@ class Login extends React.Component {
             description={
               <p style={{ margin: 0 }}>
                 If you have not used automatic cookie generation and want to use, please open{' '}
-                <a href={NINTENDO_AUTHORIZE.format(this.loginParameters.state, this.loginParameters.codeChallenge)}>
+                <a
+                  href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                    this.loginParameters.state,
+                    this.loginParameters.codeChallenge
+                  )}
+                >
                   Nintendo Account
                 </a>{' '}
                 in browser, log in, right click on "Select this person", copy the link address, paste it into the text

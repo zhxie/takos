@@ -1,18 +1,22 @@
 import { randomBytes, createHash } from 'crypto';
-import axios from 'axios';
 import uuid from 'uuid';
 
 import './StringHelper';
 import {
   USER_AGENT,
-  NINTENDO_SESSION_TOKEN,
-  NINTENDO_TOKEN,
-  NINTENDO_USER_INFO,
+  NINTENDO_ACCOUNTS,
+  NINTENDO_ACCOUNTS_SESSION_TOKEN,
+  NINTENDO_ACCOUNTS_TOKEN,
+  NINTENDO_ACCOUNTS_API,
+  NINTENDO_ACCOUNTS_API_USER_INFO,
+  ELI_FESSLER,
   ELI_FESSLER_GEN2,
+  FLAPG,
   FLAPG_LOGIN,
-  NINTENDO_LOGIN,
-  NINTENDO_WEB_SERVICE_TOKEN,
-  SPLATNET_API
+  NINTENDO_SERVICE,
+  NINTENDO_SERVICE_LOGIN,
+  NINTENDO_SERVICE_WEB_SERVICE_TOKEN,
+  SPLATNET
 } from '../FileFolderUrl';
 
 class LoginHelper {
@@ -53,7 +57,7 @@ class LoginHelper {
         'Content-Type': 'application/json; charset=UTF-8'
       })
     };
-    return fetch(NINTENDO_SESSION_TOKEN, init)
+    return fetch(NINTENDO_ACCOUNTS + NINTENDO_ACCOUNTS_SESSION_TOKEN, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -83,7 +87,7 @@ class LoginHelper {
         'Content-Type': 'application/json; charset=UTF-8'
       })
     };
-    return fetch(NINTENDO_TOKEN, init1)
+    return fetch(NINTENDO_ACCOUNTS + NINTENDO_ACCOUNTS_TOKEN, init1)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -96,7 +100,7 @@ class LoginHelper {
             Authorization: 'Bearer {0}'.format(data.accessToken)
           })
         };
-        return fetch(NINTENDO_USER_INFO, init)
+        return fetch(NINTENDO_ACCOUNTS_API + NINTENDO_ACCOUNTS_API_USER_INFO, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -120,7 +124,7 @@ class LoginHelper {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           })
         };
-        return fetch(ELI_FESSLER_GEN2, init)
+        return fetch(ELI_FESSLER + ELI_FESSLER_GEN2, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -149,7 +153,7 @@ class LoginHelper {
             'x-iid': randomBytes(4).toString('hex')
           })
         };
-        return fetch(FLAPG_LOGIN, init)
+        return fetch(FLAPG + FLAPG_LOGIN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -194,7 +198,7 @@ class LoginHelper {
             'X-Platform': 'Android'
           })
         };
-        return fetch(NINTENDO_LOGIN, init)
+        return fetch(NINTENDO_SERVICE + NINTENDO_SERVICE_LOGIN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -219,7 +223,7 @@ class LoginHelper {
             'Content-Type': 'application/json; charset=UTF-8'
           })
         };
-        return fetch(NINTENDO_WEB_SERVICE_TOKEN, init)
+        return fetch(NINTENDO_SERVICE + NINTENDO_SERVICE_WEB_SERVICE_TOKEN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -227,39 +231,30 @@ class LoginHelper {
           });
       })
       .then(data => {
-        return axios
-          .get(SPLATNET_API, {
-            headers: {
-              'X-GameWebToken': data.accessToken
-            }
+        let init = {
+          method: 'GET',
+          headers: new Headers({
+            'X-GameWebToken': data.accessToken
           })
-          .then(res => {
-            console.log(res);
-            let re = /iksm_session=([a-f0-9]+);/;
-            let cookie = '';
-            for (let thisCookie in res.headers['set-cookie']) {
-              if (re.exec(thisCookie)) {
-                cookie = thisCookie[1];
-              }
-            }
-            if (!cookie) {
-              throw new RangeError();
-            } else {
-              return cookie;
-            }
-          });
+        };
+        return fetch(SPLATNET, init).then(res => {
+          console.log(res);
+          const re = /iksm_session=([a-f0-9]+);/;
+          return re.exec(res.headers.get('X-Cookie'))[1];
+        });
         /*
         let init = {
           method: 'GET',
           headers: new Headers({
-            Credentials: 'same-origin',
             'X-GameWebToken': data.accessToken
-          })
+          }),
+          credentials: 'include'
         };
-        return fetch(SPLATNET_API, init)
+        return fetch(SPLATNET, init)
           .then(res => {
             console.log(res);
-            console.log(res.headers.get('set-cookie'));
+            console.log(res.headers.get('Set-Cookie'));
+            console.log(document.cookie);
           })
           .then(res => res.json())
           .then(res => {
