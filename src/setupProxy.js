@@ -12,7 +12,6 @@ module.exports = function(app) {
     '/splatoon2inkApi',
     proxy({
       target: 'https://splatoon2.ink',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/splatoon2inkApi': '' }
     })
@@ -21,10 +20,8 @@ module.exports = function(app) {
     '/splatnetApi',
     proxy({
       target: 'https://app.splatoon2.nintendo.net',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/splatnetApi': '' },
-      logLevel: 'debug',
       onProxyRes: splatnetOnProxyRes
     })
   );
@@ -32,7 +29,6 @@ module.exports = function(app) {
     '/nintendoAccountsApi',
     proxy({
       target: 'https://accounts.nintendo.com',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/nintendoAccountsApi': '' }
     })
@@ -41,7 +37,6 @@ module.exports = function(app) {
     '/nintendoAccountsApiApi',
     proxy({
       target: 'https://api.accounts.nintendo.com',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/nintendoAccountsApiApi': '' }
     })
@@ -50,7 +45,6 @@ module.exports = function(app) {
     '/eliFesslerApi',
     proxy({
       target: 'https://elifessler.com',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/eliFesslerApi': '' },
       headers: { 'User-Agent': 'Takos/0.1.0' }
@@ -60,7 +54,6 @@ module.exports = function(app) {
     '/flapgApi',
     proxy({
       target: 'https://flapg.com',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/flapgApi': '' }
     })
@@ -69,7 +62,6 @@ module.exports = function(app) {
     '/nintendoServiceApi',
     proxy({
       target: 'https://api-lp1.znc.srv.nintendo.net',
-      secure: false,
       changeOrigin: true,
       pathRewrite: { '^/nintendoServiceApi': '' }
     })
