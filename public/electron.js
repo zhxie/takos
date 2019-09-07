@@ -36,14 +36,13 @@ function createWindow() {
     height: 720,
     icon: './public/favicon.ico',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      webSecurity: false
+      preload: path.join(__dirname, 'preload.js')
     }
   });
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3000/', { userAgent: 'Takos/0.1.0' });
+    mainWindow.loadURL('http://localhost:3000/');
   } else {
-    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'), { userAgent: 'Takos/0.1.0' });
+    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'));
   }
   mainWindow.on('closed', function() {
     mainWindow = null;
