@@ -23,19 +23,20 @@ class Login extends React.Component {
   };
 
   toNext = () => {
-    var currentStep = this.state.step;
-    this.setState({ step: currentStep + 1 });
+    if (this.state.step === 2) {
+      window.cookie = this.state.input;
+    }
+    this.setState({ step: this.state.step + 1 });
   };
 
   inputOnChange = value => {
     if (this.state.input !== value) {
       this.setState({ input: value });
     }
-    var re = /^[0-9A-Fa-f]{40}$/g;
-    var isCookie = re.test(value);
+    const re = /^[0-9A-Fa-f]{40}$/g;
     if (value.includes('session_token_code=')) {
       this.setState({ isUrl: true, isCookie: false, isValid: true });
-    } else if (isCookie) {
+    } else if (re.test(value)) {
       this.setState({ isUrl: false, isCookie: true, isValid: true });
     } else {
       this.setState({ isUrl: false, isCookie: false });
@@ -45,22 +46,23 @@ class Login extends React.Component {
   getSessionToken = () => {
     return LoginHelper.getSessionToken(this.loginParameters.sessionTokenCode, this.loginParameters.codeVerifier).then(
       result => {
-        if (result === '') {
+        if (!result) {
           Modal.error({
             title: 'Can not update cookie',
             content: 'Your network can not be reached, or the link is expired, please refresh the page and try again.'
           });
           return;
         } else {
-          return this.updateCookie(result);
+          window.sessionToken = result;
+          return this.updateCookie();
         }
       }
     );
   };
 
-  updateCookie = sessionToken => {
+  updateCookie = (sessionToken = window.sessionToken) => {
     return LoginHelper.updateCookie(sessionToken).then(result => {
-      if (result === '') {
+      if (!result) {
         Modal.error({
           title: 'Can not update cookie',
           content: 'Your network can not be reached, or your login is expired, please re-login or try again.'
@@ -72,7 +74,8 @@ class Login extends React.Component {
   };
 
   showConfirm = () => {
-    var getSessionToken = this.getSessionToken;
+    const getSessionToken = this.getSessionToken;
+    const updateCookie = this.updateCookie;
     if (this.state.isUrl) {
       this.loginParameters.sessionTokenCode = this.state.input.match(/de=(.*)&/i)[1];
       confirm({
@@ -91,19 +94,28 @@ class Login extends React.Component {
         onCancel() {}
       });
     } else if (this.state.isCookie) {
-      confirm({
-        title: 'Do you want to update cookie?',
-        content: (
-          <p style={{ margin: 0 }}>
-            Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
-            non-identifying information. Please read "Security and Privacy" section in{' '}
-            <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a> carefully
-            before you start.
-          </p>
-        ),
-        onOk() {},
-        onCancel() {}
-      });
+      if (!window.sessionToken) {
+        Modal.error({
+          title: 'Can not update cookie',
+          content: 'Takos can not update cookie unless you use automatic cookie generation.'
+        });
+      } else {
+        confirm({
+          title: 'Do you want to update cookie?',
+          content: (
+            <p style={{ margin: 0 }}>
+              Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
+              non-identifying information. Please read "Security and Privacy" section in{' '}
+              <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a> carefully
+              before you start.
+            </p>
+          ),
+          onOk() {
+            return updateCookie();
+          },
+          onCancel() {}
+        });
+      }
     } else {
       this.setState({ isValid: false });
     }
