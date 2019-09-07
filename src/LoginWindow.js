@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
 
 import logo from './assets/images/logo.svg';
-import './Login.css';
+import './LoginWindow.css';
 import './utils/StringHelper';
 import { OctolingsKillIcon } from './components/CustomIcons';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
@@ -13,7 +13,7 @@ const { Step } = Steps;
 const { Paragraph, Text } = Typography;
 const { confirm } = Modal;
 
-class Login extends React.Component {
+class LoginWindow extends React.Component {
   state = {
     step: 0,
     isUrl: false,
@@ -122,15 +122,15 @@ class Login extends React.Component {
   renderWelcome = () => {
     return (
       <div>
-        <div className="Login-content-welcome">
-          <img src={logo} className="Login-content-welcome-logo" alt="logo" />
+        <div className="LoginWindow-content-welcome">
+          <img src={logo} className="LoginWindow-content-welcome-logo" alt="logo" />
           <Text style={{ fontSize: 32 }}>Welcome to Takos</Text>
           <Text type="secondary" style={{ fontSize: 16 }}>
             A cross-platform schedule and battle statistic client of Splatoon 2.
           </Text>
         </div>
-        <div className="Login-content-button">
-          <Button className="Login-content-button-start" onClick={this.toNext} type="primary">
+        <div className="LoginWindow-content-button">
+          <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
             Next
           </Button>
         </div>
@@ -141,7 +141,7 @@ class Login extends React.Component {
   renderLogin = () => {
     return (
       <div>
-        <div className="Login-content-login">
+        <div className="LoginWindow-content-login">
           <Paragraph>
             <Text style={{ fontSize: 18 }}>
               In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet.
@@ -158,7 +158,7 @@ class Login extends React.Component {
             </Text>
           </Paragraph>
         </div>
-        <div className="Login-content-input">
+        <div className="LoginWindow-content-input">
           <Alert
             message="Warning"
             description={
@@ -194,7 +194,7 @@ class Login extends React.Component {
             showIcon
             style={{ margin: '12px 0 0 0', width: '100%' }}
           />
-          <Form className="Login-content-input-form">
+          <Form className="LoginWindow-content-input-form">
             <Form.Item
               validateStatus={(() => {
                 if (this.state.isValid) {
@@ -230,7 +230,7 @@ class Login extends React.Component {
               </Row>
             </Form.Item>
           </Form>
-          <Button className="Login-content-button-start" onClick={this.toNext} type="primary">
+          <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
             Next
           </Button>
         </div>
@@ -244,7 +244,7 @@ class Login extends React.Component {
         <Result
           icon={
             <OctolingsKillIcon
-              className="Login-content-done-icon"
+              className="LoginWindow-content-done-icon"
               style={{
                 width: '2em',
                 fill: '#f6ffed',
@@ -255,8 +255,8 @@ class Login extends React.Component {
           title="Booyah!"
           subTitle="It is all done. Enjoy it!"
         />
-        <div className="Login-content-button2">
-          <Button className="Login-content-button-start" onClick={this.props.onDone} type="primary">
+        <div className="LoginWindow-content-button2">
+          <Button className="LoginWindow-content-button-start" onClick={this.props.onDone} type="primary">
             Done
           </Button>
         </div>
@@ -267,13 +267,13 @@ class Login extends React.Component {
   render() {
     return (
       <Layout>
-        <Content className="Login-main">
-          <Steps className="Login-steps" current={this.state.step}>
+        <Content className="LoginWindow-main">
+          <Steps className="LoginWindow-steps" current={this.state.step}>
             <Step title="Welcome" />
             <Step title="Log In" />
             <Step title="Done" />
           </Steps>
-          <div className="Login-content">
+          <div className="LoginWindow-content">
             {(() => {
               switch (this.state.step) {
                 case 0:
@@ -299,4 +299,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default LoginWindow;

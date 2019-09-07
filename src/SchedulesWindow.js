@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, PageHeader, Alert } from 'antd';
 
-import './Schedules.css';
+import './SchedulesWindow.css';
 import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
 import Mode from './models/Mode';
 import Schedule from './models/Schedule';
@@ -15,7 +15,7 @@ import leagueIcon from './assets/images/mode-league.png';
 
 const { Header, Content } = Layout;
 
-class Schedules extends React.Component {
+class SchedulesWindow extends React.Component {
   state = {
     loaded: false,
     error: false,
@@ -102,12 +102,12 @@ class Schedules extends React.Component {
     } else {
       return (
         <Layout>
-          <Header className="Schedules-header" style={{ zIndex: 1 }}>
-            <img className="Schedules-header-icon" src={this.iconSelector()} alt="mode" />
-            <p className="Schedules-header-title">Schedules</p>
-            <p className="Schedules-header-subtitle">{this.props.mode.name}</p>
+          <Header className="SchedulesWindow-header" style={{ zIndex: 1 }}>
+            <img className="SchedulesWindow-header-icon" src={this.iconSelector()} alt="mode" />
+            <p className="SchedulesWindow-header-title">Schedules</p>
+            <p className="SchedulesWindow-header-subtitle">{this.props.mode.name}</p>
           </Header>
-          <Content className="Schedules-content">
+          <Content className="SchedulesWindow-content">
             {(() => {
               if (!this.state.loaded) {
                 return this.renderLoading();
@@ -187,4 +187,4 @@ class Schedules extends React.Component {
   }
 }
 
-export default Schedules;
+export default SchedulesWindow;

@@ -1,4 +1,4 @@
-.Schedules-header {
+.SchedulesWindow-header {
   align-items: center;
   background: #fff;
   display: flex;
@@ -7,13 +7,13 @@
   width: 100%;
 }
 
-.Schedules-header-icon {
+.SchedulesWindow-header-icon {
   display: inline-block;
   margin-right: 24px;
   width: 32px;
 }
 
-.Schedules-header-title {
+.SchedulesWindow-header-title {
   color: rgba(0, 0, 0, 0.85);
   display: inline-block;
   font-weight: bold;
@@ -22,7 +22,7 @@
   padding-right: 12px;
 }
 
-.Schedules-header-subtitle {
+.SchedulesWindow-header-subtitle {
   color: rgba(0, 0, 0, 0.45);
   display: inline-block;
   font-size: 14px;
@@ -30,7 +30,7 @@
   padding-right: 12px;
 }
 
-.Schedules-content {
+.SchedulesWindow-content {
   background: #fff;
   margin: 80px 16px 16px 16px;
   padding: 16px;

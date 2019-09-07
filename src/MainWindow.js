@@ -2,15 +2,15 @@ import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
-import './Main.css';
+import './MainWindow.css';
 import Mode from './models/Mode';
-import Schedules from './Schedules';
+import SchedulesWindow from './SchedulesWindow';
 import ConstructionResult from './components/ConstructionResult';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
-class Main extends React.Component {
+class MainWindow extends React.Component {
   state = {
     collapsed: false,
     index: 0
@@ -51,20 +51,20 @@ class Main extends React.Component {
 
   renderLogo = () => {
     return (
-      <div className="Main-content-logo-container">
-        <img src={logo} className="Main-content-logo" alt="logo" />
+      <div className="MainWindow-content-logo-container">
+        <img src={logo} className="MainWindow-content-logo" alt="logo" />
       </div>
     );
   };
 
   renderSchedules = mode => {
-    return <Schedules mode={mode} />;
+    return <SchedulesWindow mode={mode} />;
   };
 
   render() {
     return (
       <Layout style={{ display: 'block' }}>
-        <div className="Main-sider-container">
+        <div className="MainWindow-sider-container">
           <Sider
             breakpoint="md"
             collapsible
@@ -76,7 +76,7 @@ class Main extends React.Component {
               position: 'relative'
             }}
           >
-            <div className="Main-logo">
+            <div className="MainWindow-logo">
               <img src={logo} alt="logo" />
             </div>
             <Menu theme="dark" mode="vertical">
@@ -147,7 +147,7 @@ class Main extends React.Component {
             </Menu>
           </Sider>
         </div>
-        <Content id="Main-content" style={{ height: '100vh' }}>
+        <Content id="MainWindow-content" style={{ height: '100vh' }}>
           {(() => {
             switch (this.state.index) {
               case -1:
@@ -170,4 +170,4 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+export default MainWindow;

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Main from './Main';
-import Login from './Login';
+import './App.css';
+import MainWindow from './MainWindow';
+import LoginWindow from './LoginWindow';
 
 class App extends React.Component {
   state = {
@@ -14,9 +15,9 @@ class App extends React.Component {
 
   render() {
     if (!this.state.isLogin) {
-      return <Login onDone={this.onLoginDone} />;
+      return <LoginWindow onDone={this.onLoginDone} />;
     } else {
-      return <Main />;
+      return <MainWindow />;
     }
   }
 }
