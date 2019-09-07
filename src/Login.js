@@ -27,8 +27,6 @@ class Login extends React.Component {
     this.setState({ step: currentStep + 1 });
   };
 
-  toHome = () => {};
-
   inputOnChange = value => {
     if (this.state.input !== value) {
       this.setState({ input: value });
@@ -248,7 +246,7 @@ class Login extends React.Component {
           subTitle="It is all done. Enjoy it!"
         />
         <div className="Login-content-button2">
-          <Button className="Login-content-button-start" onClick={this.toHome} type="primary">
+          <Button className="Login-content-button-start" onClick={this.props.onDone} type="primary">
             Done
           </Button>
         </div>

@@ -3,17 +3,17 @@
   height: 1px;
 }
 
-.App-sider-container {
+.Main-sider-container {
   float: left;
   overflow: auto;
 }
 
-.App-logo {
+.Main-logo {
   padding: 10%;
   pointer-events: none;
 }
 
-.App-content-logo-container {
+.Main-content-logo-container {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
   min-height: 100vh;
 }
 
-.App-content-logo {
+.Main-content-logo {
   filter: grayscale(100%);
   height: 40vmin;
   pointer-events: none;
