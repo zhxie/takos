@@ -1,10 +1,12 @@
 .ScheduleCard-schedule {
+  cursor: default;
   display: inline-block;
   width: 438px;
   margin: 6px;
 }
 
 .ScheduleCard-schedule-stage {
+  cursor: default;
   display: inline-block;
   margin: 6px;
   width: 200px;

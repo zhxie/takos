@@ -35,13 +35,14 @@ class ScheduleCard extends React.Component {
     return (
       <Card
         className="ScheduleCard-schedule"
+        hoverable
         bodyStyle={{
           padding: '6px'
         }}
       >
         <Card
-          hoverable
           className="ScheduleCard-schedule-stage"
+          hoverable
           bodyStyle={{
             padding: '6px'
           }}
@@ -50,8 +51,8 @@ class ScheduleCard extends React.Component {
           <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage1.stage.name} />
         </Card>
         <Card
-          hoverable
           className="ScheduleCard-schedule-stage"
+          hoverable
           bodyStyle={{
             padding: '6px'
           }}
