@@ -21,12 +21,21 @@
   padding: 48px 96px;
 }
 
+.LoginWindow-content-welcome-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
 .LoginWindow-content-welcome {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  min-width: 416px;
 }
 
 .LoginWindow-content-welcome-logo {
@@ -35,7 +44,7 @@
   pointer-events: none;
 }
 
-.LoginWindow-content-login {
+.LoginWindow-content-login-wrapper {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -43,12 +52,28 @@
   text-align: center;
 }
 
-.LoginWindow-content-input {
+.LoginWindow-content-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 416px;
+}
+
+.LoginWindow-content-input-wrapper {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 48px 96px 0 96px;
+}
+
+.LoginWindow-content-input {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 416px;
 }
 
 .LoginWindow-content-input-form {
@@ -79,17 +104,29 @@
     padding: 0;
   }
 
+  .LoginWindow-content-welcome {
+    min-width: 0;
+  }
+
   .LoginWindow-content-welcome-logo {
     height: 192px;
     margin-bottom: 12px;
   }
 
-  .LoginWindow-content-login {
+  .LoginWindow-content-login-wrapper {
     text-align: left;
   }
 
-  .LoginWindow-content-input {
+  .LoginWindow-content-login {
+    min-width: 0;
+  }
+
+  .LoginWindow-content-input-wrapper {
     margin: 24px 0 0 0;
+  }
+
+  .LoginWindow-content-input {
+    min-width: 0;
   }
 
   .LoginWindow-content-input-form {

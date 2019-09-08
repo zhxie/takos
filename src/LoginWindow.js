@@ -122,12 +122,14 @@ class LoginWindow extends React.Component {
   renderWelcome = () => {
     return (
       <div>
-        <div className="LoginWindow-content-welcome">
-          <img src={logo} className="LoginWindow-content-welcome-logo" alt="logo" />
-          <Text style={{ fontSize: 32 }}>Welcome to Takos</Text>
-          <Text type="secondary" style={{ fontSize: 16 }}>
-            A cross-platform schedule and battle statistic client of Splatoon 2.
-          </Text>
+        <div className="LoginWindow-content-welcome-wrapper">
+          <div className="LoginWindow-content-welcome">
+            <img src={logo} className="LoginWindow-content-welcome-logo" alt="logo" />
+            <Text style={{ fontSize: 32 }}>Welcome to Takos</Text>
+            <Text type="secondary" style={{ fontSize: 16 }}>
+              A cross-platform schedule and battle statistic client of Splatoon 2.
+            </Text>
+          </div>
         </div>
         <div className="LoginWindow-content-button">
           <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
@@ -141,98 +143,103 @@ class LoginWindow extends React.Component {
   renderLogin = () => {
     return (
       <div>
-        <div className="LoginWindow-content-login">
-          <Paragraph>
-            <Text style={{ fontSize: 18 }}>
-              In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet.
-            </Text>
-          </Paragraph>
-          <Paragraph>
-            <Text type="secondary" style={{ fontSize: 16 }}>
-              Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie
-              generation introducted in{' '}
-              <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">splatnet2statink</a>, or be
-              retrieved by other methods manually, like intercepting into the device's traffice with SplatNet, which is
-              also called{' '}
-              <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">the MitM</a>.
-            </Text>
-          </Paragraph>
+        <div className="LoginWindow-content-login-wrapper">
+          <div className="LoginWindow-content-login">
+            <Paragraph>
+              <Text style={{ fontSize: 18 }}>
+                In order to get the battle, salmon run, statistics and gear shop data, you have to log into the
+                SplatNet.
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Text type="secondary" style={{ fontSize: 16 }}>
+                Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie
+                generation introducted in{' '}
+                <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">splatnet2statink</a>, or
+                be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet,
+                which is also called{' '}
+                <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">the MitM</a>.
+              </Text>
+            </Paragraph>
+          </div>
         </div>
-        <div className="LoginWindow-content-input">
-          <Alert
-            message="Warning"
-            description={
-              <p style={{ margin: 0 }}>
-                Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
-                non-identifying information. Please read "Security and Privacy" section in{' '}
-                <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a> carefully
-                before you start.
-              </p>
-            }
-            type="warning"
-            showIcon
-            style={{ width: '100%' }}
-          />
-          <Alert
-            message="Info"
-            description={
-              <p style={{ margin: 0 }}>
-                If you have not used automatic cookie generation and want to use, please open{' '}
-                <a
-                  href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
-                    this.loginParameters.state,
-                    this.loginParameters.codeChallenge
-                  )}
-                >
-                  Nintendo Account
-                </a>{' '}
-                in browser, log in, right click on "Select this person", copy the link address, paste it into the text
-                box below, and press "Update cookie".
-              </p>
-            }
-            type="info"
-            showIcon
-            style={{ margin: '12px 0 0 0', width: '100%' }}
-          />
-          <Form className="LoginWindow-content-input-form">
-            <Form.Item
-              validateStatus={(() => {
-                if (this.state.isValid) {
-                  return '';
-                } else {
-                  return 'error';
-                }
-              })()}
-            >
-              <Row gutter={8}>
-                <Col span={14}>
-                  <Input
-                    value={this.state.input}
-                    onChange={e => {
-                      this.inputOnChange(e.target.value);
-                    }}
-                    allowClear
-                    placeholder="URL / Cookie"
-                    prefix={(() => {
-                      if (this.state.isUrl) {
-                        return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      } else if (this.state.isCookie) {
-                        return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      } else {
-                        return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      }
-                    })()}
-                  />
-                </Col>
-                <Col span={8}>
-                  <Button onClick={this.showConfirm}>Update cookie</Button>
-                </Col>
-              </Row>
-            </Form.Item>
-          </Form>
-          <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
-            Next
-          </Button>
+        <div className="LoginWindow-content-input-wrapper">
+          <div className="LoginWindow-content-input">
+            <Alert
+              message="Warning"
+              description={
+                <p style={{ margin: 0 }}>
+                  Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
+                  non-identifying information. Please read "Security and Privacy" section in{' '}
+                  <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a>{' '}
+                  carefully before you start.
+                </p>
+              }
+              type="warning"
+              showIcon
+              style={{ width: '100%' }}
+            />
+            <Alert
+              message="Info"
+              description={
+                <p style={{ margin: 0 }}>
+                  If you have not used automatic cookie generation and want to use, please open{' '}
+                  <a
+                    href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                      this.loginParameters.state,
+                      this.loginParameters.codeChallenge
+                    )}
+                  >
+                    Nintendo Account
+                  </a>{' '}
+                  in browser, log in, right click on "Select this person", copy the link address, paste it into the text
+                  box below, and press "Update cookie".
+                </p>
+              }
+              type="info"
+              showIcon
+              style={{ margin: '12px 0 0 0', width: '100%' }}
+            />
+            <Form className="LoginWindow-content-input-form">
+              <Form.Item
+                validateStatus={(() => {
+                  if (this.state.isValid) {
+                    return '';
+                  } else {
+                    return 'error';
+                  }
+                })()}
+              >
+                <Row gutter={8}>
+                  <Col span={16}>
+                    <Input
+                      value={this.state.input}
+                      onChange={e => {
+                        this.inputOnChange(e.target.value);
+                      }}
+                      allowClear
+                      placeholder="URL / Cookie"
+                      prefix={(() => {
+                        if (this.state.isUrl) {
+                          return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        } else if (this.state.isCookie) {
+                          return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        } else {
+                          return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        }
+                      })()}
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Button onClick={this.showConfirm}>Update cookie</Button>
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Form>
+            <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
+              Next
+            </Button>
+          </div>
         </div>
       </div>
     );

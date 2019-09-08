@@ -1,7 +1,7 @@
 .ScheduleCard-schedule {
   cursor: default;
   display: inline-block;
-  width: 438px;
+  max-width: 438px;
   margin: 6px;
 }
 
@@ -22,4 +22,10 @@
 
 .ScheduleCard-schedule-meta-image {
   width: 32px;
+}
+
+@media screen and (max-width: 592px) {
+  .ScheduleCard-schedule-stage {
+    width: auto;
+  }
 }
