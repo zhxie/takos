@@ -1,11 +1,11 @@
 import React from 'react';
 import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
 
-import logo from './assets/images/logo.svg';
 import './LoginWindow.css';
-import './utils/StringHelper';
+import logo from './assets/images/logo.svg';
 import { OctolingsKillIcon } from './components/CustomIcons';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import './utils/StringHelper';
 import LoginHelper from './utils/LoginHelper';
 
 const { Content } = Layout;
@@ -19,19 +19,24 @@ class LoginWindow extends React.Component {
     isUrl: false,
     isCookie: false,
     isValid: true,
-    input: ''
+    cookie: ''
   };
+
+  constructor(props) {
+    super(props);
+    this.loginParameters = LoginHelper.generateParameters();
+  }
 
   toNext = () => {
     if (this.state.step === 1) {
-      window.localStorage.cookie = this.state.input;
+      window.localStorage.cookie = this.state.cookie;
     }
     this.setState({ step: this.state.step + 1 });
   };
 
-  inputOnChange = value => {
-    if (this.state.input !== value) {
-      this.setState({ input: value });
+  cookieOnChange = value => {
+    if (this.state.cookie !== value) {
+      this.setState({ cookie: value });
     }
     const re = /^[0-9A-Fa-f]{40}$/g;
     if (value.includes('session_token_code=')) {
@@ -60,15 +65,15 @@ class LoginWindow extends React.Component {
     );
   };
 
-  updateCookie = (sessionToken = window.localStorage.sessionToken) => {
-    return LoginHelper.updateCookie(sessionToken).then(result => {
+  updateCookie = () => {
+    return LoginHelper.updateCookie(window.localStorage.sessionToken).then(result => {
       if (!result) {
         Modal.error({
           title: 'Can not update cookie',
           content: 'Your network can not be reached, or your login is expired, please re-login or try again.'
         });
       } else {
-        this.inputOnChange(result);
+        this.cookieOnChange(result);
       }
     });
   };
@@ -77,7 +82,7 @@ class LoginWindow extends React.Component {
     const getSessionToken = this.getSessionToken;
     const updateCookie = this.updateCookie;
     if (this.state.isUrl) {
-      this.loginParameters.sessionTokenCode = this.state.input.match(/de=(.*)&/i)[1];
+      this.loginParameters.sessionTokenCode = this.state.cookie.match(/de=(.*)&/i)[1];
       confirm({
         title: 'Do you want to update cookie?',
         content: (
@@ -213,9 +218,9 @@ class LoginWindow extends React.Component {
                 <Row gutter={8}>
                   <Col span={16}>
                     <Input
-                      value={this.state.input}
+                      value={this.state.cookie}
                       onChange={e => {
-                        this.inputOnChange(e.target.value);
+                        this.cookieOnChange(e.target.value);
                       }}
                       allowClear
                       placeholder="URL / Cookie"
@@ -300,9 +305,7 @@ class LoginWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.loginParameters = LoginHelper.generateParameters();
-    console.log({ sessionToken: window.localStorage.sessionToken, cookie: window.localStorage.cookie });
-    this.inputOnChange(window.localStorage.cookie);
+    this.cookieOnChange(window.localStorage.cookie);
   }
 }
 
