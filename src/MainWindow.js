@@ -5,6 +5,7 @@ import logo from './assets/images/logo.svg';
 import './MainWindow.css';
 import Mode from './models/Mode';
 import SchedulesWindow from './SchedulesWindow';
+import SettingsWindow from './SettingsWindow';
 import ConstructionResult from './components/ConstructionResult';
 
 const { Sider, Content } = Layout;
@@ -17,36 +18,7 @@ class MainWindow extends React.Component {
   };
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
-  };
-
-  onBreakpoint = broken => {
-    console.log(broken);
-  };
-
-  showSchedules = mode => {
-    switch (mode) {
-      case Mode.regularBattle:
-        this.setState({ index: 2 });
-        break;
-      case Mode.rankedBattle:
-        this.setState({ index: 3 });
-        break;
-      case Mode.leagueBattle:
-        this.setState({ index: 4 });
-        break;
-      default:
-        throw new RangeError();
-    }
-  };
-
-  showConstruction = () => {
-    this.setState({ index: -1 });
-  };
-
-  renderConstruction = () => {
-    return <ConstructionResult />;
   };
 
   renderLogo = () => {
@@ -57,8 +29,16 @@ class MainWindow extends React.Component {
     );
   };
 
+  renderConstruction = () => {
+    return <ConstructionResult />;
+  };
+
   renderSchedules = mode => {
     return <SchedulesWindow mode={mode} />;
+  };
+
+  renderSettings = () => {
+    return <SettingsWindow />;
   };
 
   render() {
@@ -69,7 +49,6 @@ class MainWindow extends React.Component {
             breakpoint="md"
             collapsible
             collapsed={this.state.collapsed}
-            onBreakpoint={this.onBreakpoint}
             onCollapse={this.onCollapse}
             style={{
               height: '100vh',
@@ -80,7 +59,12 @@ class MainWindow extends React.Component {
               <img src={logo} alt="logo" />
             </div>
             <Menu theme="dark" mode="vertical">
-              <Menu.Item key="1" onClick={this.showConstruction}>
+              <Menu.Item
+                key="1"
+                onClick={() => {
+                  this.setState({ index: 1 });
+                }}
+              >
                 <Icon type="dashboard" />
                 <span>Dashboard</span>
               </Menu.Item>
@@ -93,16 +77,36 @@ class MainWindow extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="2" onClick={this.showSchedules.bind(this, Mode.regularBattle)}>
+                <Menu.Item
+                  key="2"
+                  onClick={() => {
+                    this.setState({ index: 2 });
+                  }}
+                >
                   Regular Battle
                 </Menu.Item>
-                <Menu.Item key="3" onClick={this.showSchedules.bind(this, Mode.rankedBattle)}>
+                <Menu.Item
+                  key="3"
+                  onClick={() => {
+                    this.setState({ index: 3 });
+                  }}
+                >
                   Ranked Battle
                 </Menu.Item>
-                <Menu.Item key="4" onClick={this.showSchedules.bind(this, Mode.leagueBattle)}>
+                <Menu.Item
+                  key="4"
+                  onClick={() => {
+                    this.setState({ index: 4 });
+                  }}
+                >
                   League Battle
                 </Menu.Item>
-                <Menu.Item key="5" onClick={this.showConstruction}>
+                <Menu.Item
+                  key="5"
+                  onClick={() => {
+                    this.setState({ index: 5 });
+                  }}
+                >
                   Salmon Run
                 </Menu.Item>
               </SubMenu>
@@ -115,32 +119,72 @@ class MainWindow extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="6" onClick={this.showConstruction}>
+                <Menu.Item
+                  key="6"
+                  onClick={() => {
+                    this.setState({ index: 6 });
+                  }}
+                >
                   Stage
                 </Menu.Item>
-                <Menu.Item key="7" onClick={this.showConstruction}>
+                <Menu.Item
+                  key="7"
+                  onClick={() => {
+                    this.setState({ index: 7 });
+                  }}
+                >
                   Weapon
                 </Menu.Item>
-                <Menu.Item key="8" onClick={this.showConstruction}>
+                <Menu.Item
+                  key="8"
+                  onClick={() => {
+                    this.setState({ index: 8 });
+                  }}
+                >
                   Battles
                 </Menu.Item>
-                <Menu.Item key="9" onClick={this.showConstruction}>
+                <Menu.Item
+                  key="9"
+                  onClick={() => {
+                    this.setState({ index: 9 });
+                  }}
+                >
                   Salmon Run
                 </Menu.Item>
               </SubMenu>
-              <Menu.Item key="10" onClick={this.showConstruction}>
+              <Menu.Item
+                key="10"
+                onClick={() => {
+                  this.setState({ index: 10 });
+                }}
+              >
                 <Icon type="menu" />
                 <span>Battle</span>
               </Menu.Item>
-              <Menu.Item key="11" onClick={this.showConstruction}>
+              <Menu.Item
+                key="11"
+                onClick={() => {
+                  this.setState({ index: 11 });
+                }}
+              >
                 <Icon type="menu" />
                 <span>Salmon Run</span>
               </Menu.Item>
-              <Menu.Item key="12" onClick={this.showConstruction}>
+              <Menu.Item
+                key="12"
+                onClick={() => {
+                  this.setState({ index: 12 });
+                }}
+              >
                 <Icon type="shopping" />
                 <span>Gear Shop</span>
               </Menu.Item>
-              <Menu.Item key="13" onClick={this.showConstruction}>
+              <Menu.Item
+                key="13"
+                onClick={() => {
+                  this.setState({ index: 13 });
+                }}
+              >
                 <Icon type="setting" />
                 <span>Settings</span>
               </Menu.Item>
@@ -150,7 +194,7 @@ class MainWindow extends React.Component {
         <Content id="MainWindow-content" style={{ height: '100vh' }}>
           {(() => {
             switch (this.state.index) {
-              case -1:
+              case 1:
                 return this.renderConstruction();
               case 0:
                 return this.renderLogo();
@@ -160,6 +204,17 @@ class MainWindow extends React.Component {
                 return this.renderSchedules(Mode.rankedBattle);
               case 4:
                 return this.renderSchedules(Mode.leagueBattle);
+              case 5:
+              case 6:
+              case 7:
+              case 8:
+              case 9:
+              case 10:
+              case 11:
+              case 12:
+                return this.renderConstruction();
+              case 13:
+                return this.renderSettings();
               default:
                 throw new RangeError();
             }
