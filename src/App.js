@@ -20,6 +20,12 @@ class App extends React.Component {
       return <MainWindow />;
     }
   }
+
+  componentDidMount() {
+    if (window.localStorage.cookie) {
+      this.setState({ isLogin: true });
+    }
+  }
 }
 
 export default App;
