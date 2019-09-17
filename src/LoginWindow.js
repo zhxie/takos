@@ -72,7 +72,18 @@ class LoginWindow extends React.Component {
       if (!result) {
         Modal.error({
           title: 'Can not update cookie',
-          content: 'Your network can not be reached, or your login is expired, please re-login or try again.'
+          content: (
+            <div>
+              <p style={{ margin: 0 }}>
+                Your network can not be reached, or your login is expired, please re-login or try again.
+              </p>
+              <p style={{ margin: 0 }}>
+                And you can try using third-party apps like <a href="https://github.com/zhxie/Ikas">Ikas</a>,{' '}
+                <a href="https://github.com/frozenpandaman/splatnet2statink">splatnet2statink</a>,{' '}
+                <a href="https://github.com/tkgstrator/Salmonia">Salmonia</a> to get your cookie.
+              </p>
+            </div>
+          )
         });
       } else {
         this.cookieOnChange(result);
