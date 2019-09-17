@@ -5,6 +5,7 @@ import './SettingsWindow.css';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
 import './utils/StringHelper';
 import LoginHelper from './utils/LoginHelper';
+import icon from './assets/images/character-c-q-cumber.png';
 
 const { Header, Content } = Layout;
 const { confirm } = Modal;
@@ -129,8 +130,8 @@ class SettingsWindow extends React.Component {
     return (
       <Layout>
         <Header className="SettingsWindow-header" style={{ zIndex: 1 }}>
-          <img className="SettingsWindow-header-icon" alt="settings" />
-          <p className="SettingsWindow-header-title">Schedules</p>
+          <img className="SettingsWindow-header-icon" src={icon} alt="settings" />
+          <p className="SettingsWindow-header-title">Settings</p>
         </Header>
         <Content className="SettingsWindow-content">
           <PageHeader title="User" />
