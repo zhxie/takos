@@ -5,6 +5,7 @@ import logo from './assets/images/logo.svg';
 import './MainWindow.css';
 import Mode from './models/Mode';
 import SchedulesWindow from './SchedulesWindow';
+import BattlesWindow from './BattlesWindow';
 import SettingsWindow from './SettingsWindow';
 import ConstructionResult from './components/ConstructionResult';
 
@@ -35,6 +36,10 @@ class MainWindow extends React.Component {
 
   renderSchedules = mode => {
     return <SchedulesWindow mode={mode} />;
+  };
+
+  renderBattles = () => {
+    return <BattlesWindow />;
   };
 
   renderSettings = () => {
@@ -204,12 +209,13 @@ class MainWindow extends React.Component {
                 return this.renderSchedules(Mode.rankedBattle);
               case 4:
                 return this.renderSchedules(Mode.leagueBattle);
+              case 10:
+                return this.renderBattles();
               case 5:
               case 6:
               case 7:
               case 8:
               case 9:
-              case 10:
               case 11:
               case 12:
                 return this.renderConstruction();
