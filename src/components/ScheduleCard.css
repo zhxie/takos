@@ -8,9 +8,12 @@
 .ScheduleCard-schedule-stage {
   cursor: default;
   display: inline-block;
-  height: 162.5px;
   margin: 6px;
   width: 202px;
+}
+
+.ScheduleCard-schedule-stage-cover {
+  height: 112.5px;
 }
 
 .ScheduleCard-schedule-stage-meta {
@@ -25,9 +28,12 @@
   width: 32px;
 }
 
-@media screen and (max-width: 592px) {
+@media screen and (max-width: 596px) {
   .ScheduleCard-schedule-stage {
-    height: auto;
     width: auto;
+  }
+
+  .ScheduleCard-schedule-stage-cover {
+    height: auto;
   }
 }

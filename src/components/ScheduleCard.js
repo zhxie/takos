@@ -46,7 +46,13 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={<img alt="stage 1" src={SPLATNET + this.props.schedule.stage1.url} />}
+          cover={
+            <img
+              className="ScheduleCard-schedule-stage-cover"
+              alt="stage 1"
+              src={SPLATNET + this.props.schedule.stage1.url}
+            />
+          }
         >
           <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage1.stage.name} />
         </Card>
@@ -56,7 +62,13 @@ class ScheduleCard extends React.Component {
           bodyStyle={{
             padding: '6px'
           }}
-          cover={<img alt="stage 2" src={SPLATNET + this.props.schedule.stage2.url} />}
+          cover={
+            <img
+              className="ScheduleCard-schedule-stage-cover"
+              alt="stage 2"
+              src={SPLATNET + this.props.schedule.stage2.url}
+            />
+          }
         >
           <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage2.stage.name} />
         </Card>
