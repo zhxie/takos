@@ -28,7 +28,9 @@ class SettingsWindow extends React.Component {
       this.setState({ cookie: value });
     }
     const re = /^[0-9A-Fa-f]{40}$/g;
-    if (value.includes('session_token_code=')) {
+    if (value === undefined) {
+      this.setState({ isUrl: false, isCookie: false });
+    } else if (value.includes('session_token_code=')) {
       this.setState({ isUrl: true, isCookie: false, isValid: true });
     } else if (re.test(value)) {
       this.setState({ isUrl: false, isCookie: true, isValid: true });
