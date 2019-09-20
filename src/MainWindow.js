@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
@@ -14,8 +15,7 @@ const { SubMenu } = Menu;
 
 class MainWindow extends React.Component {
   state = {
-    collapsed: false,
-    index: 0
+    collapsed: false
   };
 
   onCollapse = collapsed => {
@@ -28,22 +28,6 @@ class MainWindow extends React.Component {
         <img src={logo} className="MainWindow-content-logo" alt="logo" />
       </div>
     );
-  };
-
-  renderConstruction = () => {
-    return <ConstructionResult />;
-  };
-
-  renderSchedules = mode => {
-    return <SchedulesWindow mode={mode} />;
-  };
-
-  renderBattles = () => {
-    return <BattlesWindow />;
-  };
-
-  renderSettings = () => {
-    return <SettingsWindow />;
   };
 
   render() {
@@ -64,14 +48,10 @@ class MainWindow extends React.Component {
               <img src={logo} alt="logo" />
             </div>
             <Menu theme="dark" mode="vertical">
-              <Menu.Item
-                key="1"
-                onClick={() => {
-                  this.setState({ index: 1 });
-                }}
-              >
+              <Menu.Item key="1">
                 <Icon type="dashboard" />
                 <span>Dashboard</span>
+                <Link to="/dashboard" />
               </Menu.Item>
               <SubMenu
                 key="sub1"
@@ -82,37 +62,21 @@ class MainWindow extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item
-                  key="2"
-                  onClick={() => {
-                    this.setState({ index: 2 });
-                  }}
-                >
+                <Menu.Item key="2">
                   Regular Battle
+                  <Link to="/schedules/regular" />
                 </Menu.Item>
-                <Menu.Item
-                  key="3"
-                  onClick={() => {
-                    this.setState({ index: 3 });
-                  }}
-                >
+                <Menu.Item key="3">
                   Ranked Battle
+                  <Link to="/schedules/ranked" />
                 </Menu.Item>
-                <Menu.Item
-                  key="4"
-                  onClick={() => {
-                    this.setState({ index: 4 });
-                  }}
-                >
+                <Menu.Item key="4">
                   League Battle
+                  <Link to="/schedules/league" />
                 </Menu.Item>
-                <Menu.Item
-                  key="5"
-                  onClick={() => {
-                    this.setState({ index: 5 });
-                  }}
-                >
+                <Menu.Item key="5">
                   Salmon Run
+                  <Link to="/schedules/salmon" />
                 </Menu.Item>
               </SubMenu>
               <SubMenu
@@ -124,107 +88,62 @@ class MainWindow extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item
-                  key="6"
-                  onClick={() => {
-                    this.setState({ index: 6 });
-                  }}
-                >
+                <Menu.Item key="6">
                   Stage
+                  <Link to="/stats/stages" />
                 </Menu.Item>
-                <Menu.Item
-                  key="7"
-                  onClick={() => {
-                    this.setState({ index: 7 });
-                  }}
-                >
+                <Menu.Item key="7">
                   Weapon
+                  <Link to="/stats/weapons" />
                 </Menu.Item>
-                <Menu.Item
-                  key="8"
-                  onClick={() => {
-                    this.setState({ index: 8 });
-                  }}
-                >
+                <Menu.Item key="8">
                   Battles
+                  <Link to="/stats/battles" />
                 </Menu.Item>
-                <Menu.Item
-                  key="9"
-                  onClick={() => {
-                    this.setState({ index: 9 });
-                  }}
-                >
+                <Menu.Item key="9">
                   Salmon Run
+                  <Link to="/stats/salmon" />
                 </Menu.Item>
               </SubMenu>
-              <Menu.Item
-                key="10"
-                onClick={() => {
-                  this.setState({ index: 10 });
-                }}
-              >
+              <Menu.Item key="10">
                 <Icon type="menu" />
                 <span>Battle</span>
+                <Link to="/battles" />
               </Menu.Item>
-              <Menu.Item
-                key="11"
-                onClick={() => {
-                  this.setState({ index: 11 });
-                }}
-              >
+              <Menu.Item key="11">
                 <Icon type="menu" />
                 <span>Salmon Run</span>
+                <Link to="/salmon" />
               </Menu.Item>
-              <Menu.Item
-                key="12"
-                onClick={() => {
-                  this.setState({ index: 12 });
-                }}
-              >
+              <Menu.Item key="12">
                 <Icon type="shopping" />
                 <span>Gear Shop</span>
+                <Link to="/shop" />
               </Menu.Item>
-              <Menu.Item
-                key="13"
-                onClick={() => {
-                  this.setState({ index: 13 });
-                }}
-              >
+              <Menu.Item key="13">
                 <Icon type="setting" />
                 <span>Settings</span>
+                <Link to="/settings" />
               </Menu.Item>
             </Menu>
           </Sider>
         </div>
         <Content id="MainWindow-content" style={{ height: '100vh' }}>
-          {(() => {
-            switch (this.state.index) {
-              case 1:
-                return this.renderConstruction();
-              case 0:
-                return this.renderLogo();
-              case 2:
-                return this.renderSchedules(Mode.regularBattle);
-              case 3:
-                return this.renderSchedules(Mode.rankedBattle);
-              case 4:
-                return this.renderSchedules(Mode.leagueBattle);
-              case 10:
-                return this.renderBattles();
-              case 5:
-              case 6:
-              case 7:
-              case 8:
-              case 9:
-              case 11:
-              case 12:
-                return this.renderConstruction();
-              case 13:
-                return this.renderSettings();
-              default:
-                throw new RangeError();
-            }
-          })()}
+          <Switch>
+            <Route exact path={`${this.props.match.url}`} component={this.renderLogo} />
+            <Route exact path={`${this.props.match.url}dashboard`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}schedules/salmon`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}schedules/:mode`} component={SchedulesWindow} />
+            <Route exact path={`${this.props.match.url}stats/stages`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/weapons`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
+            <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
+            <Route path={`${this.props.match.url}salmon`} component={ConstructionResult} />
+            <Route path={`${this.props.match.url}shop`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}settings`} component={SettingsWindow} />
+            <Redirect from="*" to="/404" />
+          </Switch>
         </Content>
       </Layout>
     );

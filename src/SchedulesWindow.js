@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Layout, PageHeader, Alert } from 'antd';
 
 import './SchedulesWindow.css';
@@ -19,11 +20,36 @@ class SchedulesWindow extends React.Component {
   state = {
     loaded: false,
     error: false,
-    expired: false
+    expired: false,
+    invalid: false
+  };
+
+  constructor(props) {
+    super(props);
+    if (!this.modeSelector()) {
+      this.state.invalid = true;
+    }
+  }
+
+  modeSelector = () => {
+    switch (this.props.match.params.mode) {
+      case 'regular':
+        this.mode = Mode.regularBattle;
+        break;
+      case 'ranked':
+        this.mode = Mode.rankedBattle;
+        break;
+      case 'league':
+        this.mode = Mode.leagueBattle;
+        break;
+      default:
+        return false;
+    }
+    return true;
   };
 
   iconSelector = () => {
-    switch (this.props.mode) {
+    switch (this.mode) {
       case Mode.regularBattle:
         return regularIcon;
       case Mode.rankedBattle:
@@ -41,14 +67,6 @@ class SchedulesWindow extends React.Component {
     } else {
       this.forceUpdate();
     }
-  };
-
-  renderError = () => {
-    return <ErrorResult error={this.state.errorLog} />;
-  };
-
-  renderLoading = () => {
-    return <LoadingResult />;
   };
 
   renderContent = () => {
@@ -97,20 +115,22 @@ class SchedulesWindow extends React.Component {
   };
 
   render() {
-    if (this.state.error) {
-      return this.renderError();
+    if (this.state.invalid) {
+      return <Redirect to="/404" />;
+    } else if (this.state.error) {
+      return <ErrorResult error={this.state.errorLog} />;
     } else {
       return (
         <Layout>
           <Header className="SchedulesWindow-header" style={{ zIndex: 1 }}>
             <img className="SchedulesWindow-header-icon" src={this.iconSelector()} alt="mode" />
             <p className="SchedulesWindow-header-title">Schedules</p>
-            <p className="SchedulesWindow-header-subtitle">{this.props.mode.name}</p>
+            <p className="SchedulesWindow-header-subtitle">{this.mode.name}</p>
           </Header>
           <Content className="SchedulesWindow-content">
             {(() => {
               if (!this.state.loaded) {
-                return this.renderLoading();
+                return <LoadingResult />;
               } else {
                 return this.renderContent();
               }
@@ -122,6 +142,9 @@ class SchedulesWindow extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.modeSelector()) {
+      return;
+    }
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -135,7 +158,7 @@ class SchedulesWindow extends React.Component {
         // Parse response
         let schedulesData;
         let schedules = [];
-        switch (this.props.mode) {
+        switch (this.mode) {
           case Mode.regularBattle:
             schedulesData = res.regular;
             break;
@@ -176,8 +199,8 @@ class SchedulesWindow extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.mode !== prevProps.mode) {
-      this.setState({ loaded: false, error: false, expired: false });
+    if (this.props.match.params.mode !== prevProps.match.params.mode) {
+      this.setState({ loaded: false, error: false, expired: false, invalid: false });
       this.componentDidMount();
     }
   }

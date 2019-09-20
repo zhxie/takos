@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
 
 import './LoginWindow.css';
@@ -30,6 +31,7 @@ class LoginWindow extends React.Component {
   toNext = () => {
     if (this.state.step === 1) {
       window.localStorage.cookie = this.state.cookie;
+      this.props.onDone();
     }
     this.setState({ step: this.state.step + 1 });
   };
@@ -279,12 +281,12 @@ class LoginWindow extends React.Component {
           }
           title="Booyah!"
           subTitle="It is all done. Enjoy it!"
+          extra={[
+            <Link to="/" key="done">
+              <Button type="primary">Done</Button>
+            </Link>
+          ]}
         />
-        <div className="LoginWindow-content-button2">
-          <Button className="LoginWindow-content-button-start" onClick={this.props.onDone} type="primary">
-            Done
-          </Button>
-        </div>
       </div>
     );
   }
@@ -318,7 +320,9 @@ class LoginWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.cookieOnChange(window.localStorage.cookie);
+    if (window.localStorage.cookie !== undefined) {
+      this.cookieOnChange(window.localStorage.cookie);
+    }
   }
 }
 

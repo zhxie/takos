@@ -128,7 +128,6 @@ class SettingsWindow extends React.Component {
   };
 
   render() {
-    console.log(this.loginParameters);
     return (
       <Layout>
         <Header className="SettingsWindow-header" style={{ zIndex: 1 }}>
@@ -205,12 +204,18 @@ class SettingsWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.cookieOnChange(window.localStorage.cookie);
+    if (window.localStorage.cookie !== undefined) {
+      this.cookieOnChange(window.localStorage.cookie);
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (this.state.cookie !== window.localStorage.cookie) {
-      this.setState({ cookie: window.localStorage.cookie });
+      if (window.localStorage.cookie === undefined) {
+        this.setState({ cookie: '' });
+      } else {
+        this.setState({ cookie: window.localStorage.cookie });
+      }
     }
   }
 }
