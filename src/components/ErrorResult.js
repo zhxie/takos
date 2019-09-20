@@ -24,10 +24,10 @@ class ErrorResult extends React.Component {
           title="Ouch!"
           subTitle={this.props.error.toUpperCase()}
         >
-          <div className="desc">
+          <div>
             <Paragraph>
               <Text strong style={{ fontSize: 16 }}>
-                Takos has encountered a prolem, please check the following to troubleshoot the issue:
+                Takos has encountered a problem, please check the following to troubleshoot the issue:
               </Text>
             </Paragraph>
             <Paragraph>
