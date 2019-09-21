@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Card } from 'antd';
 
 import './ScheduleCard.css';
@@ -54,7 +55,10 @@ class ScheduleCard extends React.Component {
             />
           }
         >
-          <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage1.stage.name} />
+          <Meta
+            className="ScheduleCard-schedule-stage-meta"
+            title={<FormattedMessage id={this.props.schedule.stage1.stage.name} />}
+          />
         </Card>
         <Card
           className="ScheduleCard-schedule-stage"
@@ -70,12 +74,15 @@ class ScheduleCard extends React.Component {
             />
           }
         >
-          <Meta className="ScheduleCard-schedule-stage-meta" title={this.props.schedule.stage2.stage.name} />
+          <Meta
+            className="ScheduleCard-schedule-stage-meta"
+            title={<FormattedMessage id={this.props.schedule.stage2.stage.name} />}
+          />
         </Card>
         <Meta
           className="ScheduleCard-schedule-meta"
           avatar={<img className="ScheduleCard-schedule-meta-image" src={this.iconSelector()} alt="mode" />}
-          title={this.props.schedule.rule.name}
+          title={<FormattedMessage id={this.props.schedule.rule.name} />}
           description={TimeConverter.getSchedulePeriod(this.props.schedule.startTime, this.props.schedule.endTime)}
         />
       </Card>

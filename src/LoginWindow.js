@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
 
 import './LoginWindow.css';
@@ -57,8 +58,13 @@ class LoginWindow extends React.Component {
       result => {
         if (!result) {
           Modal.error({
-            title: 'Can not update cookie',
-            content: 'Your network can not be reached, or the link is expired, please refresh the page and try again.'
+            title: <FormattedMessage id="app.modal.error.get_session_token" defaultMessage="Can not update cookie" />,
+            content: (
+              <FormattedMessage
+                id="app.modal.error.get_session_token.content"
+                defaultMessage="Your network can not be reached, or the link is expired, please refresh the page and try again."
+              />
+            )
           });
           return;
         } else {
@@ -73,16 +79,28 @@ class LoginWindow extends React.Component {
     return LoginHelper.updateCookie(window.localStorage.sessionToken).then(result => {
       if (!result) {
         Modal.error({
-          title: 'Can not update cookie',
+          title: <FormattedMessage id="app.modal.error.update_cookie" defaultMessage="Can not update cookie" />,
           content: (
             <div>
               <p style={{ margin: 0 }}>
-                Your network can not be reached, or your login is expired, please re-login or try again.
+                <FormattedMessage
+                  id="app.modal.error.update_cookie.content.1"
+                  defaultMessage="Your network can not be reached, or your login is expired, please re-login or try again."
+                />
               </p>
               <p style={{ margin: 0 }}>
                 And you can try using third-party apps like <a href="https://github.com/zhxie/Ikas">Ikas</a>,{' '}
                 <a href="https://github.com/frozenpandaman/splatnet2statink">splatnet2statink</a>,{' '}
                 <a href="https://github.com/tkgstrator/Salmonia">Salmonia</a> to get your cookie.
+                <FormattedMessage
+                  id="app.modal.error.update_cookie.content.2"
+                  defaultMessage="And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie."
+                  values={{
+                    a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                    a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                    a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                  }}
+                />
               </p>
             </div>
           )
@@ -99,13 +117,16 @@ class LoginWindow extends React.Component {
     if (this.state.isUrl) {
       this.loginParameters.sessionTokenCode = this.state.cookie.match(/de=(.*)&/i)[1];
       confirm({
-        title: 'Do you want to update cookie?',
+        title: <FormattedMessage id="app.modal.confirm.update_cookie" defaultMessage="Do you want to update cookie?" />,
         content: (
           <p style={{ margin: 0 }}>
-            Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
-            non-identifying information. Please read "Security and Privacy" section in{' '}
-            <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a> carefully
-            before you start.
+            <FormattedMessage
+              id="app.modal.confirm.update_cookie.content"
+              defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+              values={{
+                a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+              }}
+            />
           </p>
         ),
         onOk() {
@@ -116,18 +137,35 @@ class LoginWindow extends React.Component {
     } else {
       if (!window.localStorage.sessionToken) {
         Modal.error({
-          title: 'Can not update cookie',
-          content: 'Takos can not update cookie unless you use automatic cookie generation.'
+          title: (
+            <FormattedMessage
+              id="app.modal.error.update_cookie_no_session_token"
+              defaultMessage="Can not update cookie"
+            />
+          ),
+          content: (
+            <FormattedMessage
+              id="app.modal.error.update_cookie_no_session_token.content"
+              defaultMessage="Takos can not update cookie unless you use automatic cookie generation."
+            />
+          )
         });
       } else {
         confirm({
-          title: 'Do you want to update cookie?',
+          title: (
+            <FormattedMessage id="app.modal.confirm.update_cookie" defaultMessage="Do you want to update cookie?" />
+          ),
           content: (
             <p style={{ margin: 0 }}>
-              Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
-              non-identifying information. Please read "Security and Privacy" section in{' '}
-              <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a> carefully
-              before you start.
+              <FormattedMessage
+                id="app.modal.confirm.update_cookie.content"
+                defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+                values={{
+                  a: msg => (
+                    <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                  )
+                }}
+              />
             </p>
           ),
           onOk() {
@@ -145,15 +183,20 @@ class LoginWindow extends React.Component {
         <div className="LoginWindow-content-welcome-wrapper">
           <div className="LoginWindow-content-welcome">
             <img src={logo} className="LoginWindow-content-welcome-logo" alt="logo" />
-            <Text style={{ fontSize: 32 }}>Welcome to Takos</Text>
+            <Text style={{ fontSize: 32 }}>
+              <FormattedMessage id="app.welcome" defaultMessage="Welcome to Takos" />
+            </Text>
             <Text type="secondary" style={{ fontSize: 16 }}>
-              A cross-platform schedule and battle statistic client of Splatoon 2.
+              <FormattedMessage
+                id="app.description"
+                defaultMessage="A cross-platform schedule and battle statistic client of Splatoon 2."
+              />
             </Text>
           </div>
         </div>
         <div className="LoginWindow-content-button">
           <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
-            Next
+            <FormattedMessage id="app.welcome.next" defaultMessage="Next" />
           </Button>
         </div>
       </div>
@@ -167,18 +210,24 @@ class LoginWindow extends React.Component {
           <div className="LoginWindow-content-login">
             <Paragraph>
               <Text style={{ fontSize: 18 }}>
-                In order to get the battle, salmon run, statistics and gear shop data, you have to log into the
-                SplatNet.
+                <FormattedMessage
+                  id="app.welcome.cookie.1"
+                  defaultMessage="In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet."
+                />
               </Text>
             </Paragraph>
             <Paragraph>
               <Text type="secondary" style={{ fontSize: 16 }}>
-                Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie
-                generation introducted in{' '}
-                <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">splatnet2statink</a>, or
-                be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet,
-                which is also called{' '}
-                <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">the MitM</a>.
+                <FormattedMessage
+                  id="app.welcome.cookie.2"
+                  defaultMessage="Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie generation introducted in <a1>splatnet2statink</a1>, or be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet, which is also called <a2>the MitM</a2>."
+                  values={{
+                    a1: msg => <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">{msg}</a>,
+                    a2: msg => (
+                      <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">{msg}</a>
+                    )
+                  }}
+                />
               </Text>
             </Paragraph>
           </div>
@@ -186,13 +235,18 @@ class LoginWindow extends React.Component {
         <div className="LoginWindow-content-input-wrapper">
           <div className="LoginWindow-content-input">
             <Alert
-              message="Warning"
+              message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
               description={
                 <p style={{ margin: 0 }}>
-                  Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal,
-                  non-identifying information. Please read "Security and Privacy" section in{' '}
-                  <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">README</a>{' '}
-                  carefully before you start.
+                  <FormattedMessage
+                    id="app.alert.warning.automatic_cookie_generation"
+                    defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+                    values={{
+                      a: msg => (
+                        <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                      )
+                    }}
+                  />
                 </p>
               }
               type="warning"
@@ -200,20 +254,25 @@ class LoginWindow extends React.Component {
               style={{ width: '100%' }}
             />
             <Alert
-              message="Info"
+              message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
               description={
                 <p style={{ margin: 0 }}>
-                  If you have not used automatic cookie generation and want to use, please open{' '}
-                  <a
-                    href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
-                      this.loginParameters.state,
-                      this.loginParameters.codeChallenge
-                    )}
-                  >
-                    Nintendo Account
-                  </a>{' '}
-                  in browser, log in, right click on "Select this person", copy the link address, paste it into the text
-                  box below, and press "Update cookie".
+                  <FormattedMessage
+                    id="app.alert.info.use_automatic_cookie_generation_first_time"
+                    defaultMessage='If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                    values={{
+                      a: msg => (
+                        <a
+                          href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                            this.loginParameters.state,
+                            this.loginParameters.codeChallenge
+                          )}
+                        >
+                          {msg}
+                        </a>
+                      )
+                    }}
+                  />
                 </p>
               }
               type="info"
@@ -251,13 +310,15 @@ class LoginWindow extends React.Component {
                     />
                   </Col>
                   <Col span={8}>
-                    <Button onClick={this.showConfirm}>Update cookie</Button>
+                    <Button onClick={this.showConfirm}>
+                      <FormattedMessage id="app.cookie.update" defaultMessage="Update cookie" />
+                    </Button>
                   </Col>
                 </Row>
               </Form.Item>
             </Form>
             <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
-              Next
+              <FormattedMessage id="app.welcome.next" defaultMessage="Next" />
             </Button>
           </div>
         </div>
@@ -279,11 +340,13 @@ class LoginWindow extends React.Component {
               }}
             />
           }
-          title="Booyah!"
-          subTitle="It is all done. Enjoy it!"
+          title={<FormattedMessage id="app.result.welcome" defaultMessage="Booyah!" />}
+          subTitle={<FormattedMessage id="app.result.welcome.description" defaultMessage="It is all done. Enjoy it!" />}
           extra={[
             <Link to="/" key="done">
-              <Button type="primary">Done</Button>
+              <Button type="primary">
+                <FormattedMessage id="app.result.welcome.done" defaultMessage="Done" />
+              </Button>
             </Link>
           ]}
         />
@@ -296,9 +359,9 @@ class LoginWindow extends React.Component {
       <Layout>
         <Content className="LoginWindow-main">
           <Steps className="LoginWindow-steps" current={this.state.step}>
-            <Step title="Welcome" />
-            <Step title="Log In" />
-            <Step title="Done" />
+            <Step title={<FormattedMessage id="app.welcome.welcome" defaultMessage="Welcome" />} />
+            <Step title={<FormattedMessage id="app.welcome.log_in" defaultMessage="Log In" />} />
+            <Step title={<FormattedMessage id="app.welcome.done" defaultMessage="Done" />} />
           </Steps>
           <div className="LoginWindow-content">
             {(() => {

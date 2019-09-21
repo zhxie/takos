@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Result } from 'antd';
 
 import './LoadingResult.css';
@@ -19,8 +20,10 @@ class LoadingResult extends React.Component {
               }}
             />
           }
-          title="Charging"
-          subTitle="This page is in loading..."
+          title={<FormattedMessage id="app.result.loading" defaultMessage="Charging" />}
+          subTitle={
+            <FormattedMessage id="app.result.loading.description" defaultMessage="This page is in loading..." />
+          }
         />
       </div>
     );

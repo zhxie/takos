@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { Result, Typography, Button } from 'antd';
 
 import './NotFoundResult.css';
@@ -22,24 +23,31 @@ class NotFoundResult extends React.Component {
               }}
             />
           }
-          title="404"
-          subTitle="Are you lost, small octoling?"
+          title={<FormattedMessage id="app.result.404" defaultMessage="404" />}
+          subTitle={<FormattedMessage id="app.result.404.description" defaultMessage="Are you lost, small octoling?" />}
           extra={[
             <Link to="/" key="home">
-              <Button type="primary">Back Home</Button>
+              <Button type="primary">
+                <FormattedMessage id="app.result.404.back_home" defaultMessage="Back Home" />
+              </Button>
             </Link>
           ]}
         >
           <div>
             <Paragraph>
               <Text strong style={{ fontSize: 16 }}>
-                Takos has encountered a problem.
+                <FormattedMessage id="app.problem" defaultMessage="Takos has encountered a problem." />
               </Text>
             </Paragraph>
             <Paragraph>
               <Text style={{ fontSize: 14 }}>
-                If the problem persists, you can{' '}
-                <a href="https://github.com/zhxie/takos/issues">Report the issue on Github &gt;</a>
+                <FormattedMessage
+                  id="app.problem.report"
+                  defaultMessage="If the problem persists, you can <a>Report the issue on Github &gt;</a>"
+                  values={{
+                    a: msg => <a href="https://github.com/zhxie/takos/issues">{msg}</a>
+                  }}
+                />
               </Text>
             </Paragraph>
           </div>

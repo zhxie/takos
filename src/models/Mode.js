@@ -18,11 +18,11 @@ class Mode {
   }
 }
 
-Mode.regularBattle = new Mode('regular_battle', 0);
-Mode.rankedBattle = new Mode('ranked_battle', 1);
-Mode.leagueBattle = new Mode('league_battle', 2);
-Mode.privateBattle = new Mode('private_battle', 3);
-Mode.splatfest = new Mode('splatfest', 4);
+Mode.regularBattle = new Mode('mode.regular_battle', 0);
+Mode.rankedBattle = new Mode('mode.ranked_battle', 1);
+Mode.leagueBattle = new Mode('mode.league_battle', 2);
+Mode.privateBattle = new Mode('mode.private_battle', 3);
+Mode.splatfest = new Mode('mode.splatfest', 4);
 
 Object.freeze(Mode);
 

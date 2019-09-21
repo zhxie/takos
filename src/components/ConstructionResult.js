@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Result } from 'antd';
 
 import './ConstructionResult.css';
@@ -19,8 +20,13 @@ class ConstructionResult extends React.Component {
               }}
             />
           }
-          title="In Painting"
-          subTitle="This page is under construction."
+          title={<FormattedMessage id="app.result.construction" defaultMessage="In Painting" />}
+          subTitle={
+            <FormattedMessage
+              id="app.result.construction.description"
+              defaultMessage="This page is under construction."
+            />
+          }
         />
       </div>
     );

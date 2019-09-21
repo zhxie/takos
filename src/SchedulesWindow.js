@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert } from 'antd';
 
 import './SchedulesWindow.css';
@@ -76,8 +77,13 @@ class SchedulesWindow extends React.Component {
           if (this.state.expired) {
             return (
               <Alert
-                message="Warning"
-                description="It seems that these schedules have expired, please refresh this page to update."
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.schedules_expired"
+                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                  />
+                }
                 type="warning"
                 showIcon
               />
@@ -85,14 +91,17 @@ class SchedulesWindow extends React.Component {
           }
         })()}
         <div>
-          <PageHeader title="Current" />
+          <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
           <ScheduleCard key="1" schedule={this.state.data[0]} />
         </div>
         {(() => {
           if (this.state.data.length > 1) {
             return (
               <div>
-                <PageHeader title="Next" subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)} />
+                <PageHeader
+                  title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
+                  subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
+                />
                 <ScheduleCard key="2" schedule={this.state.data[1]} />
               </div>
             );
@@ -102,7 +111,7 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 2) {
             return (
               <div>
-                <PageHeader title="Future" />
+                <PageHeader title={<FormattedMessage id="app.schedules.future" defaultMessage="Future" />} />
                 {this.state.data.slice(2).map((item, index) => {
                   return <ScheduleCard key={2 + index} schedule={item} />;
                 })}
@@ -124,8 +133,12 @@ class SchedulesWindow extends React.Component {
         <Layout>
           <Header className="SchedulesWindow-header" style={{ zIndex: 1 }}>
             <img className="SchedulesWindow-header-icon" src={this.iconSelector()} alt="mode" />
-            <p className="SchedulesWindow-header-title">Schedules</p>
-            <p className="SchedulesWindow-header-subtitle">{this.mode.name}</p>
+            <p className="SchedulesWindow-header-title">
+              <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
+            </p>
+            <p className="SchedulesWindow-header-subtitle">
+              <FormattedMessage id={this.mode.name} />
+            </p>
           </Header>
           <Content className="SchedulesWindow-content">
             {(() => {

@@ -22,11 +22,11 @@ class Rule {
   }
 }
 
-Rule.turfWar = new Rule('turf_war', 0);
-Rule.splatZones = new Rule('spalt_zones', 1);
-Rule.towerControl = new Rule('tower_control', 2);
-Rule.rainmaker = new Rule('rainmaker', 3);
-Rule.clamBlitz = new Rule('clam_blitz', 4);
+Rule.turfWar = new Rule('rule.turf_war', 0);
+Rule.splatZones = new Rule('rule.spalt_zones', 1);
+Rule.towerControl = new Rule('rule.tower_control', 2);
+Rule.rainmaker = new Rule('rule.rainmaker', 3);
+Rule.clamBlitz = new Rule('rule.clam_blitz', 4);
 
 Object.freeze(Rule);
 

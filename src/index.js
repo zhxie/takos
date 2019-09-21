@@ -1,11 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { IntlProvider } from 'react-intl';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
+import en_US from './assets/locales/en_US';
+import ja_JP from './assets/locales/ja_JP';
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <IntlProvider
+    messages={(() => {
+      if (window.localStorage.language === undefined) {
+        window.localStorage.language = 'en_US';
+      }
+      switch (window.localStorage.language) {
+        case 'en_US':
+          return ja_JP;
+        case 'ja_JP':
+          return ja_JP;
+        default:
+          return en_US;
+      }
+    })()}
+  >
+    <App />
+  </IntlProvider>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
@@ -49,7 +50,7 @@ class MainWindow extends React.Component {
             <Menu theme="dark" mode="vertical">
               <Menu.Item key="1">
                 <Icon type="dashboard" />
-                <span>Dashboard</span>
+                <FormattedMessage id="app.dashboard" defaultMessage="Dashboard" />
                 <Link to="/dashboard" />
               </Menu.Item>
               <SubMenu
@@ -57,24 +58,24 @@ class MainWindow extends React.Component {
                 title={
                   <span>
                     <Icon type="schedule" />
-                    <span>Schedules</span>
+                    <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
                   </span>
                 }
               >
                 <Menu.Item key="2">
-                  Regular Battle
+                  <FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />
                   <Link to="/schedules/regular" />
                 </Menu.Item>
                 <Menu.Item key="3">
-                  Ranked Battle
+                  <FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />
                   <Link to="/schedules/ranked" />
                 </Menu.Item>
                 <Menu.Item key="4">
-                  League Battle
+                  <FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />
                   <Link to="/schedules/league" />
                 </Menu.Item>
                 <Menu.Item key="5">
-                  Salmon Run
+                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
                   <Link to="/schedules/salmon" />
                 </Menu.Item>
               </SubMenu>
@@ -83,45 +84,45 @@ class MainWindow extends React.Component {
                 title={
                   <span>
                     <Icon type="line-chart" />
-                    <span>Statistics</span>
+                    <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
                   </span>
                 }
               >
                 <Menu.Item key="6">
-                  Stage
+                  <FormattedMessage id="app.stages" defaultMessage="Stages" />
                   <Link to="/stats/stages" />
                 </Menu.Item>
                 <Menu.Item key="7">
-                  Weapon
+                  <FormattedMessage id="app.weapons" defaultMessage="Weapons" />
                   <Link to="/stats/weapons" />
                 </Menu.Item>
                 <Menu.Item key="8">
-                  Battles
+                  <FormattedMessage id="app.battles" defaultMessage="Battles" />
                   <Link to="/stats/battles" />
                 </Menu.Item>
                 <Menu.Item key="9">
-                  Salmon Run
+                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
                   <Link to="/stats/salmon" />
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="10">
                 <Icon type="menu" />
-                <span>Battle</span>
+                <FormattedMessage id="app.battles" defaultMessage="Battles" />
                 <Link to="/battles" />
               </Menu.Item>
               <Menu.Item key="11">
                 <Icon type="menu" />
-                <span>Salmon Run</span>
+                <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
                 <Link to="/salmon" />
               </Menu.Item>
               <Menu.Item key="12">
                 <Icon type="shopping" />
-                <span>Gear Shop</span>
+                <FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />
                 <Link to="/shop" />
               </Menu.Item>
               <Menu.Item key="13">
                 <Icon type="setting" />
-                <span>Settings</span>
+                <FormattedMessage id="app.settings" defaultMessage="Settings" />
                 <Link to="/settings" />
               </Menu.Item>
             </Menu>
