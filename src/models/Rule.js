@@ -23,7 +23,7 @@ class Rule {
 }
 
 Rule.turfWar = new Rule('rule.turf_war', 0);
-Rule.splatZones = new Rule('rule.spalt_zones', 1);
+Rule.splatZones = new Rule('rule.splat_zones', 1);
 Rule.towerControl = new Rule('rule.tower_control', 2);
 Rule.rainmaker = new Rule('rule.rainmaker', 3);
 Rule.clamBlitz = new Rule('rule.clam_blitz', 4);
