@@ -4,7 +4,6 @@ import { Layout, Menu, Icon } from 'antd';
 
 import logo from './assets/images/logo.svg';
 import './MainWindow.css';
-import Mode from './models/Mode';
 import SchedulesWindow from './SchedulesWindow';
 import BattlesWindow from './BattlesWindow';
 import SettingsWindow from './SettingsWindow';
