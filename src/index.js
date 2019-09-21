@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
+import { ConfigProvider } from 'antd';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
@@ -9,23 +10,25 @@ import ja_JP from './assets/locales/ja_JP';
 import App from './App';
 
 ReactDOM.render(
-  <IntlProvider
-    messages={(() => {
-      if (window.localStorage.language === undefined) {
-        window.localStorage.language = 'en_US';
-      }
-      switch (window.localStorage.language) {
-        case 'en_US':
-          return ja_JP;
-        case 'ja_JP':
-          return ja_JP;
-        default:
-          return en_US;
-      }
-    })()}
-  >
-    <App />
-  </IntlProvider>,
+  <ConfigProvider autoInsertSpaceInButton={false}>
+    <IntlProvider
+      messages={(() => {
+        if (window.localStorage.language === undefined) {
+          window.localStorage.language = 'en_US';
+        }
+        switch (window.localStorage.language) {
+          case 'en_US':
+            return ja_JP;
+          case 'ja_JP':
+            return ja_JP;
+          default:
+            return en_US;
+        }
+      })()}
+    >
+      <App />
+    </IntlProvider>
+  </ConfigProvider>,
   document.getElementById('root')
 );
 
