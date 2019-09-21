@@ -66,7 +66,7 @@ const zh_CN = {
   'app.welcome.done': '完成',
   'app.welcome': '欢迎使用 Takos',
   'app.welcome.next': '下一步',
-  'app.welcome.cookie.1': '你需要登录到 SplatNet 以使用战斗、鲑鱼大作战、记录与触手镇*等功能。',
+  'app.welcome.cookie.1': '你需要登录到 SplatNet 以使用战斗、Salmon Run、记录与触手镇*等功能。',
   'app.welcome.cookie.2':
     'Takos 利用 Cookie 访问 SplatNet。Cookie 可以通过 <a1>splatnet2statink</a1> 项目中介绍的自动 Cookie 生成方法产生，也可以通过其它方法，如介入设备与 SplatNet 间的通信来获得，这一方法也被称作 <a2>MitM</a2>。',
   'app.description': '一个跨平台的 Splatoon 2 日程与战斗记录客户端。',
@@ -79,7 +79,7 @@ const zh_CN = {
   'app.stages': '场地',
   'app.weapons': '武器',
   'app.battles': '战斗',
-  'app.salmon_run': '鲑鱼大作战',
+  'app.salmon_run': 'Salmon Run',
   'app.gear_shop': '触手镇*',
   'app.settings': '设置',
   'app.user': '用户',
