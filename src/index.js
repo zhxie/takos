@@ -12,13 +12,14 @@ import App from './App';
 ReactDOM.render(
   <ConfigProvider autoInsertSpaceInButton={false}>
     <IntlProvider
+      locale={navigator.language}
       messages={(() => {
         if (window.localStorage.language === undefined) {
           window.localStorage.language = 'en_US';
         }
         switch (window.localStorage.language) {
           case 'en_US':
-            return ja_JP;
+            return en_US;
           case 'ja_JP':
             return ja_JP;
           default:
