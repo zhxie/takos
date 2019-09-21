@@ -8,6 +8,7 @@ import './index.css';
 import en_US from './assets/locales/en_US';
 import ja_JP from './assets/locales/ja_JP';
 import App from './App';
+import zh_CN from './assets/locales/zh_CN';
 
 ReactDOM.render(
   <ConfigProvider autoInsertSpaceInButton={false}>
@@ -22,6 +23,8 @@ ReactDOM.render(
             return en_US;
           case 'ja_JP':
             return ja_JP;
+          case 'zh_CN':
+            return zh_CN;
           default:
             return en_US;
         }

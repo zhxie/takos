@@ -72,7 +72,7 @@ class SettingsWindow extends React.Component {
             content: (
               <FormattedMessage
                 id="app.modal.error.get_session_token.content"
-                defaultMessage="Your network can not be reached, or the link is expired, please refresh the page and try again."
+                defaultMessage="Your network can not be reached, or the link is expired. Please refresh the page and try again."
               />
             )
           });
@@ -95,7 +95,7 @@ class SettingsWindow extends React.Component {
               <p style={{ margin: 0 }}>
                 <FormattedMessage
                   id="app.modal.error.update_cookie.content.1"
-                  defaultMessage="Your network can not be reached, or your login is expired, please re-login or try again."
+                  defaultMessage="Your network can not be reached, or your login is expired. Please re-login or try again."
                 />
               </p>
               <p style={{ margin: 0 }}>

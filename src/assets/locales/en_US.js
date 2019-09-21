@@ -33,7 +33,7 @@ const en_US = {
   'stage.goby_arena': 'Goby Arena',
   'stage.new_albacore_hotel': 'New Albacore Hotel',
   'stage.wahoo_world': 'Wahoo World',
-  'stage.anchov_games': 'Anchov Games',
+  'stage.anchov_games': 'Ancho-V Games',
   'stage.skipper_pavilion': 'Skipper Pavilion',
   'stage.windmill_house_on_the_pearlie': 'Windmill House on the Pearlie',
   'stage.wayslide_cool': 'Wayslide Cool',
@@ -87,7 +87,7 @@ const en_US = {
   'app.cookie': 'Cookie',
   'app.cookie.update': 'Update cookie',
   'app.system': 'System',
-  'app.system.language': 'Language',
+  'app.language': 'Language',
   // App.alert
   'app.alert.warning': 'Warning',
   'app.alert.warning.automatic_cookie_generation':
@@ -105,10 +105,10 @@ const en_US = {
     'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.',
   'app.modal.error.get_session_token': 'Can not update cookie',
   'app.modal.error.get_session_token.content':
-    'Your network can not be reached, or the link is expired, please refresh the page and try again.',
+    'Your network can not be reached, or the link is expired. Please refresh the page and try again.',
   'app.modal.error.update_cookie': 'Can not update cookie',
   'app.modal.error.update_cookie.content.1':
-    'Your network can not be reached, or your login is expired, please re-login or try again.',
+    'Your network can not be reached, or your login is expired. Please re-login or try again.',
   'app.modal.error.update_cookie.content.2':
     'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.',
   'app.modal.error.update_cookie_no_session_token': 'Can not update cookie',
