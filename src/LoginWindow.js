@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, Steps, Typography, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
+import { Layout, Steps, Typography, Select, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
 
 import './LoginWindow.css';
 import logo from './assets/images/logo.svg';
@@ -13,6 +13,7 @@ import LoginHelper from './utils/LoginHelper';
 const { Content } = Layout;
 const { Step } = Steps;
 const { Paragraph, Text } = Typography;
+const { Option } = Select;
 const { confirm } = Modal;
 
 class LoginWindow extends React.Component {
@@ -21,13 +22,34 @@ class LoginWindow extends React.Component {
     isUrl: false,
     isCookie: false,
     isValid: true,
-    cookie: ''
+    cookie: '',
+    language: 'en_US'
   };
 
   constructor(props) {
     super(props);
     this.loginParameters = LoginHelper.generateParameters();
   }
+
+  changeLanguage = value => {
+    if (this.state.language !== value) {
+      this.setState({ language: value });
+    }
+    switch (value) {
+      case 'en_US':
+        window.localStorage.language = 'en_US';
+        break;
+      case 'ja_JP':
+        window.localStorage.language = 'ja_JP';
+        break;
+      case 'zh_CN':
+        window.localStorage.language = 'zh_CN';
+        break;
+      default:
+        throw RangeError();
+    }
+    window.location.reload();
+  };
 
   toNext = () => {
     if (this.state.step === 1) {
@@ -195,6 +217,16 @@ class LoginWindow extends React.Component {
           </div>
         </div>
         <div className="LoginWindow-content-button">
+          <Select
+            value={this.state.language}
+            onChange={this.changeLanguage}
+            defaultValue="en_US"
+            style={{ width: 120, margin: '0 0 24px 0' }}
+          >
+            <Option value="en_US">English</Option>
+            <Option value="ja_JP">日本語</Option>
+            <Option value="zh_CN">中文</Option>
+          </Select>
           <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
             <FormattedMessage id="app.welcome.next" defaultMessage="Next" />
           </Button>
@@ -385,6 +417,22 @@ class LoginWindow extends React.Component {
   componentDidMount() {
     if (window.localStorage.cookie !== undefined) {
       this.cookieOnChange(window.localStorage.cookie);
+    }
+    if (window.localStorage.language !== undefined) {
+      switch (window.localStorage.language) {
+        case 'en_US':
+          this.setState({ language: 'en_US' });
+          break;
+        case 'ja_JP':
+          this.setState({ language: 'ja_JP' });
+          break;
+        case 'zh_CN':
+          this.setState({ language: 'zh_CN' });
+          break;
+        default:
+          this.setState({ language: 'en_US' });
+          break;
+      }
     }
   }
 }

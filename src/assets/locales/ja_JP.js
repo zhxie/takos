@@ -86,6 +86,8 @@ const ja_JP = {
   'app.user': 'ユーザー',
   'app.cookie': 'クッキー',
   'app.cookie.update': 'クッキーを更新する',
+  'app.system': 'システム',
+  'app.language': '言語 / Language',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':

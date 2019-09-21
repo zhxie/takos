@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal } from 'antd';
+import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select } from 'antd';
 
 import './SettingsWindow.css';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
@@ -10,13 +10,15 @@ import icon from './assets/images/character-c-q-cumber.png';
 
 const { Header, Content } = Layout;
 const { confirm } = Modal;
+const { Option } = Select;
 
 class SettingsWindow extends React.Component {
   state = {
     isUrl: false,
     isCookie: false,
     isValid: true,
-    cookie: ''
+    cookie: '',
+    language: 'en_US'
   };
 
   constructor(props) {
@@ -39,6 +41,26 @@ class SettingsWindow extends React.Component {
     } else {
       this.setState({ isUrl: false, isCookie: false });
     }
+  };
+
+  changeLanguage = value => {
+    if (this.state.language !== value) {
+      this.setState({ language: value });
+    }
+    switch (value) {
+      case 'en_US':
+        window.localStorage.language = 'en_US';
+        break;
+      case 'ja_JP':
+        window.localStorage.language = 'ja_JP';
+        break;
+      case 'zh_CN':
+        window.localStorage.language = 'zh_CN';
+        break;
+      default:
+        throw RangeError();
+    }
+    window.location.reload();
   };
 
   getSessionToken = () => {
@@ -250,6 +272,25 @@ class SettingsWindow extends React.Component {
               </Row>
             </Form.Item>
           </Form>
+          <PageHeader title={<FormattedMessage id="app.system" defaultMessage="System" />} />
+          <Form className="SettingsWindow-content-system" labelCol={{ span: 24 }}>
+            <Form.Item label={<FormattedMessage id="app.language" defaultMessage="Language" />}>
+              <Row gutter={8}>
+                <Col span={6}>
+                  <Select
+                    value={this.state.language}
+                    onChange={this.changeLanguage}
+                    defaultValue="en_US"
+                    style={{ width: 120, margin: '0 0 24px 0' }}
+                  >
+                    <Option value="en_US">English</Option>
+                    <Option value="ja_JP">日本語</Option>
+                    <Option value="zh_CN">中文</Option>
+                  </Select>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
         </Content>
       </Layout>
     );
@@ -258,6 +299,22 @@ class SettingsWindow extends React.Component {
   componentDidMount() {
     if (window.localStorage.cookie !== undefined) {
       this.cookieOnChange(window.localStorage.cookie);
+    }
+    if (window.localStorage.language !== undefined) {
+      switch (window.localStorage.language) {
+        case 'en_US':
+          this.setState({ language: 'en_US' });
+          break;
+        case 'ja_JP':
+          this.setState({ language: 'ja_JP' });
+          break;
+        case 'zh_CN':
+          this.setState({ language: 'zh_CN' });
+          break;
+        default:
+          this.setState({ language: 'en_US' });
+          break;
+      }
     }
   }
 }

@@ -86,6 +86,8 @@ const en_US = {
   'app.user': 'User',
   'app.cookie': 'Cookie',
   'app.cookie.update': 'Update cookie',
+  'app.system': 'System',
+  'app.system.language': 'Language',
   // App.alert
   'app.alert.warning': 'Warning',
   'app.alert.warning.automatic_cookie_generation':
