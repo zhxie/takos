@@ -260,18 +260,6 @@ class SettingsWindow extends React.Component {
       this.cookieOnChange(window.localStorage.cookie);
     }
   }
-
-  /*
-  componentDidUpdate(prevProps) {
-    if (this.state.cookie !== window.localStorage.cookie) {
-      if (window.localStorage.cookie === undefined) {
-        this.setState({ cookie: '' });
-      } else {
-        this.setState({ cookie: window.localStorage.cookie });
-      }
-    }
-  }
-  */
 }
 
 export default SettingsWindow;
