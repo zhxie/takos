@@ -219,7 +219,7 @@ const zh_CN = {
   'weapon.sub.autobomb': '机器炸弹*',
   'weapon.sub.ink_mine': '墨汁地雷',
   'weapon.sub.sprinkler': '洒墨器',
-  'weapon.sub.toxic_mist': '干扰弹',
+  'weapon.sub.toxic_mist': '毒雾*',
   'weapon.sub.point_sensor': '定位传感器',
   'weapon.sub.splash_wall': '喷溅墨墙',
   'weapon.sub.squid_beakon': '跳跃灯塔',
