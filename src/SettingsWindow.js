@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select } from 'antd';
 
 import './SettingsWindow.css';
@@ -68,13 +68,15 @@ class SettingsWindow extends React.Component {
       result => {
         if (!result) {
           Modal.error({
-            title: <FormattedMessage id="app.modal.error.get_session_token" defaultMessage="Can not update cookie" />,
-            content: (
-              <FormattedMessage
-                id="app.modal.error.get_session_token.content"
-                defaultMessage="Your network can not be reached, or the link is expired. Please refresh the page and try again."
-              />
-            )
+            title: this.props.intl.formatMessage({
+              id: 'app.modal.error.get_session_token',
+              defaultMessage: 'Can not update cookie'
+            }),
+            content: this.props.intl.formatMessage({
+              id: 'app.modal.error.get_session_token.content',
+              defaultMessage:
+                'Your network can not be reached, or the link is expired. Please refresh the page and try again.'
+            })
           });
           return;
         } else {
@@ -89,28 +91,32 @@ class SettingsWindow extends React.Component {
     return LoginHelper.updateCookie(window.localStorage.sessionToken).then(result => {
       if (!result) {
         Modal.error({
-          title: <FormattedMessage id="app.modal.error.update_cookie" defaultMessage="Can not update cookie" />,
+          title: this.props.intl.formatMessage({
+            id: 'app.modal.error.update_cookie',
+            defaultMessage: 'Can not update cookie'
+          }),
           content: (
             <div>
               <p style={{ margin: 0 }}>
-                <FormattedMessage
-                  id="app.modal.error.update_cookie.content.1"
-                  defaultMessage="Your network can not be reached, or your login is expired. Please re-login or try again."
-                />
+                {this.props.intl.formatMessage({
+                  id: 'app.modal.error.update_cookie.content.1',
+                  defaultMessage:
+                    'Your network can not be reached, or your login is expired. Please re-login or try again.'
+                })}
               </p>
               <p style={{ margin: 0 }}>
-                And you can try using third-party apps like <a href="https://github.com/zhxie/Ikas">Ikas</a>,{' '}
-                <a href="https://github.com/frozenpandaman/splatnet2statink">splatnet2statink</a>,{' '}
-                <a href="https://github.com/tkgstrator/Salmonia">Salmonia</a> to get your cookie.
-                <FormattedMessage
-                  id="app.modal.error.update_cookie.content.2"
-                  defaultMessage="And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie."
-                  values={{
+                {this.props.intl.formatMessage(
+                  {
+                    id: 'app.modal.error.update_cookie.content.2',
+                    defaultMessage:
+                      'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
+                  },
+                  {
                     a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
                     a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
                     a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
-                  }}
-                />
+                  }
+                )}
               </p>
             </div>
           )
@@ -127,17 +133,19 @@ class SettingsWindow extends React.Component {
     if (this.state.isUrl) {
       this.loginParameters.sessionTokenCode = this.state.cookie.match(/de=(.*)&/i)[1];
       confirm({
-        title: <FormattedMessage id="app.modal.confirm.update_cookie" defaultMessage="Do you want to update cookie?" />,
-        content: (
-          <p style={{ margin: 0 }}>
-            <FormattedMessage
-              id="app.modal.confirm.update_cookie.content"
-              defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
-              values={{
-                a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
-              }}
-            />
-          </p>
+        title: this.props.intl.formatMessage({
+          id: 'app.modal.confirm.update_cookie',
+          defaultMessage: 'Do you want to update cookie?'
+        }),
+        content: this.props.intl.formatMessage(
+          {
+            id: 'app.modal.confirm.update_cookie.content',
+            defaultMessage:
+              'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+          },
+          {
+            a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+          }
         ),
         onOk() {
           return getSessionToken();
@@ -147,36 +155,30 @@ class SettingsWindow extends React.Component {
     } else {
       if (!window.localStorage.sessionToken) {
         Modal.error({
-          title: (
-            <FormattedMessage
-              id="app.modal.error.update_cookie_no_session_token"
-              defaultMessage="Can not update cookie"
-            />
-          ),
-          content: (
-            <FormattedMessage
-              id="app.modal.error.update_cookie_no_session_token.content"
-              defaultMessage="Takos can not update cookie unless you use automatic cookie generation."
-            />
-          )
+          title: this.props.intl.formatMessage({
+            id: 'app.modal.error.update_cookie_no_session_token',
+            defaultMessage: 'Can not update cookie'
+          }),
+          content: this.props.intl.format({
+            id: 'app.modal.error.update_cookie_no_session_token.content',
+            defaultMessage: 'Takos can not update cookie unless you use automatic cookie generation.'
+          })
         });
       } else {
         confirm({
-          title: (
-            <FormattedMessage id="app.modal.confirm.update_cookie" defaultMessage="Do you want to update cookie?" />
-          ),
-          content: (
-            <p style={{ margin: 0 }}>
-              <FormattedMessage
-                id="app.modal.confirm.update_cookie.content"
-                defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
-                values={{
-                  a: msg => (
-                    <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
-                  )
-                }}
-              />
-            </p>
+          title: this.props.intl.formatMessage({
+            id: 'app.modal.confirm.update_cookie',
+            defaultMessage: 'Do you want to update cookie?'
+          }),
+          content: this.props.intl.formatMessage(
+            {
+              id: 'app.modal.confirm.update_cookie.content',
+              defaultMessage:
+                'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+            },
+            {
+              a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+            }
           ),
           onOk() {
             return updateCookie();
@@ -319,4 +321,4 @@ class SettingsWindow extends React.Component {
   }
 }
 
-export default SettingsWindow;
+export default injectIntl(SettingsWindow);
