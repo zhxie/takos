@@ -83,79 +83,109 @@ class MainWindow extends React.Component {
             <Menu selectedKeys={this.state.selected} theme="dark" mode="vertical">
               <Menu.Item key="dashboard">
                 <Icon type="dashboard" />
-                <FormattedMessage id="app.dashboard" defaultMessage="Dashboard" />
+                <span>
+                  <FormattedMessage id="app.dashboard" defaultMessage="Dashboard" />
+                </span>
                 <Link to="/dashboard" />
               </Menu.Item>
               <SubMenu
                 key="schedules"
                 title={
-                  <span>
+                  <div>
                     <Icon type="schedule" />
-                    <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
-                  </span>
+                    <span>
+                      <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
+                    </span>
+                  </div>
                 }
               >
                 <Menu.Item key="schedules.regular_battle">
-                  <FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />
+                  <span>
+                    <FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />
+                  </span>
                   <Link to="/schedules/regular" />
                 </Menu.Item>
                 <Menu.Item key="schedules.ranked_battle">
-                  <FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />
+                  <span>
+                    <FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />
+                  </span>
                   <Link to="/schedules/ranked" />
                 </Menu.Item>
                 <Menu.Item key="schedules.league_battle">
-                  <FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />
+                  <span>
+                    <FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />
+                  </span>
                   <Link to="/schedules/league" />
                 </Menu.Item>
                 <Menu.Item key="schedules.salmon_run">
-                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                  <span>
+                    <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                  </span>
                   <Link to="/schedules/salmon" />
                 </Menu.Item>
               </SubMenu>
               <SubMenu
                 key="stats"
                 title={
-                  <span>
+                  <div>
                     <Icon type="line-chart" />
-                    <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
-                  </span>
+                    <span>
+                      <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
+                    </span>
+                  </div>
                 }
               >
                 <Menu.Item key="statistics.stages">
-                  <FormattedMessage id="app.stages" defaultMessage="Stages" />
+                  <span>
+                    <FormattedMessage id="app.stages" defaultMessage="Stages" />
+                  </span>
                   <Link to="/stats/stages" />
                 </Menu.Item>
                 <Menu.Item key="statistics.weapons">
-                  <FormattedMessage id="app.weapons" defaultMessage="Weapons" />
+                  <span>
+                    <FormattedMessage id="app.weapons" defaultMessage="Weapons" />
+                  </span>
                   <Link to="/stats/weapons" />
                 </Menu.Item>
                 <Menu.Item key="statistics.battles">
-                  <FormattedMessage id="app.battles" defaultMessage="Battles" />
+                  <span>
+                    <FormattedMessage id="app.battles" defaultMessage="Battles" />
+                  </span>
                   <Link to="/stats/battles" />
                 </Menu.Item>
                 <Menu.Item key="statistics.salmon">
-                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                  <span>
+                    <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                  </span>
                   <Link to="/stats/salmon" />
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="battles">
                 <Icon type="menu" />
-                <FormattedMessage id="app.battles" defaultMessage="Battles" />
+                <span>
+                  <FormattedMessage id="app.battles" defaultMessage="Battles" />
+                </span>
                 <Link to="/battles" />
               </Menu.Item>
               <Menu.Item key="salmon">
                 <Icon type="menu" />
-                <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                <span>
+                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                </span>
                 <Link to="/salmon" />
               </Menu.Item>
               <Menu.Item key="gear_shop">
                 <Icon type="shopping" />
-                <FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />
+                <span>
+                  <FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />
+                </span>
                 <Link to="/shop" />
               </Menu.Item>
               <Menu.Item key="settings">
                 <Icon type="setting" />
-                <FormattedMessage id="app.settings" defaultMessage="Settings" />
+                <span>
+                  <FormattedMessage id="app.settings" defaultMessage="Settings" />
+                </span>
                 <Link to="/settings" />
               </Menu.Item>
             </Menu>
