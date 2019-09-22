@@ -61,11 +61,7 @@ const ja_JP = {
   'stage.mc_princess_diaries': 'DEAR SENPAI',
   'stage.shifty_station': 'ミステリーゾーン',
   // App
-  'app.welcome.welcome': 'ようこそ',
-  'app.welcome.log_in': 'ログイン',
-  'app.welcome.done': '完了',
-  'app.welcome': 'Takos へようこそ',
-  'app.welcome.next': 'つき',
+  'app.welcome.title': 'Takos へようこそ',
   'app.welcome.cookie.1':
     'バトル、サーモンラン、きろく、ゲソタウンデータを取得するには、イカリングにログインする必要があります。',
   'app.welcome.cookie.2':
@@ -83,6 +79,11 @@ const ja_JP = {
   'app.salmon_run': 'サーモンラン',
   'app.gear_shop': 'ゲソタウン',
   'app.settings': '設定',
+  'app.welcome': 'ようこそ',
+  'app.log_in': 'ログイン',
+  'app.next': 'つき',
+  'app.done': '完了',
+  'app.retry': 'リトライ',
   'app.user': 'ユーザー',
   'app.cookie': 'クッキー',
   'app.cookie.update': 'クッキーを更新する',
@@ -115,9 +116,8 @@ const ja_JP = {
   'app.modal.error.update_cookie_no_session_token.content':
     'Takos は自動クッキー生成を使用しない限り、クッキーを更新できません。',
   // App.result
-  'app.result.welcome': 'ナイス',
-  'app.result.welcome.description': 'すべて完了です。楽しめ！',
-  'app.result.welcome.done': '完了',
+  'app.result.done': 'ナイス',
+  'app.result.done.description': 'すべて完了です。楽しめ！',
   'app.result.construction': 'ペイント中',
   'app.result.construction.description': 'このページは現在作成中です。',
   'app.result.loading': 'チャージイン',

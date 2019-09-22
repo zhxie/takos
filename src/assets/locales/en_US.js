@@ -61,11 +61,7 @@ const en_US = {
   'stage.mc_princess_diaries': 'MC.Princess Diaries',
   'stage.shifty_station': 'Shifty Station',
   // App
-  'app.welcome.welcome': 'Welcome',
-  'app.welcome.log_in': 'Log In',
-  'app.welcome.done': 'Done',
-  'app.welcome': 'Welcome to Takos',
-  'app.welcome.next': 'Next',
+  'app.welcome.title': 'Welcome to Takos',
   'app.welcome.cookie.1':
     'In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet.',
   'app.welcome.cookie.2':
@@ -83,6 +79,11 @@ const en_US = {
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': 'Gear Shop',
   'app.settings': 'Settings',
+  'app.welcome': 'Welcome',
+  'app.log_in': 'Log In',
+  'app.next': 'Next',
+  'app.done': 'Done',
+  'app.retry': 'Retry',
   'app.user': 'User',
   'app.cookie': 'Cookie',
   'app.cookie.update': 'Update cookie',
@@ -115,9 +116,8 @@ const en_US = {
   'app.modal.error.update_cookie_no_session_token.content':
     'Takos can not update cookie unless you use automatic cookie generation.',
   // App.result
-  'app.result.welcome': 'Booyah!',
-  'app.result.welcome.description': 'It is all done. Enjoy it!',
-  'app.result.welcome.done': 'Done',
+  'app.result.done': 'Booyah!',
+  'app.result.done.description': 'It is all done. Enjoy it!',
   'app.result.construction': 'In Painting',
   'app.result.construction.description': 'This page is under construction.',
   'app.result.loading': 'Charging',

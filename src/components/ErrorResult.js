@@ -24,27 +24,32 @@ class ErrorResult extends React.Component {
           }
           title={<FormattedMessage id="app.result.error" defaultMessage="Ouch!" />}
           subTitle={this.props.error.toUpperCase()}
+          extra={this.props.extra}
         >
           <div>
             <Paragraph>
               <Text strong style={{ fontSize: 16 }}>
-                <FormattedMessage
-                  id="app.problem.troubleshoot"
-                  defaultMessage="Takos has encountered a problem, please check the following to troubleshoot the issue:"
-                />
+                {(() => {
+                  if (this.props.checklist.length > 0) {
+                    return (
+                      <FormattedMessage
+                        id="app.problem.troubleshoot"
+                        defaultMessage="Takos has encountered a problem, please check the following to troubleshoot the issue:"
+                      />
+                    );
+                  } else {
+                    return <FormattedMessage id="app.problem" defaultMessage="Takos has encountered a problem." />;
+                  }
+                })()}
               </Text>
             </Paragraph>
-            <Paragraph>
-              <Icon style={{ color: 'red' }} type="info-circle" />{' '}
-              <FormattedMessage
-                id="app.problem.troubleshoot.network"
-                defaultMessage="Your network connection and proxy settings"
-              />
-            </Paragraph>
-            <Paragraph>
-              <Icon style={{ color: 'red' }} type="info-circle" />{' '}
-              <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-            </Paragraph>
+            {this.props.checklist.map(element => {
+              return (
+                <Paragraph>
+                  <Icon style={{ color: 'red' }} type="info-circle" /> {element}
+                </Paragraph>
+              );
+            })}
             <Paragraph>
               <Text style={{ fontSize: 14 }}>
                 <FormattedMessage
@@ -62,5 +67,11 @@ class ErrorResult extends React.Component {
     );
   }
 }
+
+ErrorResult.defaultProps = {
+  error: 'UNKNOWN_ERROR',
+  checklist: [],
+  extra: []
+};
 
 export default ErrorResult;

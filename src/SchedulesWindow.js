@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert } from 'antd';
+import { Layout, PageHeader, Alert, Button } from 'antd';
 
 import './SchedulesWindow.css';
 import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
@@ -184,7 +184,30 @@ class SchedulesWindow extends React.Component {
     if (this.state.invalid) {
       return <Redirect to="/404" />;
     } else if (this.state.error) {
-      return <ErrorResult error={this.state.errorLog} />;
+      return (
+        <ErrorResult
+          error={this.state.errorLog}
+          checklist={[
+            <FormattedMessage
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection and proxy settings"
+            />
+          ]}
+          extra={[
+            [
+              <Button
+                onClick={() => {
+                  this.setState({ loaded: false, error: false, expired: false, invalid: false });
+                  this.updateSchedules();
+                }}
+                type="primary"
+              >
+                <FormattedMessage id="app.retry" defaultMessage="Retry" />
+              </Button>
+            ]
+          ]}
+        />
+      );
     } else {
       return (
         <Layout>

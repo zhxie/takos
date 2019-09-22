@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, Steps, Typography, Select, Button, Alert, Form, Row, Col, Input, Icon, Modal, Result } from 'antd';
+import { Layout, Steps, Typography, Select, Button, Alert, Form, Row, Col, Input, Icon, Modal } from 'antd';
 
 import './LoginWindow.css';
 import logo from './assets/images/logo.svg';
-import { OctolingsKillIcon } from './components/CustomIcons';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
 import './utils/StringHelper';
 import LoginHelper from './utils/LoginHelper';
+import DoneResult from './components/DoneResult';
 
 const { Content } = Layout;
 const { Step } = Steps;
@@ -208,7 +208,7 @@ class LoginWindow extends React.Component {
           <div className="LoginWindow-content-welcome">
             <img src={logo} className="LoginWindow-content-welcome-logo" alt="logo" />
             <Text style={{ fontSize: 32 }}>
-              <FormattedMessage id="app.welcome" defaultMessage="Welcome to Takos" />
+              <FormattedMessage id="app.welcome.title" defaultMessage="Welcome to Takos" />
             </Text>
             <Text type="secondary" style={{ fontSize: 16 }}>
               <FormattedMessage
@@ -230,7 +230,7 @@ class LoginWindow extends React.Component {
             <Option value="zh_CN">中文</Option>
           </Select>
           <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
-            <FormattedMessage id="app.welcome.next" defaultMessage="Next" />
+            <FormattedMessage id="app.next" defaultMessage="Next" />
           </Button>
         </div>
       </div>
@@ -352,7 +352,7 @@ class LoginWindow extends React.Component {
               </Form.Item>
             </Form>
             <Button className="LoginWindow-content-button-start" onClick={this.toNext} type="primary">
-              <FormattedMessage id="app.welcome.next" defaultMessage="Next" />
+              <FormattedMessage id="app.next" defaultMessage="Next" />
             </Button>
           </div>
         </div>
@@ -362,29 +362,15 @@ class LoginWindow extends React.Component {
 
   renderDone() {
     return (
-      <div>
-        <Result
-          icon={
-            <OctolingsKillIcon
-              className="LoginWindow-content-done-icon"
-              style={{
-                width: '2em',
-                fill: '#f6ffed',
-                stroke: '#52c41a'
-              }}
-            />
-          }
-          title={<FormattedMessage id="app.result.welcome" defaultMessage="Booyah!" />}
-          subTitle={<FormattedMessage id="app.result.welcome.description" defaultMessage="It is all done. Enjoy it!" />}
-          extra={[
-            <Link to="/" key="done">
-              <Button type="primary">
-                <FormattedMessage id="app.result.welcome.done" defaultMessage="Done" />
-              </Button>
-            </Link>
-          ]}
-        />
-      </div>
+      <DoneResult
+        extra={[
+          <Link to="/" key="done">
+            <Button type="primary">
+              <FormattedMessage id="app.done" defaultMessage="Done" />
+            </Button>
+          </Link>
+        ]}
+      />
     );
   }
 
@@ -393,9 +379,9 @@ class LoginWindow extends React.Component {
       <Layout>
         <Content className="LoginWindow-main">
           <Steps className="LoginWindow-steps" current={this.state.step}>
-            <Step title={<FormattedMessage id="app.welcome.welcome" defaultMessage="Welcome" />} />
-            <Step title={<FormattedMessage id="app.welcome.log_in" defaultMessage="Log In" />} />
-            <Step title={<FormattedMessage id="app.welcome.done" defaultMessage="Done" />} />
+            <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
+            <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
+            <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
           </Steps>
           <div className="LoginWindow-content">
             {(() => {
