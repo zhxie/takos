@@ -62,6 +62,63 @@ class SchedulesWindow extends React.Component {
     }
   };
 
+  updateSchedules = () => {
+    if (!this.modeSelector()) {
+      return;
+    }
+    const init = {
+      method: 'GET',
+      headers: new Headers({
+        'User-Agent': USER_AGENT
+      })
+    };
+    fetch(SPLATOON2_INK + SPLATOON2_INK_SCHEDULES, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        // Parse response
+        let schedulesData;
+        let schedules = [];
+        switch (this.mode) {
+          case Mode.regularBattle:
+            schedulesData = res.regular;
+            break;
+          case Mode.rankedBattle:
+            schedulesData = res.gachi;
+            break;
+          case Mode.leagueBattle:
+            schedulesData = res.league;
+            break;
+          default:
+            throw new RangeError();
+        }
+        try {
+          for (const i in schedulesData) {
+            const schedule = Schedule.parse(schedulesData[i]);
+            if (schedule.e != null) {
+              this.setState({ errorLog: schedule.e, error: true });
+              return;
+            }
+            schedules.push(schedule);
+          }
+          if (schedules.length > 0) {
+            this.setState({ data: schedules, loaded: true });
+            // Set update interval
+            this.timer = setInterval(this.timeout, 60000);
+          } else {
+            this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+          }
+        } catch (e) {
+          console.error(e);
+          this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
+      });
+  };
+
   timeout = () => {
     if (new Date(this.state.data[0].endTime * 1000) - new Date() < 0) {
       this.setState({ expired: true });
@@ -155,66 +212,13 @@ class SchedulesWindow extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.modeSelector()) {
-      return;
-    }
-    const init = {
-      method: 'GET',
-      headers: new Headers({
-        'User-Agent': USER_AGENT
-      })
-    };
-    fetch(SPLATOON2_INK + SPLATOON2_INK_SCHEDULES, init)
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-        // Parse response
-        let schedulesData;
-        let schedules = [];
-        switch (this.mode) {
-          case Mode.regularBattle:
-            schedulesData = res.regular;
-            break;
-          case Mode.rankedBattle:
-            schedulesData = res.gachi;
-            break;
-          case Mode.leagueBattle:
-            schedulesData = res.league;
-            break;
-          default:
-            throw new RangeError();
-        }
-        try {
-          for (const i in schedulesData) {
-            const schedule = Schedule.parse(schedulesData[i]);
-            if (schedule.e != null) {
-              this.setState({ errorLog: schedule.e, error: true });
-              return;
-            }
-            schedules.push(schedule);
-          }
-          if (schedules.length > 0) {
-            this.setState({ data: schedules, loaded: true });
-            // Set update interval
-            this.timer = setInterval(this.timeout, 60000);
-          } else {
-            this.setState({ errorLog: 'can_not_parse_schedules', error: true });
-          }
-        } catch (e) {
-          console.error(e);
-          this.setState({ errorLog: 'can_not_parse_schedules', error: true });
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
-      });
+    this.updateSchedules();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.mode !== prevProps.match.params.mode) {
       this.setState({ loaded: false, error: false, expired: false, invalid: false });
-      this.componentDidMount();
+      this.updateSchedules();
     }
   }
 
