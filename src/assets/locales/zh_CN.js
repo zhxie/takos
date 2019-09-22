@@ -62,7 +62,7 @@ const zh_CN = {
   'stage.shifty_station': 'Shifty Station',
   // App
   'app.welcome.title': '欢迎使用 Takos',
-  'app.welcome.cookie.1': '你需要登录到 SplatNet 以使用战斗、Salmon Run、记录与触手镇*等功能。',
+  'app.welcome.cookie.1': '您需要登录到 SplatNet 以使用战斗、Salmon Run、记录与触手镇*等功能。',
   'app.welcome.cookie.2':
     'Takos 利用 Cookie 访问 SplatNet。Cookie 可以通过 <a1>splatnet2statink</a1> 项目中介绍的自动 Cookie 生成方法产生，也可以通过其它方法，如介入设备与 SplatNet 间的通信来获得，这一方法也被称作 <a2>MitM</a2>。',
   'app.description': '一个跨平台的 Splatoon 2 日程与战斗记录客户端。',
@@ -95,19 +95,19 @@ const zh_CN = {
   'app.alert.warning.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info': '信息',
   'app.alert.info.use_automatic_cookie_generation':
-    '如果你希望重新登录，切换账号并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
+    '如果您希望重新登录，切换账号并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':
-    '如果你从未使用自动 Cookie 生成并希望使用之，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
+    '如果您从未使用自动 Cookie 生成并希望使用之，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   // App.modal
-  'app.modal.confirm.update_cookie': '你希望更新 Cookie 吗？',
+  'app.modal.confirm.update_cookie': '您希望更新 Cookie 吗？',
   'app.modal.confirm.update_cookie.content':
     '自动 Cookie 生成将向 2 个非任天堂服务器发起安全请求。这些请求中仅包含最小的，非识别性的信息。在开始前，请仔细阅读 <a>README</a> 中“Security and Privacy”一章。',
   'app.modal.error.get_session_token': '无法更新 Cookie',
-  'app.modal.error.get_session_token.content': '你的网络连接存在问题，或是链接已失效。请刷新页面并重试。',
+  'app.modal.error.get_session_token.content': '您的网络连接存在问题，或是链接已失效。请刷新页面并重试。',
   'app.modal.error.update_cookie': '无法更新 Cookie',
-  'app.modal.error.update_cookie.content.1': '你的网络连接存在问题，或是登录已失效，请重新登录或重试。',
+  'app.modal.error.update_cookie.content.1': '您的网络连接存在问题，或是登录已失效，请重新登录或重试。',
   'app.modal.error.update_cookie.content.2':
-    '同时，你也可以尝试使用 <a1>Ikas</a1>、<a2>splatnet2statink</a2>、<a3>Salmonia</a3> 等第三方应用来获取 Cookie。',
+    '同时，您也可以尝试使用 <a1>Ikas</a1>、<a2>splatnet2statink</a2>、<a3>Salmonia</a3> 等第三方应用来获取 Cookie。',
   'app.modal.error.update_cookie_no_session_token': '无法更新 Cookie',
   'app.modal.error.update_cookie_no_session_token.content': 'Takos 只能在使用自动 Cookie 生成的情况下更新 Cookie。',
   // App.result
@@ -124,9 +124,9 @@ const zh_CN = {
   // App.problem
   'app.problem': 'Takos 遇到了一个问题。',
   'app.problem.troubleshoot': 'Takos 遇到了一个问题，请检查以下事项来解决这一问题：',
-  'app.problem.troubleshoot.network': '你的网络连接情况与代理设置',
-  'app.problem.troubleshoot.cookie': '你的 SplatNet Cookie',
-  'app.problem.report': '如果这一问题持续存在，你可以<a>在 Github 上汇报它 &gt;</a>',
+  'app.problem.troubleshoot.network': '您的网络连接情况与代理设置',
+  'app.problem.troubleshoot.cookie': '您的 SplatNet Cookie',
+  'app.problem.report': '如果这一问题持续存在，您可以<a>在 Github 上汇报它 &gt;</a>',
   // App.time
   'app.time': '{hour}:{min}:{sec}',
   'app.time.to.min': '{min} 分后',
