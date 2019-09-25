@@ -4,14 +4,22 @@ class Mode {
     this.value = value;
   }
 
-  static parse(data) {
-    switch (data.key) {
+  static parse(key) {
+    switch (key) {
       case 'regular':
         return Mode.regularBattle;
       case 'gachi':
         return Mode.rankedBattle;
       case 'league':
+      case 'league_pair':
+      case 'league_team':
         return Mode.leagueBattle;
+      case 'fes':
+      case 'fes_solo':
+      case 'fes_team':
+        return Mode.splatfest;
+      case 'private':
+        return Mode.privateBattle;
       default:
         throw new RangeError();
     }
