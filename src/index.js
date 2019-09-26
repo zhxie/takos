@@ -4,14 +4,14 @@ import { IntlProvider } from 'react-intl';
 import { ConfigProvider } from 'antd';
 import * as serviceWorker from './serviceWorker';
 
-import './index.css';
 import antd_en_US from 'antd/es/locale/en_US';
 import antd_ja_JP from 'antd/es/locale/ja_JP';
 import antd_zh_CN from 'antd/es/locale/zh_CN';
+import './index.css';
+import App from './App';
 import en_US from './assets/locales/en_US';
 import ja_JP from './assets/locales/ja_JP';
 import zh_CN from './assets/locales/zh_CN';
-import App from './App';
 
 ReactDOM.render(
   <ConfigProvider

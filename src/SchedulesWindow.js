@@ -4,16 +4,16 @@ import { FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Button } from 'antd';
 
 import './SchedulesWindow.css';
-import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
+import leagueIcon from './assets/images/mode-league.png';
+import rankedIcon from './assets/images/mode-ranked.png';
+import regularIcon from './assets/images/mode-regular.png';
+import ErrorResult from './components/ErrorResult';
+import LoadingResult from './components/LoadingResult';
+import ScheduleCard from './components/ScheduleCard';
 import { Mode } from './models/Mode';
 import Schedule from './models/Schedule';
+import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
 import TimeConverter from './utils/TimeConverter';
-import LoadingResult from './components/LoadingResult';
-import ErrorResult from './components/ErrorResult';
-import ScheduleCard from './components/ScheduleCard';
-import regularIcon from './assets/images/mode-regular.png';
-import rankedIcon from './assets/images/mode-ranked.png';
-import leagueIcon from './assets/images/mode-league.png';
 
 const { Header, Content } = Layout;
 

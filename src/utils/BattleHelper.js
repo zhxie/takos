@@ -1,5 +1,5 @@
-import './StringHelper';
 import { SPLATNET, SPLATNET_NICKNAME_AND_ICON } from './FileFolderUrl';
+import './StringHelper';
 
 class BattleHelper {
   static getPlayerIcon = id => {

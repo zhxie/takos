@@ -1,9 +1,9 @@
 import Base from './Base';
 import { Mode, SplatfestMode } from './Mode';
+import { Rank, BattlePlayer } from './Player';
 import Rule from './Rule';
 import ScheduledStage from './ScheduledStage';
 import { Freshness } from './Weapon';
-import { Rank, BattlePlayer } from './Player';
 
 class Battle extends Base {
   constructor(

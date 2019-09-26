@@ -1,5 +1,5 @@
-import Base from './Base';
 import Ability from './Ability';
+import Base from './Base';
 
 class BaseBrand {
   constructor(name, value) {

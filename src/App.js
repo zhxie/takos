@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
 import './App.css';
-import MainWindow from './MainWindow';
 import LoginWindow from './LoginWindow';
+import MainWindow from './MainWindow';
 import NotFoundResult from './components/NotFoundResult';
 
 const { Content } = Layout;

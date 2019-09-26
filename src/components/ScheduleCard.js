@@ -3,14 +3,14 @@ import { FormattedMessage } from 'react-intl';
 import { Card } from 'antd';
 
 import './ScheduleCard.css';
-import { SPLATNET } from '../utils/FileFolderUrl';
-import Rule from '../models/Rule';
-import TimeConverter from '../utils/TimeConverter';
 import turfWarIcon from '../assets/images/mode-regular.png';
+import clamBlitzIcon from '../assets/images/rule-clam-blitz.png';
+import rainmakerIcon from '../assets/images/rule-rainmaker.png';
 import splatZonesIcon from '../assets/images/rule-splat-zones.png';
 import towerControlIcon from '../assets/images/rule-tower-control.png';
-import rainmakerIcon from '../assets/images/rule-rainmaker.png';
-import clamBlitzIcon from '../assets/images/rule-clam-blitz.png';
+import Rule from '../models/Rule';
+import { SPLATNET } from '../utils/FileFolderUrl';
+import TimeConverter from '../utils/TimeConverter';
 
 const { Meta } = Card;
 

@@ -1,7 +1,6 @@
 import { randomBytes, createHash } from 'crypto';
 import uuid from 'uuid';
 
-import './StringHelper';
 import {
   USER_AGENT,
   NINTENDO_ACCOUNTS,
@@ -18,6 +17,7 @@ import {
   NINTENDO_SERVICE_WEB_SERVICE_TOKEN,
   SPLATNET
 } from './FileFolderUrl';
+import './StringHelper';
 
 class LoginHelper {
   static random = size => {

@@ -3,11 +3,11 @@ import { Switch, Route, Link, Redirect } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Layout, Menu, Icon } from 'antd';
 
-import logo from './assets/images/logo.svg';
 import './MainWindow.css';
-import SchedulesWindow from './SchedulesWindow';
 import BattlesWindow from './BattlesWindow';
+import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
+import logo from './assets/images/logo.svg';
 import ConstructionResult from './components/ConstructionResult';
 
 const { Sider, Content } = Layout;

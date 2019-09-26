@@ -5,10 +5,10 @@ import { Layout, Steps, Typography, Select, Button, Alert, Form, Row, Col, Input
 
 import './LoginWindow.css';
 import logo from './assets/images/logo.svg';
-import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
-import './utils/StringHelper';
-import LoginHelper from './utils/LoginHelper';
 import DoneResult from './components/DoneResult';
+import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import LoginHelper from './utils/LoginHelper';
+import './utils/StringHelper';
 
 const { Content } = Layout;
 const { Step } = Steps;

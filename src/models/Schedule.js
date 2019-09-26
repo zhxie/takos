@@ -1,6 +1,6 @@
+import Base from './Base';
 import { Mode } from './Mode';
 import Rule from './Rule';
-import Base from './Base';
 import ScheduledStage from './ScheduledStage';
 
 class Schedule extends Base {

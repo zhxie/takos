@@ -3,10 +3,10 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select } from 'antd';
 
 import './SettingsWindow.css';
-import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
-import './utils/StringHelper';
-import LoginHelper from './utils/LoginHelper';
 import icon from './assets/images/character-c-q-cumber.png';
+import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import LoginHelper from './utils/LoginHelper';
+import './utils/StringHelper';
 
 const { Header, Content } = Layout;
 const { confirm } = Modal;
