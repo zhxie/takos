@@ -34,4 +34,26 @@ Mode.splatfest = new Mode('mode.splatfest', 4);
 
 Object.freeze(Mode);
 
-export default Mode;
+class SplatfestMode {
+  constructor(name, value) {
+    this.name = name;
+    this.value = value;
+  }
+
+  static parse(key) {
+    if (key.includes('challenge')) {
+      return SplatfestMode.challenge;
+    } else if (key.includes('regular')) {
+      return SplatfestMode.regular;
+    } else {
+      throw new RangeError();
+    }
+  }
+}
+
+SplatfestMode.challenge = new SplatfestMode('mode.splatfest.challenge', 0);
+SplatfestMode.regular = new SplatfestMode('mode.splatfest.regular', 1);
+
+Object.freeze(SplatfestMode);
+
+export { Mode, SplatfestMode };

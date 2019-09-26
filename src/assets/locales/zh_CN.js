@@ -5,6 +5,8 @@ const zh_CN = {
   'mode.league_battle': '联盟战*',
   'mode.private_battle': '私人战*',
   'mode.splatfest': '喷溅节',
+  'mode.splatfest.challenge': '挑战*',
+  'mode.splatfest.regular': '普通',
   // Rule
   'rule.turf_war': '地盘战',
   'rule.splat_zones': '区域模式*',
@@ -241,6 +243,11 @@ const zh_CN = {
   'weapon.special.bubble_blower': '泡泡发生器*',
   'weapon.special.booyah_bomb': 'Nice 弹*',
   'weapon.special.ultra_stamp': '究极图章*',
+  // Freshness
+  'freshness.dry': '不怎么新鲜*',
+  'freshness.raw': '一般新鲜*',
+  'freshness.fresh': '新鲜！*',
+  'freshness.superfresh': '超级新鲜！！*',
   // Ability
   'ability.primary': '基本能力',
   'abiliry.secondary': '附加能力',

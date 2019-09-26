@@ -5,6 +5,8 @@ const en_US = {
   'mode.league_battle': 'League Battle',
   'mode.private_battle': 'Private Battle',
   'mode.splatfest': 'Splatfest',
+  'mode.splatfest.challenge': 'Challenge',
+  'mode.splatfest.regular': 'Regular',
   // Rule
   'rule.turf_war': 'Turf War',
   'rule.splat_zones': 'Splat Zones',
@@ -241,6 +243,11 @@ const en_US = {
   'weapon.special.bubble_blower': 'Bubble Blower',
   'weapon.special.booyah_bomb': 'Booyah Bomb',
   'weapon.special.ultra_stamp': 'Ultra Stamp',
+  // Freshness
+  'freshness.dry': 'Dry',
+  'freshness.raw': 'Raw',
+  'freshness.fresh': 'Fresh',
+  'freshness.superfresh': 'SUPERFRESH!',
   // Ability
   'ability.primary': 'Primary Ability',
   'abiliry.secondary': 'Secondary Ability',

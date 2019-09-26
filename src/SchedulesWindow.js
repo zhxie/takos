@@ -5,7 +5,7 @@ import { Layout, PageHeader, Alert, Button } from 'antd';
 
 import './SchedulesWindow.css';
 import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
-import Mode from './models/Mode';
+import { Mode } from './models/Mode';
 import Schedule from './models/Schedule';
 import TimeConverter from './utils/TimeConverter';
 import LoadingResult from './components/LoadingResult';

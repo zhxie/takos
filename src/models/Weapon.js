@@ -657,4 +657,34 @@ class Weapon extends Base {
   }
 }
 
-export { MainWeaponType, MainWeapon, SubWeapon, SpecialWeapon, Weapon };
+class Freshness {
+  constructor(name, value) {
+    this.name = name;
+    this.value = value;
+  }
+
+  static parse(value) {
+    if (value < 5) {
+      return Freshness.dry;
+    } else if (value < 10) {
+      return Freshness.raw;
+    } else if (value < 15) {
+      return Freshness.fresh;
+    } else if (value < 20) {
+      return Freshness.superfresh;
+    } else if (value < 50) {
+      return Freshness.superfresh2;
+    } else {
+      return Freshness.superfresh3;
+    }
+  }
+}
+
+Freshness.dry = new Freshness('freshness.dry', 0);
+Freshness.raw = new Freshness('freshness.raw', 1);
+Freshness.fresh = new Freshness('freshness.fresh', 2);
+Freshness.superfresh = new Freshness('freshness.superfresh', 3);
+Freshness.superfresh2 = new Freshness('freshness.superfresh', 4);
+Freshness.superfresh3 = new Freshness('freshness.superfresh', 5);
+
+export { MainWeaponType, MainWeapon, SubWeapon, SpecialWeapon, Weapon, Freshness };

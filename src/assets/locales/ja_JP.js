@@ -5,6 +5,8 @@ const ja_JP = {
   'mode.league_battle': 'リーグマッチ',
   'mode.private_battle': 'プライベートマッチ',
   'mode.splatfest': 'フェス',
+  'mode.splatfest.challenge': 'チャレンジ',
+  'mode.splatfest.regular': 'レギュラー',
   // Rule
   'rule.turf_war': 'ナワバリバトル',
   'rule.splat_zones': 'ガチエリア',
@@ -241,6 +243,11 @@ const ja_JP = {
   'weapon.special.bubble_blower': 'バブルランチャー',
   'weapon.special.booyah_bomb': 'ナイスダマ',
   'weapon.special.ultra_stamp': 'ウルトラハンコ',
+  // Freshness
+  'freshness.dry': 'チョーシあげていこう',
+  'freshness.raw': 'チョーシぼちぼち',
+  'freshness.fresh': 'チョーシいいね！',
+  'freshness.superfresh': 'チョーシサイコー！！',
   // Ability
   'ability.primary': '基本ギアパワー',
   'abiliry.secondary': '追加ギアパワー',

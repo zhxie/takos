@@ -1,4 +1,4 @@
-import Mode from './Mode';
+import { Mode } from './Mode';
 import Rule from './Rule';
 import Base from './Base';
 import ScheduledStage from './ScheduledStage';
@@ -16,7 +16,7 @@ class Schedule extends Base {
 
   static parse(data) {
     try {
-      const mode = Mode.parse(data.game_mode);
+      const mode = Mode.parse(data.game_mode.key);
       const rule = Rule.parse(data.rule);
       const startTime = parseInt(data.start_time);
       const endTime = parseInt(data.end_time);
