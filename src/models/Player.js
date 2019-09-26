@@ -198,10 +198,81 @@ class BattlePlayer extends Player {
 
   static parse(data, url, isSelf) {
     try {
-      if (data.udemae !== null && data.udemae !== undefined) {
-        return new RankedBattlePlayer(data, url, isSelf);
+      const species = Species.parse(data.player.player_type.species);
+      const style = Style.parse(data.player.player_type.style);
+      const level = parseInt(data.player_result.player_rank) + 100 * parseInt(data.player_result.star_rank);
+      const headgearGear = Gear.parseHeadgear(data.head, data.head_skills);
+      if (headgearGear.e !== null) {
+        // Handle previous error
+        return new RegularBattlePlayer(headgearGear.e);
+      }
+      const clothesGear = Gear.parseClothes(data.clothes, data.clothes_skills);
+      if (clothesGear.e !== null) {
+        // Handle previous error
+        return new RegularBattlePlayer(clothesGear.e);
+      }
+      const shoesGear = Gear.parseShoes(data.shoes, data.shoes_skills);
+      if (shoesGear.e !== null) {
+        // Handle previous error
+        return new RegularBattlePlayer(shoesGear.e);
+      }
+      const weapon = Weapon.parse(data.weapon);
+      if (weapon.e !== null) {
+        // Handle previous error
+        return new RegularBattlePlayer(weapon.e);
+      }
+      const paint = parseInt(data.game_paint_point);
+      const kill = parseInt(data.kill_count);
+      const assist = parseInt(data.assist_count);
+      const death = parseInt(data.death_count);
+      const special = parseInt(data.special_count);
+      const sort = parseInt(data.sort_score);
+      if (data.udemae === null || data.udemae === undefined) {
+        // Regular battle
+        return new RegularBattlePlayer(
+          null,
+          data.player_result.principal_id,
+          data.player_result.nickname,
+          species,
+          style,
+          url,
+          isSelf,
+          level,
+          headgearGear,
+          clothesGear,
+          shoesGear,
+          weapon,
+          paint,
+          kill,
+          assist,
+          death,
+          special,
+          sort
+        );
       } else {
-        return new RegularBattlePlayer(data, url, isSelf);
+        // Ranked battle
+        const rank = Rank.parse(data.udemae);
+        return new RankedBattlePlayer(
+          null,
+          data.player_result.principal_id,
+          data.player_result.nickname,
+          species,
+          style,
+          url,
+          isSelf,
+          level,
+          rank,
+          headgearGear,
+          clothesGear,
+          shoesGear,
+          weapon,
+          paint,
+          kill,
+          assist,
+          death,
+          special,
+          sort
+        );
       }
     } catch (e) {
       console.error(e);
@@ -268,71 +339,6 @@ class RegularBattlePlayer extends BattlePlayer {
       sort
     );
   }
-
-  static parse(data, url, isSelf) {
-    try {
-      const species = Species.parse(data.player.player_type.species);
-      const style = Style.parse(data.player.player_type.style);
-      const headgearGear = Gear.parseHeadgear(data.head, data.head_skills);
-      if (headgearGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(headgearGear.e);
-      }
-      const clothesGear = Gear.parseClothes(data.clothes, data.clothes_skills);
-      if (clothesGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(clothesGear.e);
-      }
-      const shoesGear = Gear.parseShoes(data.shoes, data.shoes_skills);
-      if (shoesGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(shoesGear.e);
-      }
-      const weapon = Weapon.parse(data.weapon);
-      if (weapon.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(weapon.e);
-      }
-      return new RegularBattlePlayer(
-        null,
-        data.player_result.principal_id,
-        data.player_result.nickname,
-        species,
-        style,
-        url,
-        isSelf,
-        parseInt(data.player_result.player_rank) + 100 * parseInt(data.player_result.star_rank),
-        headgearGear,
-        clothesGear,
-        shoesGear,
-        weapon,
-        parseInt(data.game_paint_point),
-        parseInt(data.kill_count),
-        parseInt(data.assist_count),
-        parseInt(data.death_count),
-        parseInt(data.special_count),
-        parseInt(data.sort_score)
-      );
-    } catch (e) {
-      console.error(e);
-      return new RegularBattlePlayer('can_not_parse_regular_player');
-    }
-  }
-
-  static parsePromise(data, isSelf) {
-    try {
-      return BattleHelper.getPlayerIcon(data.player.principal_id).then(res => {
-        if (res === '') {
-          return new RegularBattlePlayer('can_not_get_player_icon');
-        } else {
-          return this.parse(data, res, isSelf);
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      return new RegularBattlePlayer('can_not_parse_regular_player');
-    }
-  }
 }
 
 class RankedBattlePlayer extends BattlePlayer {
@@ -380,73 +386,6 @@ class RankedBattlePlayer extends BattlePlayer {
     );
     this.rank = rank;
   }
-
-  static parse(data, url, isSelf) {
-    try {
-      const species = Species.parse(data.player.player_type.species);
-      const style = Style.parse(data.player.player_type.style);
-      const headgearGear = Gear.parseHeadgear(data.head, data.head_skills);
-      if (headgearGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(headgearGear.e);
-      }
-      const clothesGear = Gear.parseClothes(data.clothes, data.clothes_skills);
-      if (clothesGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(clothesGear.e);
-      }
-      const shoesGear = Gear.parseShoes(data.shoes, data.shoes_skills);
-      if (shoesGear.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(shoesGear.e);
-      }
-      const weapon = Weapon.parse(data.weapon);
-      if (weapon.e !== null) {
-        // Handle previous error
-        return new RegularBattlePlayer(weapon.e);
-      }
-      let rank = Rank.parse(data.udemae);
-      return new RegularBattlePlayer(
-        null,
-        data.player_result.principal_id,
-        data.player_result.nickname,
-        species,
-        style,
-        url,
-        isSelf,
-        parseInt(data.player_result.player_rank) + 100 * parseInt(data.player_result.star_rank),
-        rank,
-        headgearGear,
-        clothesGear,
-        shoesGear,
-        weapon,
-        parseInt(data.game_paint_point),
-        parseInt(data.kill_count),
-        parseInt(data.assist_count),
-        parseInt(data.death_count),
-        parseInt(data.special_count),
-        parseInt(data.sort_score)
-      );
-    } catch (e) {
-      console.error(e);
-      return new RegularBattlePlayer('can_not_parse_regular_player');
-    }
-  }
-
-  static parsePromise(data, isSelf) {
-    try {
-      return BattleHelper.getPlayerIcon(data.player.principal_id).then(res => {
-        if (res === '') {
-          return new RegularBattlePlayer('can_not_get_player_icon');
-        } else {
-          return this.parse(data, res, isSelf);
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      return new RegularBattlePlayer('can_not_parse_regular_player');
-    }
-  }
 }
 
-export { Species, Style, PlayerType, Player, BattlePlayer, RegularBattlePlayer, RankedBattlePlayer };
+export { Species, Style, PlayerType, Player, BattlePlayer };

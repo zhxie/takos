@@ -4,6 +4,8 @@ export const SPLATOON2_INK = '/splatoon2inkApi';
 export const SPLATOON2_INK_SCHEDULES = '/data/schedules.json';
 
 export const SPLATNET = '/splatnetApi';
+export const SPLATNET_RESULTS = '/api/results';
+export const SPLATNET_NICKNAME_AND_ICON = '/api/nickname_and_icon?id={0}';
 
 export const NINTENDO_ACCOUNTS_AUTHORIZE =
   'https://accounts.nintendo.com/connect/1.0.0/authorize?state={0}&redirect_uri=npf71b963c1b7b6d119%3A%2F%2Fauth&client_id=71b963c1b7b6d119&scope=openid+user+user.birthday+user.mii+user.screenName&response_type=session_token_code&session_token_code_challenge={1}&session_token_code_challenge_method=S256&theme=login_form';
