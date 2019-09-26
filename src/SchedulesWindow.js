@@ -11,8 +11,7 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import ScheduleCard from './components/ScheduleCard';
 import { Mode } from './models/Mode';
-import Schedule from './models/Schedule';
-import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './utils/FileFolderUrl';
+import ScheduleHelper from './utils/ScheduleHelper';
 import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
@@ -66,41 +65,31 @@ class SchedulesWindow extends React.Component {
     if (!this.modeSelector()) {
       return;
     }
-    const init = {
-      method: 'GET',
-      headers: new Headers({
-        'User-Agent': USER_AGENT
-      })
-    };
-    fetch(SPLATOON2_INK + SPLATOON2_INK_SCHEDULES, init)
-      .then(res => res.json())
+    ScheduleHelper.getSchedules()
       .then(res => {
-        console.log(res);
-        // Parse response
-        let schedulesData;
-        let schedules = [];
-        switch (this.mode) {
-          case Mode.regularBattle:
-            schedulesData = res.regular;
-            break;
-          case Mode.rankedBattle:
-            schedulesData = res.gachi;
-            break;
-          case Mode.leagueBattle:
-            schedulesData = res.league;
-            break;
-          default:
-            throw new RangeError();
-        }
-        try {
-          for (const i in schedulesData) {
-            const schedule = Schedule.parse(schedulesData[i]);
-            if (schedule.e != null) {
-              this.setState({ errorLog: schedule.e, error: true });
+        if (res === null) {
+          this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
+        } else {
+          let schedules;
+          switch (this.mode) {
+            case Mode.regularBattle:
+              schedules = res.regularSchedules;
+              break;
+            case Mode.rankedBattle:
+              schedules = res.rankedSchedules;
+              break;
+            case Mode.leagueBattle:
+              schedules = res.leagueSchedules;
+              break;
+            default:
+              throw new RangeError();
+          }
+          schedules.forEach(element => {
+            if (element.error !== null) {
+              this.setState({ errorLog: element.e, error: true });
               return;
             }
-            schedules.push(schedule);
-          }
+          });
           if (schedules.length > 0) {
             this.setState({ data: schedules, loaded: true });
             // Set update interval
@@ -108,14 +97,11 @@ class SchedulesWindow extends React.Component {
           } else {
             this.setState({ errorLog: 'can_not_parse_schedules', error: true });
           }
-        } catch (e) {
-          console.error(e);
-          this.setState({ errorLog: 'can_not_parse_schedules', error: true });
         }
       })
       .catch(e => {
         console.error(e);
-        this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
+        this.setState({ errorLog: 'can_not_parse_schedules', error: true });
       });
   };
 
