@@ -76,32 +76,39 @@ class LoginWindow extends React.Component {
   };
 
   getSessionToken = () => {
-    return LoginHelper.getSessionToken(this.loginParameters.sessionTokenCode, this.loginParameters.codeVerifier).then(
-      result => {
-        if (!result) {
-          Modal.error({
-            title: this.props.intl.formatMessage({
-              id: 'app.modal.error.get_session_token',
-              defaultMessage: 'Can not update cookie'
-            }),
-            content: this.props.intl.formatMessage({
-              id: 'app.modal.error.get_session_token.content',
-              defaultMessage:
-                'Your network can not be reached, or the link is expired. Please refresh the page and try again.'
-            })
-          });
-          return;
+    return LoginHelper.getSessionToken(this.loginParameters.sessionTokenCode, this.loginParameters.codeVerifier)
+      .then(result => {
+        if (result === null) {
+          throw new RangeError();
         } else {
           window.localStorage.sessionToken = result;
           return this.updateCookie();
         }
-      }
-    );
+      })
+      .catch(() => {
+        Modal.error({
+          title: this.props.intl.formatMessage({
+            id: 'app.modal.error.get_session_token',
+            defaultMessage: 'Can not update cookie'
+          }),
+          content: this.props.intl.formatMessage({
+            id: 'app.modal.error.get_session_token.content',
+            defaultMessage: 'Your network can not be reached, or the link is expired. Please refresh the page and try again.'
+          })
+        });
+      });
   };
 
   updateCookie = () => {
-    return LoginHelper.updateCookie(window.localStorage.sessionToken).then(result => {
-      if (!result) {
+    return LoginHelper.getCookie(window.localStorage.sessionToken)
+      .then(result => {
+        if (result === null) {
+          throw new RangeError();
+        } else {
+          this.cookieOnChange(result);
+        }
+      })
+      .catch(() => {
         Modal.error({
           title: this.props.intl.formatMessage({
             id: 'app.modal.error.update_cookie',
@@ -112,16 +119,14 @@ class LoginWindow extends React.Component {
               <p style={{ margin: 0 }}>
                 {this.props.intl.formatMessage({
                   id: 'app.modal.error.update_cookie.content.1',
-                  defaultMessage:
-                    'Your network can not be reached, or your login is expired. Please re-login or try again.'
+                  defaultMessage: 'Your network can not be reached, or your login is expired. Please re-login or try again.'
                 })}
               </p>
               <p style={{ margin: 0 }}>
                 {this.props.intl.formatMessage(
                   {
                     id: 'app.modal.error.update_cookie.content.2',
-                    defaultMessage:
-                      'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
+                    defaultMessage: 'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                   },
                   {
                     a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
@@ -133,10 +138,7 @@ class LoginWindow extends React.Component {
             </div>
           )
         });
-      } else {
-        this.cookieOnChange(result);
-      }
-    });
+      });
   };
 
   showConfirm = () => {
@@ -211,20 +213,12 @@ class LoginWindow extends React.Component {
               <FormattedMessage id="app.welcome.title" defaultMessage="Welcome to Takos" />
             </Text>
             <Text type="secondary" style={{ fontSize: 16 }}>
-              <FormattedMessage
-                id="app.description"
-                defaultMessage="A cross-platform schedule and battle statistic client of Splatoon 2."
-              />
+              <FormattedMessage id="app.description" defaultMessage="A cross-platform schedule and battle statistic client of Splatoon 2." />
             </Text>
           </div>
         </div>
         <div className="LoginWindow-content-button">
-          <Select
-            value={this.state.language}
-            onChange={this.changeLanguage}
-            defaultValue="en_US"
-            style={{ width: 120, margin: '0 0 24px 0' }}
-          >
+          <Select value={this.state.language} onChange={this.changeLanguage} defaultValue="en_US" style={{ width: 120, margin: '0 0 24px 0' }}>
             <Option value="en_US">English</Option>
             <Option value="ja_JP">日本語</Option>
             <Option value="zh_CN">中文</Option>
@@ -244,10 +238,7 @@ class LoginWindow extends React.Component {
           <div className="LoginWindow-content-login">
             <Paragraph>
               <Text style={{ fontSize: 18 }}>
-                <FormattedMessage
-                  id="app.welcome.cookie.1"
-                  defaultMessage="In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet."
-                />
+                <FormattedMessage id="app.welcome.cookie.1" defaultMessage="In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet." />
               </Text>
             </Paragraph>
             <Paragraph>
@@ -257,9 +248,7 @@ class LoginWindow extends React.Component {
                   defaultMessage="Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie generation introducted in <a1>splatnet2statink</a1>, or be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet, which is also called <a2>the MitM</a2>."
                   values={{
                     a1: msg => <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">{msg}</a>,
-                    a2: msg => (
-                      <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">{msg}</a>
-                    )
+                    a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">{msg}</a>
                   }}
                 />
               </Text>
@@ -276,9 +265,7 @@ class LoginWindow extends React.Component {
                     id="app.alert.warning.automatic_cookie_generation"
                     defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
                     values={{
-                      a: msg => (
-                        <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
-                      )
+                      a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
                     }}
                   />
                 </p>
@@ -295,16 +282,7 @@ class LoginWindow extends React.Component {
                     id="app.alert.info.use_automatic_cookie_generation_first_time"
                     defaultMessage='If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
                     values={{
-                      a: msg => (
-                        <a
-                          href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
-                            this.loginParameters.state,
-                            this.loginParameters.codeChallenge
-                          )}
-                        >
-                          {msg}
-                        </a>
-                      )
+                      a: msg => <a href={NINTENDO_ACCOUNTS_AUTHORIZE.format(this.loginParameters.state, this.loginParameters.codeChallenge)}>{msg}</a>
                     }}
                   />
                 </p>

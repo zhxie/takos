@@ -161,27 +161,7 @@ class Player extends Base {
 }
 
 class BattlePlayer extends Player {
-  constructor(
-    e,
-    type,
-    id,
-    nickname,
-    species,
-    style,
-    isSelf,
-    url,
-    level,
-    headgearGear,
-    clothesGear,
-    shoesGear,
-    weapon,
-    paint,
-    kill,
-    assist,
-    death,
-    special,
-    sort
-  ) {
+  constructor(e, type, id, nickname, species, style, isSelf, url, level, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort) {
     super(e, type, id, nickname, species, style, isSelf, url);
     this.level = level;
     this.headgearGear = headgearGear;
@@ -229,50 +209,11 @@ class BattlePlayer extends Player {
       const sort = parseInt(data.sort_score);
       if (data.udemae === null || data.udemae === undefined) {
         // Regular battle
-        return new RegularBattlePlayer(
-          null,
-          data.player_result.principal_id,
-          data.player_result.nickname,
-          species,
-          style,
-          url,
-          isSelf,
-          level,
-          headgearGear,
-          clothesGear,
-          shoesGear,
-          weapon,
-          paint,
-          kill,
-          assist,
-          death,
-          special,
-          sort
-        );
+        return new RegularBattlePlayer(null, data.player_result.principal_id, data.player_result.nickname, species, style, url, isSelf, level, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort);
       } else {
         // Ranked battle
         const rank = Rank.parse(data.udemae);
-        return new RankedBattlePlayer(
-          null,
-          data.player_result.principal_id,
-          data.player_result.nickname,
-          species,
-          style,
-          url,
-          isSelf,
-          level,
-          rank,
-          headgearGear,
-          clothesGear,
-          shoesGear,
-          weapon,
-          paint,
-          kill,
-          assist,
-          death,
-          special,
-          sort
-        );
+        return new RankedBattlePlayer(null, data.player_result.principal_id, data.player_result.nickname, species, style, url, isSelf, level, rank, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort);
       }
     } catch (e) {
       console.error(e);
@@ -281,109 +222,29 @@ class BattlePlayer extends Player {
   }
 
   static parsePromise(data, isSelf) {
-    try {
-      return BattleHelper.getPlayerIcon(data.player.principal_id).then(res => {
-        if (res === '') {
-          return new BattlePlayer('can_not_get_player_icon');
+    return BattleHelper.getPlayerIcon(data.player.principal_id)
+      .then(res => {
+        if (res === null) {
+          throw new RangeError();
         } else {
           return this.parse(data, res, isSelf);
         }
+      })
+      .catch(() => {
+        return new BattlePlayer('can_not_get_player_icon');
       });
-    } catch (e) {
-      console.error(e);
-      return new BattlePlayer('can_not_parse_player');
-    }
   }
 }
 
 class RegularBattlePlayer extends BattlePlayer {
-  constructor(
-    e,
-    id,
-    nickname,
-    species,
-    style,
-    isSelf,
-    url,
-    level,
-    headgearGear,
-    clothesGear,
-    shoesGear,
-    weapon,
-    paint,
-    kill,
-    assist,
-    death,
-    special,
-    sort
-  ) {
-    super(
-      e,
-      PlayerType.regularBattle,
-      id,
-      nickname,
-      species,
-      style,
-      isSelf,
-      url,
-      level,
-      headgearGear,
-      clothesGear,
-      shoesGear,
-      weapon,
-      paint,
-      kill,
-      assist,
-      death,
-      special,
-      sort
-    );
+  constructor(e, id, nickname, species, style, isSelf, url, level, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort) {
+    super(e, PlayerType.regularBattle, id, nickname, species, style, isSelf, url, level, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort);
   }
 }
 
 class RankedBattlePlayer extends BattlePlayer {
-  constructor(
-    e,
-    id,
-    nickname,
-    species,
-    style,
-    isSelf,
-    url,
-    level,
-    rank,
-    headgearGear,
-    clothesGear,
-    shoesGear,
-    weapon,
-    paint,
-    kill,
-    assist,
-    death,
-    special,
-    sort
-  ) {
-    super(
-      e,
-      PlayerType.rankedBattle,
-      id,
-      nickname,
-      species,
-      style,
-      isSelf,
-      url,
-      level,
-      headgearGear,
-      clothesGear,
-      shoesGear,
-      weapon,
-      paint,
-      kill,
-      assist,
-      death,
-      special,
-      sort
-    );
+  constructor(e, id, nickname, species, style, isSelf, url, level, rank, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort) {
+    super(e, PlayerType.rankedBattle, id, nickname, species, style, isSelf, url, level, headgearGear, clothesGear, shoesGear, weapon, paint, kill, assist, death, special, sort);
     this.rank = rank;
   }
 }

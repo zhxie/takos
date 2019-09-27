@@ -11,6 +11,7 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import ScheduleCard from './components/ScheduleCard';
 import { Mode } from './models/Mode';
+import TakosError from './utils/ErrorHelper';
 import ScheduleHelper from './utils/ScheduleHelper';
 import TimeConverter from './utils/TimeConverter';
 
@@ -68,7 +69,7 @@ class SchedulesWindow extends React.Component {
     ScheduleHelper.getSchedules()
       .then(res => {
         if (res === null) {
-          this.setState({ errorLog: 'can_not_fetch_schedules', error: true });
+          throw new TakosError('can_not_fetch_schedules');
         } else {
           let schedules;
           switch (this.mode) {
@@ -86,8 +87,7 @@ class SchedulesWindow extends React.Component {
           }
           schedules.forEach(element => {
             if (element.error !== null) {
-              this.setState({ errorLog: element.e, error: true });
-              return;
+              throw new TakosError(element.e);
             }
           });
           if (schedules.length > 0) {
@@ -95,13 +95,17 @@ class SchedulesWindow extends React.Component {
             // Set update interval
             this.timer = setInterval(this.timeout, 60000);
           } else {
-            this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+            throw new TakosError('can_not_parse_schedules');
           }
         }
       })
       .catch(e => {
-        console.error(e);
-        this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+        if (e instanceof TakosError) {
+          this.setState({ errorLog: e.message, error: true });
+        } else {
+          console.error(e);
+          this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+        }
       });
   };
 
@@ -121,12 +125,7 @@ class SchedulesWindow extends React.Component {
             return (
               <Alert
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
-                description={
-                  <FormattedMessage
-                    id="app.alert.warning.schedules_expired"
-                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
-                  />
-                }
+                description={<FormattedMessage id="app.alert.warning.schedules_expired" defaultMessage="It seems that these schedules have expired, please refresh this page to update." />}
                 type="warning"
                 showIcon
               />
@@ -141,10 +140,7 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 1) {
             return (
               <div>
-                <PageHeader
-                  title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
-                  subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
-                />
+                <PageHeader title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />} subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)} />
                 <ScheduleCard key="2" schedule={this.state.data[1]} />
               </div>
             );
@@ -173,12 +169,7 @@ class SchedulesWindow extends React.Component {
       return (
         <ErrorResult
           error={this.state.errorLog}
-          checklist={[
-            <FormattedMessage
-              id="app.problem.troubleshoot.network"
-              defaultMessage="Your network connection and proxy settings"
-            />
-          ]}
+          checklist={[<FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection and proxy settings" />]}
           extra={[
             [
               <Button

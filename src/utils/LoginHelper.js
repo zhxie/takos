@@ -61,7 +61,7 @@ class LoginHelper {
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        if (res.session_token !== undefined) {
+        if (res.session_token !== undefined && res.session_token !== null) {
           return res.session_token;
         } else {
           throw new RangeError();
@@ -69,11 +69,11 @@ class LoginHelper {
       })
       .catch(e => {
         console.error(e);
-        return '';
+        return null;
       });
   };
 
-  static updateCookie = sessionToken => {
+  static getCookie = sessionToken => {
     console.log(sessionToken);
     const body1 = {
       client_id: '71b963c1b7b6d119',
@@ -91,7 +91,11 @@ class LoginHelper {
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        return { accessToken: res.access_token, idToken: res.id_token };
+        if (res.access_token !== undefined && res.access_token !== null && (res.id_token !== undefined && res.id_token !== null)) {
+          return { accessToken: res.access_token, idToken: res.id_token };
+        } else {
+          throw new RangeError();
+        }
       })
       .then(data => {
         let init = {
@@ -104,7 +108,11 @@ class LoginHelper {
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            return { idToken: data.idToken, country: res.country, birthday: res.birthday, language: res.language };
+            if (res.country !== undefined && res.country !== null && (res.birthday !== undefined && res.birthday !== null) && (res.language !== undefined && res.language !== null)) {
+              return { idToken: data.idToken, country: res.country, birthday: res.birthday, language: res.language };
+            } else {
+              throw new RangeError();
+            }
           });
       })
       .then(data => {
@@ -128,14 +136,18 @@ class LoginHelper {
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            return {
-              idToken: data.idToken,
-              country: data.country,
-              birthday: data.birthday,
-              language: data.language,
-              timestamp,
-              hash: res.hash
-            };
+            if (res.hash !== undefined && res.hash !== null) {
+              return {
+                idToken: data.idToken,
+                country: data.country,
+                birthday: data.birthday,
+                language: data.language,
+                timestamp,
+                hash: res.hash
+              };
+            } else {
+              throw new RangeError();
+            }
           });
       })
       .then(data => {
@@ -154,23 +166,37 @@ class LoginHelper {
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            return {
-              country: data.country,
-              birthday: data.birthday,
-              language: data.language,
-              loginNso: {
-                f: res.login_nso.f,
-                p1: res.login_nso.p1,
-                p2: res.login_nso.p2,
-                p3: res.login_nso.p3
-              },
-              loginApp: {
-                f: res.login_app.f,
-                p1: res.login_app.p1,
-                p2: res.login_app.p2,
-                p3: res.login_app.p3
-              }
-            };
+            if (
+              res.login_nso.f !== undefined &&
+              res.login_nso.f !== null &&
+              (res.login_nso.p1 !== undefined && res.login_nso.p1 !== null) &&
+              (res.login_nso.p2 !== undefined && res.login_nso.p2 !== null) &&
+              (res.login_nso.p3 !== undefined && res.login_nso.p3 !== null) &&
+              (res.login_app.f !== undefined && res.login_app.f !== null) &&
+              (res.login_app.p1 !== undefined && res.login_app.p1 !== null) &&
+              (res.login_app.p2 !== undefined && res.login_app.p2 !== null) &&
+              (res.login_app.p3 !== undefined && res.login_app.p3 !== null)
+            ) {
+              return {
+                country: data.country,
+                birthday: data.birthday,
+                language: data.language,
+                loginNso: {
+                  f: res.login_nso.f,
+                  p1: res.login_nso.p1,
+                  p2: res.login_nso.p2,
+                  p3: res.login_nso.p3
+                },
+                loginApp: {
+                  f: res.login_app.f,
+                  p1: res.login_app.p1,
+                  p2: res.login_app.p2,
+                  p3: res.login_app.p3
+                }
+              };
+            } else {
+              throw new RangeError();
+            }
           });
       })
       .then(data => {
@@ -199,7 +225,11 @@ class LoginHelper {
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            return { loginApp: data.loginApp, accessToken: res.result.webApiServerCredential.accessToken };
+            if (res.result.webApiServerCredential.accessToken !== undefined && res.result.webApiServerCredential.accessToken !== null) {
+              return { loginApp: data.loginApp, accessToken: res.result.webApiServerCredential.accessToken };
+            } else {
+              throw new RangeError();
+            }
           });
       })
       .then(data => {
@@ -224,7 +254,11 @@ class LoginHelper {
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            return { accessToken: res.result.accessToken };
+            if (res.result.accessToken !== undefined && res.result.accessToken !== null) {
+              return { accessToken: res.result.accessToken };
+            } else {
+              throw new RangeError();
+            }
           });
       })
       .then(data => {
@@ -237,31 +271,16 @@ class LoginHelper {
         return fetch(SPLATNET + '/Cookie', init).then(res => {
           console.log(res);
           const re = /iksm_session=([a-f0-9]+);/;
-          return re.exec(res.headers.get('X-Cookie'))[1];
+          if (res.headers.get('X-Cookie') !== undefined && res.headers.get('X-Cookie') !== null) {
+            return re.exec(res.headers.get('X-Cookie'))[1];
+          } else {
+            throw new RangeError();
+          }
         });
-        /*
-        let init = {
-          method: 'GET',
-          headers: new Headers({
-            'X-GameWebToken': data.accessToken
-          }),
-          credentials: 'include'
-        };
-        return fetch(SPLATNET, init)
-          .then(res => {
-            console.log(res);
-            console.log(res.headers.get('Set-Cookie'));
-            console.log(document.cookie);
-          })
-          .then(res => res.json())
-          .then(res => {
-            return '';
-          });
-        */
       })
       .catch(e => {
         console.error(e);
-        return '';
+        return null;
       });
   };
 }
