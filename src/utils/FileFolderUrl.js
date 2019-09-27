@@ -5,6 +5,7 @@ export const SPLATOON2_INK_SCHEDULES = '/data/schedules.json';
 
 export const SPLATNET = '/splatnetApi';
 export const SPLATNET_RESULTS = '/api/results';
+export const SPLATNET_RESULT = '/api/results/{0}';
 export const SPLATNET_NICKNAME_AND_ICON = '/api/nickname_and_icon?id={0}';
 
 export const NINTENDO_ACCOUNTS_AUTHORIZE =
