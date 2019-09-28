@@ -936,6 +936,7 @@ const ja_JP = {
   'app.log_out': 'ログアウト',
   'app.next': 'つき',
   'app.done': '完了',
+  'app.fetch_data': 'データを取得',
   'app.retry': 'リトライ',
   'app.user': 'ユーザー',
   'app.cookie': 'クッキー',
@@ -980,6 +981,9 @@ const ja_JP = {
   'app.result.construction.description': 'このページは現在作成中です。',
   'app.result.loading': 'チャージイン',
   'app.result.loading.description': 'このページは読み込み中です…',
+  'app.result.loading.description.fetch_data': 'Takos はデータを取得しています。このプロセスは数秒から数分続きます…',
+  'app.result.loading.description.fetch_data.progress':
+    'Takos はデータ {current}/{total} を取得しています。このプロセスは数秒から数分続きます…',
   'app.result.error': 'やられた',
   'app.result.404': '404',
   'app.result.404.description': '迷子ですか、タコちゃん？',

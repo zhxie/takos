@@ -75,26 +75,35 @@ class BattleHelper {
   };
 
   static updateRank = battle => {
-    try {
-      if (battle.error === null && battle.gameMode === Mode.rankedBattle) {
-        let rank = StorageHelper.rank();
-        if (rank === null) {
-          rank = {};
-        }
-        if (rank[battle.rule.value] === undefined || rank[battle.rule.value] === null) {
-          rank[battle.rule.value] = {};
-        }
-        if (
-          rank[battle.rule.value].number === undefined ||
-          rank[battle.rule.value].number === null ||
-          battle.number > rank[battle.rule.value].number
-        ) {
-          rank[battle.rule.value].number = battle.number;
-          rank[battle.rule.value].rank = battle.rank;
-          StorageHelper.setRank(rank);
-        }
+    if (battle !== undefined && battle !== null && battle.error === null && battle.gameMode === Mode.rankedBattle) {
+      let rank = StorageHelper.rank();
+      if (rank === null) {
+        rank = {};
       }
-    } catch {}
+      if (rank[battle.rule.value] === undefined || rank[battle.rule.value] === null) {
+        rank[battle.rule.value] = {};
+      }
+      if (
+        rank[battle.rule.value].number === undefined ||
+        rank[battle.rule.value].number === null ||
+        battle.number > rank[battle.rule.value].number
+      ) {
+        rank[battle.rule.value].number = battle.number;
+        rank[battle.rule.value].rank = battle.rank;
+        StorageHelper.setRank(rank);
+      }
+    }
+  };
+
+  static pushBattle = battle => {
+    if (battle !== undefined && battle !== null && battle.error === null) {
+      let battles = StorageHelper.battles();
+      if (battles === null) {
+        battles = [];
+      }
+      battles.push(battle);
+      StorageHelper.setBattles(battles);
+    }
   };
 
   static getPlayerIcon = id => {

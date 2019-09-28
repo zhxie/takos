@@ -6,6 +6,10 @@ import { Layout, Steps, Typography, Select, Button, Alert, Form, Row, Col, Input
 import './LoginWindow.css';
 import logo from './assets/images/logo.svg';
 import DoneResult from './components/DoneResult';
+import ErrorResult from './components/ErrorResult';
+import LoadingResult from './components/LoadingResult';
+import BattleHelper from './utils/BattleHelper';
+import TakosError from './utils/ErrorHelper';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
@@ -24,7 +28,11 @@ class LoginWindow extends React.Component {
     isCookie: false,
     isValid: true,
     cookie: '',
-    language: 'en_US'
+    language: 'en_US',
+    error: false,
+    errorLog: 'unknown_error',
+    fetchCurrent: 0,
+    fetchTotal: 0
   };
 
   constructor(props) {
@@ -39,13 +47,13 @@ class LoginWindow extends React.Component {
     }
     switch (value) {
       case 'en_US':
-        window.localStorage.language = 'en_US';
+        StorageHelper.setLanguage('en_US');
         break;
       case 'ja_JP':
-        window.localStorage.language = 'ja_JP';
+        StorageHelper.setLanguage('ja_JP');
         break;
       case 'zh_CN':
-        window.localStorage.language = 'zh_CN';
+        StorageHelper.setLanguage('zh_CN');
         break;
       default:
         throw RangeError();
@@ -55,8 +63,9 @@ class LoginWindow extends React.Component {
 
   toNext = () => {
     if (this.state.step === 1) {
-      window.localStorage.cookie = this.state.cookie;
+      StorageHelper.setCookie(this.state.cookie);
       this.props.onDone();
+      this.fetchData();
     }
     this.setState({ step: this.state.step + 1 });
   };
@@ -146,6 +155,51 @@ class LoginWindow extends React.Component {
       });
   };
 
+  fetchData = () => {
+    let currentNumber = 0;
+    const battles = StorageHelper.battles();
+    if (battles !== null && battles.length > 0) {
+      currentNumber = battles[battles.length - 1].number;
+    }
+    return BattleHelper.getTheLatestBattleNumber().then(res => {
+      if (res === 0) {
+        this.setState({ error: true, errorLog: 'can_not_get_the_latest_battle' });
+      } else {
+        const from = Math.max(1, res - 49, currentNumber + 1);
+        const to = res;
+        if (to >= from) {
+          this.setState({ fetchTotal: to - from + 1 });
+          const getBattleRecursively = (from, to) => {
+            return BattleHelper.getBattle(from).then(res => {
+              if (res.error !== null) {
+                throw new TakosError(res.error);
+              } else {
+                if (from < to) {
+                  BattleHelper.pushBattle(res);
+                  this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
+                  return getBattleRecursively(from + 1, to);
+                }
+              }
+            });
+          };
+          // Fetch battles from 'from' to 'to'
+          getBattleRecursively(from, to)
+            .then(() => {
+              this.toNext();
+            })
+            .catch(e => {
+              if (e instanceof TakosError) {
+                this.setState({ error: true, errorLog: e.message });
+              } else {
+                console.error(e);
+                this.setState({ error: true, errorLog: 'can_not_get_battle' });
+              }
+            });
+        }
+      }
+    });
+  };
+
   showConfirm = () => {
     const getSessionToken = this.getSessionToken;
     const updateCookie = this.updateCookie;
@@ -172,7 +226,7 @@ class LoginWindow extends React.Component {
         onCancel() {}
       });
     } else {
-      if (!window.localStorage.sessionToken) {
+      if (!StorageHelper.sessionToken()) {
         Modal.error({
           title: this.props.intl.formatMessage({
             id: 'app.modal.error.update_cookie_no_session_token',
@@ -367,6 +421,49 @@ class LoginWindow extends React.Component {
     );
   };
 
+  renderFetchData = () => {
+    if (this.state.error) {
+      return (
+        <ErrorResult
+          error={this.state.errorLog}
+          extra={[
+            <Button key="toNext" onClick={this.toNext} type="primary">
+              <FormattedMessage id="app.next" defaultMessage="Next" />
+            </Button>
+          ]}
+        />
+      );
+    } else {
+      if (this.state.fetchTotal === 0) {
+        return (
+          <LoadingResult
+            description={
+              <FormattedMessage
+                id="app.result.loading.description.fetch_data"
+                defaultMessage="Takos is fetching data, which will last for a few seconds to a few minutes..."
+              />
+            }
+          />
+        );
+      } else {
+        return (
+          <LoadingResult
+            description={
+              <FormattedMessage
+                id="app.result.loading.description.fetch_data.progress"
+                defaultMessage="Takos is fetching data {current}/{total}, which will last for a few seconds to a few minutes..."
+                values={{
+                  current: this.state.fetchCurrent,
+                  total: this.state.fetchTotal
+                }}
+              />
+            }
+          />
+        );
+      }
+    }
+  };
+
   renderDone() {
     return (
       <DoneResult
@@ -388,6 +485,7 @@ class LoginWindow extends React.Component {
           <Steps className="LoginWindow-steps" current={this.state.step}>
             <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
             <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
+            <Step title={<FormattedMessage id="app.fetch_data" defaultMessage="Fetch Data" />} />
             <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
           </Steps>
           <div className="LoginWindow-content">
@@ -398,6 +496,8 @@ class LoginWindow extends React.Component {
                 case 1:
                   return this.renderLogin();
                 case 2:
+                  return this.renderFetchData();
+                case 3:
                   return this.renderDone();
                 default:
                   throw new RangeError();
@@ -410,24 +510,22 @@ class LoginWindow extends React.Component {
   }
 
   componentDidMount() {
-    if (window.localStorage.cookie !== undefined) {
-      this.cookieOnChange(window.localStorage.cookie);
+    if (StorageHelper.cookie() !== null) {
+      this.cookieOnChange(StorageHelper.cookie());
     }
-    if (window.localStorage.language !== undefined) {
-      switch (window.localStorage.language) {
-        case 'en_US':
-          this.setState({ language: 'en_US' });
-          break;
-        case 'ja_JP':
-          this.setState({ language: 'ja_JP' });
-          break;
-        case 'zh_CN':
-          this.setState({ language: 'zh_CN' });
-          break;
-        default:
-          this.setState({ language: 'en_US' });
-          break;
-      }
+    switch (StorageHelper.language()) {
+      case 'en_US':
+        this.setState({ language: 'en_US' });
+        break;
+      case 'ja_JP':
+        this.setState({ language: 'ja_JP' });
+        break;
+      case 'zh_CN':
+        this.setState({ language: 'zh_CN' });
+        break;
+      default:
+        this.setState({ language: 'en_US' });
+        break;
     }
   }
 }

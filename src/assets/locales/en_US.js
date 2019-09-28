@@ -936,6 +936,7 @@ const en_US = {
   'app.welcome': 'Welcome',
   'app.log_in': 'Log In',
   'app.log_out': 'Log Out',
+  'app.fetch_data': 'Fetch Data',
   'app.next': 'Next',
   'app.done': 'Done',
   'app.retry': 'Retry',
@@ -982,6 +983,10 @@ const en_US = {
   'app.result.construction.description': 'This page is under construction.',
   'app.result.loading': 'Charging',
   'app.result.loading.description': 'This page is in loading...',
+  'app.result.loading.description.fetch_data':
+    'Takos is fetching data, which will last for a few seconds to a few minutes...',
+  'app.result.loading.description.fetch_data.progress':
+    'Takos is fetching data {current}/{total}, which will last for a few seconds to a few minutes...',
   'app.result.error': 'Ouch!',
   'app.result.404': '404',
   'app.result.404.description': 'Are you lost, small octoling?',
