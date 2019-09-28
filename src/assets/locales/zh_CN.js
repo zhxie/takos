@@ -934,6 +934,7 @@ const zh_CN = {
   'app.settings': '设置',
   'app.welcome': '欢迎',
   'app.log_in': '登录',
+  'app.log_out': '退出登录',
   'app.next': '下一步',
   'app.done': '完成',
   'app.retry': '重试',
@@ -949,9 +950,11 @@ const zh_CN = {
   'app.alert.warning.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info': '信息',
   'app.alert.info.use_automatic_cookie_generation':
-    '如果您希望重新登录，切换账号并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
+    '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':
     '如果您从未使用自动 Cookie 生成并希望使用之，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
+  'app.alert.info.switch_account':
+    '如果您希望切换账号，请首先退出登录。请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
   // App.modal
   'app.modal.confirm.update_cookie': '您希望更新 Cookie 吗？',
   'app.modal.confirm.update_cookie.content':
@@ -964,6 +967,8 @@ const zh_CN = {
     '同时，您也可以尝试使用 <a1>Ikas</a1>、<a2>splatnet2statink</a2>、<a3>Salmonia</a3> 等第三方应用来获取 Cookie。',
   'app.modal.error.update_cookie_no_session_token': '无法更新 Cookie',
   'app.modal.error.update_cookie_no_session_token.content': 'Takos 只能在使用自动 Cookie 生成的情况下更新 Cookie。',
+  'app.modal.confirm.log_out': '您希望退出登录吗？',
+  'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
   // App.result
   'app.result.done': '棒极了',
   'app.result.done.description': '所有的一切都已就绪。尽情享受吧！',

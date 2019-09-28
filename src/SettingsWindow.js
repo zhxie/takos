@@ -6,6 +6,7 @@ import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
+import StorageHelper from './utils/StorageHelper';
 import './utils/StringHelper';
 
 const { Header, Content } = Layout;
@@ -81,7 +82,8 @@ class SettingsWindow extends React.Component {
           }),
           content: this.props.intl.formatMessage({
             id: 'app.modal.error.get_session_token.content',
-            defaultMessage: 'Your network can not be reached, or the link is expired. Please refresh the page and try again.'
+            defaultMessage:
+              'Your network can not be reached, or the link is expired. Please refresh the page and try again.'
           })
         });
       });
@@ -107,14 +109,16 @@ class SettingsWindow extends React.Component {
               <p style={{ margin: 0 }}>
                 {this.props.intl.formatMessage({
                   id: 'app.modal.error.update_cookie.content.1',
-                  defaultMessage: 'Your network can not be reached, or your login is expired. Please re-login or try again.'
+                  defaultMessage:
+                    'Your network can not be reached, or your login is expired. Please re-login or try again.'
                 })}
               </p>
               <p style={{ margin: 0 }}>
                 {this.props.intl.formatMessage(
                   {
                     id: 'app.modal.error.update_cookie.content.2',
-                    defaultMessage: 'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
+                    defaultMessage:
+                      'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                   },
                   {
                     a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
@@ -191,6 +195,26 @@ class SettingsWindow extends React.Component {
     }
   };
 
+  showLogOutConfirm = () => {
+    confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.log_out',
+        defaultMessage: 'Do you want to log out?'
+      }),
+      content: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.log_out.content',
+        defaultMessage: 'Note that when you log out, all saved data, including battles and salmon run, will be cleared.'
+      }),
+      okType: 'danger',
+      icon: <Icon type="exclamation-circle" />,
+      onOk() {
+        StorageHelper.initializeStorage();
+        window.location.assign('/');
+      },
+      onCancel() {}
+    });
+  };
+
   render() {
     return (
       <Layout>
@@ -210,7 +234,9 @@ class SettingsWindow extends React.Component {
                   id="app.alert.warning.automatic_cookie_generation"
                   defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
                   values={{
-                    a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                    a: msg => (
+                      <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                    )
                   }}
                 />
               </p>
@@ -225,10 +251,33 @@ class SettingsWindow extends React.Component {
               <p style={{ margin: 0 }}>
                 <FormattedMessage
                   id="app.alert.info.use_automatic_cookie_generation"
-                  defaultMessage='If you want to re-login, switch account and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                  defaultMessage='If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
                   values={{
-                    a: msg => <a href={NINTENDO_ACCOUNTS_AUTHORIZE.format(this.loginParameters.state, this.loginParameters.codeChallenge)}>{msg}</a>
+                    a: msg => (
+                      <a
+                        href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                          this.loginParameters.state,
+                          this.loginParameters.codeChallenge
+                        )}
+                      >
+                        {msg}
+                      </a>
+                    )
                   }}
+                />
+              </p>
+            }
+            type="info"
+            showIcon
+            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+          />
+          <Alert
+            message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+            description={
+              <p style={{ margin: 0 }}>
+                <FormattedMessage
+                  id="app.alert.info.switch_account"
+                  defaultMessage="If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared."
                 />
               </p>
             }
@@ -264,13 +313,27 @@ class SettingsWindow extends React.Component {
                 </Col>
               </Row>
             </Form.Item>
+            <Form.Item label={<FormattedMessage id="app.log_out" defaultMessage="Log Out" />}>
+              <Row gutter={8}>
+                <Col span={6}>
+                  <Button type="danger" onClick={this.showLogOutConfirm}>
+                    <FormattedMessage id="app.log_out" defaultMessage="Log Out" />
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
           </Form>
           <PageHeader title={<FormattedMessage id="app.system" defaultMessage="System" />} />
           <Form className="SettingsWindow-content-system" labelCol={{ span: 24 }}>
             <Form.Item label={<FormattedMessage id="app.language" defaultMessage="Language" />}>
               <Row gutter={8}>
                 <Col span={6}>
-                  <Select value={this.state.language} onChange={this.changeLanguage} defaultValue="en_US" style={{ width: 120, margin: '0 0 24px 0' }}>
+                  <Select
+                    value={this.state.language}
+                    onChange={this.changeLanguage}
+                    defaultValue="en_US"
+                    style={{ width: 120, margin: '0 0 24px 0' }}
+                  >
                     <Option value="en_US">English</Option>
                     <Option value="ja_JP">日本語</Option>
                     <Option value="zh_CN">中文</Option>

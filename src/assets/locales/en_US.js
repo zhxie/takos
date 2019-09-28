@@ -935,6 +935,7 @@ const en_US = {
   'app.settings': 'Settings',
   'app.welcome': 'Welcome',
   'app.log_in': 'Log In',
+  'app.log_out': 'Log Out',
   'app.next': 'Next',
   'app.done': 'Done',
   'app.retry': 'Retry',
@@ -951,9 +952,11 @@ const en_US = {
     'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.use_automatic_cookie_generation':
-    'If you want to re-login, switch account and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
+    'If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':
     'If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
+  'app.alert.info.switch_account':
+    'If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared.',
   // App.modal
   'app.modal.confirm.update_cookie': 'Do you want to update cookie?',
   'app.modal.confirm.update_cookie.content':
@@ -969,6 +972,9 @@ const en_US = {
   'app.modal.error.update_cookie_no_session_token': 'Can not update cookie',
   'app.modal.error.update_cookie_no_session_token.content':
     'Takos can not update cookie unless you use automatic cookie generation.',
+  'app.modal.confirm.log_out': 'Do you want to log out?',
+  'app.modal.confirm.log_out.content':
+    'Note that when you log out, all saved data, including battles and salmon run, will be cleared.',
   // App.result
   'app.result.done': 'Booyah!',
   'app.result.done.description': 'It is all done. Enjoy it!',

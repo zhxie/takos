@@ -933,6 +933,7 @@ const ja_JP = {
   'app.settings': '設定',
   'app.welcome': 'ようこそ',
   'app.log_in': 'ログイン',
+  'app.log_out': 'ログアウト',
   'app.next': 'つき',
   'app.done': '完了',
   'app.retry': 'リトライ',
@@ -949,9 +950,11 @@ const ja_JP = {
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
   'app.alert.info.use_automatic_cookie_generation':
-    '再ログイン、アカウントの切り替え、自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
+    '再ログインして自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.use_automatic_cookie_generation_first_time':
     '自動クッキー生成を使用しておらず、使用したい場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
+  'app.alert.info.switch_account':
+    'アカウントを切り替えたい場合は、最初にログアウトしてください。ログアウトすると、バトルやサーモンランなど、保存されたすべてのデータが消去されることに注意してください。',
   // App.modal
   'app.modal.confirm.update_cookie': 'クッキーを更新しますか？',
   'app.modal.confirm.update_cookie.content':
@@ -967,6 +970,9 @@ const ja_JP = {
   'app.modal.error.update_cookie_no_session_token': 'クッキーを更新できません',
   'app.modal.error.update_cookie_no_session_token.content':
     'Takos は自動クッキー生成を使用しない限り、クッキーを更新できません。',
+  'app.modal.confirm.log_out': 'ログアウトしますか？',
+  'app.modal.confirm.log_out.content':
+    'ログアウトすると、バトルやサーモンランなど、保存されたすべてのデータが消去されることに注意してください。',
   // App.result
   'app.result.done': 'ナイス',
   'app.result.done.description': 'すべて完了です。楽しめ！',
