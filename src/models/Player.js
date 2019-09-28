@@ -57,8 +57,10 @@ class Rank {
   }
 
   static parse(data) {
+    if (data.name === null) {
+      return Rank.cMinus;
+    }
     switch (data.name) {
-      case '':
       case 'C-':
         return Rank.cMinus;
       case 'C':
@@ -235,8 +237,8 @@ class BattlePlayer extends Player {
         // Regular battle
         return new RegularBattlePlayer(
           null,
-          data.player_result.principal_id,
-          data.player_result.nickname,
+          data.player.principal_id,
+          data.player.nickname,
           species,
           style,
           url,

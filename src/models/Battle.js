@@ -4,6 +4,7 @@ import { Rank, BattlePlayer } from './Player';
 import Rule from './Rule';
 import ScheduledStage from './ScheduledStage';
 import { Freshness } from './Weapon';
+import TakosError from '../utils/ErrorHelper';
 
 class Battle extends Base {
   constructor(
@@ -54,6 +55,10 @@ class Battle extends Base {
       const gameMode = Mode.parse(data.game_mode.key);
       const rule = Rule.parse(data.rule);
       const stage = ScheduledStage.parse(data.stage);
+      if (stage.error !== null) {
+        // Handle previous error
+        return new Battle(stage.error);
+      }
       let myTeamMembersCount = 1;
       let players = [];
       let myTeamMembers = [];
@@ -66,7 +71,7 @@ class Battle extends Base {
       data.other_team_members.forEach(element => {
         players.push(BattlePlayer.parsePromise(element, false));
       });
-      const levelAfter = parseInt(data.player_rank) + 100 * parseInt(data.sstar_rank);
+      const levelAfter = parseInt(data.player_rank) + 100 * parseInt(data.star_rank);
       return Promise.all(players)
         .then(values => {
           for (let i = 0; i < myTeamMembersCount; ++i) {
@@ -75,6 +80,18 @@ class Battle extends Base {
           for (let i = myTeamMembersCount; i < values.length; ++i) {
             otherTeamMembers.push(values[i]);
           }
+          myTeamMembers.forEach(element => {
+            if (element.error !== null) {
+              // Handle previous error
+              throw new TakosError(element.error);
+            }
+          });
+          otherTeamMembers.forEach(element => {
+            if (element.error !== null) {
+              // Handle previous error
+              throw new TakosError(element.error);
+            }
+          });
         })
         .then(() => {
           switch (type) {
@@ -203,8 +220,12 @@ class Battle extends Base {
           }
         })
         .catch(e => {
-          console.error(e);
-          return new Battle('can_not_parse_battle');
+          if (e instanceof TakosError) {
+            return new Battle(e.message);
+          } else {
+            console.error(e);
+            return new Battle('can_not_parse_battle');
+          }
         });
     } catch (e) {
       console.error(e);
