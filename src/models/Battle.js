@@ -59,15 +59,15 @@ class Battle extends Base {
       let myTeamMembers = [];
       let otherTeamMembers = [];
       players.push(BattlePlayer.parsePromise(data.player_result, true));
-      data.my_team_members.foreach(element => {
+      data.my_team_members.forEach(element => {
         players.push(BattlePlayer.parsePromise(element, false));
         myTeamMembersCount++;
       });
-      data.other_team_members.foreach(element => {
+      data.other_team_members.forEach(element => {
         players.push(BattlePlayer.parsePromise(element, false));
       });
       const levelAfter = parseInt(data.player_rank) + 100 * parseInt(data.sstar_rank);
-      Promise.all(players)
+      return Promise.all(players)
         .then(values => {
           for (let i = 0; i < myTeamMembersCount; ++i) {
             myTeamMembers.push(values[i]);
@@ -77,7 +77,6 @@ class Battle extends Base {
           }
         })
         .then(() => {
-          // TODO:
           switch (type) {
             case Mode.regularBattle: {
               let winMeter;

@@ -21,6 +21,7 @@ class SchedulesWindow extends React.Component {
   state = {
     loaded: false,
     error: false,
+    errorLog: 'unknown_error',
     expired: false,
     invalid: false
   };
@@ -87,7 +88,7 @@ class SchedulesWindow extends React.Component {
           }
           schedules.forEach(element => {
             if (element.error !== null) {
-              throw new TakosError(element.e);
+              throw new TakosError(element.error);
             }
           });
           if (schedules.length > 0) {
@@ -125,7 +126,12 @@ class SchedulesWindow extends React.Component {
             return (
               <Alert
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
-                description={<FormattedMessage id="app.alert.warning.schedules_expired" defaultMessage="It seems that these schedules have expired, please refresh this page to update." />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.schedules_expired"
+                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                  />
+                }
                 type="warning"
                 showIcon
               />
@@ -140,7 +146,10 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 1) {
             return (
               <div>
-                <PageHeader title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />} subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)} />
+                <PageHeader
+                  title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
+                  subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
+                />
                 <ScheduleCard key="2" schedule={this.state.data[1]} />
               </div>
             );
@@ -169,7 +178,12 @@ class SchedulesWindow extends React.Component {
       return (
         <ErrorResult
           error={this.state.errorLog}
-          checklist={[<FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection and proxy settings" />]}
+          checklist={[
+            <FormattedMessage
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection and proxy settings"
+            />
+          ]}
           extra={[
             [
               <Button

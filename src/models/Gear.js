@@ -1832,21 +1832,23 @@ class Gear extends Base {
       const gear = HeadgearGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
       const primaryAbility = Ability.parsePrimary(abilitiesData.main);
-      if (primaryAbility.e !== null) {
+      if (primaryAbility.error !== null) {
         // Handle previous error
-        return new Gear(primaryAbility.e);
+        return new Gear(primaryAbility.error);
       }
       let secondaryAbilities = [];
       abilitiesData.subs.forEach(element => {
-        const secondaryAbility = Ability.parseSecondary(element);
-        secondaryAbilities.push(secondaryAbility);
-      });
-      for (let element in secondaryAbilities) {
-        if (element.e !== null) {
-          // Handle previous error
-          return new Gear(element.e);
+        if (element !== null) {
+          const secondaryAbility = Ability.parseSecondary(element);
+          secondaryAbilities.push(secondaryAbility);
         }
-      }
+      });
+      secondaryAbilities.forEach(element => {
+        if (element.error !== null) {
+          // Handle previous error
+          return new Gear(element.error);
+        }
+      });
       return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
     } catch (e) {
       console.error(e);
@@ -1859,21 +1861,23 @@ class Gear extends Base {
       const gear = ClothesGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
       const primaryAbility = Ability.parsePrimary(abilitiesData.main);
-      if (primaryAbility.e !== null) {
+      if (primaryAbility.error !== null) {
         // Handle previous error
-        return new Gear(primaryAbility.e);
+        return new Gear(primaryAbility.error);
       }
       let secondaryAbilities = [];
       abilitiesData.subs.forEach(element => {
-        const secondaryAbility = Ability.parseSecondary(element);
-        secondaryAbilities.push(secondaryAbility);
-      });
-      for (let element in secondaryAbilities) {
-        if (element.e !== null) {
-          // Handle previous error
-          return new Gear(element.e);
+        if (element !== null) {
+          const secondaryAbility = Ability.parseSecondary(element);
+          secondaryAbilities.push(secondaryAbility);
         }
-      }
+      });
+      secondaryAbilities.forEach(element => {
+        if (element.error !== null) {
+          // Handle previous error
+          return new Gear(element.error);
+        }
+      });
       return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
     } catch (e) {
       console.error(e);
@@ -1886,21 +1890,23 @@ class Gear extends Base {
       const gear = ShoesGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
       const primaryAbility = Ability.parsePrimary(abilitiesData.main);
-      if (primaryAbility.e !== null) {
+      if (primaryAbility.error !== null) {
         // Handle previous error
-        return new Gear(primaryAbility.e);
+        return new Gear(primaryAbility.error);
       }
       let secondaryAbilities = [];
       abilitiesData.subs.forEach(element => {
-        const secondaryAbility = Ability.parseSecondary(element);
-        secondaryAbilities.push(secondaryAbility);
-      });
-      for (let element in secondaryAbilities) {
-        if (element.e !== null) {
-          // Handle previous error
-          return new Gear(element.e);
+        if (element !== null) {
+          const secondaryAbility = Ability.parseSecondary(element);
+          secondaryAbilities.push(secondaryAbility);
         }
-      }
+      });
+      secondaryAbilities.forEach(element => {
+        if (element.error !== null) {
+          // Handle previous error
+          return new Gear(element.error);
+        }
+      });
       return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
     } catch (e) {
       console.error(e);

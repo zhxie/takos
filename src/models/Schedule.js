@@ -21,12 +21,12 @@ class Schedule extends Base {
       const startTime = parseInt(data.start_time);
       const endTime = parseInt(data.end_time);
       const stage1 = ScheduledStage.parse(data.stage_a);
-      if (stage1.e != null) {
-        return new Schedule(stage1.e);
+      if (stage1.error != null) {
+        return new Schedule(stage1.error);
       }
       const stage2 = ScheduledStage.parse(data.stage_b);
-      if (stage2.e != null) {
-        return new Schedule(stage2.e);
+      if (stage2.error != null) {
+        return new Schedule(stage2.error);
       }
       return new Schedule(null, mode, rule, startTime, endTime, stage1, stage2);
     } catch (e) {

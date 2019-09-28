@@ -1,4 +1,4 @@
-import Ability from './Ability';
+import { Ability } from './Ability';
 import Base from './Base';
 
 class BaseBrand {
@@ -83,7 +83,10 @@ class Brand extends Base {
   static parse(data) {
     try {
       const brand = BaseBrand.parse(parseInt(data.id));
-      const favoredAbility = Ability.parseSecondary(data.frequent_skill);
+      let favoredAbility = null;
+      if (data.frequent_skill !== undefined) {
+        favoredAbility = Ability.parseSecondary(data.frequent_skill);
+      }
       return new Brand(null, brand, data.image, favoredAbility);
     } catch (e) {
       console.error(e);
