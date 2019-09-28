@@ -12,15 +12,16 @@ import App from './App';
 import en_US from './assets/locales/en_US';
 import ja_JP from './assets/locales/ja_JP';
 import zh_CN from './assets/locales/zh_CN';
+import StorageHelper from './utils/StorageHelper';
 
 ReactDOM.render(
   <ConfigProvider
     autoInsertSpaceInButton={false}
     locale={(() => {
-      if (window.localStorage.language === undefined) {
-        window.localStorage.language = 'en_US';
+      if (StorageHelper.language() === null) {
+        StorageHelper.setLanguage('en_US');
       }
-      switch (window.localStorage.language) {
+      switch (StorageHelper.language()) {
         case 'en_US':
           return antd_en_US;
         case 'ja_JP':
@@ -35,10 +36,10 @@ ReactDOM.render(
     <IntlProvider
       locale={navigator.language}
       messages={(() => {
-        if (window.localStorage.language === undefined) {
-          window.localStorage.language = 'en_US';
+        if (StorageHelper.language() === null) {
+          StorageHelper.setLanguage('en_US');
         }
-        switch (window.localStorage.language) {
+        switch (StorageHelper.language()) {
           case 'en_US':
             return en_US;
           case 'ja_JP':

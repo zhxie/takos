@@ -38,7 +38,7 @@ class SettingsWindow extends React.Component {
       this.setState({ isUrl: true, isCookie: false, isValid: true });
     } else if (re.test(value)) {
       this.setState({ isUrl: false, isCookie: true, isValid: true });
-      window.localStorage.cookie = value;
+      StorageHelper.setCookie(value);
     } else {
       this.setState({ isUrl: false, isCookie: false });
     }
@@ -50,13 +50,13 @@ class SettingsWindow extends React.Component {
     }
     switch (value) {
       case 'en_US':
-        window.localStorage.language = 'en_US';
+        StorageHelper.setLanguage('en_US');
         break;
       case 'ja_JP':
-        window.localStorage.language = 'ja_JP';
+        StorageHelper.setLanguage('ja_JP');
         break;
       case 'zh_CN':
-        window.localStorage.language = 'zh_CN';
+        StorageHelper.setLanguage('zh_CN');
         break;
       default:
         throw RangeError();
@@ -70,7 +70,7 @@ class SettingsWindow extends React.Component {
         if (result === null) {
           throw new RangeError();
         } else {
-          window.localStorage.sessionToken = result;
+          StorageHelper.setSessionToken(result);
           return this.updateCookie();
         }
       })
@@ -90,7 +90,7 @@ class SettingsWindow extends React.Component {
   };
 
   updateCookie = () => {
-    return LoginHelper.getCookie(window.localStorage.sessionToken)
+    return LoginHelper.getCookie(StorageHelper.getSessionToken())
       .then(result => {
         if (result === null) {
           throw new RangeError();
@@ -159,7 +159,7 @@ class SettingsWindow extends React.Component {
         onCancel() {}
       });
     } else {
-      if (!window.localStorage.sessionToken) {
+      if (!StorageHelper.sessionToken()) {
         Modal.error({
           title: this.props.intl.formatMessage({
             id: 'app.modal.error.update_cookie_no_session_token',
@@ -348,24 +348,22 @@ class SettingsWindow extends React.Component {
   }
 
   componentDidMount() {
-    if (window.localStorage.cookie !== undefined) {
-      this.cookieOnChange(window.localStorage.cookie);
+    if (StorageHelper.cookie() !== null) {
+      this.cookieOnChange(StorageHelper.cookie());
     }
-    if (window.localStorage.language !== undefined) {
-      switch (window.localStorage.language) {
-        case 'en_US':
-          this.setState({ language: 'en_US' });
-          break;
-        case 'ja_JP':
-          this.setState({ language: 'ja_JP' });
-          break;
-        case 'zh_CN':
-          this.setState({ language: 'zh_CN' });
-          break;
-        default:
-          this.setState({ language: 'en_US' });
-          break;
-      }
+    switch (StorageHelper.language()) {
+      case 'en_US':
+        this.setState({ language: 'en_US' });
+        break;
+      case 'ja_JP':
+        this.setState({ language: 'ja_JP' });
+        break;
+      case 'zh_CN':
+        this.setState({ language: 'zh_CN' });
+        break;
+      default:
+        this.setState({ language: 'en_US' });
+        break;
     }
   }
 }

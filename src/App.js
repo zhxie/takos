@@ -6,6 +6,7 @@ import './App.css';
 import LoginWindow from './LoginWindow';
 import MainWindow from './MainWindow';
 import NotFoundResult from './components/NotFoundResult';
+import StorageHelper from './utils/StorageHelper';
 
 const { Content } = Layout;
 const PrivateRoute = ({ isLoggedIn, ...props }) => (isLoggedIn ? <Route {...props} /> : <Redirect to="/login" />);
@@ -17,7 +18,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    if (window.localStorage.cookie !== undefined) {
+    if (StorageHelper.cookie() === null) {
       this.state = { isLogin: true };
     }
   }

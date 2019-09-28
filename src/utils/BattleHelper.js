@@ -1,14 +1,38 @@
 import { SPLATNET, SPLATNET_RESULTS, SPLATNET_RESULT, SPLATNET_NICKNAME_AND_ICON } from './FileFolderUrl';
+import StorageHelper from './StorageHelper';
 import './StringHelper';
 import Battle from '../models/Battle';
 import { Mode } from '../models/Mode';
 
 class BattleHelper {
+  static getTheLatestBattleNumber = () => {
+    const init = {
+      method: 'GET',
+      headers: new Headers({
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
+      })
+    };
+    return fetch(SPLATNET + SPLATNET_RESULTS, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        if (res.results[0].battle_number !== undefined && res.results[0].battle_number !== null) {
+          return parseInt(res.results[0].battle_number);
+        } else {
+          throw new RangeError();
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        return 0;
+      });
+  };
+
   static getTheLatestBattle = () => {
     const init = {
       method: 'GET',
       headers: new Headers({
-        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
     return fetch(SPLATNET + SPLATNET_RESULTS, init)
@@ -34,7 +58,7 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
     return fetch(SPLATNET + SPLATNET_RESULT.format(number), init)
@@ -53,18 +77,21 @@ class BattleHelper {
   static updateRank = battle => {
     try {
       if (battle.error === null && battle.gameMode === Mode.rankedBattle) {
-        if (!(window.localStorage.rank instanceof Object)) {
-          window.localStorage.rank = {};
+        let rank = StorageHelper.rank();
+        if (rank === null) {
+          rank = {};
         }
-        if (!(window.localStorage.rank[battle.rule.value] instanceof Object)) {
-          window.localStorage.rank[battle.rule.value] = {};
+        if (rank[battle.rule.value] === undefined || rank[battle.rule.value] === null) {
+          rank[battle.rule.value] = {};
         }
         if (
-          window.localStorage.rank[battle.rule.value].number === undefined ||
-          battle.number > window.localStorage.rank[battle.rule.value].number
+          rank[battle.rule.value].number === undefined ||
+          rank[battle.rule.value].number === null ||
+          battle.number > rank[battle.rule.value].number
         ) {
-          window.localStorage.rank[battle.rule.value].number = battle.number;
-          window.localStorage.rank[battle.rule.value].rank = battle.rank;
+          rank[battle.rule.value].number = battle.number;
+          rank[battle.rule.value].rank = battle.rank;
+          StorageHelper.setRank(rank);
         }
       }
     } catch {}
@@ -74,7 +101,7 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
     return fetch(SPLATNET + SPLATNET_NICKNAME_AND_ICON.format(id), init)
