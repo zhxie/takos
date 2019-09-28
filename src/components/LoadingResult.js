@@ -21,13 +21,15 @@ class LoadingResult extends React.Component {
             />
           }
           title={<FormattedMessage id="app.result.loading" defaultMessage="Charging" />}
-          subTitle={
-            <FormattedMessage id="app.result.loading.description" defaultMessage="This page is in loading..." />
-          }
+          subTitle={this.props.description}
         />
       </div>
     );
   }
 }
+
+LoadingResult.defaultProps = {
+  description: <FormattedMessage id="app.result.loading.description" defaultMessage="This page is in loading..." />
+};
 
 export default LoadingResult;
