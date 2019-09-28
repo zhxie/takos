@@ -8,7 +8,7 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        Cookie: 'iksm_session={0}'.format(window.localStorage.Cookie)
+        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
       })
     };
     return fetch(SPLATNET + SPLATNET_RESULTS, init)
@@ -34,7 +34,7 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        Cookie: 'iksm_session={0}'.format(window.localStorage.Cookie)
+        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
       })
     };
     return fetch(SPLATNET + SPLATNET_RESULT.format(number), init)
@@ -52,14 +52,17 @@ class BattleHelper {
 
   static updateRank = battle => {
     try {
-      if (battle.e === null && battle.gameMode === Mode.rankedBattle) {
+      if (battle.error === null && battle.gameMode === Mode.rankedBattle) {
         if (!(window.localStorage.rank instanceof Object)) {
           window.localStorage.rank = {};
         }
         if (!(window.localStorage.rank[battle.rule.value] instanceof Object)) {
           window.localStorage.rank[battle.rule.value] = {};
         }
-        if (window.localStorage.rank[battle.rule.value].number === undefined || battle.number > window.localStorage.rank[battle.rule.value].number) {
+        if (
+          window.localStorage.rank[battle.rule.value].number === undefined ||
+          battle.number > window.localStorage.rank[battle.rule.value].number
+        ) {
           window.localStorage.rank[battle.rule.value].number = battle.number;
           window.localStorage.rank[battle.rule.value].rank = battle.rank;
         }
@@ -71,7 +74,7 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        Cookie: 'iksm_session={0}'.format(window.localStorage.Cookie)
+        'X-Cookie': 'iksm_session={0}'.format(window.localStorage.cookie)
       })
     };
     return fetch(SPLATNET + SPLATNET_NICKNAME_AND_ICON.format(id), init)

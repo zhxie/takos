@@ -7,6 +7,12 @@ function splatnetOnProxyRes(proxyRes, req, res) {
   res.append('x-cookie', proxyRes.headers['set-cookie']);
 }
 
+function splatnetOnProxyReq(proxyReq, req, res) {
+  if (req.headers['x-cookie'] !== undefined && req.headers['x-cookie'] !== null) {
+    proxyReq.setHeader('cookie', req.headers['x-cookie']);
+  }
+}
+
 module.exports = function(app) {
   app.use(
     '/splatoon2inkApi',
@@ -22,7 +28,8 @@ module.exports = function(app) {
       target: 'https://app.splatoon2.nintendo.net',
       changeOrigin: true,
       pathRewrite: { '^/splatnetApi': '' },
-      onProxyRes: splatnetOnProxyRes
+      onProxyRes: splatnetOnProxyRes,
+      onProxyReq: splatnetOnProxyReq
     })
   );
   app.use(
