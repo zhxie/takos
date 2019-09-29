@@ -168,15 +168,15 @@ class LoginWindow extends React.Component {
         const from = Math.max(1, res - 49, currentNumber + 1);
         const to = res;
         if (to >= from) {
-          this.setState({ fetchTotal: to - from + 1 });
+          this.setState({ fetchCurrent: 1, fetchTotal: to - from + 1 });
           const getBattleRecursively = (from, to) => {
             return BattleHelper.getBattle(from).then(res => {
               if (res.error !== null) {
                 throw new TakosError(res.error);
               } else {
+                BattleHelper.pushBattle(res);
+                this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
                 if (from < to) {
-                  BattleHelper.pushBattle(res);
-                  this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
                   return getBattleRecursively(from + 1, to);
                 }
               }
@@ -195,6 +195,8 @@ class LoginWindow extends React.Component {
                 this.setState({ error: true, errorLog: 'can_not_get_battle' });
               }
             });
+        } else {
+          this.toNext();
         }
       }
     });
