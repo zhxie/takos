@@ -1,3 +1,4 @@
+import TakosError from './ErrorHelper';
 import { SPLATNET, SPLATNET_RESULTS, SPLATNET_RESULT, SPLATNET_NICKNAME_AND_ICON } from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import './StringHelper';
@@ -95,14 +96,41 @@ class BattleHelper {
     }
   };
 
-  static pushBattle = battle => {
+  static getTheLatestBattleNumberFromDatabase = () => {
+    return StorageHelper.battles()
+      .then(res => {
+        if (res instanceof TakosError) {
+          throw new TakosError(res.message);
+        } else {
+          if (res.length === 0) {
+            return 0;
+          } else {
+            return Math.max.apply(Math, res);
+          }
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        return -1;
+      });
+  };
+
+  static saveBattle = battle => {
     if (battle !== undefined && battle !== null && battle.error === null) {
-      let battles = StorageHelper.battles();
-      if (battles === null) {
-        battles = [];
-      }
-      battles.push(battle);
-      StorageHelper.setBattles(battles);
+      return StorageHelper.addBattle(battle)
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_save_battle');
+          }
+        });
     }
   };
 

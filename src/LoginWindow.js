@@ -31,13 +31,30 @@ class LoginWindow extends React.Component {
     language: 'en_US',
     error: false,
     errorLog: 'unknown_error',
+    errorFetch: false,
+    errorFetchLog: 'unknown_error',
     fetchCurrent: 0,
     fetchTotal: 0
   };
 
   constructor(props) {
     super(props);
-    StorageHelper.initializeStorage();
+    /*
+    StorageHelper.initializeStorage()
+      .then(res => {
+        if (res instanceof TakosError) {
+          throw new TakosError(res.message);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          this.setState({ error: true, errorLog: e.message });
+        } else {
+          console.error(e);
+          this.setState({ error: true, errorLog: 'can_not_initialize' });
+        }
+      });
+    */
     this.loginParameters = LoginHelper.generateParameters();
   }
 
@@ -156,50 +173,78 @@ class LoginWindow extends React.Component {
   };
 
   fetchData = () => {
-    let currentNumber = 0;
-    const battles = StorageHelper.battles();
-    if (battles !== null && battles.length > 0) {
-      currentNumber = battles[battles.length - 1].number;
-    }
-    return BattleHelper.getTheLatestBattleNumber().then(res => {
-      if (res === 0) {
-        this.setState({ error: true, errorLog: 'can_not_get_the_latest_battle' });
-      } else {
-        const from = Math.max(1, res - 49, currentNumber + 1);
-        const to = res;
-        if (to >= from) {
-          this.setState({ fetchCurrent: 1, fetchTotal: to - from + 1 });
-          const getBattleRecursively = (from, to) => {
-            return BattleHelper.getBattle(from).then(res => {
-              if (res.error !== null) {
-                throw new TakosError(res.error);
-              } else {
-                BattleHelper.pushBattle(res);
-                this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
-                if (from < to) {
-                  return getBattleRecursively(from + 1, to);
-                }
-              }
-            });
-          };
-          // Fetch battles from 'from' to 'to'
-          getBattleRecursively(from, to)
-            .then(() => {
-              this.toNext();
-            })
-            .catch(e => {
-              if (e instanceof TakosError) {
-                this.setState({ error: true, errorLog: e.message });
-              } else {
-                console.error(e);
-                this.setState({ error: true, errorLog: 'can_not_get_battle' });
-              }
-            });
+    const getBattleRecursively = (from, to) => {
+      return BattleHelper.getBattle(from)
+        .then(res => {
+          if (res.error !== null) {
+            throw new TakosError(res.error);
+          } else {
+            return BattleHelper.saveBattle(res);
+          }
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.error);
+          } else {
+            this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
+            if (from < to) {
+              return getBattleRecursively(from + 1, to);
+            }
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_get_battle');
+          }
+        });
+    };
+
+    return BattleHelper.getTheLatestBattleNumberFromDatabase()
+      .then(res => {
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_battle_from_database');
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        const currentNumber = res;
+        return BattleHelper.getTheLatestBattleNumber().then(res => {
+          if (res === 0) {
+            throw new TakosError('can_not_get_the_latest_battle');
+          } else {
+            const from = Math.max(1, res - 49, currentNumber + 1);
+            const to = res;
+            return { from, to };
+          }
+        });
+      })
+      .then(res => {
+        if (res.to >= res.from) {
+          this.setState({ fetchCurrent: 1, fetchTotal: res.to - res.from + 1 });
         } else {
           this.toNext();
+          return;
         }
-      }
-    });
+        return getBattleRecursively(res.from, res.to).then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            this.toNext();
+          }
+        });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          this.setState({ error: true, errorLog: e.message });
+        } else {
+          console.error(e);
+          this.setState({ error: true, errorLog: 'can_not_get_battle' });
+        }
+      });
   };
 
   showConfirm = () => {
@@ -424,10 +469,10 @@ class LoginWindow extends React.Component {
   };
 
   renderFetchData = () => {
-    if (this.state.error) {
+    if (this.state.errorFetch) {
       return (
         <ErrorResult
-          error={this.state.errorLog}
+          error={this.state.errorFetchLog}
           extra={[
             <Button key="toNext" onClick={this.toNext} type="primary">
               <FormattedMessage id="app.next" defaultMessage="Next" />
@@ -481,34 +526,46 @@ class LoginWindow extends React.Component {
   }
 
   render() {
-    return (
-      <Layout>
-        <Content className="LoginWindow-main">
-          <Steps className="LoginWindow-steps" current={this.state.step}>
-            <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
-            <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
-            <Step title={<FormattedMessage id="app.fetch_data" defaultMessage="Fetch Data" />} />
-            <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
-          </Steps>
-          <div className="LoginWindow-content">
-            {(() => {
-              switch (this.state.step) {
-                case 0:
-                  return this.renderWelcome();
-                case 1:
-                  return this.renderLogin();
-                case 2:
-                  return this.renderFetchData();
-                case 3:
-                  return this.renderDone();
-                default:
-                  throw new RangeError();
-              }
-            })()}
-          </div>
-        </Content>
-      </Layout>
-    );
+    if (this.state.error) {
+      return (
+        <Layout>
+          <Content className="LoginWindow-main">
+            <div className="LoginWindow-content">
+              <ErrorResult error={this.state.errorLog} />
+            </div>
+          </Content>
+        </Layout>
+      );
+    } else {
+      return (
+        <Layout>
+          <Content className="LoginWindow-main">
+            <Steps className="LoginWindow-steps" current={this.state.step}>
+              <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
+              <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
+              <Step title={<FormattedMessage id="app.fetch_data" defaultMessage="Fetch Data" />} />
+              <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
+            </Steps>
+            <div className="LoginWindow-content">
+              {(() => {
+                switch (this.state.step) {
+                  case 0:
+                    return this.renderWelcome();
+                  case 1:
+                    return this.renderLogin();
+                  case 2:
+                    return this.renderFetchData();
+                  case 3:
+                    return this.renderDone();
+                  default:
+                    throw new RangeError();
+                }
+              })()}
+            </div>
+          </Content>
+        </Layout>
+      );
+    }
   }
 
   componentDidMount() {

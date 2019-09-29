@@ -4,6 +4,8 @@ import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, 
 
 import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
+import ErrorResult from './components/ErrorResult';
+import TakosError from './utils/ErrorHelper';
 import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
@@ -19,7 +21,9 @@ class SettingsWindow extends React.Component {
     isCookie: false,
     isValid: true,
     cookie: '',
-    language: 'en_US'
+    language: 'en_US',
+    error: false,
+    errorLog: 'unknown_error'
   };
 
   constructor(props) {
@@ -208,143 +212,161 @@ class SettingsWindow extends React.Component {
       okType: 'danger',
       icon: <Icon type="exclamation-circle" />,
       onOk() {
-        StorageHelper.initializeStorage();
-        window.location.assign('/');
+        StorageHelper.initializeStorage()
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              window.location.assign('/');
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              this.setState({ error: true, errorLog: e.message });
+            } else {
+              console.error(e);
+              this.setState({ error: true, errorLog: 'unknown_error' });
+            }
+          });
       },
       onCancel() {}
     });
   };
 
   render() {
-    return (
-      <Layout>
-        <Header className="SettingsWindow-header" style={{ zIndex: 1 }}>
-          <img className="SettingsWindow-header-icon" src={icon} alt="settings" />
-          <p className="SettingsWindow-header-title">
-            <FormattedMessage id="app.settings" defaultMessage="Settings" />
-          </p>
-        </Header>
-        <Content className="SettingsWindow-content">
-          <PageHeader title={<FormattedMessage id="app.user" defaultMessage="User" />} />
-          <Alert
-            message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
-            description={
-              <p style={{ margin: 0 }}>
-                <FormattedMessage
-                  id="app.alert.warning.automatic_cookie_generation"
-                  defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
-                  values={{
-                    a: msg => (
-                      <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
-                    )
-                  }}
-                />
-              </p>
-            }
-            type="warning"
-            showIcon
-            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-          />
-          <Alert
-            message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
-            description={
-              <p style={{ margin: 0 }}>
-                <FormattedMessage
-                  id="app.alert.info.use_automatic_cookie_generation"
-                  defaultMessage='If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
-                  values={{
-                    a: msg => (
-                      <a
-                        href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
-                          this.loginParameters.state,
-                          this.loginParameters.codeChallenge
-                        )}
-                      >
-                        {msg}
-                      </a>
-                    )
-                  }}
-                />
-              </p>
-            }
-            type="info"
-            showIcon
-            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-          />
-          <Alert
-            message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
-            description={
-              <p style={{ margin: 0 }}>
-                <FormattedMessage
-                  id="app.alert.info.switch_account"
-                  defaultMessage="If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared."
-                />
-              </p>
-            }
-            type="info"
-            showIcon
-            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-          />
-          <Form className="SettingsWindow-content-user" labelCol={{ span: 24 }}>
-            <Form.Item label={<FormattedMessage id="app.cookie" defaultMessage="Cookie" />}>
-              <Row gutter={8}>
-                <Col sm={18} md={12}>
-                  <Input
-                    value={this.state.cookie}
-                    onChange={e => {
-                      this.cookieOnChange(e.target.value);
+    if (this.state.error) {
+      return <ErrorResult error={this.state.errorLog} />;
+    } else {
+      return (
+        <Layout>
+          <Header className="SettingsWindow-header" style={{ zIndex: 1 }}>
+            <img className="SettingsWindow-header-icon" src={icon} alt="settings" />
+            <p className="SettingsWindow-header-title">
+              <FormattedMessage id="app.settings" defaultMessage="Settings" />
+            </p>
+          </Header>
+          <Content className="SettingsWindow-content">
+            <PageHeader title={<FormattedMessage id="app.user" defaultMessage="User" />} />
+            <Alert
+              message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+              description={
+                <p style={{ margin: 0 }}>
+                  <FormattedMessage
+                    id="app.alert.warning.automatic_cookie_generation"
+                    defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+                    values={{
+                      a: msg => (
+                        <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                      )
                     }}
-                    allowClear
-                    prefix={(() => {
-                      if (this.state.isUrl) {
-                        return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      } else if (this.state.isCookie) {
-                        return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      } else {
-                        return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                      }
-                    })()}
                   />
-                </Col>
-                <Col span={6}>
-                  <Button onClick={this.showConfirm}>
-                    <FormattedMessage id="app.cookie.update" defaultMessage="Update cookie" />
-                  </Button>
-                </Col>
-              </Row>
-            </Form.Item>
-            <Form.Item label={<FormattedMessage id="app.log_out" defaultMessage="Log Out" />}>
-              <Row gutter={8}>
-                <Col span={6}>
-                  <Button type="danger" onClick={this.showLogOutConfirm}>
-                    <FormattedMessage id="app.log_out" defaultMessage="Log Out" />
-                  </Button>
-                </Col>
-              </Row>
-            </Form.Item>
-          </Form>
-          <PageHeader title={<FormattedMessage id="app.system" defaultMessage="System" />} />
-          <Form className="SettingsWindow-content-system" labelCol={{ span: 24 }}>
-            <Form.Item label={<FormattedMessage id="app.language" defaultMessage="Language" />}>
-              <Row gutter={8}>
-                <Col span={6}>
-                  <Select
-                    value={this.state.language}
-                    onChange={this.changeLanguage}
-                    defaultValue="en_US"
-                    style={{ width: 120, margin: '0 0 24px 0' }}
-                  >
-                    <Option value="en_US">English</Option>
-                    <Option value="ja_JP">日本語</Option>
-                    <Option value="zh_CN">中文</Option>
-                  </Select>
-                </Col>
-              </Row>
-            </Form.Item>
-          </Form>
-        </Content>
-      </Layout>
-    );
+                </p>
+              }
+              type="warning"
+              showIcon
+              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+            />
+            <Alert
+              message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+              description={
+                <p style={{ margin: 0 }}>
+                  <FormattedMessage
+                    id="app.alert.info.use_automatic_cookie_generation"
+                    defaultMessage='If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                    values={{
+                      a: msg => (
+                        <a
+                          href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                            this.loginParameters.state,
+                            this.loginParameters.codeChallenge
+                          )}
+                        >
+                          {msg}
+                        </a>
+                      )
+                    }}
+                  />
+                </p>
+              }
+              type="info"
+              showIcon
+              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+            />
+            <Alert
+              message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+              description={
+                <p style={{ margin: 0 }}>
+                  <FormattedMessage
+                    id="app.alert.info.switch_account"
+                    defaultMessage="If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared."
+                  />
+                </p>
+              }
+              type="info"
+              showIcon
+              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+            />
+            <Form className="SettingsWindow-content-user" labelCol={{ span: 24 }}>
+              <Form.Item label={<FormattedMessage id="app.cookie" defaultMessage="Cookie" />}>
+                <Row gutter={8}>
+                  <Col sm={18} md={12}>
+                    <Input
+                      value={this.state.cookie}
+                      onChange={e => {
+                        this.cookieOnChange(e.target.value);
+                      }}
+                      allowClear
+                      prefix={(() => {
+                        if (this.state.isUrl) {
+                          return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        } else if (this.state.isCookie) {
+                          return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        } else {
+                          return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                        }
+                      })()}
+                    />
+                  </Col>
+                  <Col span={6}>
+                    <Button onClick={this.showConfirm}>
+                      <FormattedMessage id="app.cookie.update" defaultMessage="Update cookie" />
+                    </Button>
+                  </Col>
+                </Row>
+              </Form.Item>
+              <Form.Item label={<FormattedMessage id="app.log_out" defaultMessage="Log Out" />}>
+                <Row gutter={8}>
+                  <Col span={6}>
+                    <Button type="danger" onClick={this.showLogOutConfirm}>
+                      <FormattedMessage id="app.log_out" defaultMessage="Log Out" />
+                    </Button>
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Form>
+            <PageHeader title={<FormattedMessage id="app.system" defaultMessage="System" />} />
+            <Form className="SettingsWindow-content-system" labelCol={{ span: 24 }}>
+              <Form.Item label={<FormattedMessage id="app.language" defaultMessage="Language" />}>
+                <Row gutter={8}>
+                  <Col span={6}>
+                    <Select
+                      value={this.state.language}
+                      onChange={this.changeLanguage}
+                      defaultValue="en_US"
+                      style={{ width: 120, margin: '0 0 24px 0' }}
+                    >
+                      <Option value="en_US">English</Option>
+                      <Option value="ja_JP">日本語</Option>
+                      <Option value="zh_CN">中文</Option>
+                    </Select>
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Form>
+          </Content>
+        </Layout>
+      );
+    }
   }
 
   componentDidMount() {
