@@ -18,7 +18,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    if (StorageHelper.cookie() === null) {
+    if (StorageHelper.cookie() !== null) {
       this.state = { isLogin: true };
     }
   }
