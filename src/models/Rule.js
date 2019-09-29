@@ -4,7 +4,7 @@ class Rule {
     this.value = value;
   }
 
-  static parse(data) {
+  static parse = data => {
     switch (data.key) {
       case 'turf_war':
         return Rule.turfWar;
@@ -19,7 +19,7 @@ class Rule {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Rule.turfWar = new Rule('rule.turf_war', 0);

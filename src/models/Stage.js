@@ -1,10 +1,12 @@
+import Base from './Base';
+
 class Stage {
   constructor(name, value) {
     this.name = name;
     this.value = value;
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return Stage.theReef;
@@ -105,7 +107,7 @@ class Stage {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Stage.theReef = new Stage('stage.the_reef', 0);
@@ -159,4 +161,22 @@ Stage.shiftyStation = new Stage('stage.shifty_station', 9999);
 
 Object.freeze(Stage);
 
-export default Stage;
+class ScheduledStage extends Base {
+  constructor(e, stage, url) {
+    super(e);
+    this.stage = stage;
+    this.url = url;
+  }
+
+  static parse = data => {
+    try {
+      const stage = Stage.parse(parseInt(data.id));
+      return new ScheduledStage(null, stage, data.image);
+    } catch (e) {
+      console.error(e);
+      return new ScheduledStage('can_not_parse_scheduled_stage');
+    }
+  };
+}
+
+export { Stage, ScheduledStage };

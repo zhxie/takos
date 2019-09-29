@@ -25,7 +25,7 @@ class PrimaryAbility extends BaseAbility {
     super(name, AbilityType.primary, value);
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return PrimaryAbility.inkSaverMain;
@@ -86,7 +86,7 @@ class PrimaryAbility extends BaseAbility {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 PrimaryAbility.inkSaverMain = new PrimaryAbility('ability.ink_saver_main', 0);
@@ -125,7 +125,7 @@ class SecondaryAbility extends BaseAbility {
     super(name, AbilityType.secondary, value);
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return SecondaryAbility.inkSaverMain;
@@ -164,7 +164,7 @@ class SecondaryAbility extends BaseAbility {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 SecondaryAbility.inkSaverMain = new SecondaryAbility('ability.ink_saver_main', 0);
@@ -194,7 +194,7 @@ class Ability extends Base {
     this.url = url;
   }
 
-  static parsePrimary(data) {
+  static parsePrimary = data => {
     try {
       const ability = PrimaryAbility.parse(parseInt(data.id));
       return new Ability(null, ability, data.image);
@@ -202,9 +202,9 @@ class Ability extends Base {
       console.error(e);
       return new Ability('can_not_parse_primary_ability');
     }
-  }
+  };
 
-  static parseSecondary(data) {
+  static parseSecondary = data => {
     try {
       const ability = SecondaryAbility.parse(parseInt(data.id));
       return new Ability(null, ability, data.image);
@@ -212,7 +212,7 @@ class Ability extends Base {
       console.error(e);
       return new Ability('can_not_parse_secondary_ability');
     }
-  }
+  };
 }
 
 export { AbilityType, BaseAbility, PrimaryAbility, SecondaryAbility, Ability };

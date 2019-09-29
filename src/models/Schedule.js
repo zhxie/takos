@@ -1,7 +1,7 @@
 import Base from './Base';
 import { Mode } from './Mode';
 import Rule from './Rule';
-import ScheduledStage from './ScheduledStage';
+import { ScheduledStage } from './Stage';
 
 class Schedule extends Base {
   constructor(e, mode, rule, startTime, endTime, stage1, stage2) {
@@ -14,7 +14,7 @@ class Schedule extends Base {
     this.stage2 = stage2;
   }
 
-  static parse(data) {
+  static parse = data => {
     try {
       const mode = Mode.parse(data.game_mode.key);
       const rule = Rule.parse(data.rule);
@@ -33,7 +33,7 @@ class Schedule extends Base {
       console.error(e);
       return new Schedule('can_not_parse_schedule');
     }
-  }
+  };
 }
 
 export default Schedule;

@@ -28,7 +28,7 @@ class HeadgearGear extends BaseGear {
     super(name, GearType.headgear, value);
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 1:
         return HeadgearGear.whiteHeadband;
@@ -355,7 +355,7 @@ class HeadgearGear extends BaseGear {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 HeadgearGear.whiteHeadband = new HeadgearGear('gear.headgear.white_headband', 1);
@@ -527,7 +527,7 @@ class ClothesGear extends BaseGear {
     super(name, GearType.clothes, value);
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 2:
         return ClothesGear.basicTee;
@@ -1044,7 +1044,7 @@ class ClothesGear extends BaseGear {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 ClothesGear.basicTee = new ClothesGear('gear.clothes.basic_tee', 2);
@@ -1311,7 +1311,7 @@ class ShoesGear extends BaseGear {
     super(name, GearType.shoes, value);
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 1:
         return ShoesGear.creamBasics;
@@ -1646,7 +1646,7 @@ class ShoesGear extends BaseGear {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 ShoesGear.creamBasics = new ShoesGear('gear.shoes.cream_basics', 1);
@@ -1827,7 +1827,7 @@ class Gear extends Base {
     this.secondaryAbilities = secondaryAbilities;
   }
 
-  static parseHeadgear(gearData, abilitiesData) {
+  static parseHeadgear = (gearData, abilitiesData) => {
     try {
       const gear = HeadgearGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
@@ -1854,9 +1854,9 @@ class Gear extends Base {
       console.error(e);
       return new Gear('can_not_parse_headgear_gear');
     }
-  }
+  };
 
-  static parseClothes(gearData, abilitiesData) {
+  static parseClothes = (gearData, abilitiesData) => {
     try {
       const gear = ClothesGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
@@ -1883,9 +1883,9 @@ class Gear extends Base {
       console.error(e);
       return new Gear('can_not_parse_clothes_gear');
     }
-  }
+  };
 
-  static parseShoes(gearData, abilitiesData) {
+  static parseShoes = (gearData, abilitiesData) => {
     try {
       const gear = ShoesGear.parse(parseInt(gearData.id));
       const brand = Brand.parse(gearData.brand);
@@ -1912,7 +1912,7 @@ class Gear extends Base {
       console.error(e);
       return new Gear('can_not_parse_shoes_gear');
     }
-  }
+  };
 }
 
 export { GearType, HeadgearGear, ClothesGear, ShoesGear, Gear };

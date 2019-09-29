@@ -4,7 +4,7 @@ class Mode {
     this.value = value;
   }
 
-  static parse(key) {
+  static parse = key => {
     switch (key) {
       case 'regular':
         return Mode.regularBattle;
@@ -23,7 +23,7 @@ class Mode {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Mode.regularBattle = new Mode('mode.regular_battle', 0);
@@ -40,7 +40,7 @@ class SplatfestMode {
     this.value = value;
   }
 
-  static parse(key) {
+  static parse = key => {
     if (key.includes('challenge')) {
       return SplatfestMode.challenge;
     } else if (key.includes('regular')) {
@@ -48,7 +48,7 @@ class SplatfestMode {
     } else {
       throw new RangeError();
     }
-  }
+  };
 }
 
 SplatfestMode.challenge = new SplatfestMode('mode.splatfest.challenge', 0);

@@ -7,7 +7,7 @@ class BaseBrand {
     this.value = value;
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return BaseBrand.squidforce;
@@ -48,7 +48,7 @@ class BaseBrand {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 BaseBrand.squidforce = new BaseBrand('brand.squidforce', 0);
@@ -80,7 +80,7 @@ class Brand extends Base {
     this.favoredAbility = favoredAbility;
   }
 
-  static parse(data) {
+  static parse = data => {
     try {
       const brand = BaseBrand.parse(parseInt(data.id));
       let favoredAbility = null;
@@ -92,7 +92,7 @@ class Brand extends Base {
       console.error(e);
       return new Brand('can_not_parse_brand');
     }
-  }
+  };
 }
 
 export { BaseBrand, Brand };

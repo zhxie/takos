@@ -9,7 +9,7 @@ class Species {
     this.value = value;
   }
 
-  static parse(name) {
+  static parse = name => {
     switch (name) {
       case 'inklings':
         return Species.inklings;
@@ -18,7 +18,7 @@ class Species {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Species.inklings = new Species('species.inklings', 0);
@@ -32,7 +32,7 @@ class Style {
     this.value = value;
   }
 
-  static parse(name) {
+  static parse = name => {
     switch (name) {
       case 'girl':
         return Style.girl;
@@ -41,7 +41,7 @@ class Style {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Style.girl = new Style('style.girl', 0);
@@ -56,7 +56,7 @@ class Rank {
     this.value = value;
   }
 
-  static parse(data) {
+  static parse = data => {
     if (data.name === null) {
       return Rank.cMinus;
     }
@@ -114,7 +114,7 @@ class Rank {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 Rank.cMinus = new Rank('rank.c-', 'rank.c-', 0);
@@ -128,17 +128,17 @@ Rank.a = new Rank('rank.a', 'rank.a', 7);
 Rank.aPlus = new Rank('rank.a+', 'rank.a+', 8);
 Rank.s = new Rank('rank.s', 'rank.s', 9);
 Rank.sPlus = new Rank('rank.s+', 'rank.s+', 10);
-Rank.sPlus0 = new Rank('rank.s+0', 'rank.s+', 10);
-Rank.sPlus1 = new Rank('rank.s+1', 'rank.s+', 11);
-Rank.sPlus2 = new Rank('rank.s+2', 'rank.s+', 12);
-Rank.sPlus3 = new Rank('rank.s+3', 'rank.s+', 13);
-Rank.sPlus4 = new Rank('rank.s+4', 'rank.s+', 14);
-Rank.sPlus5 = new Rank('rank.s+5', 'rank.s+', 15);
-Rank.sPlus6 = new Rank('rank.s+6', 'rank.s+', 16);
-Rank.sPlus7 = new Rank('rank.s+7', 'rank.s+', 17);
-Rank.sPlus8 = new Rank('rank.s+8', 'rank.s+', 18);
-Rank.sPlus9 = new Rank('rank.s+9', 'rank.s+', 19);
-Rank.x = new Rank('rank.x', 'rank.x', 20);
+Rank.sPlus0 = new Rank('rank.s+0', 'rank.s+', 11);
+Rank.sPlus1 = new Rank('rank.s+1', 'rank.s+', 12);
+Rank.sPlus2 = new Rank('rank.s+2', 'rank.s+', 13);
+Rank.sPlus3 = new Rank('rank.s+3', 'rank.s+', 14);
+Rank.sPlus4 = new Rank('rank.s+4', 'rank.s+', 15);
+Rank.sPlus5 = new Rank('rank.s+5', 'rank.s+', 16);
+Rank.sPlus6 = new Rank('rank.s+6', 'rank.s+', 17);
+Rank.sPlus7 = new Rank('rank.s+7', 'rank.s+', 18);
+Rank.sPlus8 = new Rank('rank.s+8', 'rank.s+', 19);
+Rank.sPlus9 = new Rank('rank.s+9', 'rank.s+', 20);
+Rank.x = new Rank('rank.x', 'rank.x', 21);
 
 Object.freeze(Rank);
 
@@ -202,7 +202,7 @@ class BattlePlayer extends Player {
     this.sort = sort;
   }
 
-  static parse(data, url, isSelf) {
+  static parse = (data, url, isSelf) => {
     try {
       const species = Species.parse(data.player.player_type.species);
       const style = Style.parse(data.player.player_type.style);
@@ -284,9 +284,9 @@ class BattlePlayer extends Player {
       console.error(e);
       return new BattlePlayer('can_not_parse_player');
     }
-  }
+  };
 
-  static parsePromise(data, isSelf) {
+  static parsePromise = (data, isSelf) => {
     return BattleHelper.getPlayerIcon(data.player.principal_id)
       .then(res => {
         if (res === null) {
@@ -298,7 +298,7 @@ class BattlePlayer extends Player {
       .catch(() => {
         return new BattlePlayer('can_not_get_player_icon');
       });
-  }
+  };
 }
 
 class RegularBattlePlayer extends BattlePlayer {

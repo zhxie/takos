@@ -27,7 +27,7 @@ class MainWeapon {
     this.value = value;
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return MainWeapon.bold;
@@ -310,7 +310,7 @@ class MainWeapon {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 MainWeapon.bold = new MainWeapon('weapon.main.shooter.bold', MainWeaponType.shooter, 0);
@@ -501,7 +501,7 @@ class SubWeapon {
     this.value = value;
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return SubWeapon.splatBomb;
@@ -532,7 +532,7 @@ class SubWeapon {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 SubWeapon.splatBomb = new SubWeapon('weapon.sub.splat_bomb', 0);
@@ -557,7 +557,7 @@ class SpecialWeapon {
     this.value = value;
   }
 
-  static parse(id) {
+  static parse = id => {
     switch (id) {
       case 0:
         return SpecialWeapon.tentaMissiles;
@@ -592,7 +592,7 @@ class SpecialWeapon {
       default:
         throw new RangeError();
     }
-  }
+  };
 }
 
 SpecialWeapon.tentaMissiles = new SpecialWeapon('weapon.special.tenta_missiles', 0);
@@ -634,7 +634,7 @@ class Weapon extends Base {
     this.specialWeaponUrlB = specialWeaponUrlB;
   }
 
-  static parse(data) {
+  static parse = data => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.id));
       const subWeapon = SubWeapon.parse(parseInt(data.sub.id));
@@ -654,7 +654,7 @@ class Weapon extends Base {
       console.error(e);
       return new Weapon('can_not_parse_weapon');
     }
-  }
+  };
 }
 
 class Freshness {
@@ -663,7 +663,7 @@ class Freshness {
     this.value = value;
   }
 
-  static parse(value) {
+  static parse = value => {
     if (value < 5) {
       return Freshness.dry;
     } else if (value < 10) {
@@ -677,7 +677,7 @@ class Freshness {
     } else {
       return Freshness.superfresh3;
     }
-  }
+  };
 }
 
 Freshness.dry = new Freshness('freshness.dry', 0);
