@@ -936,7 +936,9 @@ const en_US = {
   'app.welcome': 'Welcome',
   'app.log_in': 'Log In',
   'app.log_out': 'Log Out',
-  'app.fetch_data': 'Fetch Data',
+  'app.update_data': 'Update Data',
+  'app.back_log_in': 'Back Log In',
+  'app.previous': 'Previous',
   'app.next': 'Next',
   'app.done': 'Done',
   'app.retry': 'Retry',
@@ -953,7 +955,7 @@ const en_US = {
     'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.use_automatic_cookie_generation':
-    'If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
+    'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':
     'If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.switch_account':
@@ -967,7 +969,7 @@ const en_US = {
     'Your network can not be reached, or the link is expired. Please refresh the page and try again.',
   'app.modal.error.update_cookie': 'Can not update cookie',
   'app.modal.error.update_cookie.content.1':
-    'Your network can not be reached, or your login is expired. Please re-login or try again.',
+    'Your network can not be reached, or your login is expired. Please re-log in or try again.',
   'app.modal.error.update_cookie.content.2':
     'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.',
   'app.modal.error.update_cookie_no_session_token': 'Can not update cookie',
@@ -983,10 +985,10 @@ const en_US = {
   'app.result.construction.description': 'This page is under construction.',
   'app.result.loading': 'Charging',
   'app.result.loading.description': 'This page is in loading...',
-  'app.result.loading.description.fetch_data':
-    'Takos is fetching data, which will last for a few seconds to a few minutes...',
-  'app.result.loading.description.fetch_data.progress':
-    'Takos is fetching data {current}/{total}, which will last for a few seconds to a few minutes...',
+  'app.result.loading.description.check_update_data':
+    'Takos is checking for updated data, which will last for a few seconds to a few minutes...',
+  'app.result.loading.description.update_data':
+    'Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes...',
   'app.result.error': 'Ouch!',
   'app.result.404': '404',
   'app.result.404.description': 'Are you lost, small octoling?',
@@ -994,7 +996,7 @@ const en_US = {
   // App.problem
   'app.problem': 'Takos has encountered a problem.',
   'app.problem.troubleshoot': 'Takos has encountered a problem, please check the following to troubleshoot the issue:',
-  'app.problem.troubleshoot.network': 'Your network connection and proxy settings',
+  'app.problem.troubleshoot.network': 'Your network connection',
   'app.problem.troubleshoot.cookie': 'Your SplatNet cookie',
   'app.problem.report': 'If the problem persists, you can <a>Report the issue on Github &gt;</a>',
   // App.time

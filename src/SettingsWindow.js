@@ -114,7 +114,7 @@ class SettingsWindow extends React.Component {
                 {this.props.intl.formatMessage({
                   id: 'app.modal.error.update_cookie.content.1',
                   defaultMessage:
-                    'Your network can not be reached, or your login is expired. Please re-login or try again.'
+                    'Your network can not be reached, or your login is expired. Please re-log in or try again.'
                 })}
               </p>
               <p style={{ margin: 0 }}>
@@ -272,7 +272,7 @@ class SettingsWindow extends React.Component {
                 <p style={{ margin: 0 }}>
                   <FormattedMessage
                     id="app.alert.info.use_automatic_cookie_generation"
-                    defaultMessage='If you want to re-login and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                    defaultMessage='If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
                     values={{
                       a: msg => (
                         <a

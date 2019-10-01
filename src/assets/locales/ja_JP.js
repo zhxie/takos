@@ -934,9 +934,11 @@ const ja_JP = {
   'app.welcome': 'ようこそ',
   'app.log_in': 'ログイン',
   'app.log_out': 'ログアウト',
+  'app.update_data': '更新データ',
+  'app.back_log_in': 'ログインに戻る',
+  'app.previous': '前へ',
   'app.next': 'つき',
   'app.done': '完了',
-  'app.fetch_data': 'データを取得',
   'app.retry': 'リトライ',
   'app.user': 'ユーザー',
   'app.cookie': 'クッキー',
@@ -981,9 +983,10 @@ const ja_JP = {
   'app.result.construction.description': 'このページは現在作成中です。',
   'app.result.loading': 'チャージイン',
   'app.result.loading.description': 'このページは読み込み中です…',
-  'app.result.loading.description.fetch_data': 'Takos はデータを取得しています。このプロセスは数秒から数分続きます…',
-  'app.result.loading.description.fetch_data.progress':
-    'Takos はデータ {current}/{total} を取得しています。このプロセスは数秒から数分続きます…',
+  'app.result.loading.description.check_update_data':
+    'Takos は更新されたデータをチェックしています。このプロセスは数秒から数分続きます…',
+  'app.result.loading.description.update_data':
+    'Takos はデータ {current}/{total} を更新しています。このプロセスは数秒から数分続きます…',
   'app.result.error': 'やられた',
   'app.result.404': '404',
   'app.result.404.description': '迷子ですか、タコちゃん？',
@@ -992,7 +995,7 @@ const ja_JP = {
   'app.problem': 'Takos で問題が発生しました。',
   'app.problem.troubleshoot':
     'Takos で問題が発生しました。問題をトラブルシューティングするには、次を確認してください：',
-  'app.problem.troubleshoot.network': 'ネットワーク接続とプロキシ設定',
+  'app.problem.troubleshoot.network': 'ネットワーク接続',
   'app.problem.troubleshoot.cookie': 'イカリングのクッキー',
   'app.problem.report': '問題が解決しない場合は、<a>Github で問題を報告できます &gt;</a>',
   // App.time

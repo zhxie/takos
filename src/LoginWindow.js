@@ -31,15 +31,15 @@ class LoginWindow extends React.Component {
     language: 'en_US',
     error: false,
     errorLog: 'unknown_error',
-    errorFetch: false,
-    errorFetchLog: 'unknown_error',
-    fetchCurrent: 0,
-    fetchTotal: 0
+    errorUpdate: false,
+    errorUpdateLog: 'unknown_error',
+    errorUpdateChecklist: [],
+    updateCurrent: 0,
+    updateTotal: 0
   };
 
   constructor(props) {
     super(props);
-    /*
     StorageHelper.initializeStorage()
       .then(res => {
         if (res instanceof TakosError) {
@@ -54,7 +54,6 @@ class LoginWindow extends React.Component {
           this.setState({ error: true, errorLog: 'can_not_initialize' });
         }
       });
-    */
     this.loginParameters = LoginHelper.generateParameters();
   }
 
@@ -82,9 +81,13 @@ class LoginWindow extends React.Component {
     if (this.state.step === 1) {
       StorageHelper.setCookie(this.state.cookie);
       this.props.onDone();
-      this.fetchData();
+      this.updateData();
     }
     this.setState({ step: this.state.step + 1 });
+  };
+
+  toPrevious = () => {
+    this.setState({ step: this.state.step - 1 });
   };
 
   cookieOnChange = value => {
@@ -149,7 +152,7 @@ class LoginWindow extends React.Component {
                 {this.props.intl.formatMessage({
                   id: 'app.modal.error.update_cookie.content.1',
                   defaultMessage:
-                    'Your network can not be reached, or your login is expired. Please re-login or try again.'
+                    'Your network can not be reached, or your login is expired. Please re-log in or try again.'
                 })}
               </p>
               <p style={{ margin: 0 }}>
@@ -172,11 +175,12 @@ class LoginWindow extends React.Component {
       });
   };
 
-  fetchData = () => {
+  updateData = () => {
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
         .then(res => {
           if (res.error !== null) {
+            // Handle previous error
             throw new TakosError(res.error);
           } else {
             return BattleHelper.saveBattle(res);
@@ -184,9 +188,9 @@ class LoginWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.error);
+            throw new TakosError(res.message);
           } else {
-            this.setState({ fetchCurrent: this.state.fetchCurrent + 1 });
+            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
               return getBattleRecursively(from + 1, to);
             }
@@ -202,6 +206,7 @@ class LoginWindow extends React.Component {
         });
     };
 
+    this.setState({ errorUpdate: false });
     return BattleHelper.getTheLatestBattleNumberFromDatabase()
       .then(res => {
         if (res === -1) {
@@ -214,7 +219,7 @@ class LoginWindow extends React.Component {
         const currentNumber = res;
         return BattleHelper.getTheLatestBattleNumber().then(res => {
           if (res === 0) {
-            throw new TakosError('can_not_get_the_latest_battle');
+            throw new TakosError('can_not_get_battles');
           } else {
             const from = Math.max(1, res - 49, currentNumber + 1);
             const to = res;
@@ -224,7 +229,7 @@ class LoginWindow extends React.Component {
       })
       .then(res => {
         if (res.to >= res.from) {
-          this.setState({ fetchCurrent: 1, fetchTotal: res.to - res.from + 1 });
+          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
         } else {
           this.toNext();
           return;
@@ -239,10 +244,28 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          this.setState({ error: true, errorLog: e.message });
+          if (e.message === 'can_not_get_the_latest_battle_from_database') {
+            this.setState({ errorUpdate: true, errorUpdateLog: e.message });
+          } else {
+            this.setState({
+              errorUpdate: true,
+              errorUpdateLog: e.message,
+              errorUpdateChecklist: [
+                <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
+                <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+              ]
+            });
+          }
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_get_battle' });
+          this.setState({
+            errorUpdate: true,
+            errorUpdateLog: 'can_not_update_battles',
+            errorUpdateChecklist: [
+              <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
+              <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+            ]
+          });
         }
       });
   };
@@ -401,6 +424,7 @@ class LoginWindow extends React.Component {
                 <p style={{ margin: 0 }}>
                   <FormattedMessage
                     id="app.alert.info.use_automatic_cookie_generation_first_time"
+                    s
                     defaultMessage='If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
                     values={{
                       a: msg => (
@@ -468,26 +492,33 @@ class LoginWindow extends React.Component {
     );
   };
 
-  renderFetchData = () => {
-    if (this.state.errorFetch) {
+  renderUpdateData = () => {
+    if (this.state.errorUpdate) {
       return (
         <ErrorResult
-          error={this.state.errorFetchLog}
+          error={this.state.errorUpdateLog}
+          checklist={this.state.errorUpdateChecklist}
           extra={[
-            <Button key="toNext" onClick={this.toNext} type="primary">
+            <Button key="retry" onClick={this.updateData} type="primary">
+              <FormattedMessage id="app.retry" defaultMessage="Retry" />
+            </Button>,
+            <Button key="backLogin" onClick={this.toPrevious} type="default">
+              <FormattedMessage id="app.back_log_in" defaultMessage="Back Log In" />
+            </Button>,
+            <Button key="toNext" onClick={this.toNext} type="default">
               <FormattedMessage id="app.next" defaultMessage="Next" />
             </Button>
           ]}
         />
       );
     } else {
-      if (this.state.fetchTotal === 0) {
+      if (this.state.updateTotal === 0) {
         return (
           <LoadingResult
             description={
               <FormattedMessage
-                id="app.result.loading.description.fetch_data"
-                defaultMessage="Takos is fetching data, which will last for a few seconds to a few minutes..."
+                id="app.result.loading.description.check_update_data"
+                defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
               />
             }
           />
@@ -497,11 +528,11 @@ class LoginWindow extends React.Component {
           <LoadingResult
             description={
               <FormattedMessage
-                id="app.result.loading.description.fetch_data.progress"
-                defaultMessage="Takos is fetching data {current}/{total}, which will last for a few seconds to a few minutes..."
+                id="app.result.loading.description.update_data"
+                defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
                 values={{
-                  current: this.state.fetchCurrent,
-                  total: this.state.fetchTotal
+                  current: this.state.updateCurrent,
+                  total: this.state.updateTotal
                 }}
               />
             }
@@ -543,7 +574,7 @@ class LoginWindow extends React.Component {
             <Steps className="LoginWindow-steps" current={this.state.step}>
               <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
               <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
-              <Step title={<FormattedMessage id="app.fetch_data" defaultMessage="Fetch Data" />} />
+              <Step title={<FormattedMessage id="app.update_data" defaultMessage="Update Data" />} />
               <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
             </Steps>
             <div className="LoginWindow-content">
@@ -554,7 +585,7 @@ class LoginWindow extends React.Component {
                   case 1:
                     return this.renderLogin();
                   case 2:
-                    return this.renderFetchData();
+                    return this.renderUpdateData();
                   case 3:
                     return this.renderDone();
                   default:

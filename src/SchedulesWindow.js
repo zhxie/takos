@@ -67,6 +67,7 @@ class SchedulesWindow extends React.Component {
     if (!this.modeSelector()) {
       return;
     }
+    this.setState({ error: false });
     ScheduleHelper.getSchedules()
       .then(res => {
         if (res === null) {
@@ -179,20 +180,11 @@ class SchedulesWindow extends React.Component {
         <ErrorResult
           error={this.state.errorLog}
           checklist={[
-            <FormattedMessage
-              id="app.problem.troubleshoot.network"
-              defaultMessage="Your network connection and proxy settings"
-            />
+            <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />
           ]}
           extra={[
             [
-              <Button
-                onClick={() => {
-                  this.setState({ loaded: false, error: false, expired: false, invalid: false });
-                  this.updateSchedules();
-                }}
-                type="primary"
-              >
+              <Button onClick={this.updateSchedules} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>
             ]
