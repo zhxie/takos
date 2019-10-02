@@ -275,6 +275,10 @@ class BattlePlayer extends Player {
     this.sort = sort;
   }
 
+  killAndAssist = () => {
+    return this.kill + this.assist;
+  };
+
   static parse = (data, url, isSelf) => {
     try {
       const species = Species.parse(data.player.player_type.species);

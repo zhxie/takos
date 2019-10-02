@@ -37,7 +37,11 @@
   width: calc(100% - 32px);
 }
 
+.BattlesWindow-content-tooltip {
+  text-align: center;
+}
+
 .BattlesWindow-content-icon {
   display: inline-block;
-  height: 24px;
+  height: 32px;
 }
