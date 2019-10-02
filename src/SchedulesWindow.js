@@ -19,6 +19,7 @@ const { Header, Content } = Layout;
 
 class SchedulesWindow extends React.Component {
   state = {
+    data: [],
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
