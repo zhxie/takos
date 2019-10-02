@@ -2,7 +2,7 @@ import TakosError from './ErrorHelper';
 import { SPLATNET, SPLATNET_RESULTS, SPLATNET_RESULT, SPLATNET_NICKNAME_AND_ICON } from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import './StringHelper';
-import Battle from '../models/Battle';
+import { Battle } from '../models/Battle';
 import { Mode } from '../models/Mode';
 
 class BattleHelper {
@@ -75,6 +75,25 @@ class BattleHelper {
       });
   };
 
+  static saveBattle = battle => {
+    if (battle !== undefined && battle !== null && battle.error === null) {
+      return StorageHelper.addBattle(battle)
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_save_battle');
+          }
+        });
+    }
+  };
+
   static updateRank = battle => {
     if (battle !== undefined && battle !== null && battle.error === null && battle.gameMode === Mode.rankedBattle) {
       let rank = StorageHelper.rank();
@@ -93,44 +112,6 @@ class BattleHelper {
         rank[battle.rule.value].rank = battle.rank;
         StorageHelper.setRank(rank);
       }
-    }
-  };
-
-  static getTheLatestBattleNumberFromDatabase = () => {
-    return StorageHelper.battles()
-      .then(res => {
-        if (res instanceof TakosError) {
-          throw new TakosError(res.message);
-        } else {
-          if (res.length === 0) {
-            return 0;
-          } else {
-            return Math.max.apply(Math, res);
-          }
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        return -1;
-      });
-  };
-
-  static saveBattle = battle => {
-    if (battle !== undefined && battle !== null && battle.error === null) {
-      return StorageHelper.addBattle(battle)
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return new TakosError(e.message);
-          } else {
-            console.error(e);
-            return new TakosError('can_not_save_battle');
-          }
-        });
     }
   };
 

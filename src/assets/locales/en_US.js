@@ -1,5 +1,6 @@
 const en_US = {
   // Mode
+  mode: 'Mode',
   'mode.regular_battle': 'Regular Battle',
   'mode.ranked_battle': 'Ranked Battle',
   'mode.league_battle': 'League Battle',
@@ -8,12 +9,14 @@ const en_US = {
   'mode.splatfest.challenge': 'Challenge',
   'mode.splatfest.regular': 'Regular',
   // Rule
+  rule: 'Rule',
   'rule.turf_war': 'Turf War',
   'rule.splat_zones': 'Splat Zones',
   'rule.tower_control': 'Tower Control',
   'rule.rainmaker': 'Rainmaker',
   'rule.clam_blitz': 'Clam Blitz',
   // Stage
+  stage: 'Stage',
   'stage.the_reef': 'The Reef',
   'stage.musselforge_fitness': 'Musselforge Fitness',
   'stage.starfish_mainstage': 'Starfish Mainstage',
@@ -63,6 +66,7 @@ const en_US = {
   'stage.mc_princess_diaries': 'MC.Princess Diaries',
   'stage.shifty_station': 'Shifty Station',
   // Weapon
+  weapon: 'Weapon',
   'weapon.main': 'Main Weapon',
   'weapon.main.shooter': 'Shooter',
   'weapon.main.shooter.bold': 'Sploosh-o-matic',
@@ -244,11 +248,13 @@ const en_US = {
   'weapon.special.booyah_bomb': 'Booyah Bomb',
   'weapon.special.ultra_stamp': 'Ultra Stamp',
   // Freshness
+  freshness: 'Freshness',
   'freshness.dry': 'Dry',
   'freshness.raw': 'Raw',
   'freshness.fresh': 'Fresh',
   'freshness.superfresh': 'SUPERFRESH!',
   // Ability
+  ability: 'Ability',
   'ability.primary': 'Primary Ability',
   'abiliry.secondary': 'Secondary Ability',
   'ability.ink_saver_main': 'Ink Saver (Main)',
@@ -281,6 +287,7 @@ const en_US = {
   'ability.main_power_up': 'Main Power Up',
   'ability.empty': 'Empty',
   // Brand
+  brand: 'Brand',
   'brand.squidforce': 'SquidForce',
   'brand.zink': 'Zink',
   'brand.krak_on': 'Krak-On',
@@ -300,6 +307,7 @@ const en_US = {
   'brand.cuttlegear': 'Cuttlegear',
   'brand.amiibo': 'amiibo',
   // Gear
+  gear: 'Gear',
   'gear.head': 'Headgear',
   'gear.headgear.white_headband': 'White Headband',
   'gear.headgear.urchins_cap': 'Urchins Cap',
@@ -892,6 +900,7 @@ const en_US = {
   'style.girl': 'Girl',
   'style.boy': 'Boy',
   // Rank
+  rank: 'Rank',
   'rank.c-': 'C-',
   'rank.c': 'C',
   'rank.c+': 'C+',
@@ -938,8 +947,10 @@ const en_US = {
   'app.log_out': 'Log Out',
   'app.update_data': 'Update Data',
   'app.back_log_in': 'Back Log In',
+  'app.to_settings': 'To Settings',
   'app.previous': 'Previous',
   'app.next': 'Next',
+  'app.continue': 'Continue',
   'app.done': 'Done',
   'app.retry': 'Retry',
   'app.user': 'User',
@@ -954,6 +965,7 @@ const en_US = {
   'app.alert.warning.schedules_expired':
     'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info': 'Info',
+  'app.alert.info.battles_updated': 'It seems that battles have been updated, please refresh this page to update.',
   'app.alert.info.use_automatic_cookie_generation':
     'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':

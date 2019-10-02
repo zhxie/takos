@@ -136,10 +136,8 @@ class Battle extends Base {
                   parseInt(data.estimate_gachi_power)
                 );
               } else {
-                let xPowerAfter;
-                if (data.x_power === null) {
-                  xPowerAfter = null;
-                } else {
+                let xPowerAfter = null;
+                if (data.x_power !== null) {
                   xPowerAfter = parseFloat(data.x_power).toFixed(1);
                 }
                 return new RankedXBattle(
@@ -161,10 +159,8 @@ class Battle extends Base {
               }
             }
             case Mode.leagueBattle: {
-              let leaguePoint;
-              if (data.league_point === null) {
-                leaguePoint = null;
-              } else {
+              let leaguePoint = null;
+              if (data.league_point !== null) {
                 leaguePoint = parseFloat(data.league_point).toFixed(1);
               }
               return new LeagueBattle(
@@ -230,6 +226,165 @@ class Battle extends Base {
     } catch (e) {
       console.error(e);
       return new Battle('can_not_parse_battle');
+    }
+  };
+
+  static deserialize = data => {
+    try {
+      const type = Mode.deserialize(data.type);
+      const number = parseInt(data.number);
+      const startTime = new Date(parseInt(data.startTime) * 1000);
+      const gameMode = Mode.deserialize(data.gameMode);
+      const rule = Rule.deserialize(data.rule);
+      const stage = ScheduledStage.deserialize(data.stage);
+      if (stage.error !== null) {
+        // Handle previous error
+        return new Battle(stage.error);
+      }
+      let myTeamMembers = [];
+      data.myTeamMembers.forEach(element => {
+        myTeamMembers.push(BattlePlayer.deserialize(element));
+      });
+      myTeamMembers.forEach(element => {
+        if (element.error !== null) {
+          // Handle previous error
+          return new Battle(element.error);
+        }
+      });
+      let otherTeamMembers = [];
+      data.otherTeamMembers.forEach(element => {
+        otherTeamMembers.push(BattlePlayer.deserialize(element));
+      });
+      otherTeamMembers.forEach(element => {
+        if (element.error !== null) {
+          // Handle previous error
+          return new Battle(element.error);
+        }
+      });
+      const levelAfter = parseInt(data.levelAfter);
+      switch (type) {
+        case Mode.regularBattle: {
+          let winMeter;
+          if (data.winMeter % 1 === 0) {
+            winMeter = parseInt(data.winMeter);
+          } else {
+            winMeter = parseFloat(data.winMeter).toFixed(1);
+          }
+          return new RegularBattle(
+            null,
+            rule,
+            number,
+            startTime,
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            levelAfter,
+            parseFloat(data.myTeamCount).toFixed(1),
+            parseFloat(data.otherTeamCount).toFixed(1),
+            winMeter
+          );
+        }
+        case Mode.rankedBattle: {
+          if (myTeamMembers[0].Rank !== Rank.x) {
+            return new RankedBattle(
+              null,
+              rule,
+              number,
+              startTime,
+              parseInt(data.elapsedTime),
+              gameMode,
+              stage,
+              myTeamMembers,
+              otherTeamMembers,
+              levelAfter,
+              parseInt(data.myTeamCount),
+              parseInt(data.otherTeamCount),
+              Rank.deserialize(data.rankAfter),
+              parseInt(data.estimatedRankPower)
+            );
+          } else {
+            let xPowerAfter;
+            if (data.xPowerAfter !== null) {
+              xPowerAfter = parseFloat(data.xPowerAfter).toFixed(1);
+            }
+            return new RankedXBattle(
+              null,
+              rule,
+              number,
+              startTime,
+              parseInt(data.elapsedTime),
+              gameMode,
+              stage,
+              myTeamMembers,
+              otherTeamMembers,
+              levelAfter,
+              parseInt(data.myTeamCount),
+              parseInt(data.otherTeamCount),
+              xPowerAfter,
+              parseInt(data.estimatedRankPower)
+            );
+          }
+        }
+        case Mode.leagueBattle: {
+          let leaguePoint = null;
+          if (data.leaguePoint !== null) {
+            leaguePoint = parseFloat(data.leaguePoint).toFixed(1);
+          }
+          return new LeagueBattle(
+            null,
+            rule,
+            number,
+            startTime,
+            parseInt(data.elapsedTime),
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            levelAfter,
+            parseInt(data.myTeamCount),
+            parseInt(data.otherTeamCount),
+            parseInt(data.myEstimatedLeaguePoint),
+            parseInt(data.otherEstimatedLeaguePoint),
+            leaguePoint,
+            parseFloat(data.maxLeaguePoint).toFixed(1)
+          );
+        }
+        case Mode.splatfest: {
+          let winMeter;
+          if (data.winMeter % 1 === 0) {
+            winMeter = parseInt(data.winMeter);
+          } else {
+            winMeter = parseFloat(data.winMeter).toFixed(1);
+          }
+          return new SplatfestBattle(
+            null,
+            rule,
+            number,
+            startTime,
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            levelAfter,
+            parseFloat(data.myTeamCount).toFixed(1),
+            parseFloat(data.otherTeamCount).toFixed(1),
+            winMeter,
+            SplatfestMode.deserialize(data.splatfestMode),
+            parseInt(data.myEstimatedSplatfestPower),
+            parseInt(data.otherEstimatedSplatfestPower),
+            parseFloat(data.splatfestPower).toFixed(1),
+            parseFloat(data.maxSplatfestPower).toFixed(1),
+            parseInt(data.contributionPoint),
+            parseInt(data.totalContributionPoint)
+          );
+        }
+        default:
+          throw new RangeError();
+      }
+    } catch (e) {
+      console.error(e);
+      return new Battle('can_not_deserialize_battle');
     }
   };
 }
@@ -461,4 +616,4 @@ class SplatfestBattle extends Battle {
   };
 }
 
-export default Battle;
+export { Battle, RegularBattle, RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle };

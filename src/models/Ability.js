@@ -194,24 +194,74 @@ class Ability extends Base {
     this.url = url;
   }
 
-  static parsePrimary = data => {
+  static parse = (type, data) => {
     try {
-      const ability = PrimaryAbility.parse(parseInt(data.id));
+      let ability;
+      switch (type) {
+        case AbilityType.primary:
+          ability = PrimaryAbility.parse(parseInt(data.id));
+          break;
+        case AbilityType.secondary:
+          ability = SecondaryAbility.parse(parseInt(data.id));
+          break;
+        default:
+          throw new RangeError();
+      }
       return new Ability(null, ability, data.image);
     } catch (e) {
       console.error(e);
-      return new Ability('can_not_parse_primary_ability');
+      switch (type) {
+        case AbilityType.primary:
+          return new Ability('can_not_parse_primary_ability');
+        case AbilityType.secondary:
+          return new Ability('can_not_parse_secondary_ability');
+        default:
+          return new Ability('can_not_parse_ability');
+      }
     }
   };
 
+  static parsePrimary = data => {
+    return Ability.parse(AbilityType.primary, data);
+  };
+
   static parseSecondary = data => {
+    return Ability.parse(AbilityType.secondary, data);
+  };
+
+  static deserialize = (type, data) => {
     try {
-      const ability = SecondaryAbility.parse(parseInt(data.id));
-      return new Ability(null, ability, data.image);
+      let ability;
+      switch (type) {
+        case AbilityType.primary:
+          ability = PrimaryAbility.parse(parseInt(data.ability.value));
+          break;
+        case AbilityType.secondary:
+          ability = SecondaryAbility.parse(parseInt(data.ability.value));
+          break;
+        default:
+          throw new RangeError();
+      }
+      return new Ability(null, ability, data.url);
     } catch (e) {
       console.error(e);
-      return new Ability('can_not_parse_secondary_ability');
+      switch (type) {
+        case AbilityType.primary:
+          return new Ability('can_not_deserialize_primary_ability');
+        case AbilityType.secondary:
+          return new Ability('can_not_deserialize_secondary_ability');
+        default:
+          return new Ability('can_not_deserialize_ability');
+      }
     }
+  };
+
+  static deserializePrimary = data => {
+    return Ability.deserialize(AbilityType.primary, data);
+  };
+
+  static deserializeSecondary = data => {
+    return Ability.deserialize(AbilityType.secondary, data);
   };
 }
 

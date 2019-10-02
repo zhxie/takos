@@ -93,6 +93,20 @@ class Brand extends Base {
       return new Brand('can_not_parse_brand');
     }
   };
+
+  static deserialize = data => {
+    try {
+      const brand = BaseBrand.parse(parseInt(data.brand.value));
+      let favoredAbility = null;
+      if (data.favoredAbility !== null) {
+        favoredAbility = Ability.deserializeSecondary(data.favoredAbility);
+      }
+      return new Brand(null, brand, data.url, favoredAbility);
+    } catch (e) {
+      console.error(e);
+      return new Brand('can_not_deserialize_brand');
+    }
+  };
 }
 
 export { BaseBrand, Brand };

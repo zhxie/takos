@@ -1827,9 +1827,22 @@ class Gear extends Base {
     this.secondaryAbilities = secondaryAbilities;
   }
 
-  static parseHeadgear = (gearData, abilitiesData) => {
+  static parse = (type, gearData, abilitiesData) => {
     try {
-      const gear = HeadgearGear.parse(parseInt(gearData.id));
+      let gear;
+      switch (type) {
+        case GearType.headgear:
+          gear = HeadgearGear.parse(parseInt(gearData.id));
+          break;
+        case GearType.clothes:
+          gear = ClothesGear.parse(parseInt(gearData.id));
+          break;
+        case GearType.shoes:
+          gear = ShoesGear.parse(parseInt(gearData.id));
+          break;
+        default:
+          throw new RangeError();
+      }
       const brand = Brand.parse(gearData.brand);
       const primaryAbility = Ability.parsePrimary(abilitiesData.main);
       if (primaryAbility.error !== null) {
@@ -1852,52 +1865,57 @@ class Gear extends Base {
       return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
     } catch (e) {
       console.error(e);
-      return new Gear('can_not_parse_headgear_gear');
+      switch (type) {
+        case GearType.headgear:
+          return new Gear('can_not_parse_headgear_gear');
+        case GearType.clothes:
+          return new Gear('can_not_parse_clothes_gear');
+        case GearType.shoes:
+          return new Gear('can_not_parse_shoes_gear');
+        default:
+          return new Gear('can_not_parse_gear');
+      }
     }
+  };
+
+  static parseHeadgear = (gearData, abilitiesData) => {
+    return Gear.parse(GearType.headgear, gearData, abilitiesData);
   };
 
   static parseClothes = (gearData, abilitiesData) => {
-    try {
-      const gear = ClothesGear.parse(parseInt(gearData.id));
-      const brand = Brand.parse(gearData.brand);
-      const primaryAbility = Ability.parsePrimary(abilitiesData.main);
-      if (primaryAbility.error !== null) {
-        // Handle previous error
-        return new Gear(primaryAbility.error);
-      }
-      let secondaryAbilities = [];
-      abilitiesData.subs.forEach(element => {
-        if (element !== null) {
-          const secondaryAbility = Ability.parseSecondary(element);
-          secondaryAbilities.push(secondaryAbility);
-        }
-      });
-      secondaryAbilities.forEach(element => {
-        if (element.error !== null) {
-          // Handle previous error
-          return new Gear(element.error);
-        }
-      });
-      return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
-    } catch (e) {
-      console.error(e);
-      return new Gear('can_not_parse_clothes_gear');
-    }
+    return Gear.parse(GearType.clothes, gearData, abilitiesData);
   };
 
   static parseShoes = (gearData, abilitiesData) => {
+    return Gear.parse(GearType.shoes, gearData, abilitiesData);
+  };
+
+  static deserialize = (type, data) => {
     try {
-      const gear = ShoesGear.parse(parseInt(gearData.id));
-      const brand = Brand.parse(gearData.brand);
-      const primaryAbility = Ability.parsePrimary(abilitiesData.main);
+      let gear;
+      switch (type) {
+        case GearType.headgear:
+          gear = HeadgearGear.parse(parseInt(data.gear.value));
+          break;
+        case GearType.clothes:
+          gear = ClothesGear.parse(parseInt(data.gear.value));
+          break;
+        case GearType.shoes:
+          gear = ShoesGear.parse(parseInt(data.gear.value));
+          break;
+        default:
+          throw new RangeError();
+      }
+      const brand = Brand.deserialize(data.brand);
+      const primaryAbility = Ability.deserializePrimary(data.primaryAbility);
       if (primaryAbility.error !== null) {
         // Handle previous error
         return new Gear(primaryAbility.error);
       }
       let secondaryAbilities = [];
-      abilitiesData.subs.forEach(element => {
+      data.secondaryAbilities.forEach(element => {
         if (element !== null) {
-          const secondaryAbility = Ability.parseSecondary(element);
+          const secondaryAbility = Ability.deserializeSecondary(element);
           secondaryAbilities.push(secondaryAbility);
         }
       });
@@ -1907,11 +1925,32 @@ class Gear extends Base {
           return new Gear(element.error);
         }
       });
-      return new Gear(null, gear, gearData.image, brand, primaryAbility, secondaryAbilities);
+      return new Gear(null, gear, data.url, brand, primaryAbility, secondaryAbilities);
     } catch (e) {
       console.error(e);
-      return new Gear('can_not_parse_shoes_gear');
+      switch (type) {
+        case GearType.headgear:
+          return new Gear('can_not_deserialize_headgear_gear');
+        case GearType.clothes:
+          return new Gear('can_not_deserialize_clothes_gear');
+        case GearType.shoes:
+          return new Gear('can_not_deserialize_shoes_gear');
+        default:
+          return new Gear('can_not_deserialize_gear');
+      }
     }
+  };
+
+  static deserializeHeadgear = data => {
+    return Gear.deserialize(GearType.headgear, data);
+  };
+
+  static deserializeClothes = data => {
+    return Gear.deserialize(GearType.clothes, data);
+  };
+
+  static deserializeShoes = data => {
+    return Gear.deserialize(GearType.shoes, data);
   };
 }
 

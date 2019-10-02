@@ -1,5 +1,6 @@
 const ja_JP = {
   // Mode
+  mode: 'モード',
   'mode.regular_battle': 'レギュラーマッチ',
   'mode.ranked_battle': 'ガチマッチ',
   'mode.league_battle': 'リーグマッチ',
@@ -8,12 +9,14 @@ const ja_JP = {
   'mode.splatfest.challenge': 'チャレンジ',
   'mode.splatfest.regular': 'レギュラー',
   // Rule
+  rule: 'ルール',
   'rule.turf_war': 'ナワバリバトル',
   'rule.splat_zones': 'ガチエリア',
   'rule.tower_control': 'ガチヤグラ',
   'rule.rainmaker': 'ガチホコバトル',
   'rule.clam_blitz': 'ガチアサリ',
   // Stage
+  stage: 'ステージ',
   'stage.the_reef': 'バッテラストリート',
   'stage.musselforge_fitness': 'フジツボスポーツクラブ',
   'stage.starfish_mainstage': 'ガンガゼ野外音楽堂',
@@ -63,6 +66,7 @@ const ja_JP = {
   'stage.mc_princess_diaries': 'DEAR SENPAI',
   'stage.shifty_station': 'ミステリーゾーン',
   // Weapon
+  weapon: 'ブキ',
   'weapon.main': 'メインウェポン',
   'weapon.main.shooter': 'シューター',
   'weapon.main.shooter.bold': 'ボールドマーカー',
@@ -244,11 +248,13 @@ const ja_JP = {
   'weapon.special.booyah_bomb': 'ナイスダマ',
   'weapon.special.ultra_stamp': 'ウルトラハンコ',
   // Freshness
+  freshness: 'チョーシ',
   'freshness.dry': 'チョーシあげていこう',
   'freshness.raw': 'チョーシぼちぼち',
   'freshness.fresh': 'チョーシいいね！',
   'freshness.superfresh': 'チョーシサイコー！！',
   // Ability
+  ability: 'ギアパワー',
   'ability.primary': '基本ギアパワー',
   'abiliry.secondary': '追加ギアパワー',
   'ability.ink_saver_main': 'インク効率アップ(メイン)',
@@ -281,6 +287,7 @@ const ja_JP = {
   'ability.main_power_up': 'メイン性能アップ',
   'ability.empty': 'はてな',
   // Brand
+  brand: 'ブランド',
   'brand.squidforce': 'バトロイカ',
   'brand.zink': 'アイロニック',
   'brand.krak_on': 'クラーゲス',
@@ -300,6 +307,7 @@ const ja_JP = {
   'brand.cuttlegear': 'アタリメイド',
   'brand.amiibo': 'アミーボ',
   // Gear
+  gear: 'ギア',
   'gear.headgear.white_headband': 'ヘッドバンド ホワイト',
   'gear.headgear.urchins_cap': 'ウーニーズBBキャップ',
   'gear.headgear.lightweight_cap': 'キャンプキャップ',
@@ -890,6 +898,7 @@ const ja_JP = {
   'style.girl': 'ガール',
   'style.boy': 'ボーイ',
   // Rank
+  rank: 'ランク',
   'rank.c-': 'C-',
   'rank.c': 'C',
   'rank.c+': 'C+',
@@ -936,8 +945,10 @@ const ja_JP = {
   'app.log_out': 'ログアウト',
   'app.update_data': '更新データ',
   'app.back_log_in': 'ログインに戻る',
+  'app.to_settings': '設定へ',
   'app.previous': '前へ',
   'app.next': 'つき',
+  'app.continue': '続け',
   'app.done': '完了',
   'app.retry': 'リトライ',
   'app.user': 'ユーザー',
@@ -952,6 +963,7 @@ const ja_JP = {
   'app.alert.warning.schedules_expired':
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
+  'app.alert.info.battles_updated': '戦闘が更新されたようです。更新するには、このページを更新してください。',
   'app.alert.info.use_automatic_cookie_generation':
     '再ログインして自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

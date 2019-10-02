@@ -19,6 +19,17 @@ class Species {
         throw new RangeError();
     }
   };
+
+  static deserialize = data => {
+    switch (parseInt(data.value)) {
+      case 0:
+        return Species.inklings;
+      case 1:
+        return Species.octolings;
+      default:
+        throw new RangeError();
+    }
+  };
 }
 
 Species.inklings = new Species('species.inklings', 0);
@@ -37,6 +48,17 @@ class Style {
       case 'girl':
         return Style.girl;
       case 'boy':
+        return Style.boy;
+      default:
+        throw new RangeError();
+    }
+  };
+
+  static deserialize = data => {
+    switch (parseInt(data.value)) {
+      case 0:
+        return Style.girl;
+      case 1:
         return Style.boy;
       default:
         throw new RangeError();
@@ -110,6 +132,57 @@ class Rank {
             throw new RangeError();
         }
       case 'X':
+        return Rank.x;
+      default:
+        throw new RangeError();
+    }
+  };
+
+  static deserialize = data => {
+    switch (data.value) {
+      case 0:
+        return Rank.cMinus;
+      case 1:
+        return Rank.c;
+      case 2:
+        return Rank.cPlus;
+      case 3:
+        return Rank.bMinus;
+      case 4:
+        return Rank.b;
+      case 5:
+        return Rank.bPlus;
+      case 6:
+        return Rank.aMinus;
+      case 7:
+        return Rank.a;
+      case 8:
+        return Rank.aPlus;
+      case 9:
+        return Rank.s;
+      case 10:
+        return Rank.sPlus;
+      case 11:
+        return Rank.sPlus0;
+      case 12:
+        return Rank.sPlus1;
+      case 13:
+        return Rank.sPlus2;
+      case 14:
+        return Rank.sPlus3;
+      case 15:
+        return Rank.sPlus4;
+      case 16:
+        return Rank.sPlus5;
+      case 17:
+        return Rank.sPlus6;
+      case 18:
+        return Rank.sPlus7;
+      case 19:
+        return Rank.sPlus8;
+      case 20:
+        return Rank.sPlus9;
+      case 21:
         return Rank.x;
       default:
         throw new RangeError();
@@ -233,7 +306,7 @@ class BattlePlayer extends Player {
       const death = parseInt(data.death_count);
       const special = parseInt(data.special_count);
       const sort = parseInt(data.sort_score);
-      if (data.player.udemae === null || data.player.udemae === undefined) {
+      if (data.player.udemae === undefined || data.player.udemae === null) {
         // Regular battle
         return new RegularBattlePlayer(
           null,
@@ -298,6 +371,84 @@ class BattlePlayer extends Player {
       .catch(() => {
         return new BattlePlayer('can_not_get_player_icon');
       });
+  };
+
+  static deserialize = data => {
+    const species = Species.deserialize(data.species);
+    const style = Style.deserialize(data.style);
+    const level = parseInt(data.level);
+    const headgearGear = Gear.deserializeHeadgear(data.headgearGear);
+    if (headgearGear.error !== null) {
+      // Handle previous error
+      return new RegularBattlePlayer(headgearGear.error);
+    }
+    const clothesGear = Gear.deserializeClothes(data.clothesGear);
+    if (clothesGear.error !== null) {
+      // Handle previous error
+      return new RegularBattlePlayer(clothesGear.error);
+    }
+    const shoesGear = Gear.deserializeShoes(data.shoesGear);
+    if (shoesGear.error !== null) {
+      // Handle previous error
+      return new RegularBattlePlayer(shoesGear.error);
+    }
+    const weapon = Weapon.deserialize(data.weapon);
+    if (weapon.error !== null) {
+      // Handle previous error
+      return new RegularBattlePlayer(weapon.error);
+    }
+    const paint = parseInt(data.paint);
+    const kill = parseInt(data.kill);
+    const assist = parseInt(data.assist);
+    const death = parseInt(data.death);
+    const special = parseInt(data.special);
+    const sort = parseInt(data.sort);
+    if (data.rank === undefined || data.rank === null) {
+      // Regular battle
+      return new RegularBattlePlayer(
+        null,
+        data.id,
+        data.nickname,
+        species,
+        style,
+        data.url,
+        data.isSelf,
+        level,
+        headgearGear,
+        clothesGear,
+        shoesGear,
+        weapon,
+        paint,
+        kill,
+        assist,
+        death,
+        special,
+        sort
+      );
+    } else {
+      const rank = Rank.deserialize(data.rank);
+      return new RankedBattlePlayer(
+        null,
+        data.id,
+        data.nickname,
+        species,
+        style,
+        data.url,
+        data.isSelf,
+        level,
+        rank,
+        headgearGear,
+        clothesGear,
+        shoesGear,
+        weapon,
+        paint,
+        kill,
+        assist,
+        death,
+        special,
+        sort
+      );
+    }
   };
 }
 
@@ -393,4 +544,4 @@ class RankedBattlePlayer extends BattlePlayer {
   }
 }
 
-export { Species, Style, Rank, PlayerType, Player, BattlePlayer };
+export { Species, Style, Rank, PlayerType, Player, BattlePlayer, RegularBattlePlayer, RankedBattlePlayer };

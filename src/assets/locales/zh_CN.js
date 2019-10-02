@@ -1,5 +1,6 @@
 const zh_CN = {
   // Mode
+  mode: '模式^',
   'mode.regular_battle': '普通战',
   'mode.ranked_battle': '排名战',
   'mode.league_battle': '联盟战*',
@@ -8,12 +9,14 @@ const zh_CN = {
   'mode.splatfest.challenge': '挑战*',
   'mode.splatfest.regular': '普通',
   // Rule
+  rule: '规则^',
   'rule.turf_war': '地盘战',
   'rule.splat_zones': '区域模式*',
   'rule.tower_control': '夺塔模式',
   'rule.rainmaker': '雨神争夺模式',
   'rule.clam_blitz': '蛤蜊模式*',
   // Stage
+  stage: '场地^',
   'stage.the_reef': '青花鱼寿司街*',
   'stage.musselforge_fitness': '贻贝健身房*',
   'stage.starfish_mainstage': '海星音乐堂*',
@@ -63,6 +66,7 @@ const zh_CN = {
   'stage.mc_princess_diaries': 'MC.Princess Diaries',
   'stage.shifty_station': '神秘场地*',
   // Weapon
+  weapon: '武器',
   'weapon.main': '主武器',
   'weapon.main.shooter': '射枪',
   'weapon.main.shooter.bold': '喷号射枪',
@@ -244,11 +248,13 @@ const zh_CN = {
   'weapon.special.booyah_bomb': 'Nice 弹*',
   'weapon.special.ultra_stamp': '究极图章*',
   // Freshness
+  freshness: '调子*',
   'freshness.dry': '不怎么新鲜*',
   'freshness.raw': '一般新鲜*',
   'freshness.fresh': '新鲜！*',
   'freshness.superfresh': '超级新鲜！！*',
   // Ability
+  ability: '能力',
   'ability.primary': '基本能力',
   'abiliry.secondary': '附加能力',
   'ability.ink_saver_main': '主武器省墨',
@@ -281,6 +287,7 @@ const zh_CN = {
   'ability.main_power_up': '主武器加强*',
   'ability.empty': '无',
   // Brand
+  brand: '品牌',
   'brand.squidforce': '墨战',
   'brand.zink': '钢铁',
   'brand.krak_on': '水母',
@@ -300,6 +307,7 @@ const zh_CN = {
   'brand.cuttlegear': '墨干制印*',
   'brand.amiibo': 'amiibo',
   // Gear
+  gear: '装备^',
   'gear.headgear': '帽子',
   'gear.head.white_headband': '白头箍',
   'gear.head.urchins_cap': '海胆篮球帽',
@@ -892,6 +900,7 @@ const zh_CN = {
   'style.girl': '女孩',
   'style.boy': '男孩',
   // Rank
+  rank: '段位^',
   'rank.c-': 'C-',
   'rank.c': 'C',
   'rank.c+': 'C+',
@@ -937,8 +946,10 @@ const zh_CN = {
   'app.log_out': '退出登录',
   'app.update_data': '更新数据',
   'app.back_log_in': '返回登录',
+  'app.to_settings': '前往设置',
   'app.previous': '上一步',
   'app.next': '下一步',
+  'app.continue': '继续',
   'app.done': '完成',
   'app.retry': '重试',
   'app.user': '用户',
@@ -952,6 +963,7 @@ const zh_CN = {
     '自动 Cookie 生成将向 2 个非任天堂服务器发起安全请求。这些请求中仅包含最小的，非识别性的信息。在开始前，请仔细阅读 <a>README</a> 中“Security and Privacy”一章。',
   'app.alert.warning.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info': '信息',
+  'app.alert.info.battles_updated': '战斗似乎有更新，请刷新页面以更新。',
   'app.alert.info.use_automatic_cookie_generation':
     '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

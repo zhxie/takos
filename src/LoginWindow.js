@@ -207,7 +207,7 @@ class LoginWindow extends React.Component {
     };
 
     this.setState({ errorUpdate: false });
-    return BattleHelper.getTheLatestBattleNumberFromDatabase()
+    return StorageHelper.latestBattle()
       .then(res => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_battle_from_database');
@@ -523,6 +523,8 @@ class LoginWindow extends React.Component {
             }
           />
         );
+      } else if (this.state.updateCurrent > this.state.updateTotal) {
+        return <LoadingResult />;
       } else {
         return (
           <LoadingResult

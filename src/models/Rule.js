@@ -20,6 +20,23 @@ class Rule {
         throw new RangeError();
     }
   };
+
+  static deserialize = data => {
+    switch (data.value) {
+      case 0:
+        return Rule.turfWar;
+      case 1:
+        return Rule.splatZones;
+      case 2:
+        return Rule.towerControl;
+      case 3:
+        return Rule.rainmaker;
+      case 4:
+        return Rule.clamBlitz;
+      default:
+        throw new RangeError();
+    }
+  };
 }
 
 Rule.turfWar = new Rule('rule.turf_war', 0);

@@ -655,6 +655,28 @@ class Weapon extends Base {
       return new Weapon('can_not_parse_weapon');
     }
   };
+
+  static deserialize = data => {
+    try {
+      const mainWeapon = MainWeapon.parse(parseInt(data.mainWeapon.value));
+      const subWeapon = SubWeapon.parse(parseInt(data.subWeapon.value));
+      const specialWeapon = SpecialWeapon.parse(parseInt(data.specialWeapon.value));
+      return new Weapon(
+        null,
+        mainWeapon,
+        data.mainWeaponUrl,
+        subWeapon,
+        data.subWeaponUrlA,
+        data.subWeaponUrlB,
+        specialWeapon,
+        data.specialWeaponUrlA,
+        data.specialWeaponUrlB
+      );
+    } catch (e) {
+      console.error(e);
+      return new Weapon('can_not_deserialize_weapon');
+    }
+  };
 }
 
 class Freshness {

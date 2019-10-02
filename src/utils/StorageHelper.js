@@ -1,6 +1,7 @@
 import localForage from 'localforage';
 
 import TakosError from './ErrorHelper';
+import { Battle } from '../models/Battle';
 
 class StorageHelper {
   static battlesConnection = null;
@@ -98,17 +99,6 @@ class StorageHelper {
     }
   };
 
-  // Get keys of battles
-  static battles = () => {
-    if (!StorageHelper.dbConnected()) {
-      StorageHelper.connectDb();
-    }
-    return StorageHelper.battlesConnection.keys().catch(e => {
-      console.error(e);
-      return new TakosError('can_not_handle_database');
-    });
-  };
-
   static battle = number => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
@@ -119,12 +109,62 @@ class StorageHelper {
         if (res === null) {
           throw new RangeError();
         } else {
-          return JSON.parse(res);
+          return Battle.deserialize(JSON.parse(res));
         }
       })
       .catch(e => {
         console.error(e);
-        return new TakosError('can_not_handle_database');
+        return new Battle('can_not_handle_database');
+      });
+  };
+
+  static battles = () => {
+    let battles = [];
+    if (!StorageHelper.dbConnected()) {
+      StorageHelper.connectDb();
+    }
+    return StorageHelper.battlesConnection
+      .iterate(value => {
+        const battle = Battle.deserialize(JSON.parse(value));
+        if (battle.error === null) {
+          battles.push(battle);
+        } else {
+          console.error(battle.error);
+        }
+      })
+      .then(() => {
+        return battles;
+      })
+      .catch(e => {
+        console.error(e);
+        return battles;
+      });
+  };
+
+  static latestBattle = () => {
+    if (!StorageHelper.dbConnected()) {
+      StorageHelper.connectDb();
+    }
+    return StorageHelper.battlesConnection
+      .keys()
+      .catch(e => {
+        console.error(e);
+        throw new TakosError('can_not_handle_database');
+      })
+      .then(res => {
+        if (res.length === 0) {
+          return 0;
+        } else {
+          return Math.max.apply(Math, res);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return -1;
+        } else {
+          console.error(e);
+          return -1;
+        }
       });
   };
 

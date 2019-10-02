@@ -177,6 +177,16 @@ class ScheduledStage extends Base {
       return new ScheduledStage('can_not_parse_scheduled_stage');
     }
   };
+
+  static deserialize = data => {
+    try {
+      const stage = Stage.parse(parseInt(data.stage.value));
+      return new ScheduledStage(null, stage, data.url);
+    } catch (e) {
+      console.error(e);
+      return new ScheduledStage('can_not_deserialize_scheduled_stage');
+    }
+  };
 }
 
 export { Stage, ScheduledStage };

@@ -24,6 +24,23 @@ class Mode {
         throw new RangeError();
     }
   };
+
+  static deserialize = data => {
+    switch (data.value) {
+      case 0:
+        return Mode.regularBattle;
+      case 1:
+        return Mode.rankedBattle;
+      case 2:
+        return Mode.leagueBattle;
+      case 3:
+        return Mode.privateBattle;
+      case 4:
+        return Mode.splatfest;
+      default:
+        throw new RangeError();
+    }
+  };
 }
 
 Mode.regularBattle = new Mode('mode.regular_battle', 0);
@@ -47,6 +64,17 @@ class SplatfestMode {
       return SplatfestMode.regular;
     } else {
       throw new RangeError();
+    }
+  };
+
+  static deserialize = data => {
+    switch (parseInt(data.value)) {
+      case 0:
+        return SplatfestMode.challenge;
+      case 1:
+        return SplatfestMode.regular;
+      default:
+        throw new RangeError();
     }
   };
 }
