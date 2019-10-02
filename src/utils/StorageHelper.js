@@ -15,20 +15,38 @@ class StorageHelper {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.battlesConnection
-      .clear()
-      .then(() => {
-        // localStorage
-        window.localStorage.removeItem('sessionToken');
-        window.localStorage.removeItem('cookie');
-        window.localStorage.removeItem('nickname');
-        window.localStorage.removeItem('url');
-        window.localStorage.removeItem('rank');
+    return StorageHelper.clearBattles
+      .then(res => {
+        if (res instanceof TakosError) {
+          throw new TakosError(res.message);
+        } else {
+          // localStorage
+          window.localStorage.removeItem('sessionToken');
+          window.localStorage.removeItem('cookie');
+          window.localStorage.removeItem('nickname');
+          window.localStorage.removeItem('url');
+          window.localStorage.removeItem('rank');
+        }
       })
       .catch(e => {
-        console.error(e);
-        return new TakosError('can_not_initialize_database');
+        if (e instanceof TakosError) {
+          return new TakosError(e.message);
+        } else {
+          console.error(e);
+          return new TakosError('can_not_initialize_storage');
+        }
       });
+  };
+
+  static clearData = () => {
+    return StorageHelper.clearBattles().catch(e => {
+      if (e instanceof TakosError) {
+        return new TakosError(e.message);
+      } else {
+        console.error(e);
+        return new TakosError('can_not_clear_data');
+      }
+    });
   };
 
   static connectDb = () => {
@@ -190,6 +208,16 @@ class StorageHelper {
           return new TakosError('can_not_handle_database');
         }
       });
+  };
+
+  static clearBattles = () => {
+    if (!StorageHelper.dbConnected()) {
+      StorageHelper.connectDb();
+    }
+    return StorageHelper.battlesConnection.clear().catch(e => {
+      console.error(e);
+      return new TakosError('can_not_clear_battles');
+    });
   };
 }
 
