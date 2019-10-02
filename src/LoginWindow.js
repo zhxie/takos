@@ -477,7 +477,7 @@ class LoginWindow extends React.Component {
                   </Col>
                   <Col span={8}>
                     <Button onClick={this.showConfirm}>
-                      <FormattedMessage id="app.cookie.update" defaultMessage="Update cookie" />
+                      <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
                     </Button>
                   </Col>
                 </Row>
@@ -574,10 +574,10 @@ class LoginWindow extends React.Component {
         <Layout>
           <Content className="LoginWindow-main">
             <Steps className="LoginWindow-steps" current={this.state.step}>
-              <Step title={<FormattedMessage id="app.welcome" defaultMessage="Welcome" />} />
-              <Step title={<FormattedMessage id="app.log_in" defaultMessage="Log In" />} />
-              <Step title={<FormattedMessage id="app.update_data" defaultMessage="Update Data" />} />
-              <Step title={<FormattedMessage id="app.done" defaultMessage="Done" />} />
+              <Step title={<FormattedMessage id="app.welcome.steps.welcome" defaultMessage="Welcome" />} />
+              <Step title={<FormattedMessage id="app.welcome.steps.log_in" defaultMessage="Log In" />} />
+              <Step title={<FormattedMessage id="app.welcome.steps.update" defaultMessage="Update Data" />} />
+              <Step title={<FormattedMessage id="app.welcome.steps.done" defaultMessage="Done" />} />
             </Steps>
             <div className="LoginWindow-content">
               {(() => {

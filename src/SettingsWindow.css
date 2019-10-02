@@ -29,10 +29,10 @@
   width: calc(100% - 32px);
 }
 
-.SettingsWindow-content-user {
+.SettingsWindow-content-form {
   padding: 16px 24px;
 }
 
-.SettingsWindow-content-system {
-  padding: 16px 24px;
+.SettingsWindow-content-form-button {
+  margin-right: 8px;
 }

@@ -67,6 +67,14 @@ class StorageHelper {
     window.localStorage.setItem('language', value);
   };
 
+  static useSimpleLists = () => {
+    return window.localStorage.getItem('useSimpleLists') === 'true';
+  };
+
+  static setUseSimpleLists = value => {
+    window.localStorage.setItem('useSimpleLists', value);
+  };
+
   static sessionToken = () => {
     return window.localStorage.getItem('sessionToken');
   };

@@ -387,28 +387,37 @@ class BattlesWindow extends React.Component {
                 );
               }}
             />
-            <Column
-              title={<FormattedMessage id="app.battles.estimated_power" defaultMessage="Estimated Power" />}
-              key="estimatedPower"
-              align="center"
-              render={text => {
+            {(() => {
+              if (!StorageHelper.useSimpleLists) {
                 return (
-                  <span>
-                    {(() => {
-                      if (text instanceof RankedBattle) {
-                        return text.estimatedRankPower;
-                      } else if (text instanceof LeagueBattle) {
-                        return '{0} - {1}'.format(text.myEstimatedLeaguePoint, text.otherEstimatedLeaguePoint);
-                      } else if (text instanceof SplatfestBattle) {
-                        return '{0} - {1}'.format(text.myEstimatedSplatfestPower, text.otherEstimatedSplatfestPower);
-                      } else {
-                        return '-';
-                      }
-                    })()}
-                  </span>
+                  <Column
+                    title={<FormattedMessage id="app.battles.estimated_power" defaultMessage="Estimated Power" />}
+                    key="estimatedPower"
+                    align="center"
+                    render={text => {
+                      return (
+                        <span>
+                          {(() => {
+                            if (text instanceof RankedBattle) {
+                              return text.estimatedRankPower;
+                            } else if (text instanceof LeagueBattle) {
+                              return '{0} - {1}'.format(text.myEstimatedLeaguePoint, text.otherEstimatedLeaguePoint);
+                            } else if (text instanceof SplatfestBattle) {
+                              return '{0} - {1}'.format(
+                                text.myEstimatedSplatfestPower,
+                                text.otherEstimatedSplatfestPower
+                              );
+                            } else {
+                              return '-';
+                            }
+                          })()}
+                        </span>
+                      );
+                    }}
+                  />
                 );
-              }}
-            />
+              }
+            })()}
             <Column
               title={<FormattedMessage id="stage" defaultMessage="Stage" />}
               key="stage"
@@ -1190,160 +1199,172 @@ class BattlesWindow extends React.Component {
                 return record.selfPlayer().weapon.mainWeapon.value === value;
               }}
             />
-            <Column
-              title={<FormattedMessage id="weapon.sub" defaultMessage="Sub Weapon" />}
-              key="subWeapon"
-              align="center"
-              render={text => (
-                <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.subWeapon.name} />}>
-                  <span>
-                    <img
-                      className="BattlesWindow-content-icon"
-                      src={SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
-                      alt="sub"
-                    />
-                  </span>
-                </Tooltip>
-              )}
-              filters={[
-                {
-                  text: <FormattedMessage id={SubWeapon.splatBomb.name} />,
-                  value: SubWeapon.splatBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.suctionBomb.name} />,
-                  value: SubWeapon.suctionBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.burstBomb.name} />,
-                  value: SubWeapon.burstBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.curlingBomb.name} />,
-                  value: SubWeapon.curlingBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.autobomb.name} />,
-                  value: SubWeapon.autobomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.inkMine.name} />,
-                  value: SubWeapon.inkMine.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.sprinkler.name} />,
-                  value: SubWeapon.sprinkler.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.toxicMist.name} />,
-                  value: SubWeapon.toxicMist.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.pointSensor.name} />,
-                  value: SubWeapon.pointSensor.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.splashWall.name} />,
-                  value: SubWeapon.splashWall.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.squidBeakon.name} />,
-                  value: SubWeapon.squidBeakon.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.fizzyBomb.name} />,
-                  value: SubWeapon.fizzyBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SubWeapon.torpedo.name} />,
-                  value: SubWeapon.torpedo.value
-                }
-              ]}
-              onFilter={(value, record) => {
-                return record.selfPlayer().weapon.subWeapon.value === value;
-              }}
-            />
-            <Column
-              title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
-              key="specialWeapon"
-              align="center"
-              render={text => (
-                <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.specialWeapon.name} />}>
-                  <span>
-                    <img
-                      className="BattlesWindow-content-icon"
-                      src={SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
-                      alt="special"
-                    />
-                  </span>
-                </Tooltip>
-              )}
-              filters={[
-                {
-                  text: <FormattedMessage id={SpecialWeapon.tentaMissiles.name} />,
-                  value: SpecialWeapon.tentaMissiles.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.inkArmor.name} />,
-                  value: SpecialWeapon.inkArmor.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.splatBombLauncher.name} />,
-                  value: SpecialWeapon.splatBombLauncher.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.suctionBombLauncher.name} />,
-                  value: SpecialWeapon.suctionBombLauncher.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.burstBombLauncher.name} />,
-                  value: SpecialWeapon.burstBombLauncher.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.curlingBombLauncher.name} />,
-                  value: SpecialWeapon.curlingBombLauncher.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.autobombLauncher.name} />,
-                  value: SpecialWeapon.autobombLauncher.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.stingRay.name} />,
-                  value: SpecialWeapon.stingRay.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.inkjet.name} />,
-                  value: SpecialWeapon.inkjet.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.splashdown.name} />,
-                  value: SpecialWeapon.splashdown.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.inkStorm.name} />,
-                  value: SpecialWeapon.inkStorm.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.baller.name} />,
-                  value: SpecialWeapon.baller.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.bubbleBlower.name} />,
-                  value: SpecialWeapon.bubbleBlower.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.booyahBomb.name} />,
-                  value: SpecialWeapon.booyahBomb.value
-                },
-                {
-                  text: <FormattedMessage id={SpecialWeapon.ultraStamp.name} />,
-                  value: SpecialWeapon.ultraStamp.value
-                }
-              ]}
-              onFilter={(value, record) => {
-                return record.selfPlayer().weapon.specialWeapon.value === value;
-              }}
-            />
+            {(() => {
+              if (!StorageHelper.useSimpleLists()) {
+                return (
+                  <Column
+                    title={<FormattedMessage id="weapon.sub" defaultMessage="Sub Weapon" />}
+                    key="subWeapon"
+                    align="center"
+                    render={text => (
+                      <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.subWeapon.name} />}>
+                        <span>
+                          <img
+                            className="BattlesWindow-content-icon"
+                            src={SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
+                            alt="sub"
+                          />
+                        </span>
+                      </Tooltip>
+                    )}
+                    filters={[
+                      {
+                        text: <FormattedMessage id={SubWeapon.splatBomb.name} />,
+                        value: SubWeapon.splatBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.suctionBomb.name} />,
+                        value: SubWeapon.suctionBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.burstBomb.name} />,
+                        value: SubWeapon.burstBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.curlingBomb.name} />,
+                        value: SubWeapon.curlingBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.autobomb.name} />,
+                        value: SubWeapon.autobomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.inkMine.name} />,
+                        value: SubWeapon.inkMine.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.sprinkler.name} />,
+                        value: SubWeapon.sprinkler.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.toxicMist.name} />,
+                        value: SubWeapon.toxicMist.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.pointSensor.name} />,
+                        value: SubWeapon.pointSensor.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.splashWall.name} />,
+                        value: SubWeapon.splashWall.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.squidBeakon.name} />,
+                        value: SubWeapon.squidBeakon.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.fizzyBomb.name} />,
+                        value: SubWeapon.fizzyBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SubWeapon.torpedo.name} />,
+                        value: SubWeapon.torpedo.value
+                      }
+                    ]}
+                    onFilter={(value, record) => {
+                      return record.selfPlayer().weapon.subWeapon.value === value;
+                    }}
+                  />
+                );
+              }
+            })()}
+            {(() => {
+              if (!StorageHelper.useSimpleLists()) {
+                return (
+                  <Column
+                    title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
+                    key="specialWeapon"
+                    align="center"
+                    render={text => (
+                      <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.specialWeapon.name} />}>
+                        <span>
+                          <img
+                            className="BattlesWindow-content-icon"
+                            src={SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
+                            alt="special"
+                          />
+                        </span>
+                      </Tooltip>
+                    )}
+                    filters={[
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.tentaMissiles.name} />,
+                        value: SpecialWeapon.tentaMissiles.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.inkArmor.name} />,
+                        value: SpecialWeapon.inkArmor.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.splatBombLauncher.name} />,
+                        value: SpecialWeapon.splatBombLauncher.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.suctionBombLauncher.name} />,
+                        value: SpecialWeapon.suctionBombLauncher.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.burstBombLauncher.name} />,
+                        value: SpecialWeapon.burstBombLauncher.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.curlingBombLauncher.name} />,
+                        value: SpecialWeapon.curlingBombLauncher.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.autobombLauncher.name} />,
+                        value: SpecialWeapon.autobombLauncher.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.stingRay.name} />,
+                        value: SpecialWeapon.stingRay.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.inkjet.name} />,
+                        value: SpecialWeapon.inkjet.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.splashdown.name} />,
+                        value: SpecialWeapon.splashdown.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.inkStorm.name} />,
+                        value: SpecialWeapon.inkStorm.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.baller.name} />,
+                        value: SpecialWeapon.baller.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.bubbleBlower.name} />,
+                        value: SpecialWeapon.bubbleBlower.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.booyahBomb.name} />,
+                        value: SpecialWeapon.booyahBomb.value
+                      },
+                      {
+                        text: <FormattedMessage id={SpecialWeapon.ultraStamp.name} />,
+                        value: SpecialWeapon.ultraStamp.value
+                      }
+                    ]}
+                    onFilter={(value, record) => {
+                      return record.selfPlayer().weapon.specialWeapon.value === value;
+                    }}
+                  />
+                );
+              }
+            })()}
             <Column
               title={<FormattedMessage id="app.battles.kill_and_death" defaultMessage="Kill / Death" />}
               key="killAndDeath"

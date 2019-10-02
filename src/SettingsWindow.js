@@ -1,6 +1,6 @@
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select } from 'antd';
+import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select, Tooltip, Switch } from 'antd';
 
 import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
@@ -22,6 +22,7 @@ class SettingsWindow extends React.Component {
     isValid: true,
     cookie: '',
     language: 'en_US',
+    useSimpleLists: false,
     error: false,
     errorLog: 'unknown_error'
   };
@@ -66,6 +67,13 @@ class SettingsWindow extends React.Component {
         throw RangeError();
     }
     window.location.reload();
+  };
+
+  changeUseSimpleLists = value => {
+    if (this.state.useSimpleLists !== value) {
+      this.setState({ useSimpleLists: value });
+    }
+    StorageHelper.setUseSimpleLists(value);
   };
 
   getSessionToken = () => {
@@ -246,7 +254,7 @@ class SettingsWindow extends React.Component {
             </p>
           </Header>
           <Content className="SettingsWindow-content">
-            <PageHeader title={<FormattedMessage id="app.user" defaultMessage="User" />} />
+            <PageHeader title={<FormattedMessage id="app.settings.user" defaultMessage="User" />} />
             <Alert
               message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
               description={
@@ -306,8 +314,8 @@ class SettingsWindow extends React.Component {
               showIcon
               style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
             />
-            <Form className="SettingsWindow-content-user" labelCol={{ span: 24 }}>
-              <Form.Item label={<FormattedMessage id="app.cookie" defaultMessage="Cookie" />}>
+            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+              <Form.Item label={<FormattedMessage id="app.settings.user.cookie" defaultMessage="Cookie" />}>
                 <Row gutter={8}>
                   <Col sm={18} md={12}>
                     <Input
@@ -328,37 +336,80 @@ class SettingsWindow extends React.Component {
                     />
                   </Col>
                   <Col span={6}>
-                    <Button onClick={this.showConfirm}>
-                      <FormattedMessage id="app.cookie.update" defaultMessage="Update cookie" />
+                    <Button className="SettingsWindow-content-form-button" onClick={this.showConfirm}>
+                      <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
                     </Button>
                   </Col>
                 </Row>
               </Form.Item>
-              <Form.Item label={<FormattedMessage id="app.log_out" defaultMessage="Log Out" />}>
+              <Form.Item label={<FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />}>
                 <Row gutter={8}>
-                  <Col span={6}>
-                    <Button type="danger" onClick={this.showLogOutConfirm}>
-                      <FormattedMessage id="app.log_out" defaultMessage="Log Out" />
+                  <Col>
+                    <Button
+                      className="SettingsWindow-content-form-button"
+                      type="danger"
+                      onClick={this.showLogOutConfirm}
+                    >
+                      <FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />
                     </Button>
                   </Col>
                 </Row>
               </Form.Item>
             </Form>
-            <PageHeader title={<FormattedMessage id="app.system" defaultMessage="System" />} />
-            <Form className="SettingsWindow-content-system" labelCol={{ span: 24 }}>
-              <Form.Item label={<FormattedMessage id="app.language" defaultMessage="Language" />}>
+            <PageHeader title={<FormattedMessage id="app.settings.appearance" defaultMessage="Appearance" />} />
+            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+              <Form.Item
+                label={
+                  <FormattedMessage id="app.settings.appearance.use_simple_lists" defaultMessage="Use Simple Lists" />
+                }
+              >
+                <Row gutter={8}>
+                  <Col>
+                    <Tooltip
+                      placement="right"
+                      title={
+                        <FormattedMessage
+                          id="app.settings.appearance.use_simple_lists.description"
+                          defaultMessage="Use simple lists in battles and Salmon Run"
+                        />
+                      }
+                    >
+                      <Switch checked={this.state.useSimpleLists} onChange={this.changeUseSimpleLists} />
+                    </Tooltip>
+                  </Col>
+                </Row>
+              </Form.Item>
+              <Form.Item label={<FormattedMessage id="app.settings.appearance.language" defaultMessage="Language" />}>
                 <Row gutter={8}>
                   <Col span={6}>
                     <Select
                       value={this.state.language}
                       onChange={this.changeLanguage}
                       defaultValue="en_US"
-                      style={{ width: 120, margin: '0 0 24px 0' }}
+                      style={{ width: 120, margin: '0' }}
                     >
                       <Option value="en_US">English</Option>
                       <Option value="ja_JP">日本語</Option>
                       <Option value="zh_CN">中文</Option>
                     </Select>
+                  </Col>
+                </Row>
+              </Form.Item>
+            </Form>
+            <PageHeader title={<FormattedMessage id="app.settings.system" defaultMessage="System" />} />
+            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+              <Form.Item label={<FormattedMessage id="app.settings.system.data" defaultMessage="Data" />}>
+                <Row gutter={8}>
+                  <Col>
+                    <Button className="SettingsWindow-content-form-button" type="default" disabled>
+                      <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
+                    </Button>
+                    <Button className="SettingsWindow-content-form-button" type="default" disabled>
+                      <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
+                    </Button>
+                    <Button className="SettingsWindow-content-form-button" type="danger">
+                      <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
+                    </Button>
                   </Col>
                 </Row>
               </Form.Item>
@@ -387,6 +438,7 @@ class SettingsWindow extends React.Component {
         this.setState({ language: 'en_US' });
         break;
     }
+    this.setState({ useSimpleLists: StorageHelper.useSimpleLists() });
   }
 }
 
