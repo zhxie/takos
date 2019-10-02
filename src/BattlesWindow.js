@@ -108,7 +108,7 @@ class BattlesWindow extends React.Component {
         });
     };
 
-    this.setState({ error: false });
+    this.setState({ error: false, loaded: false, updateCurrent: 0, updateTotal: 0 });
     StorageHelper.latestBattle()
       .then(res => {
         if (res === -1) {
@@ -212,7 +212,16 @@ class BattlesWindow extends React.Component {
           }
         })()}
         <div>
-          <PageHeader title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} />
+          <PageHeader
+            title={<FormattedMessage id="app.battles" defaultMessage="Battles" />}
+            subTitle={(() => {
+              return (
+                <Button type="default" onClick={this.updateBattles}>
+                  <FormattedMessage id="app.battles.update" defaultMessage="Update Data" />
+                </Button>
+              );
+            })()}
+          ></PageHeader>
           <Table
             dataSource={this.state.data}
             locale={{

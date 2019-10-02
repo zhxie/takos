@@ -943,6 +943,7 @@ const en_US = {
   'app.stages': 'Stages',
   'app.weapons': 'Weapons',
   'app.battles': 'Battles',
+  'app.battles.update': 'Update Data',
   'app.battles.id': '#',
   'app.battles.result': 'Result',
   'app.battles.level_and_rank': 'Level / Rank',

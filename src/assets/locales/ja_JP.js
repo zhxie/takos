@@ -941,6 +941,7 @@ const ja_JP = {
   'app.stages': 'ステージ',
   'app.weapons': 'ブキ',
   'app.battles': 'バトル',
+  'app.battles.update': '更新データ',
   'app.battles.id': '#',
   'app.battles.result': '結果',
   'app.battles.level_and_rank': 'ランク / ウデマエ',

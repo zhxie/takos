@@ -942,6 +942,7 @@ const zh_CN = {
   'app.stages': '场地',
   'app.weapons': '武器',
   'app.battles': '战斗',
+  'app.battles.update': '更新数据',
   'app.battles.id': '#',
   'app.battles.result': '结果',
   'app.battles.level_and_rank': '等级 / 段位^',
