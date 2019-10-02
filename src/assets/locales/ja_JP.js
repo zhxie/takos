@@ -1030,7 +1030,9 @@ const ja_JP = {
   'app.time': '{hour}:{min}:{sec}',
   'app.time.to.min': '{min} 分後',
   'app.time.to.hour_min': '{hour} 時間 {min} 分後',
-  'app.time.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後'
+  'app.time.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後',
+  'app.time.in.sec': '{sec} 秒以内',
+  'app.time.in.min_sec': '{min} 分 {sec} 秒以内'
 };
 
 export default ja_JP;

@@ -26,6 +26,7 @@ import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import { SPLATNET } from './utils/FileFolderUrl';
 import StorageHelper from './utils/StorageHelper';
+import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
 const { Column } = Table;
@@ -279,16 +280,28 @@ class BattlesWindow extends React.Component {
                       if (text instanceof RankedBattle || text instanceof LeagueBattle) {
                         if (text.isKnockOut()) {
                           return (
-                            <Tag color="red" key="ko">
-                              <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
-                            </Tag>
+                            <Tooltip
+                              title={() => {
+                                return TimeConverter.formatElapsedTime(text.elapsedTime);
+                              }}
+                            >
+                              <Tag color="red" key="ko">
+                                <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
+                              </Tag>
+                            </Tooltip>
                           );
                         }
                         if (text.isKnockedOut()) {
                           return (
-                            <Tag color="green" key="ko">
-                              <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
-                            </Tag>
+                            <Tooltip
+                              title={() => {
+                                return TimeConverter.formatElapsedTime(text.elapsedTime);
+                              }}
+                            >
+                              <Tag color="green" key="ko">
+                                <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
+                              </Tag>
+                            </Tooltip>
                           );
                         }
                       }

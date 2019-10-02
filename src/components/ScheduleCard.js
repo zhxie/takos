@@ -83,7 +83,7 @@ class ScheduleCard extends React.Component {
           className="ScheduleCard-schedule-meta"
           avatar={<img className="ScheduleCard-schedule-meta-image" src={this.iconSelector()} alt="mode" />}
           title={<FormattedMessage id={this.props.schedule.rule.name} />}
-          description={TimeConverter.getSchedulePeriod(this.props.schedule.startTime, this.props.schedule.endTime)}
+          description={TimeConverter.formatSchedulePeriod(this.props.schedule.startTime, this.props.schedule.endTime)}
         />
       </Card>
     );

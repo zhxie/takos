@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import './StringHelper';
 
 class TimeConverter {
-  static getScheduleTime = time => {
+  static formatScheduleTime = time => {
     const date = new Date(time * 1000);
     const hours = date.getHours();
     const minutes = '0' + date.getMinutes();
@@ -22,10 +22,10 @@ class TimeConverter {
     );
   };
 
-  static getSchedulePeriod = (startTime, endTime) => {
+  static formatSchedulePeriod = (startTime, endTime) => {
     return (
       <div>
-        {this.getScheduleTime(startTime)} - {this.getScheduleTime(endTime)}
+        {this.formatScheduleTime(startTime)} - {this.formatScheduleTime(endTime)}
       </div>
     );
   };
@@ -81,6 +81,33 @@ class TimeConverter {
           />
         );
       }
+    }
+  };
+
+  static formatElapsedTime = time => {
+    const minutes = parseInt(parseInt(time) / 60);
+    const seconds = parseInt(time) - 60 * minutes;
+    if (minutes > 0) {
+      return (
+        <FormattedMessage
+          id="app.time.in.min_sec"
+          defaultMessage="in {min} min {sec} sec"
+          values={{
+            min: minutes,
+            sec: seconds
+          }}
+        />
+      );
+    } else {
+      return (
+        <FormattedMessage
+          id="app.time.in.sec"
+          defaultMessage="in {sec} sec"
+          values={{
+            sec: seconds
+          }}
+        />
+      );
     }
   };
 }

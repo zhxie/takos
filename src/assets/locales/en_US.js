@@ -1031,7 +1031,9 @@ const en_US = {
   'app.time': '{hour}:{min}:{sec}',
   'app.time.to.min': 'in {min} min',
   'app.time.to.hour_min': 'in {hour} hour {min} min',
-  'app.time.to.day_hour_min': 'in {day} day {hour} hour {min} min'
+  'app.time.to.day_hour_min': 'in {day} day {hour} hour {min} min',
+  'app.time.in.sec': 'in {sec} sec',
+  'app.time.in.min_sec': 'in {min} min {sec} sec'
 };
 
 export default en_US;
