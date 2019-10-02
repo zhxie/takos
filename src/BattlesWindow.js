@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip } from 'antd';
+import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty } from 'antd';
 
 import './BattlesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
@@ -14,13 +14,14 @@ import rainmakerIcon from './assets/images/rule-rainmaker.png';
 import rankedIcon from './assets/images/mode-ranked.png';
 import splatZonesIcon from './assets/images/rule-splat-zones.png';
 import towerControlIcon from './assets/images/rule-tower-control.png';
+import { OctolingsDeathIcon } from './components/CustomIcons';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import { RankedBattle, LeagueBattle, SplatfestBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import Rule from './models/Rule';
 import { Stage } from './models/Stage';
-import { MainWeaponType, MainWeapon, SubWeapon, SpecialWeapon } from './models/Weapon';
+import { MainWeapon, SubWeapon, SpecialWeapon } from './models/Weapon';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import { SPLATNET } from './utils/FileFolderUrl';
@@ -211,7 +212,26 @@ class BattlesWindow extends React.Component {
         })()}
         <div>
           <PageHeader title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} />
-          <Table dataSource={this.state.data}>
+          <Table
+            dataSource={this.state.data}
+            locale={{
+              emptyText: (
+                <Empty
+                  image={
+                    <OctolingsDeathIcon
+                      className="BattlesWindow-content-table-empty-icon"
+                      style={{
+                        margin: '20px 0',
+                        width: '8em',
+                        fill: '#fafafa',
+                        stroke: '#e1e1e1'
+                      }}
+                    />
+                  }
+                />
+              )
+            }}
+          >
             <Column
               title={<FormattedMessage id="app.battles.id" defaultMessage="#" />}
               key="id"
@@ -284,7 +304,11 @@ class BattlesWindow extends React.Component {
               render={text => (
                 <Tooltip title={<FormattedMessage id={text.gameMode.name} />}>
                   <span>
-                    <img className="BattlesWindow-content-icon" src={this.modeIconSelector(text.gameMode)} alt="mode" />
+                    <img
+                      className="BattlesWindow-content-table-icon"
+                      src={this.modeIconSelector(text.gameMode)}
+                      alt="mode"
+                    />
                   </span>
                 </Tooltip>
               )}
@@ -321,7 +345,11 @@ class BattlesWindow extends React.Component {
               render={text => (
                 <Tooltip title={<FormattedMessage id={text.rule.name} />}>
                   <span>
-                    <img className="BattlesWindow-content-icon" src={this.ruleIconSelector(text.rule)} alt="rule" />
+                    <img
+                      className="BattlesWindow-content-table-icon"
+                      src={this.ruleIconSelector(text.rule)}
+                      alt="rule"
+                    />
                   </span>
                 </Tooltip>
               )}
@@ -630,7 +658,7 @@ class BattlesWindow extends React.Component {
                 <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.mainWeapon.name} />}>
                   <span>
                     <img
-                      className="BattlesWindow-content-icon"
+                      className="BattlesWindow-content-table-icon"
                       src={SPLATNET + text.selfPlayer().weapon.mainWeaponUrl}
                       alt="main"
                     />
@@ -1210,7 +1238,7 @@ class BattlesWindow extends React.Component {
                       <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.subWeapon.name} />}>
                         <span>
                           <img
-                            className="BattlesWindow-content-icon"
+                            className="BattlesWindow-content-table-icon"
                             src={SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
                             alt="sub"
                           />
@@ -1289,7 +1317,7 @@ class BattlesWindow extends React.Component {
                       <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.specialWeapon.name} />}>
                         <span>
                           <img
-                            className="BattlesWindow-content-icon"
+                            className="BattlesWindow-content-table-icon"
                             src={SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
                             alt="special"
                           />
