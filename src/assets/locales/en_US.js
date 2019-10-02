@@ -1007,6 +1007,9 @@ const en_US = {
   'app.modal.confirm.log_out': 'Do you want to log out?',
   'app.modal.confirm.log_out.content':
     'Note that when you log out, all saved data, including battles and salmon run, will be cleared.',
+  'app.modal.confirm.clear_data': 'Do you want to clear data?',
+  'app.modal.confirm.clear_data.content':
+    'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.',
   // App.result
   'app.result.done': 'Booyah!',
   'app.result.done.description': 'It is all done. Enjoy it!',

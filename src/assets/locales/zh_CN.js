@@ -1001,6 +1001,8 @@ const zh_CN = {
   'app.modal.error.update_cookie_no_session_token.content': 'Takos 只能在使用自动 Cookie 生成的情况下更新 Cookie。',
   'app.modal.confirm.log_out': '您希望退出登录吗？',
   'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
+  'app.modal.confirm.clear_data': '您希望清除数据吗？',
+  'app.modal.confirm.clear_data.content': '清除数据后，您将无法撤销。建议您首先导出数据。',
   // App.result
   'app.result.done': '棒极了',
   'app.result.done.description': '所有的一切都已就绪。尽情享受吧！',

@@ -965,7 +965,7 @@ const ja_JP = {
   'app.settings.system.data': 'データ',
   'app.settings.system.data.export': 'データ書き出す',
   'app.settings.system.data.import': 'データ読み込む',
-  'app.settings.system.data.clear': 'データを削除する',
+  'app.settings.system.data.clear': 'データを消去する',
   'app.back_log_in': 'ログインに戻る',
   'app.to_settings': '設定へ',
   'app.previous': '前へ',
@@ -1005,6 +1005,9 @@ const ja_JP = {
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
     'ログアウトすると、バトルやサーモンランなど、保存されたすべてのデータが消去されることに注意してください。',
+  'app.modal.confirm.clear_data': 'データを消去しますか？',
+  'app.modal.confirm.clear_data.content':
+    'データが消去されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
   // App.result
   'app.result.done': 'ナイス',
   'app.result.done.description': 'すべて完了です。楽しめ！',

@@ -241,6 +241,39 @@ class SettingsWindow extends React.Component {
     });
   };
 
+  showClearDataConfirm = () => {
+    confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.clear_data',
+        defaultMessage: 'Do you want to clear data?'
+      }),
+      content: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.clear_data.content',
+        defaultMessage:
+          'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.'
+      }),
+      okType: 'danger',
+      icon: <Icon type="exclamation-circle" />,
+      onOk() {
+        StorageHelper.clearData()
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              this.setState({ error: true, errorLog: e.message });
+            } else {
+              console.error(e);
+              this.setState({ error: true, errorLog: 'unknown_error' });
+            }
+          });
+      },
+      onCancel() {}
+    });
+  };
+
   render() {
     if (this.state.error) {
       return <ErrorResult error={this.state.errorLog} />;
@@ -407,7 +440,11 @@ class SettingsWindow extends React.Component {
                     <Button className="SettingsWindow-content-form-button" type="default" disabled>
                       <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
                     </Button>
-                    <Button className="SettingsWindow-content-form-button" type="danger">
+                    <Button
+                      className="SettingsWindow-content-form-button"
+                      type="danger"
+                      onClick={this.showClearDataConfirm}
+                    >
                       <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
                     </Button>
                   </Col>
