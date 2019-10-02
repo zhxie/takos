@@ -45,3 +45,8 @@
   display: inline-block;
   height: 32px;
 }
+
+.BattlesWindow-content-table-star {
+  font-size: 10px;
+  vertical-align: super;
+}

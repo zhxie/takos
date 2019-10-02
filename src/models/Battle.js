@@ -47,6 +47,18 @@ class Battle extends Base {
     return this.myTeamCount > this.otherTeamCount;
   };
 
+  isLevelAfterWithStar = () => {
+    return this.levelAfter > 99;
+  };
+
+  levelAfterWithStar = () => {
+    return this.levelAfter - this.star() * 100;
+  };
+
+  star = () => {
+    return parseInt(this.levelAfter / 100);
+  };
+
   static parse = data => {
     try {
       const type = Mode.parse(data.type);

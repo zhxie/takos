@@ -279,6 +279,18 @@ class BattlePlayer extends Player {
     return this.kill + this.assist;
   };
 
+  isLevelWithStar = () => {
+    return this.level > 99;
+  };
+
+  levelWithStar = () => {
+    return this.level - this.star() * 100;
+  };
+
+  star = () => {
+    return parseInt(this.level / 100);
+  };
+
   static parse = (data, url, isSelf) => {
     try {
       const species = Species.parse(data.player.player_type.species);

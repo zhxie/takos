@@ -31,6 +31,9 @@ import TimeConverter from './utils/TimeConverter';
 const { Header, Content } = Layout;
 const { Column } = Table;
 
+// TODO: use modal or drawer to render full battle result
+// TODO: use description and collapse in battle result
+
 class BattlesWindow extends React.Component {
   state = {
     data: [],
@@ -409,10 +412,30 @@ class BattlesWindow extends React.Component {
                 return (
                   <span>
                     {(() => {
-                      if (text.selfPlayer().level !== text.levelAfter) {
-                        return <b>{text.levelAfter}</b>;
+                      if (text.levelAfterWithStar() > text.selfPlayer().levelWithStar()) {
+                        if (text.isLevelAfterWithStar()) {
+                          return (
+                            <b>
+                              <Tooltip title={text.star()}>
+                                <span className="BattlesWindow-content-table-star">★</span>
+                              </Tooltip>
+                              {text.levelAfterWithStar()}
+                            </b>
+                          );
+                        } else {
+                          return <b>{text.levelAfterWithStar()}</b>;
+                        }
                       } else {
-                        return text.levelAfter;
+                        if (text.isLevelAfterWithStar()) {
+                          return (
+                            <span>
+                              <span className="BattlesWindow-content-table-star">★</span>
+                              {text.levelAfterWithStar()}
+                            </span>
+                          );
+                        } else {
+                          return text.levelAfterWithStar();
+                        }
                       }
                     })()}
                     {(() => {
