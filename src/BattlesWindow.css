@@ -41,6 +41,22 @@
   stroke-width: 0.5px;
 }
 
+.BattlesWindow-content-table-progress-win .ant-progress-bg {
+  background-color: #eb2f96;
+}
+
+.BattlesWindow-content-table-progress-win .ant-progress-inner {
+  background-color: #f5f5f5;
+}
+
+.BattlesWindow-content-table-progress-lose .ant-progress-bg {
+  background-color: #f5f5f5;
+}
+
+.BattlesWindow-content-table-progress-lose .ant-progress-inner {
+  background-color: #52c41a;
+}
+
 .BattlesWindow-content-table-icon {
   display: inline-block;
   height: 32px;

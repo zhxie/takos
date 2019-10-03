@@ -946,6 +946,7 @@ const en_US = {
   'app.battles.update': 'Update Data',
   'app.battles.id': '#',
   'app.battles.result': 'Result',
+  'app.battles.count': 'Count',
   'app.battles.level_and_rank': 'Level / Rank',
   'app.battles.estimated_power': 'Estimated Power',
   'app.battles.kill_and_death': 'Kill / Death',

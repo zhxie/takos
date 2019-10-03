@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty } from 'antd';
+import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress } from 'antd';
 
 import './BattlesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
@@ -322,6 +322,72 @@ class BattlesWindow extends React.Component {
                 );
               }}
             />
+            {(() => {
+              if (!StorageHelper.useSimpleLists()) {
+                return (
+                  <Column
+                    title={<FormattedMessage id="app.battles.count" defaultMessage="Count" />}
+                    key="count"
+                    align="center"
+                    render={text => {
+                      return (
+                        <span>
+                          <Tooltip
+                            title={() => {
+                              return '{0} - {1}'.format(text.myTeamCount, text.otherTeamCount);
+                            }}
+                          >
+                            {(() => {
+                              if (text.isWin()) {
+                                return (
+                                  <Progress
+                                    className="BattlesWindow-content-table-progress-win"
+                                    percent={(() => {
+                                      if (text.otherTeamCount === 0) {
+                                        return 100;
+                                      } else {
+                                        return (
+                                          (parseFloat(text.myTeamCount) /
+                                            (parseFloat(text.myTeamCount) + parseFloat(text.otherTeamCount))) *
+                                          100
+                                        );
+                                      }
+                                    })()}
+                                    size="small"
+                                    showInfo={false}
+                                    strokeLinecap="square"
+                                  />
+                                );
+                              } else {
+                                return (
+                                  <Progress
+                                    className="BattlesWindow-content-table-progress-lose"
+                                    percent={(() => {
+                                      if (text.otherTeamCount === 0) {
+                                        return 100;
+                                      } else {
+                                        return (
+                                          (parseFloat(text.myTeamCount) /
+                                            (parseFloat(text.myTeamCount) + parseFloat(text.otherTeamCount))) *
+                                          100
+                                        );
+                                      }
+                                    })()}
+                                    size="small"
+                                    showInfo={false}
+                                    strokeLinecap="square"
+                                  />
+                                );
+                              }
+                            })()}
+                          </Tooltip>
+                        </span>
+                      );
+                    }}
+                  />
+                );
+              }
+            })()}
             <Column
               title={<FormattedMessage id="mode" defaultMessage="Mode" />}
               key="mode"
@@ -461,7 +527,7 @@ class BattlesWindow extends React.Component {
               }}
             />
             {(() => {
-              if (!StorageHelper.useSimpleLists) {
+              if (!StorageHelper.useSimpleLists()) {
                 return (
                   <Column
                     title={<FormattedMessage id="app.battles.estimated_power" defaultMessage="Estimated Power" />}

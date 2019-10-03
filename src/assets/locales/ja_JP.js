@@ -944,6 +944,7 @@ const ja_JP = {
   'app.battles.update': '更新データ',
   'app.battles.id': '#',
   'app.battles.result': '結果',
+  'app.battles.count': 'カウント',
   'app.battles.level_and_rank': 'ランク / ウデマエ',
   'app.battles.estimated_power': '推定パワー',
   'app.battles.kill_and_death': '殺 / 死',
