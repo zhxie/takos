@@ -244,6 +244,7 @@ class BattlesWindow extends React.Component {
                 />
               )
             }}
+            scroll={{ x: 'max-content' }}
           >
             <Column
               title={<FormattedMessage id="app.battles.id" defaultMessage="#" />}
