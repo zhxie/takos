@@ -949,10 +949,21 @@ const en_US = {
   'app.battles.count': 'Count',
   'app.battles.level_and_rank': 'Level / Rank',
   'app.battles.estimated_power': 'Estimated Power',
-  'app.battles.kill_and_death': 'Kill / Death',
+  'app.battles.kill_and_death': 'K / D',
   'app.battles.knock_out': 'Knock Out!',
   'app.battles.win': 'Win!',
   'app.battles.lose': 'Lose..',
+  'app.battle': 'Battle',
+  'app.battle.id': '#{id}',
+  'app.battle.result': 'Result',
+  'app.battle.count': 'Count',
+  'app.battle.level': 'Level',
+  'app.battle.rank': 'Rank',
+  'app.battle.knock_out': 'Knock Out!',
+  'app.battle.win': 'Win!',
+  'app.battle.lose': 'Lose..',
+  'app.battle.start_time': 'Start Time',
+  'app.battle.elpased_time': 'Elapsed Time',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': 'Gear Shop',
   'app.settings': 'Settings',
@@ -1038,7 +1049,8 @@ const en_US = {
   'app.time.to.hour_min': 'in {hour} hour {min} min',
   'app.time.to.day_hour_min': 'in {day} day {hour} hour {min} min',
   'app.time.in.sec': 'in {sec} sec',
-  'app.time.in.min_sec': 'in {min} min {sec} sec'
+  'app.time.in.min_sec': 'in {min} min {sec} sec',
+  'app.time.elapsed.sec': '({sec} seconds)'
 };
 
 export default en_US;

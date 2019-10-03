@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedDate, FormattedTime } from 'react-intl';
 
 import './StringHelper';
 
@@ -84,7 +84,7 @@ class TimeConverter {
     }
   };
 
-  static formatElapsedTime = time => {
+  static formatKoElapsedTime = time => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = parseInt(time) - 60 * minutes;
     if (minutes > 0) {
@@ -107,6 +107,35 @@ class TimeConverter {
             sec: seconds
           }}
         />
+      );
+    }
+  };
+
+  static formatStartTime = time => {
+    const date = new Date(time * 1000);
+    return (
+      <span>
+        <FormattedDate value={date} /> <FormattedDate value={date} weekday="long" />{' '}
+        <FormattedTime value={date} format="hour24" />
+      </span>
+    );
+  };
+
+  static formatElapsedTime = time => {
+    const minutes = parseInt(parseInt(time) / 60);
+    const seconds = '0' + (parseInt(time) - 60 * minutes);
+    if (minutes > 0) {
+      return (
+        <span>
+          {minutes}:{seconds.substr(-2)}{' '}
+          <FormattedMessage
+            id="app.time.elapsed.sec"
+            defaultMessage="({sec} seconds)"
+            values={{
+              sec: parseInt(time)
+            }}
+          />
+        </span>
       );
     }
   };

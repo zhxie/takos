@@ -15,6 +15,7 @@ import rankedIcon from './assets/images/mode-ranked.png';
 import splatZonesIcon from './assets/images/rule-splat-zones.png';
 import towerControlIcon from './assets/images/rule-tower-control.png';
 import { OctolingsDeathIcon } from './components/CustomIcons';
+import BattleModal from './components/BattleModal';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import { RankedBattle, LeagueBattle, SplatfestBattle } from './models/Battle';
@@ -31,9 +32,6 @@ import TimeConverter from './utils/TimeConverter';
 const { Header, Content } = Layout;
 const { Column } = Table;
 
-// TODO: use modal or drawer to render full battle result
-// TODO: use description and collapse in battle result
-
 class BattlesWindow extends React.Component {
   state = {
     data: [],
@@ -43,7 +41,9 @@ class BattlesWindow extends React.Component {
     errorChecklist: [],
     updateCurrent: 0,
     updateTotal: 0,
-    updated: false
+    updated: false,
+    battle: null,
+    showBattle: false
   };
 
   modeIconSelector = mode => {
@@ -194,6 +194,21 @@ class BattlesWindow extends React.Component {
       });
   };
 
+  showBattle = number => {
+    if (this.state.data instanceof Array) {
+      const battle = this.state.data.find(element => {
+        return element.number === number;
+      });
+      if (battle !== undefined) {
+        this.setState({ battle: battle, showBattle: true });
+      }
+    }
+  };
+
+  hideBattle = () => {
+    this.setState({ showBattle: false });
+  };
+
   renderContent = () => {
     return (
       <div>
@@ -245,6 +260,13 @@ class BattlesWindow extends React.Component {
               )
             }}
             scroll={{ x: 'max-content' }}
+            onRow={record => {
+              return {
+                onClick: () => {
+                  this.showBattle(record.number);
+                }
+              };
+            }}
           >
             <Column
               title={<FormattedMessage id="app.battles.id" defaultMessage="#" />}
@@ -295,7 +317,7 @@ class BattlesWindow extends React.Component {
                           return (
                             <Tooltip
                               title={() => {
-                                return TimeConverter.formatElapsedTime(text.elapsedTime);
+                                return TimeConverter.formatKoElapsedTime(text.elapsedTime);
                               }}
                             >
                               <Tag color="red" key="ko">
@@ -308,7 +330,7 @@ class BattlesWindow extends React.Component {
                           return (
                             <Tooltip
                               title={() => {
-                                return TimeConverter.formatElapsedTime(text.elapsedTime);
+                                return TimeConverter.formatKoElapsedTime(text.elapsedTime);
                               }}
                             >
                               <Tag color="green" key="ko">
@@ -1552,6 +1574,7 @@ class BattlesWindow extends React.Component {
               }}
             />
           </Table>
+          <BattleModal value={this.state.battle} visible={this.state.showBattle} onCancel={this.hideBattle} />
         </div>
       </div>
     );

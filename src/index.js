@@ -50,6 +50,11 @@ ReactDOM.render(
             return en_US;
         }
       })()}
+      formats={{
+        time: {
+          hour24: { hour12: false }
+        }
+      }}
     >
       <App />
     </IntlProvider>

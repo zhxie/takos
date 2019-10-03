@@ -63,7 +63,7 @@ class Battle extends Base {
     try {
       const type = Mode.parse(data.type);
       const number = parseInt(data.battle_number);
-      const startTime = new Date(parseInt(data.start_time) * 1000);
+      const startTime = parseInt(data.start_time);
       const gameMode = Mode.parse(data.game_mode.key);
       const rule = Rule.parse(data.rule);
       const stage = ScheduledStage.parse(data.stage);
@@ -245,7 +245,7 @@ class Battle extends Base {
     try {
       const type = Mode.deserialize(data.type);
       const number = parseInt(data.number);
-      const startTime = new Date(parseInt(data.startTime) * 1000);
+      const startTime = parseInt(data.startTime);
       const gameMode = Mode.deserialize(data.gameMode);
       const rule = Rule.deserialize(data.rule);
       const stage = ScheduledStage.deserialize(data.stage);

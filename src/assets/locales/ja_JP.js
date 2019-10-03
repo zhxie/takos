@@ -947,10 +947,21 @@ const ja_JP = {
   'app.battles.count': 'カウント',
   'app.battles.level_and_rank': 'ランク / ウデマエ',
   'app.battles.estimated_power': '推定パワー',
-  'app.battles.kill_and_death': '殺 / 死',
+  'app.battles.kill_and_death': 'K / D',
   'app.battles.knock_out': 'ノックアウト!',
   'app.battles.win': 'Win!',
   'app.battles.lose': 'Lose..',
+  'app.battle': 'バトル',
+  'app.battle.id': '#{id}',
+  'app.battle.result': '結果',
+  'app.battle.count': 'カウント',
+  'app.battle.level': 'ランク',
+  'app.battle.rank': 'ウデマエ',
+  'app.battle.knock_out': 'ノックアウト!',
+  'app.battle.win': 'Win!',
+  'app.battle.lose': 'Lose..',
+  'app.battle.start_time': '開始時間',
+  'app.battle.elpased_time': '試合時間',
   'app.salmon_run': 'サーモンラン',
   'app.gear_shop': 'ゲソタウン',
   'app.settings': '設定',
@@ -1037,7 +1048,8 @@ const ja_JP = {
   'app.time.to.hour_min': '{hour} 時間 {min} 分後',
   'app.time.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後',
   'app.time.in.sec': '{sec} 秒以内',
-  'app.time.in.min_sec': '{min} 分 {sec} 秒以内'
+  'app.time.in.min_sec': '{min} 分 {sec} 秒以内',
+  'app.time.elapsed.sec': '({sec} 秒)'
 };
 
 export default ja_JP;

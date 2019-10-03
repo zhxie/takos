@@ -948,10 +948,21 @@ const zh_CN = {
   'app.battles.count': '分数',
   'app.battles.level_and_rank': '等级 / 段位',
   'app.battles.estimated_power': '预计实力',
-  'app.battles.kill_and_death': '杀 / 死',
+  'app.battles.kill_and_death': 'K / D',
   'app.battles.knock_out': 'KO!',
   'app.battles.win': 'Win!',
   'app.battles.lose': 'Lose..',
+  'app.battle': '战斗',
+  'app.battle.id': '#{id}',
+  'app.battle.result': '结果',
+  'app.battle.count': '分数',
+  'app.battle.level': '等级',
+  'app.battle.rank': '段位',
+  'app.battle.knock_out': 'KO!',
+  'app.battle.win': 'Win!',
+  'app.battle.lose': 'Lose..',
+  'app.battle.start_time': '开始时间',
+  'app.battle.elapsed_time': '战斗时间',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': '触手镇*',
   'app.settings': '设置',
@@ -1029,7 +1040,8 @@ const zh_CN = {
   'app.time.to.hour_min': '{hour} 小时 {min} 分后',
   'app.time.to.day_hour_min': '{day} 日 {hour} 小时 {min} 分后',
   'app.time.in.sec': '{sec} 秒内',
-  'app.time.in.min_sec': '{min} 分 {sec} 秒内'
+  'app.time.in.min_sec': '{min} 分 {sec} 秒内',
+  'app.time.elapsed.sec': '({sec} 秒)'
 };
 
 export default zh_CN;
