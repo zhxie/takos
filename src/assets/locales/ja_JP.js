@@ -1016,6 +1016,8 @@ const ja_JP = {
   'app.done': '完了',
   'app.retry': 'リトライ',
   'app.share': 'シェア',
+  'app.previous_battle': '前のバトル #{id}',
+  'app.next_battle': '次のバトル #{id}',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':

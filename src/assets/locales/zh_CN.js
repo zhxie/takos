@@ -1015,6 +1015,8 @@ const zh_CN = {
   'app.done': '完成',
   'app.retry': '重试',
   'app.share': '分享',
+  'app.previous_battle': '上一场战斗 #{id}',
+  'app.next_battle': '下一场战斗 #{id}',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':

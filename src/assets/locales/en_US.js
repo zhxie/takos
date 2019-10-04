@@ -1016,6 +1016,8 @@ const en_US = {
   'app.done': 'Done',
   'app.retry': 'Retry',
   'app.share': 'Share',
+  'app.previous_battle': 'Previous Battle #{id}',
+  'app.next_battle': 'Next Battle #{id}',
   // App.alert
   'app.alert.warning': 'Warning',
   'app.alert.warning.automatic_cookie_generation':

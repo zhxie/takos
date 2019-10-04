@@ -670,7 +670,28 @@ class BattleModal extends React.Component {
           data.push(clothes);
           data.push(shoes);
           return (
-            <Table dataSource={data} scroll={{ x: 'max-content' }} pagination={false}>
+            <Table
+              dataSource={data}
+              locale={{
+                emptyText: (
+                  <Empty
+                    image={
+                      <OctolingsDeathIcon
+                        className="BattleModal-players-empty-icon"
+                        style={{
+                          margin: '20px 0',
+                          width: '8em',
+                          fill: '#fafafa',
+                          stroke: '#e1e1e1'
+                        }}
+                      />
+                    }
+                  />
+                )
+              }}
+              scroll={{ x: 'max-content' }}
+              pagination={false}
+            >
               <Column
                 title={<FormattedMessage id="gear" defaultMessage="Gear" />}
                 key="gear"
@@ -995,7 +1016,7 @@ class BattleModal extends React.Component {
         })()}
         visible={this.props.visible}
         onCancel={this.props.onCancel}
-        footer={null}
+        footer={this.props.footer}
         column={2}
         width="800px"
         centered
@@ -1020,6 +1041,6 @@ class BattleModal extends React.Component {
   }
 }
 
-BattleModal.defaultProps = { visible: false };
+BattleModal.defaultProps = { visible: false, footer: null };
 
 export default BattleModal;

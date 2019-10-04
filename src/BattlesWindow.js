@@ -43,7 +43,8 @@ class BattlesWindow extends React.Component {
     updateTotal: 0,
     updated: false,
     battle: null,
-    showBattle: false
+    showBattle: false,
+    battleFooter: null
   };
 
   modeIconSelector = mode => {
@@ -206,7 +207,40 @@ class BattlesWindow extends React.Component {
         return element.number === number;
       });
       if (battle !== undefined) {
-        this.setState({ battle: battle, showBattle: true });
+        let buttons = [];
+        // Find previous battle
+        let previous = 0;
+        this.state.data.forEach(element => {
+          if (element.number > previous && element.number < number) {
+            previous = element.number;
+          }
+        });
+        if (previous > 0) {
+          buttons.push(
+            <Button key="previous" onClick={this.showBattle.bind(this, previous)}>
+              <FormattedMessage
+                id="app.previous_battle"
+                defaultMessage="Previous Battle #{id}"
+                values={{ id: previous }}
+              />
+            </Button>
+          );
+        }
+        // Find next battle
+        let next = Number.MAX_SAFE_INTEGER;
+        this.state.data.forEach(element => {
+          if (element.number < next && element.number > number) {
+            next = element.number;
+          }
+        });
+        if (next < Number.MAX_SAFE_INTEGER) {
+          buttons.push(
+            <Button key="next" onClick={this.showBattle.bind(this, next)}>
+              <FormattedMessage id="app.next_battle" defaultMessage="Next Battle #{id}" values={{ id: next }} />
+            </Button>
+          );
+        }
+        this.setState({ battle: battle, showBattle: true, battleFooter: buttons });
       }
     }
   };
@@ -1582,7 +1616,12 @@ class BattlesWindow extends React.Component {
               }}
             />
           </Table>
-          <BattleModal value={this.state.battle} visible={this.state.showBattle} onCancel={this.hideBattle} />
+          <BattleModal
+            value={this.state.battle}
+            visible={this.state.showBattle}
+            onCancel={this.hideBattle}
+            footer={this.state.battleFooter}
+          />
         </div>
       </div>
     );
