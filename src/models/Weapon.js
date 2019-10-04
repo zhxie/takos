@@ -709,4 +709,31 @@ Freshness.superfresh = new Freshness('freshness.superfresh', 3);
 Freshness.superfresh2 = new Freshness('freshness.superfresh', 4);
 Freshness.superfresh3 = new Freshness('freshness.superfresh', 5);
 
-export { MainWeaponType, MainWeapon, SubWeapon, SpecialWeapon, Weapon, Freshness };
+class Badge {
+  constructor(name, value) {
+    this.name = name;
+    this.value = value;
+  }
+
+  static parse = value => {
+    if (value < 100000) {
+      return Badge.noBadge;
+    } else if (value < 500000) {
+      return Badge.red;
+    } else if (value < 1000000) {
+      return Badge.bronze;
+    } else if (value < 9999999) {
+      return Badge.silver;
+    } else {
+      return Badge.gold;
+    }
+  };
+}
+
+Badge.noBadge = new Badge('badge.no_badge', 0);
+Badge.red = new Badge('badge.red', 1);
+Badge.bronze = new Badge('badge.bronze', 2);
+Badge.silver = new Badge('badge.silver', 3);
+Badge.gold = new Badge('badge.gold', 4);
+
+export { MainWeaponType, MainWeapon, SubWeapon, SpecialWeapon, Weapon, Freshness, Badge };
