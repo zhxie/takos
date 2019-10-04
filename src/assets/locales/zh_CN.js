@@ -1014,6 +1014,7 @@ const zh_CN = {
   'app.continue': '继续',
   'app.done': '完成',
   'app.retry': '重试',
+  'app.share': '分享',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':

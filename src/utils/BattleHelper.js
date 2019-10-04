@@ -1,5 +1,11 @@
 import TakosError from './ErrorHelper';
-import { SPLATNET, SPLATNET_RESULTS, SPLATNET_RESULT, SPLATNET_NICKNAME_AND_ICON } from './FileFolderUrl';
+import {
+  SPLATNET,
+  SPLATNET_RESULTS,
+  SPLATNET_RESULT,
+  SPLATNET_SHARE_RESULT,
+  SPLATNET_NICKNAME_AND_ICON
+} from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import './StringHelper';
 import { Battle } from '../models/Battle';
@@ -72,6 +78,27 @@ class BattleHelper {
       .catch(e => {
         console.error(e);
         return new Battle('can_not_get_battle_{0}'.format(number));
+      });
+  };
+
+  static getBattleImage = number => {
+    const init = {
+      method: 'POST',
+      headers: new Headers({
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie()),
+        'X-Requested-With': 'XMLHttpRequest'
+      })
+    };
+    return fetch(SPLATNET + SPLATNET_SHARE_RESULT.format(number), init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        // Parse response
+        return res.url;
+      })
+      .catch(e => {
+        console.error(e);
+        return new TakosError('can_not_get_battle_image_{0}'.format(number));
       });
   };
 

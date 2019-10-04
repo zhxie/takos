@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty } from 'antd';
+import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty, Collapse } from 'antd';
 
 import './BattleModal.css';
 import { OctolingsDeathIcon } from './CustomIcons';
@@ -23,6 +23,7 @@ import { SPLATNET } from '../utils/FileFolderUrl';
 import TimeConverter from '../utils/TimeConverter';
 
 const { Column } = Table;
+const { Panel } = Collapse;
 
 class BattleModal extends React.Component {
   modeIconSelector = mode => {
@@ -633,7 +634,7 @@ class BattleModal extends React.Component {
     );
   }
 
-  renderTeamPlayers = players => {
+  renderTeamPlayers = (players, isMy) => {
     return (
       <Table
         dataSource={players}
@@ -801,14 +802,26 @@ class BattleModal extends React.Component {
                 <Tooltip title={<FormattedMessage id={text.weapon.subWeapon.name} />}>
                   <img
                     className="BattleModal-players-icon-adjacent"
-                    src={SPLATNET + text.weapon.subWeaponUrlA}
+                    src={(() => {
+                      if (isMy) {
+                        return SPLATNET + text.weapon.subWeaponUrlA;
+                      } else {
+                        return SPLATNET + text.weapon.subWeaponUrlB;
+                      }
+                    })()}
                     alt="sub"
                   />
                 </Tooltip>
                 <Tooltip title={<FormattedMessage id={text.weapon.specialWeapon.name} />}>
                   <img
                     className="BattleModal-players-icon-adjacent"
-                    src={SPLATNET + text.weapon.specialWeaponUrlA}
+                    src={(() => {
+                      if (isMy) {
+                        return SPLATNET + text.weapon.specialWeaponUrlA;
+                      } else {
+                        return SPLATNET + text.weapon.specialWeaponUrlB;
+                      }
+                    })()}
                     alt="special"
                   />
                 </Tooltip>
@@ -927,19 +940,32 @@ class BattleModal extends React.Component {
           if (this.props.value.isWin()) {
             return (
               <div>
-                {this.renderTeamPlayers(this.sortPlayers(this.props.value.myTeamMembers))}
-                {this.renderTeamPlayers(this.sortPlayers(this.props.value.otherTeamMembers))}
+                {this.renderTeamPlayers(this.sortPlayers(this.props.value.myTeamMembers), true)}
+                {this.renderTeamPlayers(this.sortPlayers(this.props.value.otherTeamMembers), false)}
               </div>
             );
           } else {
             return (
               <div>
-                {this.renderTeamPlayers(this.sortPlayers(this.props.value.otherTeamMembers))}
-                {this.renderTeamPlayers(this.sortPlayers(this.props.value.myTeamMembers))}
+                {this.renderTeamPlayers(this.sortPlayers(this.props.value.otherTeamMembers), false)}
+                {this.renderTeamPlayers(this.sortPlayers(this.props.value.myTeamMembers), true)}
               </div>
             );
           }
         })()}
+      </div>
+    );
+  }
+
+  renderShare() {
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="app.share" defaultMessage="Share" />} />
+        <Collapse>
+          <Panel header={<FormattedMessage id="app.battle" defaultMessage="Battle" />} key="battle">
+            <img src={this.props.value.url} alt="battle" style={{ width: '100%' }} />
+          </Panel>
+        </Collapse>
       </div>
     );
   }
@@ -982,6 +1008,11 @@ class BattleModal extends React.Component {
         {(() => {
           if (this.props.value !== undefined && this.props.value !== null) {
             return this.renderPlayers();
+          }
+        })()}
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderShare();
           }
         })()}
       </Modal>

@@ -1015,6 +1015,7 @@ const en_US = {
   'app.continue': 'Continue',
   'app.done': 'Done',
   'app.retry': 'Retry',
+  'app.share': 'Share',
   // App.alert
   'app.alert.warning': 'Warning',
   'app.alert.warning.automatic_cookie_generation':

@@ -4,6 +4,7 @@ import { Rank, BattlePlayer } from './Player';
 import Rule from './Rule';
 import { ScheduledStage } from './Stage';
 import { Freshness } from './Weapon';
+import BattleHelper from '../utils/BattleHelper';
 import TakosError from '../utils/ErrorHelper';
 
 class Battle extends Base {
@@ -21,7 +22,8 @@ class Battle extends Base {
     totalPaint,
     levelAfter,
     myTeamCount,
-    otherTeamCount
+    otherTeamCount,
+    url
   ) {
     super(e);
     this.type = type;
@@ -37,6 +39,7 @@ class Battle extends Base {
     this.levelAfter = levelAfter;
     this.myTeamCount = myTeamCount;
     this.otherTeamCount = otherTeamCount;
+    this.url = url;
   }
 
   selfPlayer = () => {
@@ -109,6 +112,12 @@ class Battle extends Base {
           });
         })
         .then(() => {
+          return BattleHelper.getBattleImage(number);
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          }
           switch (type) {
             case Mode.regularBattle: {
               let winMeter;
@@ -130,6 +139,7 @@ class Battle extends Base {
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
+                res,
                 winMeter
               );
             }
@@ -153,6 +163,7 @@ class Battle extends Base {
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
+                  res,
                   Rank.parse(data.udemae),
                   parseInt(data.estimate_gachi_power)
                 );
@@ -175,6 +186,7 @@ class Battle extends Base {
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
+                  res,
                   Rank.parse(data.udemae),
                   xPowerAfter,
                   parseInt(data.estimate_x_power)
@@ -200,6 +212,7 @@ class Battle extends Base {
                 levelAfter,
                 parseInt(data.my_team_count),
                 parseInt(data.other_team_count),
+                res,
                 parseInt(data.my_estimate_league_point),
                 parseInt(data.other_estimate_league_point),
                 leaguePoint,
@@ -226,6 +239,7 @@ class Battle extends Base {
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
+                res,
                 winMeter,
                 SplatfestMode.parse(data.fes_mode.key),
                 parseInt(data.my_estimate_fes_power),
@@ -242,15 +256,19 @@ class Battle extends Base {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new Battle(e.message);
+            throw new TakosError(e.message);
           } else {
             console.error(e);
-            return new Battle('can_not_parse_battle');
+            throw new TakosError('can_not_parse_battle');
           }
         });
     } catch (e) {
-      console.error(e);
-      return new Battle('can_not_parse_battle');
+      if (e instanceof TakosError) {
+        return new Battle(e.message);
+      } else {
+        console.error(e);
+        return new Battle('can_not_parse_battle');
+      }
     }
   };
 
@@ -286,8 +304,9 @@ class Battle extends Base {
           return new Battle(element.error);
         }
       });
-      const levelAfter = parseInt(data.levelAfter);
       const totalPaint = parseInt(data.totalPaint);
+      const levelAfter = parseInt(data.levelAfter);
+      const url = data.url;
       switch (type) {
         case Mode.regularBattle: {
           let winMeter;
@@ -309,6 +328,7 @@ class Battle extends Base {
             levelAfter,
             parseFloat(data.myTeamCount).toFixed(1),
             parseFloat(data.otherTeamCount).toFixed(1),
+            url,
             winMeter
           );
         }
@@ -332,6 +352,7 @@ class Battle extends Base {
               levelAfter,
               parseInt(data.myTeamCount),
               parseInt(data.otherTeamCount),
+              url,
               Rank.deserialize(data.rankAfter),
               parseInt(data.estimatedRankPower)
             );
@@ -354,6 +375,7 @@ class Battle extends Base {
               levelAfter,
               parseInt(data.myTeamCount),
               parseInt(data.otherTeamCount),
+              url,
               xPowerAfter,
               parseInt(data.estimatedRankPower)
             );
@@ -378,6 +400,7 @@ class Battle extends Base {
             levelAfter,
             parseInt(data.myTeamCount),
             parseInt(data.otherTeamCount),
+            url,
             parseInt(data.myEstimatedLeaguePoint),
             parseInt(data.otherEstimatedLeaguePoint),
             leaguePoint,
@@ -404,6 +427,7 @@ class Battle extends Base {
             levelAfter,
             parseFloat(data.myTeamCount).toFixed(1),
             parseFloat(data.otherTeamCount).toFixed(1),
+            url,
             winMeter,
             SplatfestMode.deserialize(data.splatfestMode),
             parseInt(data.myEstimatedSplatfestPower),
@@ -438,7 +462,8 @@ class RegularBattle extends Battle {
     levelAfter,
     myTeamPercentage,
     otherTeamPercentage,
-    winMeter
+    winMeter,
+    url
   ) {
     super(
       e,
@@ -454,7 +479,8 @@ class RegularBattle extends Battle {
       totalPaint,
       levelAfter,
       myTeamPercentage,
-      otherTeamPercentage
+      otherTeamPercentage,
+      url
     );
     this.winMeter = winMeter;
   }
@@ -479,6 +505,7 @@ class RankedBattle extends Battle {
     levelAfter,
     myTeamCount,
     otherTeamCount,
+    url,
     rankAfter,
     estimatedRankPower
   ) {
@@ -496,7 +523,8 @@ class RankedBattle extends Battle {
       totalPaint,
       levelAfter,
       myTeamCount,
-      otherTeamCount
+      otherTeamCount,
+      url
     );
     this.rankAfter = rankAfter;
     this.estimatedRankPower = estimatedRankPower;
@@ -525,6 +553,7 @@ class RankedXBattle extends RankedBattle {
     levelAfter,
     myTeamCount,
     otherTeamCount,
+    url,
     rankAfter,
     xPowerAfter,
     estimatedXPower
@@ -543,6 +572,7 @@ class RankedXBattle extends RankedBattle {
       levelAfter,
       myTeamCount,
       otherTeamCount,
+      url,
       rankAfter,
       estimatedXPower
     );
@@ -577,6 +607,7 @@ class LeagueBattle extends Battle {
     levelAfter,
     myTeamCount,
     otherTeamCount,
+    url,
     myEstimatedLeaguePoint,
     otherEstimatedLeaguePoint,
     leaguePoint,
@@ -596,7 +627,8 @@ class LeagueBattle extends Battle {
       totalPaint,
       levelAfter,
       myTeamCount,
-      otherTeamCount
+      otherTeamCount,
+      url
     );
     this.myEstimatedLeaguePoint = myEstimatedLeaguePoint;
     this.otherEstimatedLeaguePoint = otherEstimatedLeaguePoint;
@@ -630,6 +662,7 @@ class SplatfestBattle extends Battle {
     levelAfter,
     myTeamPercentage,
     otherTeamPercentage,
+    url,
     winMeter,
     splatfestMode,
     myEstimatedSplatfestPower,
@@ -653,7 +686,8 @@ class SplatfestBattle extends Battle {
       totalPaint,
       levelAfter,
       myTeamPercentage,
-      otherTeamPercentage
+      otherTeamPercentage,
+      url
     );
     this.winMeter = winMeter;
     this.splatfestMode = splatfestMode;

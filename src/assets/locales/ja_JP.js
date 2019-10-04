@@ -1015,6 +1015,7 @@ const ja_JP = {
   'app.continue': '続け',
   'app.done': '完了',
   'app.retry': 'リトライ',
+  'app.share': 'シェア',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':
