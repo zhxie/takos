@@ -18,6 +18,7 @@ class Battle extends Base {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamCount,
     otherTeamCount
@@ -32,6 +33,7 @@ class Battle extends Base {
     this.stage = stage;
     this.myTeamMembers = myTeamMembers;
     this.otherTeamMembers = otherTeamMembers;
+    this.totalPaint = totalPaint;
     this.levelAfter = levelAfter;
     this.myTeamCount = myTeamCount;
     this.otherTeamCount = otherTeamCount;
@@ -83,6 +85,7 @@ class Battle extends Base {
       data.other_team_members.forEach(element => {
         players.push(BattlePlayer.parsePromise(element, false));
       });
+      const totalPaint = parseInt(data.weapon_paint_point);
       const levelAfter = parseInt(data.player_rank) + 100 * parseInt(data.star_rank);
       return Promise.all(players)
         .then(values => {
@@ -123,6 +126,7 @@ class Battle extends Base {
                 stage,
                 myTeamMembers,
                 otherTeamMembers,
+                totalPaint,
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
@@ -130,7 +134,11 @@ class Battle extends Base {
               );
             }
             case Mode.rankedBattle: {
-              if (myTeamMembers[0].Rank !== Rank.x) {
+              if (
+                myTeamMembers.find(element => {
+                  return element.isSelf;
+                }).Rank !== Rank.x
+              ) {
                 return new RankedBattle(
                   null,
                   rule,
@@ -141,6 +149,7 @@ class Battle extends Base {
                   stage,
                   myTeamMembers,
                   otherTeamMembers,
+                  totalPaint,
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
@@ -162,9 +171,11 @@ class Battle extends Base {
                   stage,
                   myTeamMembers,
                   otherTeamMembers,
+                  totalPaint,
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
+                  Rank.parse(data.udemae),
                   xPowerAfter,
                   parseInt(data.estimate_x_power)
                 );
@@ -185,6 +196,7 @@ class Battle extends Base {
                 stage,
                 myTeamMembers,
                 otherTeamMembers,
+                totalPaint,
                 levelAfter,
                 parseInt(data.my_team_count),
                 parseInt(data.other_team_count),
@@ -210,6 +222,7 @@ class Battle extends Base {
                 stage,
                 myTeamMembers,
                 otherTeamMembers,
+                totalPaint,
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
@@ -274,6 +287,7 @@ class Battle extends Base {
         }
       });
       const levelAfter = parseInt(data.levelAfter);
+      const totalPaint = parseInt(data.totalPaint);
       switch (type) {
         case Mode.regularBattle: {
           let winMeter;
@@ -291,6 +305,7 @@ class Battle extends Base {
             stage,
             myTeamMembers,
             otherTeamMembers,
+            totalPaint,
             levelAfter,
             parseFloat(data.myTeamCount).toFixed(1),
             parseFloat(data.otherTeamCount).toFixed(1),
@@ -298,7 +313,11 @@ class Battle extends Base {
           );
         }
         case Mode.rankedBattle: {
-          if (myTeamMembers[0].Rank !== Rank.x) {
+          if (
+            myTeamMembers.find(element => {
+              return element.isSelf;
+            }).Rank !== Rank.x
+          ) {
             return new RankedBattle(
               null,
               rule,
@@ -309,6 +328,7 @@ class Battle extends Base {
               stage,
               myTeamMembers,
               otherTeamMembers,
+              totalPaint,
               levelAfter,
               parseInt(data.myTeamCount),
               parseInt(data.otherTeamCount),
@@ -330,6 +350,7 @@ class Battle extends Base {
               stage,
               myTeamMembers,
               otherTeamMembers,
+              totalPaint,
               levelAfter,
               parseInt(data.myTeamCount),
               parseInt(data.otherTeamCount),
@@ -353,6 +374,7 @@ class Battle extends Base {
             stage,
             myTeamMembers,
             otherTeamMembers,
+            totalPaint,
             levelAfter,
             parseInt(data.myTeamCount),
             parseInt(data.otherTeamCount),
@@ -378,6 +400,7 @@ class Battle extends Base {
             stage,
             myTeamMembers,
             otherTeamMembers,
+            totalPaint,
             levelAfter,
             parseFloat(data.myTeamCount).toFixed(1),
             parseFloat(data.otherTeamCount).toFixed(1),
@@ -411,6 +434,7 @@ class RegularBattle extends Battle {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamPercentage,
     otherTeamPercentage,
@@ -427,6 +451,7 @@ class RegularBattle extends Battle {
       stage,
       myTeamMembers,
       otherTeamMembers,
+      totalPaint,
       levelAfter,
       myTeamPercentage,
       otherTeamPercentage
@@ -450,6 +475,7 @@ class RankedBattle extends Battle {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamCount,
     otherTeamCount,
@@ -467,6 +493,7 @@ class RankedBattle extends Battle {
       stage,
       myTeamMembers,
       otherTeamMembers,
+      totalPaint,
       levelAfter,
       myTeamCount,
       otherTeamCount
@@ -494,9 +521,11 @@ class RankedXBattle extends RankedBattle {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamCount,
     otherTeamCount,
+    rankAfter,
     xPowerAfter,
     estimatedXPower
   ) {
@@ -510,10 +539,11 @@ class RankedXBattle extends RankedBattle {
       stage,
       myTeamMembers,
       otherTeamMembers,
+      totalPaint,
       levelAfter,
       myTeamCount,
       otherTeamCount,
-      Rank.x,
+      rankAfter,
       estimatedXPower
     );
     this.xPowerAfter = xPowerAfter;
@@ -521,6 +551,14 @@ class RankedXBattle extends RankedBattle {
 
   estimatedXPower = () => {
     return this.estimatedRankPower;
+  };
+
+  isCalculating = () => {
+    return this.xPowerAfter === null;
+  };
+
+  isX = () => {
+    return this.rankAfter === Rank.x;
   };
 }
 
@@ -535,6 +573,7 @@ class LeagueBattle extends Battle {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamCount,
     otherTeamCount,
@@ -554,6 +593,7 @@ class LeagueBattle extends Battle {
       stage,
       myTeamMembers,
       otherTeamMembers,
+      totalPaint,
       levelAfter,
       myTeamCount,
       otherTeamCount
@@ -586,6 +626,7 @@ class SplatfestBattle extends Battle {
     stage,
     myTeamMembers,
     otherTeamMembers,
+    totalPaint,
     levelAfter,
     myTeamPercentage,
     otherTeamPercentage,
@@ -609,6 +650,7 @@ class SplatfestBattle extends Battle {
       stage,
       myTeamMembers,
       otherTeamMembers,
+      totalPaint,
       levelAfter,
       myTeamPercentage,
       otherTeamPercentage

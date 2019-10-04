@@ -184,6 +184,12 @@ class BattlesWindow extends React.Component {
       .then(res => {
         res.forEach(element => {
           element.key = element.number;
+          element.myTeamMembers.forEach(element => {
+            element.key = element.id;
+          });
+          element.otherTeamMembers.forEach(element => {
+            element.key = element.id;
+          });
         });
         this.setState({
           data: res
@@ -239,7 +245,7 @@ class BattlesWindow extends React.Component {
                 </Button>
               );
             })()}
-          ></PageHeader>
+          />
           <Table
             dataSource={this.state.data}
             locale={{
@@ -505,10 +511,10 @@ class BattlesWindow extends React.Component {
                         if (text.isLevelAfterWithStar()) {
                           return (
                             <b>
-                              <Tooltip title={text.star()}>
+                              <Tooltip title={text.levelAfter}>
                                 <span className="BattlesWindow-content-table-star">★</span>
+                                {text.levelAfterWithStar()}
                               </Tooltip>
-                              {text.levelAfterWithStar()}
                             </b>
                           );
                         } else {
@@ -518,8 +524,10 @@ class BattlesWindow extends React.Component {
                         if (text.isLevelAfterWithStar()) {
                           return (
                             <span>
-                              <span className="BattlesWindow-content-table-star">★</span>
-                              {text.levelAfterWithStar()}
+                              <Tooltip title={text.levelAfter}>
+                                <span className="BattlesWindow-content-table-star">★</span>
+                                {text.levelAfterWithStar()}
+                              </Tooltip>
                             </span>
                           );
                         } else {
@@ -553,7 +561,7 @@ class BattlesWindow extends React.Component {
               if (!StorageHelper.useSimpleLists()) {
                 return (
                   <Column
-                    title={<FormattedMessage id="app.battles.estimated_power" defaultMessage="Estimated Power" />}
+                    title={<FormattedMessage id="app.battles.power_level" defaultMessage="Power Level" />}
                     key="estimatedPower"
                     align="center"
                     render={text => {
