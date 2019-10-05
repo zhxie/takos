@@ -9,7 +9,6 @@ import {
 import StorageHelper from './StorageHelper';
 import './StringHelper';
 import { Battle } from '../models/Battle';
-import { Mode } from '../models/Mode';
 
 class BattleHelper {
   static getTheLatestBattleNumber = () => {
@@ -118,27 +117,6 @@ class BattleHelper {
             return new TakosError('can_not_save_battle');
           }
         });
-    }
-  };
-
-  static updateRank = battle => {
-    if (battle !== undefined && battle !== null && battle.error === null && battle.gameMode === Mode.rankedBattle) {
-      let rank = StorageHelper.rank();
-      if (rank === null) {
-        rank = {};
-      }
-      if (rank[battle.rule.value] === undefined || rank[battle.rule.value] === null) {
-        rank[battle.rule.value] = {};
-      }
-      if (
-        rank[battle.rule.value].number === undefined ||
-        rank[battle.rule.value].number === null ||
-        battle.number > rank[battle.rule.value].number
-      ) {
-        rank[battle.rule.value].number = battle.number;
-        rank[battle.rule.value].rank = battle.rank;
-        StorageHelper.setRank(rank);
-      }
     }
   };
 
