@@ -992,6 +992,7 @@ const zh_CN = {
   'app.battles.update': '更新数据',
   'app.battles.previous': '上一场战斗 #{id}',
   'app.battles.next': '下一场战斗 #{id}',
+  'app.battles.delete': '删除战斗',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': '触手镇*',
   'app.settings': '设置',
@@ -1044,7 +1045,9 @@ const zh_CN = {
   'app.modal.confirm.log_out': '您希望退出登录吗？',
   'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
   'app.modal.confirm.clear_data': '您希望清除数据吗？',
-  'app.modal.confirm.clear_data.content': '清除数据后，您将无法撤销。建议您首先导出数据。',
+  'app.modal.confirm.clear_data.content': '数据一旦被清除，将无法撤销。建议您首先导出数据。',
+  'app.modal.confirm.delete_battle': '您希望删除战斗吗？',
+  'app.modal.confirm.delete_battle.content': '战斗一旦被删除，将无法撤销。建议您首先导出数据。',
   // App.result
   'app.result.done': '棒极了',
   'app.result.done.description': '所有的一切都已就绪。尽情享受吧！',

@@ -218,6 +218,16 @@ class StorageHelper {
       });
   };
 
+  static removeBattle = number => {
+    if (!StorageHelper.dbConnected()) {
+      StorageHelper.connectDb();
+    }
+    return StorageHelper.battlesConnection.removeItem(number).catch(e => {
+      console.error(e);
+      return new TakosError('can_not_handle_database');
+    });
+  };
+
   static clearBattles = () => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();

@@ -993,6 +993,7 @@ const en_US = {
   'app.battles.update': 'Update Data',
   'app.battles.previous': 'Previous Battle #{id}',
   'app.battles.next': 'Next Battle #{id}',
+  'app.battles.delete': 'Delete Battle',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': 'Gear Shop',
   'app.settings': 'Settings',
@@ -1052,6 +1053,9 @@ const en_US = {
   'app.modal.confirm.clear_data': 'Do you want to clear data?',
   'app.modal.confirm.clear_data.content':
     'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.',
+  'app.modal.confirm.delete_battle': 'Do you want to delete battle?',
+  'app.modal.confirm.delete_battle.content':
+    'Once the battle is deleted, you will not be able to undo. It is recommended that you first export the data.',
   // App.result
   'app.result.done': 'Booyah!',
   'app.result.done.description': 'It is all done. Enjoy it!',

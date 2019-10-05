@@ -993,6 +993,7 @@ const ja_JP = {
   'app.battles.update': '更新データ',
   'app.battles.previous': '前のバトル #{id}',
   'app.battles.next': '次のバトル #{id}',
+  'app.battles.delete': 'バトルを削除する',
   'app.salmon_run': 'サーモンラン',
   'app.gear_shop': 'ゲソタウン',
   'app.settings': '設定',
@@ -1052,6 +1053,9 @@ const ja_JP = {
   'app.modal.confirm.clear_data': 'データを消去しますか？',
   'app.modal.confirm.clear_data.content':
     'データが消去されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
+  'app.modal.confirm.delete_battle': 'バトルを削除しますか？',
+  'app.modal.confirm.delete_battle.content':
+    'バトルが削除されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
   // App.result
   'app.result.done': 'ナイス',
   'app.result.done.description': 'すべて完了です。楽しめ！',

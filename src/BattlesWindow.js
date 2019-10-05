@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress } from 'antd';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
 
 import './BattlesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
@@ -31,6 +31,7 @@ import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
 const { Column } = Table;
+const { confirm } = Modal;
 
 class BattlesWindow extends React.Component {
   state = {
@@ -112,7 +113,7 @@ class BattlesWindow extends React.Component {
         });
     };
 
-    this.setState({ error: false, loaded: false, updateCurrent: 0, updateTotal: 0 });
+    this.setState({ data: [], loaded: false, error: false, showBattle: false, updateCurrent: 0, updateTotal: 0 });
     StorageHelper.latestBattle()
       .then(res => {
         if (res === -1) {
@@ -154,7 +155,7 @@ class BattlesWindow extends React.Component {
         this.getBattles().then(() => {
           if (e instanceof TakosError) {
             if (e.message === 'can_not_get_the_latest_battle_from_database') {
-              this.setState({ error: true, errorLog: e.message });
+              this.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
               this.setState({
                 error: true,
@@ -208,6 +209,11 @@ class BattlesWindow extends React.Component {
       });
       if (battle !== undefined) {
         let buttons = [];
+        buttons.push(
+          <Button key="delete" type="danger" onClick={this.deleteBattle.bind(this, number)}>
+            <FormattedMessage id="app.battles.delete" defaultMessage="Delete Battle" />
+          </Button>
+        );
         // Find previous battle
         let previous = 0;
         this.state.data.forEach(element => {
@@ -247,6 +253,48 @@ class BattlesWindow extends React.Component {
 
   hideBattle = () => {
     this.setState({ showBattle: false });
+  };
+
+  deleteBattle = number => {
+    confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.delete_battle',
+        defaultMessage: 'Do you want to delete battle?'
+      }),
+      content: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.delete_battle.content',
+        defaultMessage:
+          'Once the battle is deleted, you will not be able to undo. It is recommended that you first export the data.'
+      }),
+      okType: 'danger',
+      icon: <Icon type="exclamation-circle" />,
+      onOk() {
+        StorageHelper.removeBattle(number)
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              this.setState({
+                data: [],
+                loaded: false,
+                error: false,
+                showBattle: false,
+                updateCurrent: 0,
+                updateTotal: 0
+              });
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              this.setState({ error: true, errorLog: e.message, errorChecklist: [] });
+            } else {
+              console.error(e);
+              this.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
+            }
+          });
+      },
+      onCancel() {}
+    });
   };
 
   renderContent = () => {
@@ -1712,4 +1760,4 @@ class BattlesWindow extends React.Component {
   }
 }
 
-export default BattlesWindow;
+export default injectIntl(BattlesWindow);
