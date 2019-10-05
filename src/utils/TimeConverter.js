@@ -36,7 +36,7 @@ class TimeConverter {
     if (diff < 0) {
       return (
         <FormattedMessage
-          id="app.time.to.min"
+          id="app.time.schedule.to.min"
           defaultMessage="in {min} min"
           values={{
             min: 0
@@ -50,7 +50,7 @@ class TimeConverter {
       if (days > 0) {
         return (
           <FormattedMessage
-            id="app.time.to.day_hour_min"
+            id="app.time.schedule.to.day_hour_min"
             defaultMessage="in {day} day {hour} hour {min} min"
             values={{
               day: days,
@@ -62,7 +62,7 @@ class TimeConverter {
       } else if (hours > 0) {
         return (
           <FormattedMessage
-            id="app.time.to.hour_min"
+            id="app.time.schedule.to.hour_min"
             defaultMessage="in {hour} hour {min} min"
             values={{
               hour: hours,
@@ -73,7 +73,7 @@ class TimeConverter {
       } else {
         return (
           <FormattedMessage
-            id="app.time.to.min"
+            id="app.time.schedule.to.min"
             defaultMessage="in {min} min"
             values={{
               min: minutes
@@ -90,7 +90,7 @@ class TimeConverter {
     if (minutes > 0) {
       return (
         <FormattedMessage
-          id="app.time.in.min_sec"
+          id="app.time.battle.elapsed.in.min_sec"
           defaultMessage="in {min} min {sec} sec"
           values={{
             min: minutes,
@@ -101,7 +101,7 @@ class TimeConverter {
     } else {
       return (
         <FormattedMessage
-          id="app.time.in.sec"
+          id="app.time.battle.elapsed.in.sec"
           defaultMessage="in {sec} sec"
           values={{
             sec: seconds
@@ -129,7 +129,7 @@ class TimeConverter {
         <span>
           {minutes}:{seconds.substr(-2)}{' '}
           <FormattedMessage
-            id="app.time.elapsed.sec"
+            id="app.time.battle.elapsed.sec"
             defaultMessage="({sec} seconds)"
             values={{
               sec: parseInt(time)

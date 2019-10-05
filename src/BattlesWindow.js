@@ -219,7 +219,7 @@ class BattlesWindow extends React.Component {
           buttons.push(
             <Button key="previous" onClick={this.showBattle.bind(this, previous)}>
               <FormattedMessage
-                id="app.previous_battle"
+                id="app.battles.previous"
                 defaultMessage="Previous Battle #{id}"
                 values={{ id: previous }}
               />
@@ -236,7 +236,7 @@ class BattlesWindow extends React.Component {
         if (next < Number.MAX_SAFE_INTEGER) {
           buttons.push(
             <Button key="next" onClick={this.showBattle.bind(this, next)}>
-              <FormattedMessage id="app.next_battle" defaultMessage="Next Battle #{id}" values={{ id: next }} />
+              <FormattedMessage id="app.battles.next" defaultMessage="Next Battle #{id}" values={{ id: next }} />
             </Button>
           );
         }
@@ -309,7 +309,7 @@ class BattlesWindow extends React.Component {
             }}
           >
             <Column
-              title={<FormattedMessage id="app.battles.id" defaultMessage="#" />}
+              title={<FormattedMessage id="battle.id.prefix" defaultMessage="#" />}
               key="id"
               align="center"
               dataIndex="number"
@@ -318,7 +318,7 @@ class BattlesWindow extends React.Component {
               defaultSortOrder="descend"
             />
             <Column
-              title={<FormattedMessage id="app.battles.result" defaultMessage="Result" />}
+              title={<FormattedMessage id="battle.result" defaultMessage="Result" />}
               key="result"
               align="center"
               render={text => {
@@ -333,7 +333,7 @@ class BattlesWindow extends React.Component {
                             }}
                           >
                             <Tag color="magenta" key="result">
-                              <FormattedMessage id="app.battles.win" defaultMessage="Win!" />
+                              <FormattedMessage id="battle.win" defaultMessage="Win!" />
                             </Tag>
                           </Tooltip>
                         );
@@ -345,7 +345,7 @@ class BattlesWindow extends React.Component {
                             }}
                           >
                             <Tag color="green" key="result">
-                              <FormattedMessage id="app.battles.lose" defaultMessage="Lose.." />
+                              <FormattedMessage id="battle.lose" defaultMessage="Lose.." />
                             </Tag>
                           </Tooltip>
                         );
@@ -361,7 +361,7 @@ class BattlesWindow extends React.Component {
                               }}
                             >
                               <Tag color="red" key="ko">
-                                <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
+                                <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
                               </Tag>
                             </Tooltip>
                           );
@@ -374,7 +374,7 @@ class BattlesWindow extends React.Component {
                               }}
                             >
                               <Tag color="green" key="ko">
-                                <FormattedMessage id="app.battles.knock_out" defaultMessage="KO BONUS!" />
+                                <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
                               </Tag>
                             </Tooltip>
                           );
@@ -389,7 +389,7 @@ class BattlesWindow extends React.Component {
               if (!StorageHelper.useSimpleLists()) {
                 return (
                   <Column
-                    title={<FormattedMessage id="app.battles.count" defaultMessage="Count" />}
+                    title={<FormattedMessage id="battle.count" defaultMessage="Count" />}
                     key="count"
                     align="center"
                     render={text => {
@@ -534,7 +534,7 @@ class BattlesWindow extends React.Component {
               }}
             />
             <Column
-              title={<FormattedMessage id="app.battles.level_and_rank" defaultMessage="Level / Rank" />}
+              title={<FormattedMessage id="battle.level_and_rank" defaultMessage="Level / Rank" />}
               key="levelAndRank"
               align="center"
               render={text => {
@@ -595,7 +595,7 @@ class BattlesWindow extends React.Component {
               if (!StorageHelper.useSimpleLists()) {
                 return (
                   <Column
-                    title={<FormattedMessage id="app.battles.power_level" defaultMessage="Power Level" />}
+                    title={<FormattedMessage id="battle.power" defaultMessage="Power Level" />}
                     key="estimatedPower"
                     align="center"
                     render={text => {
@@ -1570,7 +1570,7 @@ class BattlesWindow extends React.Component {
               }
             })()}
             <Column
-              title={<FormattedMessage id="app.battles.kill_and_death" defaultMessage="Kill / Death" />}
+              title={<FormattedMessage id="player.kill_and_death" defaultMessage="Kill / Death" />}
               key="killAndDeath"
               align="center"
               render={text => {
