@@ -227,6 +227,7 @@ class BattlesWindow extends React.Component {
             <FormattedMessage id="app.battles.delete" defaultMessage="Delete Battle" />
           </Button>
         );
+        let toButtons = [];
         // Find previous battle
         let previous = 0;
         this.state.data.forEach(element => {
@@ -235,8 +236,9 @@ class BattlesWindow extends React.Component {
           }
         });
         if (previous > 0) {
-          buttons.push(
+          toButtons.push(
             <Button key="previous" onClick={this.showBattle.bind(this, previous)}>
+              <Icon type="left" />
               <FormattedMessage
                 id="app.battles.previous"
                 defaultMessage="Previous Battle #{id}"
@@ -253,10 +255,20 @@ class BattlesWindow extends React.Component {
           }
         });
         if (next < Number.MAX_SAFE_INTEGER) {
-          buttons.push(
+          toButtons.push(
             <Button key="next" onClick={this.showBattle.bind(this, next)}>
               <FormattedMessage id="app.battles.next" defaultMessage="Next Battle #{id}" values={{ id: next }} />
+              <Icon type="right" />
             </Button>
+          );
+        }
+        if (toButtons.length > 0) {
+          buttons.push(
+            <Button.Group key="group" style={{ marginLeft: '8px' }}>
+              {toButtons.map(element => {
+                return element;
+              })}
+            </Button.Group>
           );
         }
         this.setState({ battle: battle, showBattle: true, battleFooter: buttons });
