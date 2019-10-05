@@ -19,6 +19,7 @@ const { Header, Content } = Layout;
 
 class SchedulesWindow extends React.Component {
   state = {
+    // Render
     data: [],
     loaded: false,
     error: false,
@@ -104,10 +105,10 @@ class SchedulesWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          this.setState({ errorLog: e.message, error: true });
+          this.setState({ error: true, errorLog: e.message });
         } else {
           console.error(e);
-          this.setState({ errorLog: 'can_not_parse_schedules', error: true });
+          this.setState({ error: true, errorLog: 'can_not_parse_schedules' });
         }
       });
   };

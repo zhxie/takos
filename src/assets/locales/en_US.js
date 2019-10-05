@@ -1025,7 +1025,7 @@ const en_US = {
   'app.alert.warning.schedules_expired':
     'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info': 'Info',
-  'app.alert.info.battles_updated': 'It seems that battles have been updated, please refresh this page to update.',
+  'app.alert.info.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
   'app.alert.info.use_automatic_cookie_generation':
     'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':

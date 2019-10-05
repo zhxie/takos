@@ -35,6 +35,7 @@ const { confirm } = Modal;
 
 class BattlesWindow extends React.Component {
   state = {
+    // Render
     data: [],
     loaded: false,
     error: false,
@@ -113,7 +114,15 @@ class BattlesWindow extends React.Component {
         });
     };
 
-    this.setState({ data: [], loaded: false, error: false, showBattle: false, updateCurrent: 0, updateTotal: 0 });
+    this.setState({
+      data: [],
+      loaded: false,
+      error: false,
+      showBattle: false,
+      updateCurrent: 0,
+      updateTotal: 0,
+      updated: false
+    });
     StorageHelper.latestBattle()
       .then(res => {
         if (res === -1) {
@@ -281,7 +290,8 @@ class BattlesWindow extends React.Component {
                 error: false,
                 showBattle: false,
                 updateCurrent: 0,
-                updateTotal: 0
+                updateTotal: 0,
+                updated: false
               });
             }
           })
@@ -308,8 +318,8 @@ class BattlesWindow extends React.Component {
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.info.battles_updated"
-                    defaultMessage="It seems that battles have been updated, please refresh this page to update."
+                    id="app.alert.info.battles_can_not_update"
+                    defaultMessage="Takos can not update battles, please refresh this page to update."
                   />
                 }
                 type="info"
@@ -1695,7 +1705,7 @@ class BattlesWindow extends React.Component {
               <Button
                 key="continue"
                 onClick={() => {
-                  this.setState({ error: false, loaded: true });
+                  this.setState({ error: false, loaded: true, updated: true });
                 }}
                 type="default"
               >

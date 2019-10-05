@@ -17,14 +17,17 @@ const { Option } = Select;
 
 class SettingsWindow extends React.Component {
   state = {
+    // Render
+    error: false,
+    errorLog: 'unknown_error',
+    // Automatic
     isUrl: false,
     isCookie: false,
     isValid: true,
+    // Value
     cookie: '',
     language: 'en_US',
-    useSimpleLists: false,
-    error: false,
-    errorLog: 'unknown_error'
+    useSimpleLists: false
   };
 
   constructor(props) {

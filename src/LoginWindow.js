@@ -23,19 +23,21 @@ const { confirm } = Modal;
 
 class LoginWindow extends React.Component {
   state = {
+    // Render
     step: 0,
-    isUrl: false,
-    isCookie: false,
-    isValid: true,
-    cookie: '',
-    language: 'en_US',
     error: false,
     errorLog: 'unknown_error',
     errorUpdate: false,
     errorUpdateLog: 'unknown_error',
     errorUpdateChecklist: [],
     updateCurrent: 0,
-    updateTotal: 0
+    updateTotal: 0,
+    // Automatic
+    isUrl: false,
+    isCookie: false,
+    isValid: true,
+    cookie: '',
+    language: 'en_US'
   };
 
   constructor(props) {
@@ -245,7 +247,7 @@ class LoginWindow extends React.Component {
       .catch(e => {
         if (e instanceof TakosError) {
           if (e.message === 'can_not_get_the_latest_battle_from_database') {
-            this.setState({ errorUpdate: true, errorUpdateLog: e.message });
+            this.setState({ errorUpdate: true, errorUpdateLog: e.message, errorUpdateChecklist: [] });
           } else {
             this.setState({
               errorUpdate: true,

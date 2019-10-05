@@ -185,7 +185,7 @@ class StorageHelper {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.battlesConnection.removeItem(number).catch(e => {
+    return StorageHelper.battlesConnection.removeItem(number.toString()).catch(e => {
       console.error(e);
       return new TakosError('can_not_handle_database');
     });
