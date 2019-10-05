@@ -14,11 +14,11 @@ class ErrorResult extends React.Component {
         <Result
           icon={
             <OctolingsDeathIcon
-              className="ErrorResult-content-result-icon"
               style={{
                 width: '2em',
                 fill: '#ffeae6',
-                stroke: 'red'
+                stroke: 'red',
+                strokeWidth: '0.5px'
               }}
             />
           }

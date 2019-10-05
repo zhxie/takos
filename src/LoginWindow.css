@@ -88,10 +88,6 @@
   margin-top: 48px;
 }
 
-.LoginWindow-content-done-icon {
-  stroke-width: 0.5px;
-}
-
 @media screen and (max-width: 480px) {
   .LoginWindow-content {
     padding: 0;

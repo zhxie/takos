@@ -16,7 +16,8 @@ class LoadingResult extends React.Component {
               style={{
                 width: '1.5em',
                 fill: '#e6f7ff',
-                stroke: '#1890ff'
+                stroke: '#1890ff',
+                strokeWidth: '0.65px'
               }}
             />
           }

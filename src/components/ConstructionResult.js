@@ -12,11 +12,11 @@ class ConstructionResult extends React.Component {
         <Result
           icon={
             <OctolingsKillIcon
-              className="ConstructionResult-content-result-icon"
               style={{
                 width: '2em',
                 fill: '#fffae6',
-                stroke: '#ffa500'
+                stroke: '#ffa500',
+                strokeWidth: '0.5px'
               }}
             />
           }

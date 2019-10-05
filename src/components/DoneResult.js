@@ -12,11 +12,11 @@ class DoneResult extends React.Component {
         <Result
           icon={
             <OctolingsKillIcon
-              className="DoneResult-content-result-icon"
               style={{
                 width: '2em',
                 fill: '#f6ffed',
-                stroke: '#52c41a'
+                stroke: '#52c41a',
+                strokeWidth: '0.5px'
               }}
             />
           }

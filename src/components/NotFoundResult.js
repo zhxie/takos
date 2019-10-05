@@ -15,11 +15,11 @@ class NotFoundResult extends React.Component {
         <Result
           icon={
             <OctolingsDeathIcon
-              className="NotFoundResult-content-result-icon"
               style={{
                 width: '2em',
                 fill: '#e6f7ff',
-                stroke: '#1890ff'
+                stroke: '#1890ff',
+                strokeWidth: '0.5px'
               }}
             />
           }

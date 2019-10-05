@@ -374,7 +374,7 @@ class SettingsWindow extends React.Component {
                     />
                   </Col>
                   <Col span={6}>
-                    <Button className="SettingsWindow-content-form-button" onClick={this.showConfirm}>
+                    <Button onClick={this.showConfirm}>
                       <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
                     </Button>
                   </Col>
@@ -383,11 +383,7 @@ class SettingsWindow extends React.Component {
               <Form.Item label={<FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />}>
                 <Row gutter={8}>
                   <Col>
-                    <Button
-                      className="SettingsWindow-content-form-button"
-                      type="danger"
-                      onClick={this.showLogOutConfirm}
-                    >
+                    <Button type="danger" onClick={this.showLogOutConfirm}>
                       <FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />
                     </Button>
                   </Col>
@@ -439,17 +435,13 @@ class SettingsWindow extends React.Component {
               <Form.Item label={<FormattedMessage id="app.settings.system.data" defaultMessage="Data" />}>
                 <Row gutter={8}>
                   <Col>
-                    <Button className="SettingsWindow-content-form-button" type="default" disabled>
+                    <Button type="default" disabled>
                       <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
                     </Button>
-                    <Button className="SettingsWindow-content-form-button" type="default" disabled>
+                    <Button type="default" disabled style={{ marginLeft: '8px' }}>
                       <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
                     </Button>
-                    <Button
-                      className="SettingsWindow-content-form-button"
-                      type="danger"
-                      onClick={this.showClearDataConfirm}
-                    >
+                    <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
                       <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
                     </Button>
                   </Col>

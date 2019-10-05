@@ -385,32 +385,32 @@ class BattleModal extends React.Component {
                       switch (freshness) {
                         case Freshness.dry:
                           return (
-                            <Tag className="BattleMoal-battle-tag-adjacent">
+                            <Tag style={{ marginLeft: '8px' }}>
                               <FormattedMessage id={freshness.name} />
                             </Tag>
                           );
                         case Freshness.raw:
                           return (
-                            <Tag className="BattleMoal-battle-tag-adjacent" color="green">
+                            <Tag color="green" style={{ marginLeft: '8px' }}>
                               <FormattedMessage id={freshness.name} />
                             </Tag>
                           );
                         case Freshness.fresh:
                           return (
-                            <Tag className="BattleMoal-battle-tag-adjacent" color="volcano">
+                            <Tag color="volcano" style={{ marginLeft: '8px' }}>
                               <FormattedMessage id={freshness.name} />
                             </Tag>
                           );
                         case Freshness.superfresh:
                         case Freshness.superfresh2:
                           return (
-                            <Tag className="BattleMoal-battle-tag-adjacent" color="cyan">
+                            <Tag color="cyan" style={{ marginLeft: '8px' }}>
                               <FormattedMessage id={freshness.name} />
                             </Tag>
                           );
                         case Freshness.superfresh3:
                           return (
-                            <Tag className="BattleMoal-battle-tag-adjacent" color="gold">
+                            <Tag color="gold" style={{ marginLeft: '8px' }}>
                               <FormattedMessage id={freshness.name} />
                             </Tag>
                           );
@@ -443,7 +443,7 @@ class BattleModal extends React.Component {
                   case Badge.red:
                     return (
                       <Tooltip title={<FormattedMessage id="badge" defaultMessage="Weapon Badge" />}>
-                        <Tag className="BattleMoal-battle-tag-adjacent" color="red">
+                        <Tag color="red" style={{ marginLeft: '8px' }}>
                           <FormattedMessage id={badge.name} />
                         </Tag>
                       </Tooltip>
@@ -451,7 +451,7 @@ class BattleModal extends React.Component {
                   case Badge.bronze:
                     return (
                       <Tooltip title={<FormattedMessage id="badge" defaultMessage="Weapon Badge" />}>
-                        <Tag className="BattleMoal-battle-tag-adjacent" color="volcano">
+                        <Tag color="volcano" style={{ marginLeft: '8px' }}>
                           <FormattedMessage id={badge.name} />
                         </Tag>
                       </Tooltip>
@@ -459,7 +459,7 @@ class BattleModal extends React.Component {
                   case Badge.silver:
                     return (
                       <Tooltip title={<FormattedMessage id="badge" defaultMessage="Weapon Badge" />}>
-                        <Tag className="BattleMoal-battle-tag-adjacent" color="cyan">
+                        <Tag color="cyan" style={{ marginLeft: '8px' }}>
                           <FormattedMessage id={badge.name} />
                         </Tag>
                       </Tooltip>
@@ -467,7 +467,7 @@ class BattleModal extends React.Component {
                   case Badge.gold:
                     return (
                       <Tooltip title={<FormattedMessage id="badge" defaultMessage="Weapon Badge" />}>
-                        <Tag className="BattleMoal-battle-tag-adjacent" color="gold">
+                        <Tag color="gold" style={{ marginLeft: '8px' }}>
                           <FormattedMessage id={badge.name} />
                         </Tag>
                       </Tooltip>
@@ -612,12 +612,12 @@ class BattleModal extends React.Component {
             <Empty
               image={
                 <OctolingsDeathIcon
-                  className="BattleModal-players-empty-icon"
                   style={{
                     margin: '20px 0',
                     width: '8em',
                     fill: '#fafafa',
-                    stroke: '#e1e1e1'
+                    stroke: '#e1e1e1',
+                    strokeWidth: '0.5px'
                   }}
                 />
               }
@@ -736,15 +736,14 @@ class BattleModal extends React.Component {
                         return (
                           <Tooltip title={<FormattedMessage id={element.ability.name} />} key={index}>
                             <img
-                              className={(() => {
-                                if (index === 0) {
-                                  return 'BattleModal-players-icon';
-                                } else {
-                                  return 'BattleModal-players-icon-adjacent';
-                                }
-                              })()}
+                              className="BattleModal-players-icon"
                               src={SPLATNET + element.url}
                               alt="secondaryAbility"
+                              style={(() => {
+                                if (index !== 0) {
+                                  return { marginLeft: '8px' };
+                                }
+                              })()}
                             />
                           </Tooltip>
                         );
@@ -791,7 +790,7 @@ class BattleModal extends React.Component {
                 </Tooltip>
                 <Tooltip title={<FormattedMessage id={text.weapon.subWeapon.name} />}>
                   <img
-                    className="BattleModal-players-icon-adjacent"
+                    className="BattleModal-players-icon"
                     src={(() => {
                       if (isMy) {
                         return SPLATNET + text.weapon.subWeaponUrlA;
@@ -800,11 +799,12 @@ class BattleModal extends React.Component {
                       }
                     })()}
                     alt="sub"
+                    style={{ marginLeft: '8px' }}
                   />
                 </Tooltip>
                 <Tooltip title={<FormattedMessage id={text.weapon.specialWeapon.name} />}>
                   <img
-                    className="BattleModal-players-icon-adjacent"
+                    className="BattleModal-players-icon"
                     src={(() => {
                       if (isMy) {
                         return SPLATNET + text.weapon.specialWeaponUrlA;
@@ -813,6 +813,7 @@ class BattleModal extends React.Component {
                       }
                     })()}
                     alt="special"
+                    style={{ marginLeft: '8px' }}
                   />
                 </Tooltip>
               </span>

@@ -362,12 +362,12 @@ class BattlesWindow extends React.Component {
                 <Empty
                   image={
                     <OctolingsDeathIcon
-                      className="BattlesWindow-content-table-empty-icon"
                       style={{
                         margin: '20px 0',
                         width: '8em',
                         fill: '#fafafa',
-                        stroke: '#e1e1e1'
+                        stroke: '#e1e1e1',
+                        strokeWidth: '0.5px'
                       }}
                     />
                   }

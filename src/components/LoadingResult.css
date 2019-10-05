@@ -11,7 +11,6 @@
 
 .LoadingResult-content-result-icon {
   animation: LoadingResult-content-result-icon-spin infinite 8s linear;
-  stroke-width: 0.65px;
 }
 
 @keyframes LoadingResult-content-result-icon-spin {

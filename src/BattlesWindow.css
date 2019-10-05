@@ -37,10 +37,6 @@
   width: calc(100% - 32px);
 }
 
-.BattlesWindow-content-table-empty-icon {
-  stroke-width: 0.5px;
-}
-
 .BattlesWindow-content-table-progress-win .ant-progress-bg {
   background-color: #eb2f96;
 }
