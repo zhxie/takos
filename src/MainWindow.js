@@ -5,6 +5,7 @@ import { Layout, Menu, Icon } from 'antd';
 
 import './MainWindow.css';
 import BattlesWindow from './BattlesWindow';
+import DashboardWindow from './DashboardWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
 import logo from './assets/images/logo.svg';
@@ -194,7 +195,7 @@ class MainWindow extends React.Component {
         <Content id="MainWindow-content" style={{ height: '100vh' }}>
           <Switch>
             <Route exact path={`${this.props.match.url}`} component={this.renderLogo} />
-            <Route exact path={`${this.props.match.url}dashboard`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}dashboard`} component={DashboardWindow} />
             <Route exact path={`${this.props.match.url}schedules/salmon`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}schedules/:mode`} component={SchedulesWindow} />
             <Route exact path={`${this.props.match.url}stats/stages`} component={ConstructionResult} />

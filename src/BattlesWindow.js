@@ -6,12 +6,12 @@ import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress
 import './BattlesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
 import privateIcon from './assets/images/mode-private.png';
-import turfWarIcon from './assets/images/mode-regular.png';
+import rankedIcon from './assets/images/mode-ranked.png';
 import regularIcon from './assets/images/mode-regular.png';
+import turfWarIcon from './assets/images/mode-regular.png';
 import splatfestIcon from './assets/images/mode-splatfest.png';
 import clamBlitzIcon from './assets/images/rule-clam-blitz.png';
 import rainmakerIcon from './assets/images/rule-rainmaker.png';
-import rankedIcon from './assets/images/mode-ranked.png';
 import splatZonesIcon from './assets/images/rule-splat-zones.png';
 import towerControlIcon from './assets/images/rule-tower-control.png';
 import { OctolingsDeathIcon } from './components/CustomIcons';
