@@ -101,25 +101,6 @@ class BattleHelper {
       });
   };
 
-  static saveBattle = battle => {
-    if (battle !== undefined && battle !== null && battle.error === null) {
-      return StorageHelper.addBattle(battle)
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return new TakosError(e.message);
-          } else {
-            console.error(e);
-            return new TakosError('can_not_save_battle');
-          }
-        });
-    }
-  };
-
   static getPlayerIcon = id => {
     const init = {
       method: 'GET',

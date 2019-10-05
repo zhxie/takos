@@ -185,7 +185,11 @@ class LoginWindow extends React.Component {
             // Handle previous error
             throw new TakosError(res.error);
           } else {
-            return BattleHelper.saveBattle(res);
+            if (res.error !== null) {
+              throw new TakosError(res.error);
+            } else {
+              return StorageHelper.addBattle(res);
+            }
           }
         })
         .then(res => {
