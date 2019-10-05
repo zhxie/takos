@@ -256,6 +256,7 @@ class BattlesWindow extends React.Component {
   };
 
   deleteBattle = number => {
+    const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
         id: 'app.modal.confirm.delete_battle',
@@ -274,7 +275,7 @@ class BattlesWindow extends React.Component {
             if (res instanceof TakosError) {
               throw new TakosError(res.message);
             } else {
-              this.setState({
+              thisHandler.setState({
                 data: [],
                 loaded: false,
                 error: false,
@@ -286,10 +287,10 @@ class BattlesWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              this.setState({ error: true, errorLog: e.message, errorChecklist: [] });
+              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
               console.error(e);
-              this.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
             }
           });
       },
@@ -1757,6 +1758,12 @@ class BattlesWindow extends React.Component {
 
   componentDidMount() {
     this.updateBattles();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.loaded !== prevState.loaded && this.state.loaded === false) {
+      this.updateBattles();
+    }
   }
 }
 

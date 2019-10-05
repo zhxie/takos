@@ -208,6 +208,7 @@ class SettingsWindow extends React.Component {
   };
 
   showLogOutConfirm = () => {
+    const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
         id: 'app.modal.confirm.log_out',
@@ -230,10 +231,10 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              this.setState({ error: true, errorLog: e.message });
+              thisHandler.setState({ error: true, errorLog: e.message });
             } else {
               console.error(e);
-              this.setState({ error: true, errorLog: 'unknown_error' });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error' });
             }
           });
       },
@@ -242,6 +243,7 @@ class SettingsWindow extends React.Component {
   };
 
   showClearDataConfirm = () => {
+    const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
         id: 'app.modal.confirm.clear_data',
@@ -263,10 +265,10 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              this.setState({ error: true, errorLog: e.message });
+              thisHandler.setState({ error: true, errorLog: e.message });
             } else {
               console.error(e);
-              this.setState({ error: true, errorLog: 'unknown_error' });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error' });
             }
           });
       },
