@@ -81,6 +81,7 @@ class LoginWindow extends React.Component {
 
   toNext = () => {
     if (this.state.step === 1) {
+      // On login, click next will set cookie and update data
       StorageHelper.setCookie(this.state.cookie);
       this.props.onDone();
       this.updateData();
@@ -178,6 +179,7 @@ class LoginWindow extends React.Component {
   };
 
   updateData = () => {
+    // TODO: this method should be extracted
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
         .then(res => {

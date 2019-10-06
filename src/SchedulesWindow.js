@@ -117,6 +117,7 @@ class SchedulesWindow extends React.Component {
     if (new Date(this.state.data[0].endTime * 1000) - new Date() < 0) {
       this.setState({ expired: true });
     } else {
+      // Force update the page to update the remaining and coming time
       this.forceUpdate();
     }
   };
@@ -231,6 +232,7 @@ class SchedulesWindow extends React.Component {
   }
 
   componentWillUnmount() {
+    // Remove update timer
     clearInterval(this.timer);
   }
 }

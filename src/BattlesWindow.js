@@ -84,6 +84,7 @@ class BattlesWindow extends React.Component {
   };
 
   updateBattles = () => {
+    // TODO: this method should be extracted
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
         .then(res => {
@@ -195,6 +196,7 @@ class BattlesWindow extends React.Component {
   };
 
   getBattles = () => {
+    // Every item in list should own an unique key property
     return StorageHelper.battles()
       .then(res => {
         res.forEach(element => {

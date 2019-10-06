@@ -148,7 +148,7 @@ class SettingsWindow extends React.Component {
       });
   };
 
-  showConfirm = () => {
+  showUpdateCookieConfirm = () => {
     const getSessionToken = this.getSessionToken;
     const updateCookie = this.updateCookie;
     if (this.state.isUrl) {
@@ -224,6 +224,7 @@ class SettingsWindow extends React.Component {
       okType: 'danger',
       icon: <Icon type="exclamation-circle" />,
       onOk() {
+        // Will first initialize storage and then go to login while the login will initialize storage again
         StorageHelper.initializeStorage()
           .then(res => {
             if (res instanceof TakosError) {
@@ -374,7 +375,7 @@ class SettingsWindow extends React.Component {
                     />
                   </Col>
                   <Col span={6}>
-                    <Button onClick={this.showConfirm}>
+                    <Button onClick={this.showUpdateCookieConfirm}>
                       <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
                     </Button>
                   </Col>
