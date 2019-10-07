@@ -25,7 +25,8 @@ class SchedulesWindow extends React.Component {
     error: false,
     errorLog: 'unknown_error',
     expired: false,
-    invalid: false
+    invalid: false,
+    updated: false
   };
 
   constructor(props) {
@@ -69,11 +70,11 @@ class SchedulesWindow extends React.Component {
     if (!this.modeSelector()) {
       return;
     }
-    this.setState({ error: false });
+    this.setState({ error: false, updated: false });
     ScheduleHelper.getSchedules()
       .then(res => {
         if (res === null) {
-          throw new TakosError('can_not_fetch_schedules');
+          throw new TakosError('can_not_get_schedules');
         } else {
           let schedules;
           switch (this.mode) {
@@ -142,10 +143,33 @@ class SchedulesWindow extends React.Component {
             );
           }
         })()}
-        <div>
-          <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
-          <ScheduleCard key="1" schedule={this.state.data[0]} />
-        </div>
+        {(() => {
+          if (this.state.updated) {
+            return (
+              <Alert
+                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.info.schedules_can_not_update"
+                    defaultMessage="Takos can not update schedules, please refresh this page to update."
+                  />
+                }
+                type="info"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.data.length > 0) {
+            return (
+              <div>
+                <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
+                <ScheduleCard key="1" schedule={this.state.data[0]} />
+              </div>
+            );
+          }
+        })()}
         {(() => {
           if (this.state.data.length > 1) {
             return (
@@ -189,6 +213,15 @@ class SchedulesWindow extends React.Component {
             [
               <Button onClick={this.updateSchedules} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
+              </Button>,
+              <Button
+                key="continue"
+                onClick={() => {
+                  this.setState({ error: false, loaded: true, updated: true });
+                }}
+                type="default"
+              >
+                <FormattedMessage id="app.continue" defaultMessage="Continue" />
               </Button>
             ]
           ]}
