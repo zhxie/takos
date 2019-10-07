@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Card } from 'antd';
+import { Card, Row, Col } from 'antd';
 
 import './ScheduleCard.css';
 import turfWarIcon from '../assets/images/mode-regular.png';
@@ -41,44 +41,51 @@ class ScheduleCard extends React.Component {
           padding: '6px'
         }}
       >
-        <Card
-          className="ScheduleCard-schedule-stage"
-          hoverable
-          bodyStyle={{
-            padding: '6px'
-          }}
-          cover={
-            <img
-              className="ScheduleCard-schedule-stage-cover"
-              alt="stage 1"
-              src={SPLATNET + this.props.schedule.stage1.url}
-            />
-          }
-        >
-          <Meta
-            className="ScheduleCard-schedule-stage-meta"
-            title={<FormattedMessage id={this.props.schedule.stage1.stage.name} />}
-          />
-        </Card>
-        <Card
-          className="ScheduleCard-schedule-stage"
-          hoverable
-          bodyStyle={{
-            padding: '6px'
-          }}
-          cover={
-            <img
-              className="ScheduleCard-schedule-stage-cover"
-              alt="stage 2"
-              src={SPLATNET + this.props.schedule.stage2.url}
-            />
-          }
-        >
-          <Meta
-            className="ScheduleCard-schedule-stage-meta"
-            title={<FormattedMessage id={this.props.schedule.stage2.stage.name} />}
-          />
-        </Card>
+        <Row>
+          <Col xs={24} sm={12}>
+            <Card
+              className="ScheduleCard-schedule-stage"
+              hoverable
+              bodyStyle={{
+                padding: '6px'
+              }}
+              cover={
+                <img
+                  className="ScheduleCard-schedule-stage-cover"
+                  alt="stage 1"
+                  src={SPLATNET + this.props.schedule.stage1.url}
+                />
+              }
+            >
+              <Meta
+                className="ScheduleCard-schedule-stage-meta"
+                title={<FormattedMessage id={this.props.schedule.stage1.stage.name} />}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12}>
+            <Card
+              className="ScheduleCard-schedule-stage"
+              hoverable
+              bodyStyle={{
+                padding: '6px'
+              }}
+              cover={
+                <img
+                  className="ScheduleCard-schedule-stage-cover"
+                  alt="stage 2"
+                  src={SPLATNET + this.props.schedule.stage2.url}
+                />
+              }
+            >
+              <Meta
+                className="ScheduleCard-schedule-stage-meta"
+                title={<FormattedMessage id={this.props.schedule.stage2.stage.name} />}
+              />
+            </Card>
+          </Col>
+        </Row>
+
         <Meta
           className="ScheduleCard-schedule-meta"
           avatar={<img className="ScheduleCard-schedule-meta-image" src={this.iconSelector()} alt="mode" />}
