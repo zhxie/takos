@@ -1029,8 +1029,6 @@ const ja_JP = {
     'Takos はスケジュールを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info.battles_can_not_update':
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
-  'app.alert.info.data_can_not_update':
-    'Takos はデータを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info.use_automatic_cookie_generation':
     '再ログインして自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

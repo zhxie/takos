@@ -161,32 +161,36 @@ class BattlesWindow extends React.Component {
         this.setState({ loaded: true });
       })
       .catch(e => {
-        this.getBattles().then(() => {
-          if (e instanceof TakosError) {
-            if (e.message === 'can_not_get_the_latest_battle_from_database') {
-              this.setState({ error: true, errorLog: e.message, errorChecklist: [] });
+        this.getBattles()
+          .then(() => {
+            if (e instanceof TakosError) {
+              if (e.message === 'can_not_get_the_latest_battle_from_database') {
+                this.setState({ error: true, errorLog: e.message, errorChecklist: [], updated: true });
+              } else {
+                this.setState({
+                  error: true,
+                  errorLog: e.message,
+                  errorChecklist: [
+                    <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
+                    <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+                  ],
+                  updated: true
+                });
+              }
             } else {
+              console.error(e);
               this.setState({
                 error: true,
-                errorLog: e.message,
+                errorLog: 'can_not_update_battles',
                 errorChecklist: [
                   <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
                   <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-                ]
+                ],
+                updated: true
               });
             }
-          } else {
-            console.error(e);
-            this.setState({
-              error: true,
-              errorLog: 'can_not_update_battles',
-              errorChecklist: [
-                <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-                <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-              ]
-            });
-          }
-        });
+          })
+          .catch();
       });
   };
 
@@ -310,10 +314,10 @@ class BattlesWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
+              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [], updated: true });
             } else {
               console.error(e);
-              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [], updated: true });
             }
           });
       },
@@ -1718,7 +1722,7 @@ class BattlesWindow extends React.Component {
               <Button
                 key="continue"
                 onClick={() => {
-                  this.setState({ error: false, loaded: true, updated: true });
+                  this.setState({ error: false, loaded: true });
                 }}
                 type="default"
               >

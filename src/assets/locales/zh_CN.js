@@ -1025,7 +1025,6 @@ const zh_CN = {
   'app.alert.info': '信息',
   'app.alert.info.schedules_can_not_update': 'Takos 未能更新日程，请刷新页面以更新。',
   'app.alert.info.battles_can_not_update': 'Takos 未能更新战斗，请刷新页面以更新。',
-  'app.alert.info.data_can_not_update': 'Takos 未能更新数据，请刷新页面以更新。',
   'app.alert.info.use_automatic_cookie_generation':
     '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

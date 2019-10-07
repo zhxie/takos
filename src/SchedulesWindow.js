@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Button } from 'antd';
 
@@ -106,10 +106,10 @@ class SchedulesWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          this.setState({ error: true, errorLog: e.message });
+          this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_parse_schedules' });
+          this.setState({ error: true, errorLog: 'can_not_parse_schedules', updated: true });
         }
       });
   };
@@ -214,10 +214,15 @@ class SchedulesWindow extends React.Component {
               <Button onClick={this.updateSchedules} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
+              <Link to="/settings" key="toSettings">
+                <Button type="default">
+                  <FormattedMessage id="app.to_settings" defaultMessage="To Settings" />
+                </Button>
+              </Link>,
               <Button
                 key="continue"
                 onClick={() => {
-                  this.setState({ error: false, loaded: true, updated: true });
+                  this.setState({ error: false, loaded: true });
                 }}
                 type="default"
               >
