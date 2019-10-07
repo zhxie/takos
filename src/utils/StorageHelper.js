@@ -1,7 +1,8 @@
 import localForage from 'localforage';
 
 import TakosError from './ErrorHelper';
-import { Battle } from '../models/Battle';
+import { Battle, RankedBattle } from '../models/Battle';
+import Rule from '../models/Rule';
 
 class StorageHelper {
   static battlesConnection = null;
@@ -199,6 +200,77 @@ class StorageHelper {
       console.error(e);
       return new TakosError('can_not_clear_battles');
     });
+  };
+
+  static rank = () => {
+    let rank = {};
+    return StorageHelper.battles()
+      .then(res => {
+        res.sort((a, b) => {
+          return b.number - a.number;
+        });
+        res.every(element => {
+          if (element instanceof RankedBattle) {
+            switch (element.rule) {
+              case Rule.splatZones:
+                if (rank.splatZones === undefined) {
+                  rank.splatZones = element.rankAfter;
+                }
+                break;
+              case Rule.towerControl:
+                if (rank.towerControl === undefined) {
+                  rank.towerControl = element.rankAfter;
+                }
+                break;
+              case Rule.rainmaker:
+                if (rank.rainmaker === undefined) {
+                  rank.rainmaker = element.rankAfter;
+                }
+                break;
+              case Rule.clamBlitz:
+                if (rank.clamBlitz === undefined) {
+                  rank.clamBlitz = element.rankAfter;
+                }
+                break;
+              default:
+                throw new RangeError();
+            }
+          }
+          if (
+            rank.splatZones !== undefined &&
+            rank.towerControl !== undefined &&
+            rank.rainmaker !== undefined &&
+            rank.clamBlitz !== undefined
+          ) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        if (
+          rank.splatZones === undefined &&
+          rank.towerControl === undefined &&
+          rank.rainmaker === undefined &&
+          rank.clamBlitz === undefined
+        ) {
+          return null;
+        } else {
+          return rank;
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        if (
+          rank.splatZones === undefined &&
+          rank.towerControl === undefined &&
+          rank.rainmaker === undefined &&
+          rank.clamBlitz === undefined
+        ) {
+          return null;
+        } else {
+          return rank;
+        }
+      });
   };
 }
 

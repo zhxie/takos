@@ -28,3 +28,13 @@
   padding: 16px;
   width: calc(100% - 32px);
 }
+
+.DashboardWindow-content-column {
+  margin-bottom: 16px;
+}
+
+.DashboardWindow-content-card-welcome-icon {
+  border-radius: 24px;
+  margin-right: 8px;
+  width: 48px;
+}
