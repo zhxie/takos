@@ -165,7 +165,9 @@ class SchedulesWindow extends React.Component {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
-                <ScheduleCard key="1" schedule={this.state.data[0]} />
+                <div className="SchedulesWindow-content-card">
+                  <ScheduleCard key="1" schedule={this.state.data[0]} />
+                </div>
               </div>
             );
           }
@@ -178,7 +180,9 @@ class SchedulesWindow extends React.Component {
                   title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
                   subTitle={TimeConverter.getRemainedTime(this.state.data[0].endTime)}
                 />
-                <ScheduleCard key="2" schedule={this.state.data[1]} />
+                <div className="SchedulesWindow-content-card">
+                  <ScheduleCard key="2" schedule={this.state.data[1]} />
+                </div>
               </div>
             );
           }
@@ -189,7 +193,11 @@ class SchedulesWindow extends React.Component {
               <div>
                 <PageHeader title={<FormattedMessage id="app.schedules.future" defaultMessage="Future" />} />
                 {this.state.data.slice(2).map((item, index) => {
-                  return <ScheduleCard key={2 + index} schedule={item} />;
+                  return (
+                    <div className="SchedulesWindow-content-card">
+                      <ScheduleCard key={2 + index} schedule={item} />
+                    </div>
+                  );
                 })}
               </div>
             );

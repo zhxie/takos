@@ -36,3 +36,8 @@
   padding: 16px;
   width: calc(100% - 32px);
 }
+
+.SchedulesWindow-content-card {
+  display: inline-block;
+  max-width: 442px;
+}
