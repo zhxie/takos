@@ -39,5 +39,6 @@
 
 .SchedulesWindow-content-card {
   display: inline-block;
+  margin: 6px;
   max-width: 442px;
 }

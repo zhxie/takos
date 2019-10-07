@@ -36,7 +36,8 @@ class ScheduleCard extends React.Component {
     return (
       <Card
         className="ScheduleCard-schedule"
-        hoverable
+        hoverable={this.props.hoverable}
+        bordered={this.props.bordered}
         bodyStyle={{
           padding: '6px'
         }}
@@ -96,5 +97,10 @@ class ScheduleCard extends React.Component {
     );
   }
 }
+
+ScheduleCard.defaultProps = {
+  bordered: true,
+  hoverable: true
+};
 
 export default ScheduleCard;
