@@ -215,7 +215,11 @@ class SchedulesWindow extends React.Component {
         <ErrorResult
           error={this.state.errorLog}
           checklist={[
-            <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />
+            <FormattedMessage
+              key="network"
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection"
+            />
           ]}
           extra={[
             [

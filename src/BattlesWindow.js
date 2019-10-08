@@ -40,7 +40,6 @@ class BattlesWindow extends React.Component {
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
-    errorChecklist: [],
     updateCurrent: 0,
     updateTotal: 0,
     updated: false,
@@ -164,28 +163,12 @@ class BattlesWindow extends React.Component {
         this.getBattles()
           .then(() => {
             if (e instanceof TakosError) {
-              if (e.message === 'can_not_get_the_latest_battle_from_database') {
-                this.setState({ error: true, errorLog: e.message, errorChecklist: [], updated: true });
-              } else {
-                this.setState({
-                  error: true,
-                  errorLog: e.message,
-                  errorChecklist: [
-                    <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-                    <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-                  ],
-                  updated: true
-                });
-              }
+              this.setState({ error: true, errorLog: e.message, updated: true });
             } else {
               console.error(e);
               this.setState({
                 error: true,
                 errorLog: 'can_not_update_battles',
-                errorChecklist: [
-                  <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-                  <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-                ],
                 updated: true
               });
             }
@@ -314,10 +297,10 @@ class BattlesWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [], updated: true });
+              thisHandler.setState({ error: true, errorLog: e.message, updated: true });
             } else {
               console.error(e);
-              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [], updated: true });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', updated: true });
             }
           });
       },
@@ -1708,7 +1691,10 @@ class BattlesWindow extends React.Component {
       return (
         <ErrorResult
           error={this.state.errorLog}
-          checklist={this.state.errorChecklist}
+          checklist={[
+            <FormattedMessage key='network' id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
+            <FormattedMessage key='cookie' id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+          ]}
           extra={[
             [
               <Button key="retry" onClick={this.updateBattles} type="primary">

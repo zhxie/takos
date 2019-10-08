@@ -29,7 +29,6 @@ class LoginWindow extends React.Component {
     errorLog: 'unknown_error',
     errorUpdate: false,
     errorUpdateLog: 'unknown_error',
-    errorUpdateChecklist: [],
     updateCurrent: 0,
     updateTotal: 0,
     // Automatic
@@ -248,27 +247,12 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          if (e.message === 'can_not_get_the_latest_battle_from_database') {
-            this.setState({ errorUpdate: true, errorUpdateLog: e.message, errorUpdateChecklist: [] });
-          } else {
-            this.setState({
-              errorUpdate: true,
-              errorUpdateLog: e.message,
-              errorUpdateChecklist: [
-                <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-                <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-              ]
-            });
-          }
+          this.setState({ errorUpdate: true, errorUpdateLog: e.message });
         } else {
           console.error(e);
           this.setState({
             errorUpdate: true,
-            errorUpdateLog: 'can_not_update_battles',
-            errorUpdateChecklist: [
-              <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-              <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-            ]
+            errorUpdateLog: 'can_not_update_battles'
           });
         }
       });
@@ -501,7 +485,10 @@ class LoginWindow extends React.Component {
       return (
         <ErrorResult
           error={this.state.errorUpdateLog}
-          checklist={this.state.errorUpdateChecklist}
+          checklist={[
+            <FormattedMessage key='network' id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
+            <FormattedMessage key='cookie' id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+          ]}
           extra={[
             <Button key="retry" onClick={this.updateData} type="primary">
               <FormattedMessage id="app.retry" defaultMessage="Retry" />

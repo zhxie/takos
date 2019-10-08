@@ -750,8 +750,12 @@ class DashboardWindow extends React.Component {
         <ErrorResult
           error={this.state.errorLog}
           checklist={[
-            <FormattedMessage id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-            <FormattedMessage id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+            <FormattedMessage
+              key="network"
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection"
+            />,
+            <FormattedMessage key="cookie" id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
           ]}
           extra={[
             [
