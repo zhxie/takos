@@ -674,7 +674,7 @@ class DashboardWindow extends React.Component {
             return (
               <Row gutter={16}>
                 <Col className="DashboardWindow-content-column" md={24} lg={12}>
-                  <Card hoverable bodyStyle={{ padding: '0' }}>
+                  <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
                     <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
                       {(() => {
                         if (this.state.schedules.regular !== undefined) {
