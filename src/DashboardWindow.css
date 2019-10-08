@@ -33,6 +33,20 @@
   margin-bottom: 16px;
 }
 
+.DashboardWindow-content-statistic .ant-statistic-content-prefix {
+  margin-right: 0;
+}
+
+.DashboardWindow-content-statistic-star {
+  font-size: 16px;
+  vertical-align: super;
+}
+
+.DashboardWindow-content-statistic-icon {
+  height: 32px;
+  vertical-align: sub;
+}
+
 .DashboardWindow-content-card-welcome-icon {
   border-radius: 24px;
   margin-right: 8px;

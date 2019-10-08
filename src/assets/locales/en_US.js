@@ -941,6 +941,7 @@ const en_US = {
   'player.kill': 'Splat',
   'player.death': 'Crushed',
   'player.kill_and_death': 'K / D',
+  'player.kill_and_death_and_special': 'K / D / Special',
   'player.special': 'Special',
   // Battle
   battle: 'Battle',

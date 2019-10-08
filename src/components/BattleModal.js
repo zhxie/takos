@@ -949,6 +949,7 @@ class BattleModal extends React.Component {
   }
 
   renderShare() {
+    // TODO: share image will expire
     return (
       <div>
         <PageHeader title={<FormattedMessage id="app.share" defaultMessage="Share" />} />

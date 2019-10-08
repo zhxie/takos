@@ -41,15 +41,19 @@ class ScheduleCard extends React.Component {
         bodyStyle={{
           padding: '6px'
         }}
+        style={(() => {
+          if (this.props.pointer) {
+            return {
+              cursor: 'pointer'
+            };
+          }
+        })()}
       >
         <Row>
           <Col xs={24} sm={12}>
             <Card
               className="ScheduleCard-schedule-stage"
               hoverable
-              bodyStyle={{
-                padding: '6px'
-              }}
               cover={
                 <img
                   className="ScheduleCard-schedule-stage-cover"
@@ -57,6 +61,16 @@ class ScheduleCard extends React.Component {
                   src={SPLATNET + this.props.schedule.stage1.url}
                 />
               }
+              bodyStyle={{
+                padding: '6px'
+              }}
+              style={(() => {
+                if (this.props.pointer) {
+                  return {
+                    cursor: 'pointer'
+                  };
+                }
+              })()}
             >
               <Meta
                 className="ScheduleCard-schedule-stage-meta"
@@ -68,9 +82,6 @@ class ScheduleCard extends React.Component {
             <Card
               className="ScheduleCard-schedule-stage"
               hoverable
-              bodyStyle={{
-                padding: '6px'
-              }}
               cover={
                 <img
                   className="ScheduleCard-schedule-stage-cover"
@@ -78,6 +89,16 @@ class ScheduleCard extends React.Component {
                   src={SPLATNET + this.props.schedule.stage2.url}
                 />
               }
+              bodyStyle={{
+                padding: '6px'
+              }}
+              style={(() => {
+                if (this.props.pointer) {
+                  return {
+                    cursor: 'pointer'
+                  };
+                }
+              })()}
             >
               <Meta
                 className="ScheduleCard-schedule-stage-meta"
@@ -100,7 +121,8 @@ class ScheduleCard extends React.Component {
 
 ScheduleCard.defaultProps = {
   bordered: true,
-  hoverable: true
+  hoverable: true,
+  pointer: false
 };
 
 export default ScheduleCard;

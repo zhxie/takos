@@ -941,6 +941,7 @@ const zh_CN = {
   'player.kill': '击败',
   'player.death': '被击败',
   'player.kill_and_death': 'K / D',
+  'player.kill_and_death_and_special': 'K / D / 特殊',
   'player.special': '特殊',
   // Battle
   battle: '战斗',

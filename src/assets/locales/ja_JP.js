@@ -941,6 +941,7 @@ const ja_JP = {
   'player.kill': '倒す',
   'player.death': 'やられる',
   'player.kill_and_death': 'K / D',
+  'player.kill_and_death_and_special': 'K / D / スペシャル',
   'player.special': 'スペシャル',
   // Battle
   battle: 'バトル',
