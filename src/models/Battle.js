@@ -110,12 +110,6 @@ class Battle extends Base {
           });
         })
         .then(() => {
-          return BattleHelper.getBattleImage(number);
-        })
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          }
           switch (type) {
             case Mode.regularBattle: {
               let winMeter;
@@ -137,7 +131,6 @@ class Battle extends Base {
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
-                res,
                 winMeter
               );
             }
@@ -161,7 +154,6 @@ class Battle extends Base {
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
-                  res,
                   Rank.parse(data.udemae),
                   parseInt(data.estimate_gachi_power)
                 );
@@ -184,7 +176,6 @@ class Battle extends Base {
                   levelAfter,
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
-                  res,
                   Rank.parse(data.udemae),
                   xPowerAfter,
                   parseInt(data.estimate_x_power)
@@ -210,7 +201,6 @@ class Battle extends Base {
                 levelAfter,
                 parseInt(data.my_team_count),
                 parseInt(data.other_team_count),
-                res,
                 parseInt(data.my_estimate_league_point),
                 parseInt(data.other_estimate_league_point),
                 leaguePoint,
@@ -237,7 +227,6 @@ class Battle extends Base {
                 levelAfter,
                 parseFloat(data.my_team_percentage).toFixed(1),
                 parseFloat(data.other_team_percentage).toFixed(1),
-                res,
                 winMeter,
                 SplatfestMode.parse(data.fes_mode.key),
                 parseInt(data.my_estimate_fes_power),
