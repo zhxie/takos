@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
 
@@ -43,10 +43,17 @@ class BattlesWindow extends React.Component {
     updateCurrent: 0,
     updateTotal: 0,
     updated: false,
-    battle: null,
-    showBattle: false,
-    battleFooter: null
+    showBattleId: null
   };
+
+  constructor(props) {
+    super(props);
+    if (this.props.location.hash !== '') {
+      this.state.showBattleId = parseInt(this.props.location.hash.replace('#', ''));
+    } else {
+      this.state.showBattleId = null;
+    }
+  }
 
   modeIconSelector = mode => {
     switch (mode) {
@@ -117,7 +124,6 @@ class BattlesWindow extends React.Component {
     this.setState({
       loaded: false,
       error: false,
-      showBattle: false,
       updateCurrent: 0,
       updateTotal: 0,
       updated: false
@@ -174,6 +180,9 @@ class BattlesWindow extends React.Component {
             }
           })
           .catch();
+      })
+      .catch(e => {
+        console.error(e);
       });
   };
 
@@ -221,7 +230,12 @@ class BattlesWindow extends React.Component {
         });
         if (previous > 0) {
           toButtons.push(
-            <Button key="previous" onClick={this.showBattle.bind(this, previous)}>
+            <Button
+              key="previous"
+              onClick={() => {
+                window.location.hash = previous;
+              }}
+            >
               <Icon type="left" />
               <FormattedMessage
                 id="app.battles.previous"
@@ -240,7 +254,12 @@ class BattlesWindow extends React.Component {
         });
         if (next < Number.MAX_SAFE_INTEGER) {
           toButtons.push(
-            <Button key="next" onClick={this.showBattle.bind(this, next)}>
+            <Button
+              key="next"
+              onClick={() => {
+                window.location.hash = next;
+              }}
+            >
               <FormattedMessage id="app.battles.next" defaultMessage="Next Battle #{id}" values={{ id: next }} />
               <Icon type="right" />
             </Button>
@@ -255,13 +274,16 @@ class BattlesWindow extends React.Component {
             </Button.Group>
           );
         }
-        this.setState({ battle: battle, showBattle: true, battleFooter: buttons });
+        return { battle, buttons };
+      } else {
+        return null;
       }
     }
   };
 
   hideBattle = () => {
-    this.setState({ showBattle: false });
+    // Modify hash to hide battle
+    window.location.hash = '';
   };
 
   deleteBattle = number => {
@@ -288,11 +310,13 @@ class BattlesWindow extends React.Component {
                 data: [],
                 loaded: false,
                 error: false,
-                showBattle: false,
+                showBattleId: null,
                 updateCurrent: 0,
                 updateTotal: 0,
                 updated: false
               });
+              // Modify hash
+              window.location.hash = '';
             }
           })
           .catch(e => {
@@ -362,7 +386,7 @@ class BattlesWindow extends React.Component {
             onRow={record => {
               return {
                 onClick: () => {
-                  this.showBattle(record.number);
+                  window.location.hash = record.number;
                 }
               };
             }}
@@ -1675,12 +1699,26 @@ class BattlesWindow extends React.Component {
               }}
             />
           </Table>
-          <BattleModal
-            value={this.state.battle}
-            visible={this.state.showBattle}
-            onCancel={this.hideBattle}
-            footer={this.state.battleFooter}
-          />
+          {(() => {
+            // Find battle
+            if (this.state.showBattleId !== null) {
+              this.battle = this.showBattle(this.state.showBattleId);
+            }
+            if (this.battle === null) {
+              return <Redirect to="/404" />;
+            } else {
+              if (this.battle !== undefined) {
+                return (
+                  <BattleModal
+                    value={this.battle.battle}
+                    visible={this.state.showBattleId !== null}
+                    onCancel={this.hideBattle}
+                    footer={this.battle.buttons}
+                  />
+                );
+              }
+            }
+          })()}
         </div>
       </div>
     );
@@ -1692,8 +1730,12 @@ class BattlesWindow extends React.Component {
         <ErrorResult
           error={this.state.errorLog}
           checklist={[
-            <FormattedMessage key='network' id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-            <FormattedMessage key='cookie' id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+            <FormattedMessage
+              key="network"
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection"
+            />,
+            <FormattedMessage key="cookie" id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
           ]}
           extra={[
             [
@@ -1774,6 +1816,13 @@ class BattlesWindow extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.location.hash !== prevProps.location.hash) {
+      if (this.props.location.hash !== '') {
+        this.setState({ showBattleId: parseInt(this.props.location.hash.replace('#', '')) });
+      } else {
+        this.setState({ showBattleId: null });
+      }
+    }
     if (this.state.loaded !== prevState.loaded && this.state.loaded === false) {
       this.updateBattles();
     }

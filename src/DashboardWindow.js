@@ -535,7 +535,7 @@ class DashboardWindow extends React.Component {
                   }
                 })()}
                 <Col className="DashboardWindow-content-column" xs={24} sm={24} md={12} lg={12} xl={6}>
-                  <Link to={'/battles/{0}'.format(this.state.battle.number)}>
+                  <Link to={'/battles#{0}'.format(this.state.battle.number)}>
                     <Card
                       title={<FormattedMessage id="app.dashboard.recent_battle" defaultMessage="Recent Battle" />}
                       hoverable
