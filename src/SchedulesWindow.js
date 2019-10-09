@@ -276,7 +276,7 @@ class SchedulesWindow extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.mode !== prevProps.match.params.mode) {
-      this.setState({ loaded: false, error: false, expired: false, invalid: false });
+      this.setState({ loaded: false, error: false, expired: false });
       this.updateSchedules();
     }
   }
