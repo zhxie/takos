@@ -1,6 +1,6 @@
 const zh_CN = {
   // Mode
-  mode: '模式^',
+  mode: '游戏模式',
   'mode.regular_battle': '普通战',
   'mode.ranked_battle': '排名战',
   'mode.league_battle': '联盟战*',
@@ -9,7 +9,7 @@ const zh_CN = {
   'mode.splatfest.challenge': '挑战*',
   'mode.splatfest.regular': '普通',
   // Rule
-  rule: '规则^',
+  rule: '模式',
   'rule.turf_war': '地盘战',
   'rule.splat_zones': '区域模式*',
   'rule.tower_control': '夺塔模式',
