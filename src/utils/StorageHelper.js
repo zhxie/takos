@@ -16,7 +16,7 @@ class StorageHelper {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.clearBattles
+    return StorageHelper.clearBattles()
       .then(res => {
         if (res instanceof TakosError) {
           throw new TakosError(res.message);
