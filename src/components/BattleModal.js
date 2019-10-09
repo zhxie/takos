@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty, Collapse } from 'antd';
+import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty } from 'antd';
 
 import './BattleModal.css';
 import { OctolingsDeathIcon } from './CustomIcons';
@@ -23,7 +23,6 @@ import { SPLATNET } from '../utils/FileFolderUrl';
 import TimeConverter from '../utils/TimeConverter';
 
 const { Column } = Table;
-const { Panel } = Collapse;
 
 class BattleModal extends React.Component {
   modeIconSelector = mode => {
