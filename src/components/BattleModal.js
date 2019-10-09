@@ -948,20 +948,6 @@ class BattleModal extends React.Component {
     );
   }
 
-  renderShare() {
-    // TODO: share image will expire
-    return (
-      <div>
-        <PageHeader title={<FormattedMessage id="app.share" defaultMessage="Share" />} />
-        <Collapse>
-          <Panel header={<FormattedMessage id="battle" defaultMessage="Battle" />} key="battle">
-            <img src={this.props.value.url} alt="battle" style={{ width: '100%' }} />
-          </Panel>
-        </Collapse>
-      </div>
-    );
-  }
-
   render() {
     return (
       <Modal
@@ -1000,11 +986,6 @@ class BattleModal extends React.Component {
         {(() => {
           if (this.props.value !== undefined && this.props.value !== null) {
             return this.renderPlayers();
-          }
-        })()}
-        {(() => {
-          if (this.props.value !== undefined && this.props.value !== null) {
-            return this.renderShare();
           }
         })()}
       </Modal>
