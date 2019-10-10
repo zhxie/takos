@@ -4,7 +4,6 @@ import { Rank, BattlePlayer } from './Player';
 import Rule from './Rule';
 import { ScheduledStage } from './Stage';
 import { Freshness } from './Weapon';
-import BattleHelper from '../utils/BattleHelper';
 import TakosError from '../utils/ErrorHelper';
 
 class Battle extends Base {

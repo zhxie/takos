@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Layout, Alert, Button, Row, Col, Card, Statistic, Tooltip, Tabs } from 'antd';
 
@@ -26,7 +26,6 @@ import TakosError from './utils/ErrorHelper';
 import { SPLATNET } from './utils/FileFolderUrl';
 import ScheduleHelper from './utils/ScheduleHelper';
 import StorageHelper from './utils/StorageHelper';
-import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
 const { TabPane } = Tabs;
