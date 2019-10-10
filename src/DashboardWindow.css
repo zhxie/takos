@@ -29,6 +29,10 @@
   width: calc(100% - 32px);
 }
 
+.DashboardWindow-content-alert {
+  margin-bottom: 12px;
+}
+
 .DashboardWindow-content-column {
   margin-bottom: 16px;
 }

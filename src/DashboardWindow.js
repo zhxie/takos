@@ -355,6 +355,7 @@ class DashboardWindow extends React.Component {
           if (this.state.expired) {
             return (
               <Alert
+                className="DashboardWindow-content-alert"
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
@@ -372,6 +373,7 @@ class DashboardWindow extends React.Component {
           if (this.state.schedulesUpdated) {
             return (
               <Alert
+                className="DashboardWindow-content-alert"
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
