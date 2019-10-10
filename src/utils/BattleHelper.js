@@ -1,11 +1,5 @@
 import TakosError from './ErrorHelper';
-import {
-  SPLATNET,
-  SPLATNET_RESULTS,
-  SPLATNET_RESULT,
-  SPLATNET_SHARE_RESULT,
-  SPLATNET_NICKNAME_AND_ICON
-} from './FileFolderUrl';
+import FileFolderUrl from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import './StringHelper';
 import { Battle } from '../models/Battle';
@@ -15,10 +9,11 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
-    return fetch(SPLATNET + SPLATNET_RESULTS, init)
+    return fetch(FileFolderUrl.SPLATNET_RESULTS, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -38,10 +33,11 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
-    return fetch(SPLATNET + SPLATNET_RESULTS, init)
+    return fetch(FileFolderUrl.SPLATNET_RESULTS, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -64,10 +60,11 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
-    return fetch(SPLATNET + SPLATNET_RESULT.format(number), init)
+    return fetch(FileFolderUrl.SPLATNET_RESULT.format(number), init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -84,11 +81,12 @@ class BattleHelper {
     const init = {
       method: 'POST',
       headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Requested-With': 'XMLHttpRequest'
       })
     };
-    return fetch(SPLATNET + SPLATNET_SHARE_RESULT.format(number), init)
+    return fetch(FileFolderUrl.SPLATNET_SHARE_RESULT.format(number), init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -105,10 +103,11 @@ class BattleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
-    return fetch(SPLATNET + SPLATNET_NICKNAME_AND_ICON.format(id), init)
+    return fetch(FileFolderUrl.SPLATNET_NICKNAME_AND_ICON.format(id), init)
       .then(res => res.json())
       .then(res => {
         console.log(res);

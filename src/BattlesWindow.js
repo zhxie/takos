@@ -25,7 +25,7 @@ import { Stage } from './models/Stage';
 import { MainWeapon, SubWeapon, SpecialWeapon } from './models/Weapon';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
-import { SPLATNET } from './utils/FileFolderUrl';
+import FileFolderUrl from './utils/FileFolderUrl';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
 
@@ -918,7 +918,7 @@ class BattlesWindow extends React.Component {
                   <span>
                     <img
                       className="BattlesWindow-content-table-icon"
-                      src={SPLATNET + text.selfPlayer().weapon.mainWeaponUrl}
+                      src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.mainWeaponUrl}
                       alt="main"
                     />
                   </span>
@@ -1498,7 +1498,7 @@ class BattlesWindow extends React.Component {
                         <span>
                           <img
                             className="BattlesWindow-content-table-icon"
-                            src={SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
+                            src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
                             alt="sub"
                           />
                         </span>
@@ -1577,7 +1577,7 @@ class BattlesWindow extends React.Component {
                         <span>
                           <img
                             className="BattlesWindow-content-table-icon"
-                            src={SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
+                            src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
                             alt="special"
                           />
                         </span>

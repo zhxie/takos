@@ -23,7 +23,7 @@ import { Mode } from './models/Mode';
 import Rule from './models/Rule';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
-import { SPLATNET } from './utils/FileFolderUrl';
+import FileFolderUrl from './utils/FileFolderUrl';
 import ScheduleHelper from './utils/ScheduleHelper';
 import StorageHelper from './utils/StorageHelper';
 
@@ -625,7 +625,7 @@ class DashboardWindow extends React.Component {
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={SPLATNET + this.state.battle.selfPlayer().weapon.mainWeaponUrl}
+                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.mainWeaponUrl}
                                     alt="main"
                                   />
                                 </Tooltip>
@@ -634,7 +634,7 @@ class DashboardWindow extends React.Component {
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={SPLATNET + this.state.battle.selfPlayer().weapon.subWeaponUrlA}
+                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.subWeaponUrlA}
                                     alt="sub"
                                     style={{ marginLeft: '4px' }}
                                   />
@@ -646,7 +646,9 @@ class DashboardWindow extends React.Component {
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={SPLATNET + this.state.battle.selfPlayer().weapon.specialWeaponUrlA}
+                                    src={
+                                      FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.specialWeaponUrlA
+                                    }
                                     alt="special"
                                     style={{ marginLeft: '4px' }}
                                   />

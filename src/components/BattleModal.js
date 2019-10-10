@@ -19,7 +19,7 @@ import { Mode, SplatfestMode } from '../models/Mode';
 import { RankedBattlePlayer } from '../models/Player';
 import Rule from '../models/Rule';
 import { Freshness, Badge } from '../models/Weapon';
-import { SPLATNET } from '../utils/FileFolderUrl';
+import FileFolderUrl from '../utils/FileFolderUrl';
 import TimeConverter from '../utils/TimeConverter';
 
 const { Column } = Table;
@@ -115,7 +115,11 @@ class BattleModal extends React.Component {
           </Descriptions.Item>
           <Descriptions.Item label={<FormattedMessage id="stage" defaultMessage="Stage" />} span={3}>
             <div>
-              <img className="BattleModal-battle-stage" src={SPLATNET + this.props.value.stage.url} alt="stage" />
+              <img
+                className="BattleModal-battle-stage"
+                src={FileFolderUrl.SPLATNET + this.props.value.stage.url}
+                alt="stage"
+              />
               <br />
               <FormattedMessage id={this.props.value.stage.stage.name} />
             </div>
@@ -667,7 +671,7 @@ class BattleModal extends React.Component {
                 render={text => {
                   return (
                     <Tooltip title={<FormattedMessage id={text.gear.name} />}>
-                      <img className="BattleModal-players-icon" src={SPLATNET + text.url} alt="gear" />
+                      <img className="BattleModal-players-icon" src={FileFolderUrl.SPLATNET + text.url} alt="gear" />
                     </Tooltip>
                   );
                 }}
@@ -679,7 +683,11 @@ class BattleModal extends React.Component {
                 render={text => {
                   return (
                     <Tooltip title={<FormattedMessage id={text.brand.brand.name} />}>
-                      <img className="BattleModal-players-icon" src={SPLATNET + text.brand.url} alt="brand" />
+                      <img
+                        className="BattleModal-players-icon"
+                        src={FileFolderUrl.SPLATNET + text.brand.url}
+                        alt="brand"
+                      />
                     </Tooltip>
                   );
                 }}
@@ -694,7 +702,7 @@ class BattleModal extends React.Component {
                       <Tooltip title={<FormattedMessage id={text.brand.favoredAbility.ability.name} />}>
                         <img
                           className="BattleModal-players-icon"
-                          src={SPLATNET + text.brand.favoredAbility.url}
+                          src={FileFolderUrl.SPLATNET + text.brand.favoredAbility.url}
                           alt="favored"
                         />
                       </Tooltip>
@@ -717,7 +725,7 @@ class BattleModal extends React.Component {
                     <Tooltip title={<FormattedMessage id={text.primaryAbility.ability.name} />}>
                       <img
                         className="BattleModal-players-icon"
-                        src={SPLATNET + text.primaryAbility.url}
+                        src={FileFolderUrl.SPLATNET + text.primaryAbility.url}
                         alt="primaryAbility"
                       />
                     </Tooltip>
@@ -736,7 +744,7 @@ class BattleModal extends React.Component {
                           <Tooltip title={<FormattedMessage id={element.ability.name} />} key={index}>
                             <img
                               className="BattleModal-players-icon"
-                              src={SPLATNET + element.url}
+                              src={FileFolderUrl.SPLATNET + element.url}
                               alt="secondaryAbility"
                               style={(() => {
                                 if (index !== 0) {
@@ -785,16 +793,20 @@ class BattleModal extends React.Component {
             return (
               <span>
                 <Tooltip title={<FormattedMessage id={text.weapon.mainWeapon.name} />}>
-                  <img className="BattleModal-players-icon" src={SPLATNET + text.weapon.mainWeaponUrl} alt="main" />
+                  <img
+                    className="BattleModal-players-icon"
+                    src={FileFolderUrl.SPLATNET + text.weapon.mainWeaponUrl}
+                    alt="main"
+                  />
                 </Tooltip>
                 <Tooltip title={<FormattedMessage id={text.weapon.subWeapon.name} />}>
                   <img
                     className="BattleModal-players-icon"
                     src={(() => {
                       if (isMy) {
-                        return SPLATNET + text.weapon.subWeaponUrlA;
+                        return FileFolderUrl.SPLATNET + text.weapon.subWeaponUrlA;
                       } else {
-                        return SPLATNET + text.weapon.subWeaponUrlB;
+                        return FileFolderUrl.SPLATNET + text.weapon.subWeaponUrlB;
                       }
                     })()}
                     alt="sub"
@@ -806,9 +818,9 @@ class BattleModal extends React.Component {
                     className="BattleModal-players-icon"
                     src={(() => {
                       if (isMy) {
-                        return SPLATNET + text.weapon.specialWeaponUrlA;
+                        return FileFolderUrl.SPLATNET + text.weapon.specialWeaponUrlA;
                       } else {
-                        return SPLATNET + text.weapon.specialWeaponUrlB;
+                        return FileFolderUrl.SPLATNET + text.weapon.specialWeaponUrlB;
                       }
                     })()}
                     alt="special"

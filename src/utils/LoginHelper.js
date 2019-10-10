@@ -1,22 +1,7 @@
 import { randomBytes, createHash } from 'crypto';
 import uuid from 'uuid';
 
-import {
-  USER_AGENT,
-  NINTENDO_ACCOUNTS,
-  NINTENDO_ACCOUNTS_SESSION_TOKEN,
-  NINTENDO_ACCOUNTS_TOKEN,
-  NINTENDO_ACCOUNTS_API,
-  NINTENDO_ACCOUNTS_API_USER_INFO,
-  ELI_FESSLER,
-  ELI_FESSLER_GEN2,
-  FLAPG,
-  FLAPG_LOGIN,
-  NINTENDO_SERVICE,
-  NINTENDO_SERVICE_LOGIN,
-  NINTENDO_SERVICE_WEB_SERVICE_TOKEN,
-  SPLATNET
-} from './FileFolderUrl';
+import FileFolderUrl from './FileFolderUrl';
 import './StringHelper';
 
 class LoginHelper {
@@ -57,7 +42,7 @@ class LoginHelper {
         'Content-Type': 'application/json; charset=UTF-8'
       })
     };
-    return fetch(NINTENDO_ACCOUNTS + NINTENDO_ACCOUNTS_SESSION_TOKEN, init)
+    return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_SESSION_TOKEN, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -87,11 +72,15 @@ class LoginHelper {
         'Content-Type': 'application/json; charset=UTF-8'
       })
     };
-    return fetch(NINTENDO_ACCOUNTS + NINTENDO_ACCOUNTS_TOKEN, init1)
+    return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_TOKEN, init1)
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        if (res.access_token !== undefined && res.access_token !== null && (res.id_token !== undefined && res.id_token !== null)) {
+        if (
+          res.access_token !== undefined &&
+          res.access_token !== null &&
+          (res.id_token !== undefined && res.id_token !== null)
+        ) {
           return { accessToken: res.access_token, idToken: res.id_token };
         } else {
           throw new RangeError();
@@ -104,11 +93,16 @@ class LoginHelper {
             Authorization: 'Bearer {0}'.format(data.accessToken)
           })
         };
-        return fetch(NINTENDO_ACCOUNTS_API + NINTENDO_ACCOUNTS_API_USER_INFO, init)
+        return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_API_USER_INFO, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            if (res.country !== undefined && res.country !== null && (res.birthday !== undefined && res.birthday !== null) && (res.language !== undefined && res.language !== null)) {
+            if (
+              res.country !== undefined &&
+              res.country !== null &&
+              (res.birthday !== undefined && res.birthday !== null) &&
+              (res.language !== undefined && res.language !== null)
+            ) {
               return { idToken: data.idToken, country: res.country, birthday: res.birthday, language: res.language };
             } else {
               throw new RangeError();
@@ -128,11 +122,11 @@ class LoginHelper {
           method: 'POST',
           body: formBody,
           headers: new Headers({
-            'User-Agent': USER_AGENT,
+            'User-Agent': FileFolderUrl.USER_AGENT,
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           })
         };
-        return fetch(ELI_FESSLER + ELI_FESSLER_GEN2, init)
+        return fetch(FileFolderUrl.ELI_FESSLER_GEN2, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -162,7 +156,7 @@ class LoginHelper {
             'x-iid': randomBytes(4).toString('hex')
           })
         };
-        return fetch(FLAPG + FLAPG_LOGIN, init)
+        return fetch(FileFolderUrl.FLAPG_LOGIN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -221,11 +215,14 @@ class LoginHelper {
             'X-Platform': 'Android'
           })
         };
-        return fetch(NINTENDO_SERVICE + NINTENDO_SERVICE_LOGIN, init)
+        return fetch(FileFolderUrl.NINTENDO_SERVICE_LOGIN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
-            if (res.result.webApiServerCredential.accessToken !== undefined && res.result.webApiServerCredential.accessToken !== null) {
+            if (
+              res.result.webApiServerCredential.accessToken !== undefined &&
+              res.result.webApiServerCredential.accessToken !== null
+            ) {
               return { loginApp: data.loginApp, accessToken: res.result.webApiServerCredential.accessToken };
             } else {
               throw new RangeError();
@@ -250,7 +247,7 @@ class LoginHelper {
             'Content-Type': 'application/json; charset=UTF-8'
           })
         };
-        return fetch(NINTENDO_SERVICE + NINTENDO_SERVICE_WEB_SERVICE_TOKEN, init)
+        return fetch(FileFolderUrl.NINTENDO_SERVICE_WEB_SERVICE_TOKEN, init)
           .then(res => res.json())
           .then(res => {
             console.log(res);
@@ -268,10 +265,12 @@ class LoginHelper {
             'X-GameWebToken': data.accessToken
           })
         };
-        return fetch(SPLATNET + '/Cookie', init).then(res => {
+        return fetch(FileFolderUrl.SPLATNET + '/Cookie', init).then(res => {
           console.log(res);
           const re = /iksm_session=([a-f0-9]+);/;
-          if (res.headers.get('X-Cookie') !== undefined && res.headers.get('X-Cookie') !== null) {
+          if (res.headers.get('Cookie') !== undefined && res.headers.get('Cookie') !== null) {
+            return re.exec(res.headers.get('Cookie'))[1];
+          } else if (res.headers.get('X-Cookie') !== undefined && res.headers.get('X-Cookie') !== null) {
             return re.exec(res.headers.get('X-Cookie'))[1];
           } else {
             throw new RangeError();

@@ -10,7 +10,7 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
-import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import FileFolderUrl from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
 import './utils/StringHelper';
@@ -417,7 +417,7 @@ class LoginWindow extends React.Component {
                     values={{
                       a: msg => (
                         <a
-                          href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                          href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
                             this.loginParameters.state,
                             this.loginParameters.codeChallenge
                           )}
@@ -486,8 +486,12 @@ class LoginWindow extends React.Component {
         <ErrorResult
           error={this.state.errorUpdateLog}
           checklist={[
-            <FormattedMessage key='network' id="app.problem.troubleshoot.network" defaultMessage="Your network connection" />,
-            <FormattedMessage key='cookie' id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
+            <FormattedMessage
+              key="network"
+              id="app.problem.troubleshoot.network"
+              defaultMessage="Your network connection"
+            />,
+            <FormattedMessage key="cookie" id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
           ]}
           extra={[
             <Button key="retry" onClick={this.updateData} type="primary">

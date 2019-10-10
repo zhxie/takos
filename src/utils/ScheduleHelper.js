@@ -1,4 +1,4 @@
-import { USER_AGENT, SPLATOON2_INK, SPLATOON2_INK_SCHEDULES } from './FileFolderUrl';
+import FileFolderUrl from './FileFolderUrl';
 import Schedule from '../models/Schedule';
 
 class ScheduleHelper {
@@ -6,10 +6,10 @@ class ScheduleHelper {
     const init = {
       method: 'GET',
       headers: new Headers({
-        'User-Agent': USER_AGENT
+        'User-Agent': FileFolderUrl.USER_AGENT
       })
     };
-    return fetch(SPLATOON2_INK + SPLATOON2_INK_SCHEDULES, init)
+    return fetch(FileFolderUrl.SPLATOON2_INK_SCHEDULES, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);

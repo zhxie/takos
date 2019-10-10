@@ -9,7 +9,7 @@ import rainmakerIcon from '../assets/images/rule-rainmaker.png';
 import splatZonesIcon from '../assets/images/rule-splat-zones.png';
 import towerControlIcon from '../assets/images/rule-tower-control.png';
 import Rule from '../models/Rule';
-import { SPLATNET } from '../utils/FileFolderUrl';
+import FileFolderUrl from '../utils/FileFolderUrl';
 import TimeConverter from '../utils/TimeConverter';
 
 const { Meta } = Card;
@@ -58,7 +58,7 @@ class ScheduleCard extends React.Component {
                 <img
                   className="ScheduleCard-schedule-stage-cover"
                   alt="stage 1"
-                  src={SPLATNET + this.props.schedule.stage1.url}
+                  src={FileFolderUrl.SPLATNET + this.props.schedule.stage1.url}
                 />
               }
               bodyStyle={{
@@ -86,7 +86,7 @@ class ScheduleCard extends React.Component {
                 <img
                   className="ScheduleCard-schedule-stage-cover"
                   alt="stage 2"
-                  src={SPLATNET + this.props.schedule.stage2.url}
+                  src={FileFolderUrl.SPLATNET + this.props.schedule.stage2.url}
                 />
               }
               bodyStyle={{

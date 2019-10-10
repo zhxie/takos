@@ -6,7 +6,7 @@ import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
 import ErrorResult from './components/ErrorResult';
 import TakosError from './utils/ErrorHelper';
-import { NINTENDO_ACCOUNTS_AUTHORIZE } from './utils/FileFolderUrl';
+import FileFolderUrl from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
 import './utils/StringHelper';
@@ -89,7 +89,7 @@ class SettingsWindow extends React.Component {
           return this.updateCookie();
         }
       })
-      .catch(() => {
+      .catch(e => {
         Modal.error({
           title: this.props.intl.formatMessage({
             id: 'app.modal.error.get_session_token',
@@ -105,7 +105,7 @@ class SettingsWindow extends React.Component {
   };
 
   updateCookie = () => {
-    return LoginHelper.getCookie(StorageHelper.getSessionToken())
+    return LoginHelper.getCookie(StorageHelper.sessionToken())
       .then(result => {
         if (result === null) {
           throw new RangeError();
@@ -180,7 +180,7 @@ class SettingsWindow extends React.Component {
             id: 'app.modal.error.update_cookie_no_session_token',
             defaultMessage: 'Can not update cookie'
           }),
-          content: this.props.intl.format({
+          content: this.props.intl.formatMessage({
             id: 'app.modal.error.update_cookie_no_session_token.content',
             defaultMessage: 'Takos can not update cookie unless you use automatic cookie generation.'
           })
@@ -323,7 +323,7 @@ class SettingsWindow extends React.Component {
                     values={{
                       a: msg => (
                         <a
-                          href={NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                          href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
                             this.loginParameters.state,
                             this.loginParameters.codeChallenge
                           )}
