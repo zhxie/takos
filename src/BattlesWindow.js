@@ -233,7 +233,7 @@ class BattlesWindow extends React.Component {
             <Button
               key="previous"
               onClick={() => {
-                window.location.hash = previous;
+                window.location.hash = '/battles#' + previous;
               }}
             >
               <Icon type="left" />
@@ -257,7 +257,7 @@ class BattlesWindow extends React.Component {
             <Button
               key="next"
               onClick={() => {
-                window.location.hash = next;
+                window.location.hash = '/battles#' + next;
               }}
             >
               <FormattedMessage id="app.battles.next" defaultMessage="Next Battle #{id}" values={{ id: next }} />
@@ -283,7 +283,7 @@ class BattlesWindow extends React.Component {
 
   hideBattle = () => {
     // Modify hash to hide battle
-    window.location.hash = '';
+    window.location.hash = '/battles';
   };
 
   deleteBattle = number => {
@@ -316,7 +316,7 @@ class BattlesWindow extends React.Component {
                 updated: false
               });
               // Modify hash
-              window.location.hash = '';
+              window.location.hash = '/battles';
             }
           })
           .catch(e => {
@@ -386,7 +386,7 @@ class BattlesWindow extends React.Component {
             onRow={record => {
               return {
                 onClick: () => {
-                  window.location.hash = record.number;
+                  window.location.hash = '/battles#' + record.number;
                 }
               };
             }}

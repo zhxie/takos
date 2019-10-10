@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
 import './App.css';
@@ -39,13 +39,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/login" render={props => <LoginWindow {...props} onDone={this.onLoginDone} />} />
           <Route exact path="/404" component={this.renderNotFound} />
           <PrivateRoute isLoggedIn={this.state.isLogin} path="/" component={MainWindow} />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
