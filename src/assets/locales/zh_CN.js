@@ -1048,7 +1048,7 @@ const zh_CN = {
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
     '3. 在侧边栏中展开"Cookies"并点击相应的页面，然后点击确认',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
-    '最后，刷新列表，双击名称为“iksm_session”的行所对应的值，复制，并粘贴到下方的文本框中',
+    '最后，刷新列表，双击名称为“iksm_session”的行所对应的值，复制，并粘贴到下方的文本框中。',
   'app.modal.error.get_session_token': '无法更新 Cookie',
   'app.modal.error.get_session_token.content': '您的网络连接存在问题，或是链接已失效。请刷新页面并重试。',
   'app.modal.error.update_cookie': '无法更新 Cookie',
