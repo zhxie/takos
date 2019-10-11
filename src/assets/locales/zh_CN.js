@@ -1043,7 +1043,7 @@ const zh_CN = {
   'app.modal.confirm.update_cookie.octoling_operation_required.content':
     'Takos 已成功获取 Cookie，但由于安全性原因，需要您的帮助来完成登录。请依次完成以下操作：',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
-    '1. 按下 Ctrl(Command)+Shift+I 键启动 DevTools',
+    '1. 按下 Ctrl+Shift+I(Option+Command+I) 键启动 DevTools',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2': '2. 在标签栏中点击“Application”',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
     '3. 在侧边栏中展开"Cookies"并点击相应的页面，然后点击确认',

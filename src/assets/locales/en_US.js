@@ -1045,7 +1045,7 @@ const en_US = {
   'app.modal.confirm.update_cookie.octoling_operation_required.content':
     'Takos has successfully get cookie, but for security reasons, your help is required to complete the login. Please follow the steps below:',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
-    '1. Press Ctrl(Command)+Shift+I to open the DevTools',
+    '1. Press Ctrl+Shift+I(Option+Command+I) to open the DevTools',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2':
     '2. Click "Application" in the tab bar',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':

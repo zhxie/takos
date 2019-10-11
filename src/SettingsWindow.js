@@ -177,7 +177,7 @@ class SettingsWindow extends React.Component {
           <p style={{ margin: '6px 0 0 0' }}>
             {this.props.intl.formatMessage({
               id: 'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1',
-              defaultMessage: '1. Press Ctrl(Command)+Shift+I to open the DevTools'
+              defaultMessage: '1. Press Ctrl+Shift+I(Option+Command+I) to open the DevTools'
             })}
           </p>
           <p style={{ margin: 0 }}>

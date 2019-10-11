@@ -1047,7 +1047,7 @@ const ja_JP = {
   'app.modal.confirm.update_cookie.octoling_operation_required.content':
     'Takos はクッキーを正常に取得しましたが、セキュリティ上の理由から、ログインを完了するためにあなたの助けが必要です。以下の手順に従ってください：',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
-    '1. Ctrl(Command)+Shift+I を押して DevTools を開きます',
+    '1. Ctrl+Shift+I(Option+Command+I) を押して DevTools を開きます',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2':
     '2. タブバーの「Application」をクリックします',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
