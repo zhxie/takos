@@ -1041,6 +1041,17 @@ const en_US = {
   'app.modal.confirm.update_cookie': 'Do you want to update cookie?',
   'app.modal.confirm.update_cookie.content':
     'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.',
+  'app.modal.confirm.update_cookie.octoling_operation_required': 'Octoling operation required',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content':
+    'Takos has successfully get cookie, but for security reasons, your help is required to complete the login. Please follow the steps below:',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
+    '1. Press Ctrl(Command)+Shift+I to open the DevTools',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2':
+    '2. Click "Application" in the tab bar',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
+    '3. Expand "Cookies" and click the corresponding page in the sidebar, and click OK',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
+    'Finally, refresh the list, double click on value with the corresponding name "iksm_session", copy it, and paste into the text box below.',
   'app.modal.error.get_session_token': 'Can not update cookie',
   'app.modal.error.get_session_token.content':
     'Your network can not be reached, or the link is expired. Please refresh the page and try again.',

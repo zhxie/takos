@@ -91,7 +91,7 @@ class SettingsWindow extends React.Component {
           return this.updateCookie();
         }
       })
-      .catch(e => {
+      .catch(() => {
         Modal.error({
           title: this.props.intl.formatMessage({
             id: 'app.modal.error.get_session_token',
@@ -111,6 +111,8 @@ class SettingsWindow extends React.Component {
       .then(result => {
         if (result === null) {
           throw new RangeError();
+        } else if (result.length !== 40) {
+          return this.updateCookieFinal(result);
         } else {
           this.cookieOnChange(result);
         }
@@ -148,6 +150,114 @@ class SettingsWindow extends React.Component {
           )
         });
       });
+  };
+
+  updateCookieFinal = accessToken => {
+    // Cookie can not get by javascript because it is HttpOnly
+    const thisHandler = this;
+    Modal.confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.update_cookie.octoling_operation_required',
+        defaultMessage: 'Octoling operation required'
+      }),
+      content: (
+        <div>
+          <p style={{ margin: 0 }}>
+            {this.props.intl.formatMessage({
+              id: 'app.modal.confirm.update_cookie.octoling_operation_required.content',
+              defaultMessage:
+                'Takos has successfully get cookie, but for security reasons, your help is required to complete the login. Please follow the steps below:'
+            })}
+          </p>
+          <p style={{ margin: '6px 0 0 0' }}>
+            {this.props.intl.formatMessage({
+              id: 'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1',
+              defaultMessage: '1. Press Ctrl(Command)+Shift+I to open the DevTools'
+            })}
+          </p>
+          <p style={{ margin: 0 }}>
+            {this.props.intl.formatMessage({
+              id: 'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2',
+              defaultMessage: '2. Click "Application" in the tab bar'
+            })}
+          </p>
+          <p style={{ margin: 0 }}>
+            {this.props.intl.formatMessage({
+              id: 'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3',
+              defaultMessage: '3. Expand "Cookies" and click the corresponding page in the sidebar, and click OK'
+            })}
+          </p>
+        </div>
+      ),
+      icon: <Icon type="info-circle" />,
+      onOk() {
+        return LoginHelper.getCookieFinal(accessToken)
+          .then(result => {
+            if (result === null) {
+              throw new RangeError();
+            } else {
+              Modal.info({
+                title: thisHandler.props.intl.formatMessage({
+                  id: 'app.modal.confirm.update_cookie.octoling_operation_required',
+                  defaultMessage: 'Require octoling operation'
+                }),
+                content: (
+                  <div>
+                    <p style={{ margin: 0 }}>
+                      {thisHandler.props.intl.formatMessage({
+                        id: 'app.modal.confirm.update_cookie.octoling_operation_required.content',
+                        defaultMessage:
+                          'Takos has successfully get cookie, but for security reasons, your help is required to complete the login. Please follow the steps below:'
+                      })}
+                    </p>
+                    <p style={{ margin: '6px 0 0 0' }}>
+                      {thisHandler.props.intl.formatMessage({
+                        id: 'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4',
+                        defaultMessage:
+                          'Finally, refresh the list, double click on value with the corresponding name "iksm_session", copy it, and paste into the text box below.'
+                      })}
+                    </p>
+                  </div>
+                )
+              });
+            }
+          })
+          .catch(() => {
+            Modal.error({
+              title: thisHandler.props.intl.formatMessage({
+                id: 'app.modal.error.update_cookie',
+                defaultMessage: 'Can not update cookie'
+              }),
+              content: (
+                <div>
+                  <p style={{ margin: 0 }}>
+                    {thisHandler.props.intl.formatMessage({
+                      id: 'app.modal.error.update_cookie.content.1',
+                      defaultMessage:
+                        'Your network can not be reached, or your login is expired. Please re-log in or try again.'
+                    })}
+                  </p>
+                  <p style={{ margin: 0 }}>
+                    {thisHandler.props.intl.formatMessage(
+                      {
+                        id: 'app.modal.error.update_cookie.content.2',
+                        defaultMessage:
+                          'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
+                      },
+                      {
+                        a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                        a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                        a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                      }
+                    )}
+                  </p>
+                </div>
+              )
+            });
+          });
+      },
+      onCancel() {}
+    });
   };
 
   showUpdateCookieConfirm = () => {

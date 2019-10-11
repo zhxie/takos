@@ -1039,6 +1039,16 @@ const zh_CN = {
   'app.modal.confirm.update_cookie': '您希望更新 Cookie 吗？',
   'app.modal.confirm.update_cookie.content':
     '自动 Cookie 生成将向 2 个非任天堂服务器发起安全请求。这些请求中仅包含最小的，非识别性的信息。在开始前，请仔细阅读 <a>README</a> 中“Security and Privacy”一章。',
+  'app.modal.confirm.update_cookie.octoling_operation_required': '需要章灵操作',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content':
+    'Takos 已成功获取 Cookie，但由于安全性原因，需要您的帮助来完成登录。请依次完成以下操作：',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
+    '1. 按下 Ctrl(Command)+Shift+I 键启动 DevTools',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2': '2. 在标签栏中点击“Application”',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
+    '3. 在侧边栏中展开"Cookies"并点击相应的页面，然后点击确认',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
+    '最后，刷新列表，双击名称为“iksm_session”的行所对应的值，复制，并粘贴到下方的文本框中',
   'app.modal.error.get_session_token': '无法更新 Cookie',
   'app.modal.error.get_session_token.content': '您的网络连接存在问题，或是链接已失效。请刷新页面并重试。',
   'app.modal.error.update_cookie': '无法更新 Cookie',

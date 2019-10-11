@@ -1043,6 +1043,17 @@ const ja_JP = {
   'app.modal.confirm.update_cookie': 'クッキーを更新しますか？',
   'app.modal.confirm.update_cookie.content':
     '自動クッキー生成では、2 つの非任天堂サーバーに対して、最小限の非識別情報で安全な要求を行います。開始する前に、<a>README</a> の「Security and Privacy」セクションを注意深くお読みください。',
+  'app.modal.confirm.update_cookie.octoling_operation_required': 'タコの操作が必要',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content':
+    'Takos はクッキーを正常に取得しましたが、セキュリティ上の理由から、ログインを完了するためにあなたの助けが必要です。以下の手順に従ってください：',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.1':
+    '1. Ctrl(Command)+Shift+I を押して DevTools を開きます',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2':
+    '2. タブバーの「Application」をクリックします',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
+    '3. サイドバーの「Cookies」を展開し、対応するページをクリックして、「OK」をクリックします',
+  'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
+    '最後に、リストを更新し、対応する名前「iksm_session」の値をダブルクリックしてコピーし、下のテキストボックスに貼り付けます。',
   'app.modal.error.get_session_token': 'クッキーを更新できません',
   'app.modal.error.get_session_token.content':
     'ネットワークにアクセスできないか、リンクの有効期限が切れています。ページを更新してもう一度お試しください。',

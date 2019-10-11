@@ -259,25 +259,41 @@ class LoginHelper {
           });
       })
       .then(data => {
-        let init = {
-          method: 'GET',
-          headers: new Headers({
-            'X-GameWebToken': data.accessToken
-          })
-        };
-        return fetch(FileFolderUrl.SPLATNET + '/Cookie', init).then(res => {
-          console.log(res);
-          const re = /iksm_session=([a-f0-9]+);/;
-          if (res.headers.get('Cookie') !== undefined && res.headers.get('Cookie') !== null) {
-            return re.exec(res.headers.get('Cookie'))[1];
-          } else if (res.headers.get('Set-Cookie') !== undefined && res.headers.get('Set-Cookie') !== null) {
-            return re.exec(res.headers.get('Set-Cookie'))[1];
-          } else if (res.headers.get('X-Cookie') !== undefined && res.headers.get('X-Cookie') !== null) {
-            return re.exec(res.headers.get('X-Cookie'))[1];
-          } else {
+        return LoginHelper.getCookieFinal(data.accessToken).then(data => {
+          if (data === null) {
             throw new RangeError();
+          } else {
+            return data;
           }
         });
+      })
+      .catch(e => {
+        console.error(e);
+        return null;
+      });
+  };
+
+  static getCookieFinal = accessToken => {
+    console.log(accessToken);
+    const init = {
+      method: 'GET',
+      headers: new Headers({
+        'X-GameWebToken': accessToken
+      })
+    };
+    return fetch(FileFolderUrl.SPLATNET + '/Cookie', init)
+      .then(res => {
+        console.log(res);
+        const re = /iksm_session=([a-f0-9]+);/;
+        if (res.headers.get('Cookie') !== undefined && res.headers.get('Cookie') !== null) {
+          return re.exec(res.headers.get('Cookie'))[1];
+        } else if (res.headers.get('Set-Cookie') !== undefined && res.headers.get('Set-Cookie') !== null) {
+          return re.exec(res.headers.get('Set-Cookie'))[1];
+        } else if (res.headers.get('X-Cookie') !== undefined && res.headers.get('X-Cookie') !== null) {
+          return re.exec(res.headers.get('X-Cookie'))[1];
+        } else {
+          return accessToken;
+        }
       })
       .catch(e => {
         console.error(e);
