@@ -39,6 +39,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   });
+  mainWindow.webContents.setUserAgent('Takos/0.1.0');
   if (isDev) {
     mainWindow.loadURL('http://localhost:3000/', { userAgent: 'Takos/0.1.0' });
   } else {
