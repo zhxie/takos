@@ -22,6 +22,7 @@ class SettingsWindow extends React.Component {
     error: false,
     errorLog: 'unknown_error',
     toLogin: false,
+    exporting: false,
     // Automatic
     isUrl: false,
     isCookie: false,
@@ -257,6 +258,26 @@ class SettingsWindow extends React.Component {
           });
       },
       onCancel() {}
+    });
+  };
+
+  exportData = () => {
+    this.setState({ exporting: true });
+    StorageHelper.battles().then(res => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = '0' + (date.getMonth() + 1);
+      const day = '0' + date.getDate();
+      let data = [];
+      res.forEach(element => {
+        data.push(JSON.stringify(element));
+      });
+      const a = document.createElement('a');
+      a.download = 'TakosBackup_{0}{1}{2}.json'.format(year, month.substr(-2), day.substr(-2));
+      a.rel = 'noopener';
+      a.href = URL.createObjectURL(new Blob(data, { type: 'application/json' }));
+      a.dispatchEvent(new MouseEvent('click'));
+      this.setState({ exporting: false });
     });
   };
 
@@ -552,7 +573,7 @@ class SettingsWindow extends React.Component {
               <Form.Item label={<FormattedMessage id="app.settings.system.data" defaultMessage="Data" />}>
                 <Row gutter={8}>
                   <Col>
-                    <Button type="default" disabled>
+                    <Button onClick={this.exportData} loading={this.state.exporting} type="default">
                       <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
                     </Button>
                     <Button type="default" disabled style={{ marginLeft: '8px' }}>
