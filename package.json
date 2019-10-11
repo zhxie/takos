@@ -17,6 +17,16 @@
     "files": [
       "build/**/*"
     ],
+    "extraFiles": [
+      {
+        "from": "./README.md",
+        "to": "./README.md"
+      },
+      {
+        "from": "./LICENSE",
+        "to": "./LICENSE"
+      }
+    ],
     "win": {
       "icon": "build/icon.ico",
       "target": [
