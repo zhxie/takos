@@ -15,7 +15,8 @@
     "productName": "Takos",
     "copyright": "Copyright © 2019 ${author}",
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "!**/*.map"
     ],
     "extraFiles": [
       "./README.md",
