@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select, Tooltip, Switch } from 'antd';
 
@@ -20,6 +21,7 @@ class SettingsWindow extends React.Component {
     // Render
     error: false,
     errorLog: 'unknown_error',
+    toLogin: false,
     // Automatic
     isUrl: false,
     isCookie: false,
@@ -230,7 +232,7 @@ class SettingsWindow extends React.Component {
             if (res instanceof TakosError) {
               throw new TakosError(res.message);
             } else {
-              window.location.assign('/');
+              thisHandler.setState({ toLogin: true });
             }
           })
           .catch(e => {
@@ -281,7 +283,9 @@ class SettingsWindow extends React.Component {
   };
 
   render() {
-    if (this.state.error) {
+    if (this.state.toLogin) {
+      return <Redirect to="/login" />;
+    } else if (this.state.error) {
       return <ErrorResult error={this.state.errorLog} />;
     } else {
       return (
