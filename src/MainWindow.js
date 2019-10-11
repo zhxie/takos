@@ -168,7 +168,7 @@ class MainWindow extends React.Component {
                 </span>
                 <Link to="/battles" />
               </Menu.Item>
-              <Menu.Item key="salmon">
+              <Menu.Item key="salmon_run">
                 <Icon type="menu" />
                 <span>
                   <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
