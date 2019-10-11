@@ -334,6 +334,7 @@ class SettingsWindow extends React.Component {
         defaultMessage: 'Note that when you log out, all saved data, including battles and salmon run, will be cleared.'
       }),
       okType: 'danger',
+      autoFocusButton: 'cancel',
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         // Will first initialize storage and then go to login while the login will initialize storage again
@@ -371,6 +372,7 @@ class SettingsWindow extends React.Component {
           'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.'
       }),
       okType: 'danger',
+      autoFocusButton: 'cancel',
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         StorageHelper.clearData()

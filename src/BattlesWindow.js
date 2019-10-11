@@ -300,6 +300,7 @@ class BattlesWindow extends React.Component {
           'Once the battle is deleted, you will not be able to undo. It is recommended that you first export the data.'
       }),
       okType: 'danger',
+      autoFocusButton: 'cancel',
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         StorageHelper.removeBattle(number)
