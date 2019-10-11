@@ -6,6 +6,8 @@ import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, 
 import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
 import ErrorResult from './components/ErrorResult';
+import LoadingResult from './components/LoadingResult';
+import { Battle } from './models/Battle';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
@@ -21,8 +23,10 @@ class SettingsWindow extends React.Component {
     // Render
     error: false,
     errorLog: 'unknown_error',
+    errorChecklist: [],
     toLogin: false,
     exporting: false,
+    importing: false,
     // Automatic
     isUrl: false,
     isCookie: false,
@@ -261,6 +265,132 @@ class SettingsWindow extends React.Component {
     });
   };
 
+  triggerImportData = () => {
+    document.getElementById('import').click();
+  };
+
+  importData = event => {
+    console.log(event);
+    this.setState({ importing: true });
+    let reader = new FileReader();
+    reader.onload = e => {
+      const addBattleRecursively = (battles, i) => {
+        return StorageHelper.addBattle(battles[i])
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              if (i + 1 < battles.length) {
+                return addBattleRecursively(battles, i + 1);
+              }
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              return new TakosError(e.message);
+            } else {
+              console.error(e);
+              return new TakosError('can_not_import_data');
+            }
+          });
+      };
+
+      let battles = [];
+      try {
+        const data = JSON.parse(e.target.result);
+        for (let i = 0; i < data.battles.length; ++i) {
+          const battle = Battle.deserialize(data.battles[i]);
+          if (battle.error !== null) {
+            this.setState({
+              error: true,
+              errorLog: battle.error,
+              errorChecklist: [
+                <FormattedMessage
+                  key="file"
+                  id="app.problem.troubleshoot.importing_file"
+                  defaultMessage="Your importing file"
+                />
+              ],
+              importing: false
+            });
+            return;
+          } else {
+            battles.push(battle);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+        this.setState({
+          error: true,
+          errorLog: 'file_not_valid',
+          errorChecklist: [
+            <FormattedMessage
+              key="file"
+              id="app.problem.troubleshoot.importing_file"
+              defaultMessage="Your importing file"
+            />
+          ],
+          importing: false
+        });
+        return;
+      }
+      if (battles.length > 0) {
+        addBattleRecursively(battles, 0)
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              this.setState({ importing: false });
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              this.setState({
+                error: true,
+                errorLog: e.message,
+                errorChecklist: [
+                  <FormattedMessage
+                    key="file"
+                    id="app.problem.troubleshoot.importing_file"
+                    defaultMessage="Your importing file"
+                  />
+                ],
+                importing: false
+              });
+            } else {
+              console.error(e);
+              this.setState({
+                error: true,
+                errorLog: 'can_not_import_data',
+                errorChecklist: [
+                  <FormattedMessage
+                    key="file"
+                    id="app.problem.troubleshoot.importing_file"
+                    defaultMessage="Your importing file"
+                  />
+                ],
+                importing: false
+              });
+            }
+          });
+      } else {
+        this.setState({
+          error: true,
+          errorLog: 'file_empty',
+          errorChecklist: [
+            <FormattedMessage
+              key="file"
+              id="app.problem.troubleshoot.importing_file"
+              defaultMessage="Your importing file"
+            />
+          ],
+          importing: false
+        });
+      }
+    };
+    reader.readAsText(event.target.files[0]);
+  };
+
   exportData = () => {
     this.setState({ exporting: true });
     StorageHelper.battles().then(res => {
@@ -268,14 +398,19 @@ class SettingsWindow extends React.Component {
       const year = date.getFullYear();
       const month = '0' + (date.getMonth() + 1);
       const day = '0' + date.getDate();
-      let data = [];
+      // Construct data
+      let data = {};
+      // Battles
+      let battles = [];
       res.forEach(element => {
-        data.push(JSON.stringify(element));
+        battles.push(element);
       });
+      data.battles = battles;
+      // Export file
       const a = document.createElement('a');
       a.download = 'TakosBackup_{0}{1}{2}.json'.format(year, month.substr(-2), day.substr(-2));
       a.rel = 'noopener';
-      a.href = URL.createObjectURL(new Blob(data, { type: 'application/json' }));
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
       a.dispatchEvent(new MouseEvent('click'));
       this.setState({ exporting: false });
     });
@@ -369,10 +504,10 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              thisHandler.setState({ error: true, errorLog: e.message });
+              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
               console.error(e);
-              thisHandler.setState({ error: true, errorLog: 'unknown_error' });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
             }
           });
       },
@@ -404,10 +539,10 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              thisHandler.setState({ error: true, errorLog: e.message });
+              thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
               console.error(e);
-              thisHandler.setState({ error: true, errorLog: 'unknown_error' });
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', errorChecklist: [] });
             }
           });
       },
@@ -419,7 +554,34 @@ class SettingsWindow extends React.Component {
     if (this.state.toLogin) {
       return <Redirect to="/login" />;
     } else if (this.state.error) {
-      return <ErrorResult error={this.state.errorLog} />;
+      return (
+        <ErrorResult
+          error={this.state.errorLog}
+          checklist={this.state.errorChecklist}
+          extra={[
+            <Button
+              key="continue"
+              onClick={() => {
+                this.setState({ error: false });
+              }}
+              type="primary"
+            >
+              <FormattedMessage id="app.continue" defaultMessage="Continue" />
+            </Button>
+          ]}
+        />
+      );
+    } else if (this.state.importing) {
+      return (
+        <LoadingResult
+          description={
+            <FormattedMessage
+              id="app.result.loading.description.importing_data"
+              defaultMessage="Takos is importing data, which will last for a few seconds to a few minutes..."
+            />
+          }
+        />
+      );
     } else {
       return (
         <Layout>
@@ -576,8 +738,9 @@ class SettingsWindow extends React.Component {
                     <Button onClick={this.exportData} loading={this.state.exporting} type="default">
                       <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
                     </Button>
-                    <Button type="default" disabled style={{ marginLeft: '8px' }}>
+                    <Button type="default" onClick={this.triggerImportData} style={{ marginLeft: '8px' }}>
                       <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
+                      <input id="import" type="file" onChange={this.importData} style={{ display: 'none' }} />
                     </Button>
                     <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
                       <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />

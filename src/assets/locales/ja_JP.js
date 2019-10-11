@@ -1085,6 +1085,8 @@ const ja_JP = {
     'Takos は更新されたデータをチェックしています。このプロセスは数秒から数分続きます…',
   'app.result.loading.description.update_data':
     'Takos はデータ {current}/{total} を更新しています。このプロセスは数秒から数分続きます…',
+  'app.result.loading.description.importing_data':
+    'Takos はデータをインポートしています。このプロセスは数秒から数分続きます…',
   'app.result.error': 'やられた',
   'app.result.404': '404',
   'app.result.404.description': '迷子ですか、タコちゃん？',
@@ -1095,6 +1097,7 @@ const ja_JP = {
     'Takos で問題が発生しました。問題をトラブルシューティングするには、次を確認してください：',
   'app.problem.troubleshoot.network': 'ネットワーク接続',
   'app.problem.troubleshoot.cookie': 'イカリングのクッキー',
+  'app.problem.troubleshoot.importing_file': 'インポートファイル',
   'app.problem.report': '問題が解決しない場合は、<a>Github で問題を報告できます &gt;</a>',
   // App.time
   'app.time': '{hour}:{min}:{sec}',

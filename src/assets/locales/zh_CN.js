@@ -1072,6 +1072,7 @@ const zh_CN = {
   'app.result.loading.description': '该页面正在加载中……',
   'app.result.loading.description.check_update_data': 'Takos 正在检查更新数据，这将持续数秒到数分钟……',
   'app.result.loading.description.update_data': 'Takos 正在更新数据 {current}/{total}，这将持续数秒到数分钟……',
+  'app.result.loading.description.importing_data': 'Takos 正在导入数据，这将持续数秒到数分钟……',
   'app.result.error': '被干掉啦',
   'app.result.404': '404',
   'app.result.404.description': '你迷路了吗，小章鱼？',
@@ -1081,6 +1082,7 @@ const zh_CN = {
   'app.problem.troubleshoot': 'Takos 遇到了一个问题，请检查以下事项来解决这一问题：',
   'app.problem.troubleshoot.network': '您的网络连接情况',
   'app.problem.troubleshoot.cookie': '您的 SplatNet Cookie',
+  'app.problem.troubleshoot.importing_file': '您导入的文件',
   'app.problem.report': '如果这一问题持续存在，您可以<a>在 Github 上汇报它 &gt;</a>',
   // App.time
   'app.time': '{hour}:{min}:{sec}',

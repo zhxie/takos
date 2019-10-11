@@ -166,7 +166,7 @@ class StorageHelper {
       .getItem(battle.number.toString())
       .then(res => {
         if (res !== null) {
-          throw new RangeError();
+          throw new TakosError('same_battle_exists');
         } else {
           // Same number battle not exists
           return StorageHelper.battlesConnection.setItem(battle.number.toString(), JSON.stringify(battle));

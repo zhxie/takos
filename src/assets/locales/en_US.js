@@ -1083,6 +1083,8 @@ const en_US = {
     'Takos is checking for updated data, which will last for a few seconds to a few minutes...',
   'app.result.loading.description.update_data':
     'Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes...',
+  'app.result.loading.description.importing_data':
+    'Takos is importing data, which will last for a few seconds to a few minutes...',
   'app.result.error': 'Ouch!',
   'app.result.404': '404',
   'app.result.404.description': 'Are you lost, small octoling?',
@@ -1092,6 +1094,7 @@ const en_US = {
   'app.problem.troubleshoot': 'Takos has encountered a problem, please check the following to troubleshoot the issue:',
   'app.problem.troubleshoot.network': 'Your network connection',
   'app.problem.troubleshoot.cookie': 'Your SplatNet cookie',
+  'app.problem.troubleshoot.importing_file': 'Your importing file',
   'app.problem.report': 'If the problem persists, you can <a>Report the issue on Github &gt;</a>',
   // App.time
   'app.time': '{hour}:{min}:{sec}',
