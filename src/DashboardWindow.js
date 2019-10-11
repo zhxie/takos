@@ -314,11 +314,13 @@ class DashboardWindow extends React.Component {
   };
 
   timeout = () => {
-    if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
-      this.setState({ expired: true });
-    } else {
-      // Force update the page to update the remaining and coming time
-      this.forceUpdate();
+    if (this.state.schedules !== undefined) {
+      if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
+        this.setState({ expired: true });
+      } else {
+        // Force update the page to update the remaining and coming time
+        this.forceUpdate();
+      }
     }
   };
 
