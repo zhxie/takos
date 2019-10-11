@@ -44,7 +44,7 @@ class DashboardWindow extends React.Component {
     errorLog: 'unknown_error',
     updateCurrent: 0,
     updateTotal: 0,
-    battleUpdated: false,
+    battlesUpdated: false,
     schedulesUpdated: false,
     expired: false
   };
@@ -89,12 +89,13 @@ class DashboardWindow extends React.Component {
       error: false,
       updateCurrent: 0,
       updateTotal: 0,
-      battleUpdated: false,
+      battlesUpdated: false,
       schedulesUpdated: false,
       expired: false
     });
     let errorBattles = null;
     let errorSchedules = null;
+    let firstErrorLog = null;
     // Update battles
     this.updateBattles()
       .then(res => {
@@ -121,57 +122,46 @@ class DashboardWindow extends React.Component {
         });
       })
       .then(() => {
-        if (errorBattles !== null || errorSchedules !== null) {
+        if (errorBattles !== null) {
           // Handle error
-          let firstErrorLog = null;
-          let multipleErrors = false;
-          if (errorBattles !== null) {
-            this.getBattles()
-              .then(() => {
-                if (errorBattles instanceof TakosError) {
-                  if (firstErrorLog === null) {
-                    firstErrorLog = errorBattles.message;
-                  } else {
-                    multipleErrors = true;
-                  }
-                } else {
-                  console.error(errorBattles);
-                  if (firstErrorLog === null) {
-                    firstErrorLog = 'can_not_update_battles';
-                  } else {
-                    multipleErrors = true;
-                  }
+          return this.getBattles()
+            .then(() => {
+              if (errorBattles instanceof TakosError) {
+                if (firstErrorLog === null) {
+                  firstErrorLog = errorBattles.message;
                 }
-              })
-              .catch();
-            this.setState({ battleUpdated: true });
-          }
-          if (errorSchedules !== null) {
-            if (errorSchedules instanceof TakosError) {
-              if (firstErrorLog === null) {
-                firstErrorLog = errorSchedules.message;
               } else {
-                multipleErrors = true;
+                console.error(errorBattles);
+                if (firstErrorLog === null) {
+                  firstErrorLog = 'can_not_update_battles';
+                }
               }
-            } else {
-              if (firstErrorLog === null) {
-                firstErrorLog = 'can_not_update_schedules';
-              } else {
-                multipleErrors = true;
-              }
-            }
-            this.setState({ schedulesUpdated: true });
-          }
-          if (multipleErrors) {
-            this.setState({ error: true, errorLog: 'multiple_errors' });
-          } else {
-            this.setState({ error: true, errorLog: firstErrorLog });
-          }
-          throw new Error();
+              this.setState({ battlesUpdated: true });
+            })
+            .catch();
         }
       })
       .then(() => {
-        this.setState({ loaded: true });
+        if (errorSchedules !== null) {
+          // Handle error
+          if (errorSchedules instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorSchedules.message;
+            }
+          } else {
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_schedules';
+            }
+          }
+          this.setState({ schedulesUpdated: true });
+        }
+      })
+      .then(() => {
+        if (firstErrorLog !== null) {
+          this.setState({ error: true, errorLog: firstErrorLog });
+        } else {
+          this.setState({ loaded: true });
+        }
       })
       .catch();
   };
@@ -338,6 +328,7 @@ class DashboardWindow extends React.Component {
           if (this.state.battlesUpdated) {
             return (
               <Alert
+                className="DashboardWindow-content-alert"
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
