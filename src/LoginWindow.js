@@ -35,6 +35,7 @@ class LoginWindow extends React.Component {
     isUrl: false,
     isCookie: false,
     isValid: true,
+    // Value
     cookie: '',
     language: 'en_US'
   };
@@ -290,7 +291,7 @@ class LoginWindow extends React.Component {
             id: 'app.modal.error.update_cookie_no_session_token',
             defaultMessage: 'Can not update cookie'
           }),
-          content: this.props.intl.format({
+          content: this.props.intl.formatMessage({
             id: 'app.modal.error.update_cookie_no_session_token.content',
             defaultMessage: 'Takos can not update cookie unless you use automatic cookie generation.'
           })
