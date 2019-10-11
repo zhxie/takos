@@ -32,13 +32,14 @@ const { TabPane } = Tabs;
 
 class DashboardWindow extends React.Component {
   state = {
-    // Render
+    // Data
     battle: null,
     shift: null,
     schedules: [],
     icon: null,
     nickname: '',
     rank: null,
+    // Render
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
