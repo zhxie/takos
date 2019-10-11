@@ -1,12 +1,43 @@
 {
   "name": "takos",
+  "description": "Cross-platform schedule and battle statistic client of Splatoon 2.",
+  "homepage": "./",
   "version": "0.1.0",
+  "author": {
+    "name": "Sketch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhxie/takos.git"
+  },
+  "build": {
+    "appId": "com.sketch.takos",
+    "productName": "Takos",
+    "copyright": "Copyright © 2019 ${author}",
+    "files": [
+      "build/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "zip"
+      ]
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.games",
+      "target": [
+        "zip"
+      ]
+    },
+    "afterPack": "./after-pack.js"
+  },
   "private": true,
   "main": "public/electron.js",
   "dependencies": {
     "antd": "^3.22.2",
-    "axios": "^0.19.0",
     "electron-context-menu": "^0.15.0",
+    "electron-is-dev": "^1.1.0",
     "http-proxy-middleware": "^0.20.0",
     "localforage": "^1.7.3",
     "react": "^16.9.0",
@@ -17,11 +48,13 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
     "electron": "electron .",
-    "electron-dev": "concurrently \"cross-env BROWSER=none react-app-rewired start\" \"wait-on http://localhost:3000 && electron .\""
+    "electron-dev": "concurrently \"cross-env BROWSER=none react-app-rewired start\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "react-app-rewired build",
+    "build-no-maps": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
+    "dist": "electron-builder",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,7 +77,7 @@
     "cross-env": "^5.2.0",
     "customize-cra": "^0.5.0",
     "electron": "^6.0.5",
-    "electron-is-dev": "^1.1.0",
+    "electron-builder": "^21.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "react-app-rewired": "^2.1.3",
