@@ -38,7 +38,7 @@ const NINTENDO_SERVICE_WEB_SERVICE_TOKEN = '/v2/Game/GetWebServiceToken';
 
 class FileFolderUrl {
   // Set to true to proxy through http-proxy-middleware
-  static useProxy = true;
+  static useProxy = false;
 
   static get USER_AGENT() {
     return USER_AGENT;
