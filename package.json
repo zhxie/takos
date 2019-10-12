@@ -28,21 +28,44 @@
     ],
     "win": {
       "target": [
-        "zip"
+        "zip",
+        "nsis"
       ]
+    },
+    "nsis": {
+      "uninstallDisplayName": "${productName}"
     },
     "mac": {
       "target": [
-        "zip"
+        "zip",
+        "dmg"
       ],
       "category": "public.app-category.utilities"
     },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
     "linux": {
       "target": [
-        "zip"
+        "zip",
+        "AppImage"
       ],
       "icon": "./icons",
       "category": "Utility"
+    },
+    "appImage": {
+      "license": "LICENSE"
     },
     "afterPack": "./after-pack.js"
   },
