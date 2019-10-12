@@ -4,6 +4,8 @@
 
 # Takos
 
+[![GitHub release](https://img.shields.io/github/release/zhxie/Takos.svg)](https://github.com/zhxie/takos/releases/latest)
+
 **Takos** is a cross-platform schedule and battle statistic client of Splatoon 2.
 
 ## Features
