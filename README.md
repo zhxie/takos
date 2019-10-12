@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/public/logo256.png">
+  <img src="/assets/icons/256x256.png">
 </p>
 
 # Takos
