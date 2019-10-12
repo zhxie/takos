@@ -105,16 +105,6 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
-        // Handle statistics, battles and shifts
-        if (this.state.battle !== null) {
-          this.setState({
-            icon: this.state.battle.selfPlayer().url,
-            nickname: this.state.battle.selfPlayer().nickname
-          });
-        }
-        return this.getRank();
-      })
-      .then(() => {
         // Update schedules
         return this.updateSchedules().then(res => {
           if (res instanceof TakosError) {
@@ -156,6 +146,16 @@ class DashboardWindow extends React.Component {
           }
           this.setState({ schedulesUpdated: true });
         }
+      })
+      .then(() => {
+        // Handle statistics, battles and shifts
+        if (this.state.battle !== null) {
+          this.setState({
+            icon: this.state.battle.selfPlayer().url,
+            nickname: this.state.battle.selfPlayer().nickname
+          });
+        }
+        return this.getRank();
       })
       .then(() => {
         if (firstErrorLog !== null) {
