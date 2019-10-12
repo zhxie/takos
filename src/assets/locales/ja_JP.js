@@ -263,7 +263,7 @@ const ja_JP = {
   // Ability
   ability: 'ギアパワー',
   'ability.primary': '基本ギアパワー',
-  'abiliry.secondary': '追加ギアパワー',
+  'ability.secondary': '追加ギアパワー',
   'ability.ink_saver_main': 'インク効率アップ(メイン)',
   'ability.ink_saver_sub': 'インク効率アップ(サブ)',
   'ability.ink_recovery_up': 'インク回復力アップ',
