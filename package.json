@@ -26,6 +26,7 @@
       "./README.md",
       "./LICENSE"
     ],
+    "artifactName": "${productName}-${version}-${platform}-${arch}.${ext}",
     "win": {
       "target": [
         "zip",
