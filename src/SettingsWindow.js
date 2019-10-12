@@ -63,20 +63,7 @@ class SettingsWindow extends React.Component {
     if (this.state.language !== value) {
       this.setState({ language: value });
     }
-    switch (value) {
-      case 'en_US':
-        StorageHelper.setLanguage('en_US');
-        break;
-      case 'ja_JP':
-        StorageHelper.setLanguage('ja_JP');
-        break;
-      case 'zh_CN':
-        StorageHelper.setLanguage('zh_CN');
-        break;
-      default:
-        throw RangeError();
-    }
-    window.location.reload();
+    window.setLanguage(value);
   };
 
   changeUseSimpleLists = value => {
