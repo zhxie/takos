@@ -17,7 +17,7 @@
 
 ### Automatic Cookie Generation
 
-Ikas uses cookies to access SplatNet, get schedule and battle data. This cookie may be obtained automatically using Automatic Cookie Generation which is also instructed in [splatnet2statink/Cookie Generation](https://github.com/frozenpandaman/splatnet2statink#cookie-generation). Please read the following paragraph CAREFULLY before you use Automatic Cookie Generation.
+Takos uses cookies to access SplatNet, get schedule and battle data. This cookie may be obtained automatically using Automatic Cookie Generation which is also instructed in [splatnet2statink/Cookie Generation](https://github.com/frozenpandaman/splatnet2statink#cookie-generation). Please read the following paragraph CAREFULLY before you use Automatic Cookie Generation.
 
 Automatic Cookie Generation involves making a secure request to **two non-Nintendo servers** with minimal, non-identifying information. For details, please refer to [splatnet2statink/api docs](https://github.com/frozenpandaman/splatnet2statink/wiki/api-docs). The developers aim to be 100% transparent about this and provide in-depth information in [splatnet2statink/Cookie Generation/Automatic](https://github.com/frozenpandaman/splatnet2statink#automatic)'s privacy statement.
 
@@ -25,6 +25,6 @@ If you do not want to use Automatic Cookie Generation for obtaining cookie, you 
 
 ## License
 
-Ikas is licensed under [the MIT License](/LICENSE).
+Takos is licensed under [the MIT License](/LICENSE).
 
-Ikas uses API of [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink) by [eli fessler](https://github.com/frozenpandaman), flapg API by [NexusMine](https://twitter.com/NexusMine) and [Splatoon2.ink](https://github.com/misenhower/splatoon2.ink) API by [Matt Isenhower](https://github.com/misenhower).
+Takos uses API of [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink) by [eli fessler](https://github.com/frozenpandaman), flapg API by [NexusMine](https://twitter.com/NexusMine) and [Splatoon2.ink](https://github.com/misenhower/splatoon2.ink) API by [Matt Isenhower](https://github.com/misenhower).
