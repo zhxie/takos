@@ -65,9 +65,7 @@
       "icon": "./icons",
       "category": "Utility"
     },
-    "appImage": {
-      "license": "LICENSE"
-    },
+    "appImage": {},
     "afterPack": "./after-pack.js"
   },
   "private": true,
