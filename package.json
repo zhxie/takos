@@ -15,6 +15,9 @@
     "appId": "com.sketch.takos",
     "productName": "Takos",
     "copyright": "Copyright © 2019 ${author}",
+    "directories": {
+      "buildResources": "./assets"
+    },
     "files": [
       "build/**/*",
       "!**/*.map"
@@ -24,17 +27,22 @@
       "./LICENSE"
     ],
     "win": {
-      "icon": "build/icon.ico",
       "target": [
         "zip"
       ]
     },
     "mac": {
-      "icon": "build/icon.icns",
-      "category": "public.app-category.games",
       "target": [
         "zip"
-      ]
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": [
+        "zip"
+      ],
+      "icon": "./icons",
+      "category": "Utility"
     },
     "afterPack": "./after-pack.js"
   },
