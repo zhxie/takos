@@ -386,7 +386,7 @@ class SettingsWindow extends React.Component {
       const month = '0' + (date.getMonth() + 1);
       const day = '0' + date.getDate();
       // Construct data
-      let data = {};
+      let data = { version: '0.1.0' };
       // Battles
       let battles = [];
       res.forEach(element => {
