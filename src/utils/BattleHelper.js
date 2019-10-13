@@ -111,10 +111,17 @@ class BattleHelper {
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        if (res.nickname_and_icons[0].thumbnail_url !== undefined && res.nickname_and_icons[0].thumbnail_url !== null) {
-          return res.nickname_and_icons[0].thumbnail_url;
+        if (res.nickname_and_icons.length !== 0) {
+          if (
+            res.nickname_and_icons[0].thumbnail_url !== undefined &&
+            res.nickname_and_icons[0].thumbnail_url !== null
+          ) {
+            return res.nickname_and_icons[0].thumbnail_url;
+          } else {
+            throw new RangeError();
+          }
         } else {
-          throw new RangeError();
+          return '';
         }
       })
       .catch(e => {
