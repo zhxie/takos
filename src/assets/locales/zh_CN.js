@@ -1046,7 +1046,7 @@ const zh_CN = {
     '1. 按下 Ctrl+Shift+I(Option+Command+I) 键启动 DevTools',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.2': '2. 在标签栏中点击“Application”',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.3':
-    '3. 在侧边栏中展开"Cookies"并点击相应的页面，然后点击确认',
+    '3. 在侧边栏中展开"Cookies"并点击相应的页面，然后点击确定',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
     '最后，刷新列表，双击名称为“iksm_session”的行所对应的值，复制，并粘贴到下方的文本框中。',
   'app.modal.error.get_session_token': '无法更新 Cookie',
