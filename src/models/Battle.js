@@ -645,7 +645,7 @@ class SplatfestBattle extends Battle {
   ) {
     super(
       e,
-      Mode.regularBattle,
+      Mode.splatfest,
       rule,
       number,
       startTime,
