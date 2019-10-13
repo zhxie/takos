@@ -378,6 +378,30 @@ class BattleModal extends React.Component {
             }
           })()}
           {(() => {
+            if (this.props.value instanceof SplatfestBattle) {
+              return (
+                <Descriptions.Item
+                  label={<FormattedMessage id="battle.contribution" defaultMessage="Clout" />}
+                  span={2}
+                >
+                  <span>{this.props.value.contributionPoint}</span>
+                </Descriptions.Item>
+              );
+            }
+          })()}
+          {(() => {
+            if (this.props.value instanceof SplatfestBattle) {
+              return (
+                <Descriptions.Item
+                  label={<FormattedMessage id="battle.contribution.total" defaultMessage="Total Clout" />}
+                  span={2}
+                >
+                  <span>{this.props.value.totalContributionPoint}</span>
+                </Descriptions.Item>
+              );
+            }
+          })()}
+          {(() => {
             if (this.props.value.gameMode === Mode.regularBattle) {
               return (
                 <Descriptions.Item label={<FormattedMessage id="freshness" defaultMessage="Freshness" />} span={2}>
