@@ -969,6 +969,8 @@ const zh_CN = {
   'battle.power.splatfest.other': '对手预计喷溅节实力*',
   'battle.power.splatfest.current': '当前喷溅节实力*',
   'battle.power.splatfest.highest': '最高喷溅节实力*',
+  'battle.contribution': '贡献值*',
+  'battle.contribution.total': '累计贡献值*',
   'battle.time.start': '开始时间',
   'battle.time.elapsed': '战斗时间',
   // App
@@ -1013,6 +1015,8 @@ const zh_CN = {
   'app.settings.system.data.export': '导出数据',
   'app.settings.system.data.import': '导入数据',
   'app.settings.system.data.clear': '清除数据',
+  'app.settings.system.import_other': '导入其他格式数据 (Beta)',
+  'app.settings.system.import_other.splatnet_json': 'SplatNet JSON',
   'app.back_log_in': '返回登录',
   'app.to_settings': '前往设置',
   'app.previous': '上一步',
@@ -1073,6 +1077,8 @@ const zh_CN = {
   'app.result.loading.description.check_update_data': 'Takos 正在检查更新数据，这将持续数秒到数分钟……',
   'app.result.loading.description.update_data': 'Takos 正在更新数据 {current}/{total}，这将持续数秒到数分钟……',
   'app.result.loading.description.importing_data': 'Takos 正在导入数据，这将持续数秒到数分钟……',
+  'app.result.loading.description.importing_data.progress':
+    'Takos 正在导入数据 {current}/{total}，这将持续数秒到数分钟……',
   'app.result.error': '被干掉啦',
   'app.result.404': '404',
   'app.result.404.description': '你迷路了吗，小章鱼？',

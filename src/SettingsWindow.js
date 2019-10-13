@@ -27,6 +27,8 @@ class SettingsWindow extends React.Component {
     toLogin: false,
     exporting: false,
     importing: false,
+    importCurrent: 0,
+    importTotal: 0,
     // Automatic
     isUrl: false,
     isCookie: false,
@@ -252,37 +254,40 @@ class SettingsWindow extends React.Component {
     });
   };
 
-  triggerImportData = () => {
-    document.getElementById('import').click();
-  };
-
   importData = event => {
-    console.log(event);
-    this.setState({ importing: true });
+    this.setState({ importing: true, importCurrent: 0, importTotal: 0 });
     let reader = new FileReader();
     reader.onload = e => {
+      let firstError = null;
       const addBattleRecursively = (battles, i) => {
         return StorageHelper.addBattle(battles[i])
           .then(res => {
             if (res instanceof TakosError) {
               throw new TakosError(res.message);
-            } else {
-              if (i + 1 < battles.length) {
-                return addBattleRecursively(battles, i + 1);
-              }
             }
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              return new TakosError(e.message);
+              if (firstError === null) {
+                firstError = e.message;
+              }
             } else {
               console.error(e);
-              return new TakosError('can_not_import_data');
+              if (firstError === null) {
+                firstError = 'can_not_import_data';
+              }
             }
-          });
+          })
+          .then(() => {
+            if (i + 1 < battles.length) {
+              return addBattleRecursively(battles, i + 1);
+            }
+          })
+          .catch();
       };
 
       let battles = [];
+      // Read file
       try {
         const data = JSON.parse(e.target.result);
         for (let i = 0; i < data.battles.length; ++i) {
@@ -321,11 +326,12 @@ class SettingsWindow extends React.Component {
         });
         return;
       }
+      // Add battles
       if (battles.length > 0) {
         addBattleRecursively(battles, 0)
-          .then(res => {
-            if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+          .then(() => {
+            if (firstError !== null) {
+              throw new TakosError(firstError);
             } else {
               this.setState({ importing: false });
             }
@@ -376,6 +382,137 @@ class SettingsWindow extends React.Component {
       }
     };
     reader.readAsText(event.target.files[0]);
+  };
+
+  importDataFromSplatnetJson = event => {
+    this.setState({ importing: true, importCurrent: 0, importTotal: 0 });
+
+    let firstError = null;
+    const getLocalBattleRecursively = (battles, i) => {
+      console.log(battles[i]);
+      return Battle.parse(battles[i])
+        .then(res => {
+          if (res.error !== null) {
+            // Handle previous error
+            throw new TakosError(res.error);
+          } else {
+            return StorageHelper.addBattle(res);
+          }
+        })
+        .then(res => {
+          this.setState({ importCurrent: this.state.importCurrent + 1 });
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            if (firstError === null) {
+              firstError = e.message;
+            }
+          } else {
+            console.error(e);
+            if (firstError === null) {
+              firstError = 'can_not_import_data';
+            }
+          }
+        })
+        .then(() => {
+          if (i + 1 < battles.length) {
+            return getLocalBattleRecursively(battles, i + 1);
+          }
+        })
+        .catch();
+    };
+
+    const readFileComplete = e => {
+      if (e.target.readyState === FileReader.DONE) {
+        try {
+          data.push(JSON.parse(e.target.result));
+        } catch (e) {
+          console.error(e);
+          firstError = 'file_not_valid';
+        }
+        current++;
+        if (current === total) {
+          // Parse battles
+          if (data.length > 0) {
+            this.setState({ importCurrent: 1, importTotal: data.length });
+            return getLocalBattleRecursively(data, 0)
+              .then(() => {
+                if (firstError !== null) {
+                  throw new TakosError(firstError);
+                } else {
+                  this.setState({ importing: false });
+                }
+              })
+              .catch(e => {
+                if (e instanceof TakosError) {
+                  this.setState({
+                    error: true,
+                    errorLog: e.message,
+                    errorChecklist: [
+                      <FormattedMessage
+                        key="file"
+                        id="app.problem.troubleshoot.importing_file"
+                        defaultMessage="Your importing file"
+                      />,
+                      <FormattedMessage
+                        key="network"
+                        id="app.problem.troubleshoot.network"
+                        defaultMessage="Your network connection"
+                      />,
+                      <FormattedMessage
+                        key="cookie"
+                        id="app.problem.troubleshoot.cookie"
+                        defaultMessage="Your SplatNet cookie"
+                      />
+                    ],
+                    importing: false
+                  });
+                } else {
+                  console.error(e);
+                  this.setState({
+                    error: true,
+                    errorLog: 'can_not_import_data',
+                    errorChecklist: [
+                      <FormattedMessage
+                        key="file"
+                        id="app.problem.troubleshoot.importing_file"
+                        defaultMessage="Your importing file"
+                      />
+                    ],
+                    importing: false
+                  });
+                }
+              });
+          } else {
+            this.setState({
+              error: true,
+              errorLog: 'file_not_valid',
+              errorChecklist: [
+                <FormattedMessage
+                  key="file"
+                  id="app.problem.troubleshoot.importing_file"
+                  defaultMessage="Your importing file"
+                />
+              ],
+              importing: false
+            });
+          }
+        }
+      }
+    };
+
+    // Read files
+    let current = 0;
+    const total = event.target.files.length;
+    let data = [];
+    for (let i = 0; i < event.target.files.length; ++i) {
+      let reader = new FileReader();
+      reader.onloadend = readFileComplete;
+      reader.readAsText(event.target.files[i]);
+    }
   };
 
   exportData = () => {
@@ -559,16 +696,35 @@ class SettingsWindow extends React.Component {
         />
       );
     } else if (this.state.importing) {
-      return (
-        <LoadingResult
-          description={
-            <FormattedMessage
-              id="app.result.loading.description.importing_data"
-              defaultMessage="Takos is importing data, which will last for a few seconds to a few minutes..."
-            />
-          }
-        />
-      );
+      if (this.state.importTotal === 0) {
+        return (
+          <LoadingResult
+            description={
+              <FormattedMessage
+                id="app.result.loading.description.importing_data"
+                defaultMessage="Takos is importing data, which will last for a few seconds to a few minutes..."
+              />
+            }
+          />
+        );
+      } else if (this.state.importCurrent > this.state.importTotal) {
+        return <LoadingResult />;
+      } else {
+        return (
+          <LoadingResult
+            description={
+              <FormattedMessage
+                id="app.result.loading.description.importing_data.progress"
+                defaultMessage="Takos is importing data {current}/{total}, which will last for a few seconds to a few minutes..."
+                values={{
+                  current: this.state.importCurrent,
+                  total: this.state.importTotal
+                }}
+              />
+            }
+          />
+        );
+      }
     } else {
       return (
         <Layout>
@@ -725,12 +881,49 @@ class SettingsWindow extends React.Component {
                     <Button onClick={this.exportData} loading={this.state.exporting} type="default">
                       <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
                     </Button>
-                    <Button type="default" onClick={this.triggerImportData} style={{ marginLeft: '8px' }}>
+                    <Button
+                      type="default"
+                      onClick={() => {
+                        document.getElementById('import').click();
+                      }}
+                      style={{ marginLeft: '8px' }}
+                    >
                       <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
                       <input id="import" type="file" onChange={this.importData} style={{ display: 'none' }} />
                     </Button>
                     <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
                       <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
+                    </Button>
+                  </Col>
+                </Row>
+              </Form.Item>
+              <Form.Item
+                label={
+                  <FormattedMessage
+                    id="app.settings.system.import_other"
+                    defaultMessage="Import Other Format Data (Beta)"
+                  />
+                }
+              >
+                <Row gutter={8}>
+                  <Col>
+                    <Button
+                      onClick={() => {
+                        document.getElementById('importFromSplatnetJson').click();
+                      }}
+                      type="default"
+                    >
+                      <FormattedMessage
+                        id="app.settings.system.import_other.splatnet_json"
+                        defaultMessage="SplatNet JSON"
+                      />
+                      <input
+                        id="importFromSplatnetJson"
+                        type="file"
+                        multiple="multiple"
+                        onChange={this.importDataFromSplatnetJson}
+                        style={{ display: 'none' }}
+                      />
                     </Button>
                   </Col>
                 </Row>

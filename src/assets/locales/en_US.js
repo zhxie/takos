@@ -969,6 +969,8 @@ const en_US = {
   'battle.power.splatfest.other': 'Other Team Splatfest Power',
   'battle.power.splatfest.current': 'Current Splatfest Power',
   'battle.power.splatfest.highest': 'Highest Splatfest Power',
+  'battle.contribution': 'Clout',
+  'battle.contribution.total': 'Total Clouts',
   'battle.time.start': 'Start Time',
   'battle.time.elapsed': 'Elapsed Time',
   // App
@@ -1014,6 +1016,8 @@ const en_US = {
   'app.settings.system.data.export': 'Export Data',
   'app.settings.system.data.import': 'Import Data',
   'app.settings.system.data.clear': 'Clear Data',
+  'app.settings.system.import_other': 'Import Other Format Data (Beta)',
+  'app.settings.system.import_other.splatnet_json': 'SplatNet JSON',
   'app.back_log_in': 'Back Log In',
   'app.to_settings': 'To Settings',
   'app.previous': 'Previous',
@@ -1085,6 +1089,8 @@ const en_US = {
     'Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes...',
   'app.result.loading.description.importing_data':
     'Takos is importing data, which will last for a few seconds to a few minutes...',
+  'app.result.loading.description.importing_data.progress':
+    'Takos is importing data {current}/{total}, which will last for a few seconds to a few minutes...',
   'app.result.error': 'Ouch!',
   'app.result.404': '404',
   'app.result.404.description': 'Are you lost, small octoling?',
