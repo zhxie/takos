@@ -1716,6 +1716,7 @@ class BattlesWindow extends React.Component {
                     visible={this.state.showBattleId !== null}
                     onCancel={this.hideBattle}
                     footer={this.battle.buttons}
+                    width={880}
                   />
                 );
               }

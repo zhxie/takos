@@ -1010,7 +1010,7 @@ class BattleModal extends React.Component {
         onCancel={this.props.onCancel}
         footer={this.props.footer}
         column={2}
-        width="800px"
+        width={this.props.width}
         centered
       >
         {(() => {
@@ -1028,6 +1028,6 @@ class BattleModal extends React.Component {
   }
 }
 
-BattleModal.defaultProps = { visible: false, footer: null };
+BattleModal.defaultProps = { visible: false, footer: null, width: 800 };
 
 export default BattleModal;
