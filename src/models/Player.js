@@ -291,6 +291,10 @@ class BattlePlayer extends Player {
     return parseInt(this.level / 100);
   };
 
+  isDisconnect = () => {
+    return this.paint === 0;
+  };
+
   static parse = (data, url, isSelf) => {
     try {
       const species = Species.parse(data.player.player_type.species);

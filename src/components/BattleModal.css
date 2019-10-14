@@ -60,3 +60,34 @@
   font-size: 10px;
   vertical-align: super;
 }
+
+.BattleModal-statistics-span {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.BattleModal-statistics-row {
+  display: contents;
+}
+
+.BattleModal-statistics-col {
+  margin-bottom: 16px;
+}
+
+.BattleModal-statistics-card {
+  cursor: default;
+}
+
+.BattlesModal-statistics-progress {
+  margin-right: 8px;
+  max-width: 400px;
+}
+
+.BattlesModal-statistics-progress .ant-progress-bg {
+  background-color: #eb2f96;
+}
+
+.BattlesModal-statistics-progress .ant-progress-inner {
+  background-color: #52c41a;
+}

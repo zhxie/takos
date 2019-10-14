@@ -1,6 +1,20 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty } from 'antd';
+import {
+  Modal,
+  PageHeader,
+  Descriptions,
+  Tag,
+  Progress,
+  Tooltip,
+  Table,
+  Empty,
+  Row,
+  Col,
+  Card,
+  Statistic,
+  Icon
+} from 'antd';
 
 import './BattleModal.css';
 import { OctolingsDeathIcon } from './CustomIcons';
@@ -804,6 +818,13 @@ class BattleModal extends React.Component {
                       </Tag>
                     );
                   }
+                  if (text.isDisconnect()) {
+                    return (
+                      <Tag className="BattleModal-players-tag" key="disconnect">
+                        <FormattedMessage id="player.disconnect" defaultMessage="Disconnect" />
+                      </Tag>
+                    );
+                  }
                 })()}
               </span>
             );
@@ -983,6 +1004,126 @@ class BattleModal extends React.Component {
     );
   }
 
+  renderStatistics() {
+    // TODO: not finished
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="app.battles.statistics" defaultMessage="Statistics" />} />
+        <Row gutter={16}>
+          <Col className="BattleModal-statistics-col" xs={24} sm={12}>
+            <Card className="BattleModal-statistics-card" hoverable>
+              <Statistic
+                className="BattleModal-statistics-statistic"
+                title={<FormattedMessage id="player.paint" defaultMessage="Paint" />}
+                prefix={(() => {
+                  if (this.props.value.myTeamPaint() > this.props.value.otherTeamPaint()) {
+                    return <Icon type="caret-up" />;
+                  } else if (this.props.value.myTeamPaint() < this.props.value.otherTeamPaint()) {
+                    return <Icon type="caret-down" />;
+                  }
+                })()}
+                value={'{0} - {1}'.format(this.props.value.myTeamPaint(), this.props.value.otherTeamPaint())}
+                valueStyle={(() => {
+                  if (this.props.value.myTeamPaint() > this.props.value.otherTeamPaint()) {
+                    return { color: '#eb2f96' };
+                  } else if (this.props.value.myTeamPaint() < this.props.value.otherTeamPaint()) {
+                    return { color: '#52c41a' };
+                  }
+                })()}
+              />
+            </Card>
+          </Col>
+          <Col className="BattleModal-statistics-col" xs={24} sm={12}>
+            <Card className="BattleModal-statistics-card" hoverable>
+              <Statistic
+                className="BattleModal-statistics-statistic"
+                title={<FormattedMessage id="player.kill" defaultMessage="Kill" />}
+                prefix={(() => {
+                  if (this.props.value.myTeamKill() > this.props.value.otherTeamKill()) {
+                    return <Icon type="caret-up" />;
+                  } else if (this.props.value.myTeamKill() < this.props.value.otherTeamKill()) {
+                    return <Icon type="caret-down" />;
+                  }
+                })()}
+                value={(() => {
+                  let myTeamString = '';
+                  if (this.props.value.myTeamAssist() > 0) {
+                    myTeamString = '{0} ({1})'.format(this.props.value.myTeamKill(), this.props.value.myTeamAssist());
+                  } else {
+                    myTeamString = '{0}'.format(this.props.value.myTeamKill());
+                  }
+                  let otherTeamString = '';
+                  if (this.props.value.otherTeamAssist() > 0) {
+                    otherTeamString = '{0} ({1})'.format(
+                      this.props.value.otherTeamKill(),
+                      this.props.value.otherTeamAssist()
+                    );
+                  } else {
+                    otherTeamString = '{0}'.format(this.props.value.otherTeamKill());
+                  }
+                  return '{0} - {1}'.format(myTeamString, otherTeamString);
+                })()}
+                valueStyle={(() => {
+                  if (this.props.value.myTeamKill() > this.props.value.otherTeamKill()) {
+                    return { color: '#eb2f96' };
+                  } else if (this.props.value.myTeamKill() < this.props.value.otherTeamKill()) {
+                    return { color: '#52c41a' };
+                  }
+                })()}
+              />
+            </Card>
+          </Col>
+          <Col className="BattleModal-statistics-col" xs={24} sm={12}>
+            <Card className="BattleModal-statistics-card" hoverable>
+              <Statistic
+                className="BattleModal-statistics-statistic"
+                title={<FormattedMessage id="player.death" defaultMessage="Death" />}
+                prefix={(() => {
+                  if (this.props.value.myTeamDeath() > this.props.value.otherTeamDeath()) {
+                    return <Icon type="caret-up" />;
+                  } else if (this.props.value.myTeamDeath() < this.props.value.otherTeamDeath()) {
+                    return <Icon type="caret-down" />;
+                  }
+                })()}
+                value={'{0} - {1}'.format(this.props.value.myTeamDeath(), this.props.value.otherTeamDeath())}
+                valueStyle={(() => {
+                  if (this.props.value.myTeamDeath() < this.props.value.otherTeamDeath()) {
+                    return { color: '#eb2f96' };
+                  } else if (this.props.value.myTeamDeath() > this.props.value.otherTeamDeath()) {
+                    return { color: '#52c41a' };
+                  }
+                })()}
+              />
+            </Card>
+          </Col>
+          <Col className="BattleModal-statistics-col" xs={24} sm={12}>
+            <Card className="BattleModal-statistics-card" hoverable>
+              <Statistic
+                className="BattleModal-statistics-statistic"
+                title={<FormattedMessage id="player.special" defaultMessage="Special" />}
+                prefix={(() => {
+                  if (this.props.value.myTeamSpecial() > this.props.value.otherTeamSpecial()) {
+                    return <Icon type="caret-up" />;
+                  } else if (this.props.value.myTeamSpecial() < this.props.value.otherTeamSpecial()) {
+                    return <Icon type="caret-down" />;
+                  }
+                })()}
+                value={'{0} - {1}'.format(this.props.value.myTeamSpecial(), this.props.value.otherTeamSpecial())}
+                valueStyle={(() => {
+                  if (this.props.value.myTeamSpecial() > this.props.value.otherTeamSpecial()) {
+                    return { color: '#eb2f96' };
+                  } else if (this.props.value.myTeamSpecial() < this.props.value.otherTeamSpecial()) {
+                    return { color: '#52c41a' };
+                  }
+                })()}
+              />
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+
   render() {
     return (
       <Modal
@@ -1021,6 +1162,11 @@ class BattleModal extends React.Component {
         {(() => {
           if (this.props.value !== undefined && this.props.value !== null) {
             return this.renderPlayers();
+          }
+        })()}
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderStatistics();
           }
         })()}
       </Modal>

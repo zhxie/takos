@@ -57,6 +57,78 @@ class Battle extends Base {
     return this.levelAfter - this.star() * 100;
   };
 
+  myTeamPaint = () => {
+    let paint = 0;
+    this.myTeamMembers.forEach(element => {
+      paint = paint + element.paint;
+    });
+    return paint;
+  };
+  myTeamKill = () => {
+    let kill = 0;
+    this.myTeamMembers.forEach(element => {
+      kill = kill + element.kill;
+    });
+    return kill;
+  };
+  myTeamAssist = () => {
+    let assit = 0;
+    this.myTeamMembers.forEach(element => {
+      assit = assit + element.assist;
+    });
+    return assit;
+  };
+  myTeamDeath = () => {
+    let death = 0;
+    this.myTeamMembers.forEach(element => {
+      death = death + element.death;
+    });
+    return death;
+  };
+  myTeamSpecial = () => {
+    let special = 0;
+    this.myTeamMembers.forEach(element => {
+      special = special + element.special;
+    });
+    return special;
+  };
+
+  otherTeamPaint = () => {
+    let paint = 0;
+    this.otherTeamMembers.forEach(element => {
+      paint = paint + element.paint;
+    });
+    return paint;
+  };
+  otherTeamKill = () => {
+    let kill = 0;
+    this.otherTeamMembers.forEach(element => {
+      kill = kill + element.kill;
+    });
+    return kill;
+  };
+  otherTeamAssist = () => {
+    let assit = 0;
+    this.otherTeamMembers.forEach(element => {
+      assit = assit + element.assist;
+    });
+    return assit;
+  };
+  otherTeamDeath = () => {
+    let death = 0;
+    this.otherTeamMembers.forEach(element => {
+      death = death + element.death;
+    });
+    return death;
+  };
+  otherTeamSpecial = () => {
+    let special = 0;
+    this.otherTeamMembers.forEach(element => {
+      special = special + element.special;
+    });
+    return special;
+  };
+
   star = () => {
     return parseInt(this.levelAfter / 100);
   };
