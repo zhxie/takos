@@ -418,39 +418,35 @@ class DashboardWindow extends React.Component {
             return (
               <Row gutter={16}>
                 {(() => {
-                  return (
-                    <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
-                      <Card
-                        title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
-                        bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
-                      >
-                        <Row gutter={16}>
-                          {(() => {
-                            if (this.state.battle != null) {
-                              return (
-                                <Col className="DashboardWindow-content-column" span={24}>
-                                  <Statistic
-                                    className="DashboardWindow-content-statistic"
-                                    title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
-                                    prefix={(() => {
-                                      if (this.state.battle.isLevelAfterWithStar()) {
-                                        return (
-                                          <Tooltip title={this.state.battle.star()}>
-                                            <span className="DashboardWindow-content-statistic-star">★</span>
-                                          </Tooltip>
-                                        );
-                                      }
-                                    })()}
-                                    value={this.state.battle.levelAfterWithStar()}
-                                  />
-                                </Col>
-                              );
-                            }
-                          })()}
-                        </Row>
-                      </Card>
-                    </Col>
-                  );
+                  if (this.state.battle != null) {
+                    return (
+                      <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                        <Card
+                          title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
+                          bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                        >
+                          <Row gutter={16}>
+                            <Col className="DashboardWindow-content-column" span={24}>
+                              <Statistic
+                                className="DashboardWindow-content-statistic"
+                                title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
+                                prefix={(() => {
+                                  if (this.state.battle.isLevelAfterWithStar()) {
+                                    return (
+                                      <Tooltip title={this.state.battle.star()}>
+                                        <span className="DashboardWindow-content-statistic-star">★</span>
+                                      </Tooltip>
+                                    );
+                                  }
+                                })()}
+                                value={this.state.battle.levelAfterWithStar()}
+                              />
+                            </Col>
+                          </Row>
+                        </Card>
+                      </Col>
+                    );
+                  }
                 })()}
                 {(() => {
                   if (this.state.rank !== null) {
