@@ -74,7 +74,7 @@ Object.freeze(BaseBrand);
 
 class Brand extends Base {
   constructor(e, brand, url, favoredAbility) {
-    super(e);
+    super(e, null);
     this.brand = brand;
     this.url = url;
     this.favoredAbility = favoredAbility;

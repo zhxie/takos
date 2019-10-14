@@ -228,7 +228,7 @@ PlayerType.salmonRun = new PlayerType('player.salmon_run', 2);
 
 class Player extends Base {
   constructor(e, type, id, nickname, species, style, url, isSelf) {
-    super(e);
+    super(e, null);
     this.type = type;
     this.id = id;
     this.nickname = nickname;

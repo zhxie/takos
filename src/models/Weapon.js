@@ -623,7 +623,7 @@ class Weapon extends Base {
     specialWeaponUrlA,
     specialWeaponUrlB
   ) {
-    super(e);
+    super(e, null);
     this.mainWeapon = mainWeapon;
     this.mainWeaponUrl = mainWeaponUrl;
     this.subWeapon = subWeapon;

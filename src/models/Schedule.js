@@ -5,7 +5,7 @@ import { ScheduledStage } from './Stage';
 
 class Schedule extends Base {
   constructor(e, mode, rule, startTime, endTime, stage1, stage2) {
-    super(e);
+    super(e, null);
     this.mode = mode;
     this.rule = rule;
     this.startTime = startTime;

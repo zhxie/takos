@@ -189,7 +189,7 @@ Object.freeze(SecondaryAbility);
 
 class Ability extends Base {
   constructor(e, ability, url) {
-    super(e);
+    super(e, null);
     this.ability = ability;
     this.url = url;
   }

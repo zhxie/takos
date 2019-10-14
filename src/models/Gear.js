@@ -1819,7 +1819,7 @@ Object.freeze(ShoesGear);
 
 class Gear extends Base {
   constructor(e, gear, url, brand, primaryAbility, secondaryAbilities) {
-    super(e);
+    super(e, null);
     this.gear = gear;
     this.url = url;
     this.brand = brand;

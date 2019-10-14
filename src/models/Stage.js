@@ -163,7 +163,7 @@ Object.freeze(Stage);
 
 class ScheduledStage extends Base {
   constructor(e, stage, url) {
-    super(e);
+    super(e, null);
     this.stage = stage;
     this.url = url;
   }

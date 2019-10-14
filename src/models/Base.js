@@ -1,6 +1,7 @@
 class Base {
-  constructor(e) {
+  constructor(e, raw) {
     this.error = e;
+    this.raw = raw;
   }
 }
 

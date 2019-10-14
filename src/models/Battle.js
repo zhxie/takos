@@ -9,6 +9,7 @@ import TakosError from '../utils/ErrorHelper';
 class Battle extends Base {
   constructor(
     e,
+    raw,
     type,
     rule,
     number,
@@ -23,7 +24,7 @@ class Battle extends Base {
     myTeamCount,
     otherTeamCount
   ) {
-    super(e);
+    super(e, raw);
     this.type = type;
     this.number = number;
     this.startTime = startTime;
@@ -135,6 +136,7 @@ class Battle extends Base {
 
   static parse = data => {
     try {
+      const raw = JSON.stringify(data);
       const type = Mode.parse(data.type);
       const number = parseInt(data.battle_number);
       const startTime = parseInt(data.start_time);
@@ -191,6 +193,7 @@ class Battle extends Base {
               }
               return new RegularBattle(
                 null,
+                raw,
                 rule,
                 number,
                 startTime,
@@ -213,6 +216,7 @@ class Battle extends Base {
               ) {
                 return new RankedBattle(
                   null,
+                  raw,
                   rule,
                   number,
                   startTime,
@@ -235,6 +239,7 @@ class Battle extends Base {
                 }
                 return new RankedXBattle(
                   null,
+                  raw,
                   rule,
                   number,
                   startTime,
@@ -260,6 +265,7 @@ class Battle extends Base {
               }
               return new LeagueBattle(
                 null,
+                raw,
                 rule,
                 number,
                 startTime,
@@ -287,6 +293,7 @@ class Battle extends Base {
               }
               return new SplatfestBattle(
                 null,
+                raw,
                 rule,
                 number,
                 startTime,
@@ -332,6 +339,7 @@ class Battle extends Base {
 
   static deserialize = data => {
     try {
+      const raw = data.raw;
       const type = Mode.deserialize(data.type);
       const number = parseInt(data.number);
       const startTime = parseInt(data.startTime);
@@ -374,6 +382,7 @@ class Battle extends Base {
           }
           return new RegularBattle(
             null,
+            raw,
             rule,
             number,
             startTime,
@@ -396,6 +405,7 @@ class Battle extends Base {
           ) {
             return new RankedBattle(
               null,
+              raw,
               rule,
               number,
               startTime,
@@ -418,6 +428,7 @@ class Battle extends Base {
             }
             return new RankedXBattle(
               null,
+              raw,
               rule,
               number,
               startTime,
@@ -442,6 +453,7 @@ class Battle extends Base {
           }
           return new LeagueBattle(
             null,
+            raw,
             rule,
             number,
             startTime,
@@ -469,6 +481,7 @@ class Battle extends Base {
           }
           return new SplatfestBattle(
             null,
+            raw,
             rule,
             number,
             startTime,
@@ -503,6 +516,7 @@ class Battle extends Base {
 class RegularBattle extends Battle {
   constructor(
     e,
+    raw,
     rule,
     number,
     startTime,
@@ -518,6 +532,7 @@ class RegularBattle extends Battle {
   ) {
     super(
       e,
+      raw,
       Mode.regularBattle,
       rule,
       number,
@@ -543,6 +558,7 @@ class RegularBattle extends Battle {
 class RankedBattle extends Battle {
   constructor(
     e,
+    raw,
     rule,
     number,
     startTime,
@@ -560,6 +576,7 @@ class RankedBattle extends Battle {
   ) {
     super(
       e,
+      raw,
       Mode.rankedBattle,
       rule,
       number,
@@ -641,6 +658,7 @@ class RankedXBattle extends RankedBattle {
 class LeagueBattle extends Battle {
   constructor(
     e,
+    raw,
     rule,
     number,
     startTime,
@@ -660,6 +678,7 @@ class LeagueBattle extends Battle {
   ) {
     super(
       e,
+      raw,
       Mode.leagueBattle,
       rule,
       number,
@@ -695,6 +714,7 @@ class LeagueBattle extends Battle {
 class SplatfestBattle extends Battle {
   constructor(
     e,
+    raw,
     rule,
     number,
     startTime,
@@ -717,6 +737,7 @@ class SplatfestBattle extends Battle {
   ) {
     super(
       e,
+      raw,
       Mode.splatfest,
       rule,
       number,
