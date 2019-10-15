@@ -392,6 +392,7 @@ class SettingsWindow extends React.Component {
       console.log(battles[i]);
       return Battle.parse(battles[i])
         .then(res => {
+          console.log(res);
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -400,29 +401,28 @@ class SettingsWindow extends React.Component {
           }
         })
         .then(res => {
-          this.setState({ importCurrent: this.state.importCurrent + 1 });
-          if (res instanceof TakosError) {
+          if (res instanceof TakosError && !(res.message.startsWith('battle_') && res.message.endsWith('_exists'))) {
             throw new TakosError(res.message);
+          } else {
+            if (res instanceof TakosError) {
+              if (firstError === null) {
+                firstError = res.message;
+              }
+            }
+            this.setState({ importCurrent: this.state.importCurrent + 1 });
+            if (i + 1 < battles.length) {
+              return getLocalBattleRecursively(battles, i + 1);
+            }
           }
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            if (firstError === null) {
-              firstError = e.message;
-            }
+            return new TakosError(e.message);
           } else {
             console.error(e);
-            if (firstError === null) {
-              firstError = 'can_not_import_data';
-            }
+            return new TakosError('can_not_import_data');
           }
-        })
-        .then(() => {
-          if (i + 1 < battles.length) {
-            return getLocalBattleRecursively(battles, i + 1);
-          }
-        })
-        .catch();
+        });
     };
 
     const readFileComplete = e => {
@@ -439,11 +439,15 @@ class SettingsWindow extends React.Component {
           if (data.length > 0) {
             this.setState({ importCurrent: 1, importTotal: data.length });
             return getLocalBattleRecursively(data, 0)
-              .then(() => {
-                if (firstError !== null) {
-                  throw new TakosError(firstError);
+              .then(res => {
+                if (res instanceof TakosError) {
+                  throw new TakosError(res.message);
                 } else {
-                  this.setState({ importing: false });
+                  if (firstError !== null) {
+                    throw new TakosError(firstError);
+                  } else {
+                    this.setState({ importing: false });
+                  }
                 }
               })
               .catch(e => {
