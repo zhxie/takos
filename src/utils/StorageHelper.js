@@ -1,6 +1,7 @@
 import localForage from 'localforage';
 
 import TakosError from './ErrorHelper';
+import './StringHelper';
 import { Battle, RankedBattle } from '../models/Battle';
 import Rule from '../models/Rule';
 
@@ -166,7 +167,7 @@ class StorageHelper {
       .getItem(battle.number.toString())
       .then(res => {
         if (res !== null) {
-          throw new TakosError('same_battle_exists');
+          throw new TakosError('battle_{0}_exists'.format(battle.number));
         } else {
           // Same number battle not exists
           return StorageHelper.battlesConnection.setItem(battle.number.toString(), JSON.stringify(battle));
