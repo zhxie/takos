@@ -18,6 +18,9 @@ MainWeaponType.splatling = new MainWeaponType('weapon.main.splatling', 7);
 MainWeaponType.maneuver = new MainWeaponType('weapon.main.maneuver', 8);
 MainWeaponType.brella = new MainWeaponType('weapon.main.brella', 9);
 
+MainWeaponType.random = new MainWeaponType('weapon.main.random', 10);
+MainWeaponType.grizzco = new MainWeaponType('weapon.main.grizzco', 11);
+
 Object.freeze(MainWeaponType);
 
 class MainWeapon {
@@ -307,6 +310,18 @@ class MainWeapon {
         return MainWeapon.spygadgetSorella;
       case 6022:
         return MainWeapon.spygadgetBecchu;
+      case -1:
+        return MainWeapon.random;
+      case -2:
+        return MainWeapon.randomGold;
+      case -20000:
+        return MainWeapon.kumaBlaster;
+      case -20010:
+        return MainWeapon.kumaBrella;
+      case -20020:
+        return MainWeapon.kumaCharger;
+      case -20030:
+        return MainWeapon.kumaSlosher;
       default:
         throw new RangeError();
     }
@@ -493,6 +508,13 @@ MainWeapon.spygadget = new MainWeapon('weapon.main.brella.spygadget', MainWeapon
 MainWeapon.spygadgetSorella = new MainWeapon('weapon.main.brella.spygadget_sorella', MainWeaponType.brella, 6021);
 MainWeapon.spygadgetBecchu = new MainWeapon('weapon.main.brella.spygadget_becchu', MainWeaponType.brella, 6022);
 
+MainWeapon.random = new MainWeapon('weapon.main.random.random', MainWeaponType.random, -1);
+MainWeapon.randomGold = new MainWeapon('weapon.main.random.random_gold', MainWeaponType.random, -2);
+MainWeapon.kumaBlaster = new MainWeapon('weapon.main.grizzco.kuma_blaster', MainWeaponType.grizzco, 20000);
+MainWeapon.kumaBrella = new MainWeapon('weapon.main.grizzco.kuma_brella', MainWeaponType.grizzco, 20010);
+MainWeapon.kumaCharger = new MainWeapon('weapon.main.grizzco.kuma_charger', MainWeaponType.grizzco, 20020);
+MainWeapon.kumaSlosher = new MainWeapon('weapon.main.grizzco.kuma_slosher', MainWeaponType.grizzco, 20030);
+
 Object.freeze(MainWeapon);
 
 class SubWeapon {
@@ -653,6 +675,22 @@ class Weapon extends Base {
     } catch (e) {
       console.error(e);
       return new Weapon('can_not_parse_weapon');
+    }
+  };
+
+  static parseShift = data => {
+    try {
+      const mainWeapon = MainWeapon.parse(parseInt(data.id));
+      let mainWeaponUrl;
+      if (data.coop_special_weapon !== undefined) {
+        mainWeaponUrl = data.coop_special_weapon.image;
+      } else {
+        mainWeaponUrl = data.weapon.image;
+      }
+      return new Weapon(null, mainWeapon, mainWeaponUrl, null, null, null, null, null, null);
+    } catch (e) {
+      console.error(e);
+      return new Weapon('can_not_parse_shift_weapon');
     }
   };
 

@@ -22,10 +22,12 @@ class Schedule extends Base {
       const endTime = parseInt(data.end_time);
       const stage1 = ScheduledStage.parse(data.stage_a);
       if (stage1.error != null) {
+        // Handle previous error
         return new Schedule(stage1.error);
       }
       const stage2 = ScheduledStage.parse(data.stage_b);
       if (stage2.error != null) {
+        // Handle previous error
         return new Schedule(stage2.error);
       }
       return new Schedule(null, mode, rule, startTime, endTime, stage1, stage2);

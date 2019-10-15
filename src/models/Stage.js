@@ -108,6 +108,23 @@ class Stage {
         throw new RangeError();
     }
   };
+
+  static parseShift = url => {
+    switch (url) {
+      case '/images/coop_stage/65c68c6f0641cc5654434b78a6f10b0ad32ccdee.png':
+        return Stage.spawningGrounds;
+      case '/images/coop_stage/e07d73b7d9f0c64e552b34a2e6c29b8564c63388.png':
+        return Stage.maroonersBay;
+      case '/images/coop_stage/6d68f5baa75f3a94e5e9bfb89b82e7377e3ecd2c.png':
+        return Stage.lostOutpost;
+      case '/images/coop_stage/e9f7c7b35e6d46778cd3cbc0d89bd7e1bc3be493.png':
+        return Stage.salmonidSmokeyard;
+      case '/images/coop_stage/50064ec6e97aac91e70df5fc2cfecf61ad8615fd.png':
+        return Stage.ruinsOfArkPolaris;
+      default:
+        throw new RangeError();
+    }
+  };
 }
 
 Stage.theReef = new Stage('stage.the_reef', 0);
@@ -159,6 +176,12 @@ Stage.furlerInTheAshes = new Stage('stage.furler_in_the_ashes', 123);
 Stage.mcPrincessDiaries = new Stage('stage.mc_princess_diaries', 124);
 Stage.shiftyStation = new Stage('stage.shifty_station', 9999);
 
+Stage.spawningGrounds = new Stage('stage.shift.spawning_grounds', 10000);
+Stage.maroonersBay = new Stage('stage.shift.marooners_bay', 10001);
+Stage.lostOutpost = new Stage('stage.shift.lost_outpost', 10002);
+Stage.salmonidSmokeyard = new Stage('stage.shift.salmonid_smokeyard', 10003);
+Stage.ruinsOfArkPolaris = new Stage('stage.shift.ruins_of_ark_polaris', 10004);
+
 Object.freeze(Stage);
 
 class ScheduledStage extends Base {
@@ -175,6 +198,16 @@ class ScheduledStage extends Base {
     } catch (e) {
       console.error(e);
       return new ScheduledStage('can_not_parse_scheduled_stage');
+    }
+  };
+
+  static parseShift = data => {
+    try {
+      const stage = Stage.parseShift(data.image);
+      return new ScheduledStage(null, stage, data.image);
+    } catch (e) {
+      console.error(e);
+      return new ScheduledStage('can_not_parse_scheduled_shift_stage');
     }
   };
 
