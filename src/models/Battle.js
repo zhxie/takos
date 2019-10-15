@@ -145,7 +145,9 @@ class Battle extends Base {
       const stage = ScheduledStage.parse(data.stage);
       if (stage.error !== null) {
         // Handle previous error
-        return new Battle(stage.error);
+        return new Promise(resolve => {
+          resolve(new Battle(stage.error));
+        });
       }
       let myTeamMembersCount = 1;
       let players = [];
@@ -329,10 +331,14 @@ class Battle extends Base {
         });
     } catch (e) {
       if (e instanceof TakosError) {
-        return new Battle(e.message);
+        return new Promise(resolve => {
+          resolve(new Battle(e.message));
+        });
       } else {
         console.error(e);
-        return new Battle('can_not_parse_battle');
+        return new Promise(resolve => {
+          resolve(new Battle('can_not_parse_battle'));
+        });
       }
     }
   };
