@@ -1086,18 +1086,21 @@ class BattleModal extends React.Component {
                 value={(() => {
                   let myTeamString = '';
                   if (this.props.value.myTeamAssist() > 0) {
-                    myTeamString = '{0} ({1})'.format(this.props.value.myTeamKill(), this.props.value.myTeamAssist());
+                    myTeamString = '{0} ({1})'.format(
+                      this.props.value.myTeamKillAndAssist(),
+                      this.props.value.myTeamAssist()
+                    );
                   } else {
-                    myTeamString = '{0}'.format(this.props.value.myTeamKill());
+                    myTeamString = '{0}'.format(this.props.value.myTeamKillAndAssist());
                   }
                   let otherTeamString = '';
                   if (this.props.value.otherTeamAssist() > 0) {
                     otherTeamString = '{0} ({1})'.format(
-                      this.props.value.otherTeamKill(),
+                      this.props.value.otherTeamKillAndAssist(),
                       this.props.value.otherTeamAssist()
                     );
                   } else {
-                    otherTeamString = '{0}'.format(this.props.value.otherTeamKill());
+                    otherTeamString = '{0}'.format(this.props.value.otherTeamKillAndAssist());
                   }
                   return '{0} - {1}'.format(myTeamString, otherTeamString);
                 })()}

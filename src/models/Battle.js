@@ -79,6 +79,13 @@ class Battle extends Base {
     });
     return assit;
   };
+  myTeamKillAndAssist = () => {
+    let kill = 0;
+    this.myTeamMembers.forEach(element => {
+      kill = kill + element.killAndAssist();
+    });
+    return kill;
+  };
   myTeamDeath = () => {
     let death = 0;
     this.myTeamMembers.forEach(element => {
@@ -114,6 +121,13 @@ class Battle extends Base {
       assit = assit + element.assist;
     });
     return assit;
+  };
+  otherTeamKillAndAssist = () => {
+    let kill = 0;
+    this.otherTeamMembers.forEach(element => {
+      kill = kill + element.killAndAssist();
+    });
+    return kill;
   };
   otherTeamDeath = () => {
     let death = 0;
