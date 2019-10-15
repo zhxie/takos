@@ -843,6 +843,8 @@ class BattleModal extends React.Component {
                       </Tag>
                     );
                   }
+                })()}
+                {(() => {
                   if (text.id === this.props.highlightPlayer) {
                     switch (text.style) {
                       case Style.girl:
@@ -861,6 +863,8 @@ class BattleModal extends React.Component {
                         throw new RangeError();
                     }
                   }
+                })()}
+                {(() => {
                   if (text.isDisconnect()) {
                     return (
                       <Tag className="BattleModal-players-tag" key="disconnect">
