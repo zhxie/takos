@@ -379,14 +379,14 @@ class BattlesWindow extends React.Component {
           if (this.state.updated) {
             return (
               <Alert
-                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.info.battles_can_not_update"
+                    id="app.alert.warning.battles_can_not_update"
                     defaultMessage="Takos can not update battles, please refresh this page to update."
                   />
                 }
-                type="info"
+                type="warning"
                 showIcon
               />
             );

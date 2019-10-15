@@ -130,14 +130,14 @@ class SchedulesWindow extends React.Component {
     return (
       <div>
         {(() => {
-          if (this.state.expired) {
+          if (this.state.updated) {
             return (
               <Alert
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.warning.schedules_expired"
-                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                    id="app.alert.warning.schedules_can_not_update"
+                    defaultMessage="Takos can not update schedules, please refresh this page to update."
                   />
                 }
                 type="warning"
@@ -147,14 +147,14 @@ class SchedulesWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.updated) {
+          if (this.state.expired) {
             return (
               <Alert
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.info.schedules_can_not_update"
-                    defaultMessage="Takos can not update schedules, please refresh this page to update."
+                    id="app.alert.info.schedules_expired"
+                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
                   />
                 }
                 type="info"

@@ -1034,10 +1034,10 @@ const zh_CN = {
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':
     '自动 Cookie 生成将向 2 个非任天堂服务器发起安全请求。这些请求中仅包含最小的，非识别性的信息。在开始前，请仔细阅读 <a>README</a> 中“Security and Privacy”一章。',
-  'app.alert.warning.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
+  'app.alert.warning.schedules_can_not_update': 'Takos 未能更新日程，请刷新页面以更新。',
+  'app.alert.warning.battles_can_not_update': 'Takos 未能更新战斗，请刷新页面以更新。',
   'app.alert.info': '信息',
-  'app.alert.info.schedules_can_not_update': 'Takos 未能更新日程，请刷新页面以更新。',
-  'app.alert.info.battles_can_not_update': 'Takos 未能更新战斗，请刷新页面以更新。',
+  'app.alert.info.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info.battles_filtered': '展示的战斗已经过筛选，请点击<l>这里</l>以取消筛选。',
   'app.alert.info.use_automatic_cookie_generation':
     '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',

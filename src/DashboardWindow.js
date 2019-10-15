@@ -332,29 +332,11 @@ class DashboardWindow extends React.Component {
             return (
               <Alert
                 className="DashboardWindow-content-alert"
-                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
-                description={
-                  <FormattedMessage
-                    id="app.alert.info.battles_can_not_update"
-                    defaultMessage="Takos can not update battles, please refresh this page to update."
-                  />
-                }
-                type="info"
-                showIcon
-              />
-            );
-          }
-        })()}
-        {(() => {
-          if (this.state.expired) {
-            return (
-              <Alert
-                className="DashboardWindow-content-alert"
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.warning.schedules_expired"
-                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                    id="app.alert.warning.battles_can_not_update"
+                    defaultMessage="Takos can not update battles, please refresh this page to update."
                   />
                 }
                 type="warning"
@@ -368,11 +350,29 @@ class DashboardWindow extends React.Component {
             return (
               <Alert
                 className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.schedules_can_not_update"
+                    defaultMessage="Takos can not update schedules, please refresh this page to update."
+                  />
+                }
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.expired) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.info.schedules_can_not_update"
-                    defaultMessage="Takos can not update schedules, please refresh this page to update."
+                    id="app.alert.info.schedules_expired"
+                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
                   />
                 }
                 type="info"
