@@ -314,7 +314,7 @@ class DashboardWindow extends React.Component {
   };
 
   timeout = () => {
-    if (this.state.schedules !== undefined) {
+    if (this.state.schedules instanceof Array && this.state.schedules.length > 0) {
       if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
         this.setState({ expired: true });
       } else {
