@@ -199,7 +199,11 @@ class BattleModal extends React.Component {
             </span>
           </Descriptions.Item>
           {(() => {
-            if (this.props.value instanceof RankedBattle && !(this.props.value instanceof RankedXBattle)) {
+            if (
+              this.props.value instanceof RankedBattle &&
+              !(this.props.value instanceof RankedXBattle) &&
+              this.props.value.gameMode === Mode.rankedBattle
+            ) {
               return (
                 <Descriptions.Item
                   label={<FormattedMessage id="battle.power.ranked" defaultMessage="Power Level" />}

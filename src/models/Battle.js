@@ -228,8 +228,13 @@ class Battle extends Base {
               if (
                 myTeamMembers.find(element => {
                   return element.isSelf;
-                }).Rank !== Rank.x
+                }).Rank !== Rank.x ||
+                gameMode !== Mode.rankedBattle
               ) {
+                let estimatedRankPower = 0;
+                if (gameMode === Mode.rankedBattle) {
+                  estimatedRankPower = parseInt(data.estimate_gachi_power);
+                }
                 return new RankedBattle(
                   null,
                   raw,
@@ -246,7 +251,7 @@ class Battle extends Base {
                   parseInt(data.my_team_count),
                   parseInt(data.other_team_count),
                   Rank.parse(data.udemae),
-                  parseInt(data.estimate_gachi_power)
+                  estimatedRankPower
                 );
               } else {
                 let xPowerAfter = null;
@@ -421,7 +426,8 @@ class Battle extends Base {
           if (
             myTeamMembers.find(element => {
               return element.isSelf;
-            }).Rank !== Rank.x
+            }).Rank !== Rank.x ||
+            gameMode !== Mode.rankedBattle
           ) {
             return new RankedBattle(
               null,

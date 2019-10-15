@@ -61,7 +61,6 @@ class BattlesWindow extends React.Component {
     } else {
       this.state.search = null;
     }
-    console.log(this.props.location);
   }
 
   modeIconSelector = mode => {
@@ -313,6 +312,7 @@ class BattlesWindow extends React.Component {
             </Button.Group>
           );
         }
+        console.log(battle);
         return { battle, buttons };
       } else {
         return null;
@@ -745,7 +745,7 @@ class BattlesWindow extends React.Component {
                       return (
                         <span>
                           {(() => {
-                            if (text instanceof RankedBattle) {
+                            if (text instanceof RankedBattle && text.gameMode === Mode.rankedBattle) {
                               return text.estimatedRankPower;
                             } else if (text instanceof LeagueBattle) {
                               return '{0} - {1}'.format(text.myEstimatedLeaguePoint, text.otherEstimatedLeaguePoint);
