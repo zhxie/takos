@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import {
   Modal,
@@ -9,6 +10,7 @@ import {
   Tooltip,
   Table,
   Empty,
+  Button,
   Row,
   Col,
   Card,
@@ -679,8 +681,10 @@ class BattleModal extends React.Component {
           data.push(headgear);
           data.push(clothes);
           data.push(shoes);
+          // TODO: foorter for extra actions like filter player
           return (
             <Table
+              className="BattleModal-players-expand"
               dataSource={data}
               locale={{
                 emptyText: (
@@ -701,6 +705,23 @@ class BattleModal extends React.Component {
               }}
               scroll={{ x: 'max-content' }}
               pagination={false}
+              footer={(() => {
+                if (!record.isSelf) {
+                  return () => {
+                    return (
+                      <Link to={'/battles?with={0}'.format(record.id)}>
+                        <Button type="link">
+                          <FormattedMessage
+                            id="app.battles.with"
+                            defaultMessage="Show battles with {name}"
+                            values={{ name: record.nickname }}
+                          />
+                        </Button>
+                      </Link>
+                    );
+                  };
+                }
+              })()}
             >
               <Column
                 title={<FormattedMessage id="gear" defaultMessage="Gear" />}
@@ -1005,7 +1026,6 @@ class BattleModal extends React.Component {
   }
 
   renderStatistics() {
-    // TODO: not finished
     return (
       <div>
         <PageHeader title={<FormattedMessage id="app.battles.statistics" defaultMessage="Statistics" />} />

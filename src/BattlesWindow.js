@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import queryString from 'query-string';
 import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
 
 import './BattlesWindow.css';
@@ -44,7 +45,8 @@ class BattlesWindow extends React.Component {
     updateCurrent: 0,
     updateTotal: 0,
     updated: false,
-    showBattleId: null
+    showBattleId: null,
+    search: null
   };
 
   constructor(props) {
@@ -54,6 +56,12 @@ class BattlesWindow extends React.Component {
     } else {
       this.state.showBattleId = null;
     }
+    if (this.props.location.search !== '') {
+      this.state.search = queryString.parse(this.props.location.search);
+    } else {
+      this.state.search = null;
+    }
+    console.log(this.props.location);
   }
 
   modeIconSelector = mode => {
@@ -209,6 +217,35 @@ class BattlesWindow extends React.Component {
       });
   };
 
+  filteredBattles = () => {
+    if (this.state.search === null) {
+      return this.state.data;
+    } else {
+      let data = this.state.data;
+      if (this.state.search.with !== undefined) {
+        data = data.filter(element => {
+          let isWith = false;
+          if (
+            element.myTeamMembers.find(ele => {
+              return ele.id === this.state.search.with;
+            }) !== undefined
+          ) {
+            isWith = true;
+          }
+          if (
+            element.otherTeamMembers.find(ele => {
+              return ele.id === this.state.search.with;
+            }) !== undefined
+          ) {
+            isWith = true;
+          }
+          return isWith;
+        });
+      }
+      return data;
+    }
+  };
+
   showBattle = number => {
     if (this.state.data instanceof Array) {
       const battle = this.state.data.find(element => {
@@ -221,10 +258,11 @@ class BattlesWindow extends React.Component {
             <FormattedMessage id="app.battles.delete" defaultMessage="Delete Battle" />
           </Button>
         );
+        const filteredBattles = this.filteredBattles();
         let toButtons = [];
         // Find previous battle
         let previous = 0;
-        this.state.data.forEach(element => {
+        filteredBattles.forEach(element => {
           if (element.number > previous && element.number < number) {
             previous = element.number;
           }
@@ -234,7 +272,7 @@ class BattlesWindow extends React.Component {
             <Button
               key="previous"
               onClick={() => {
-                window.location.hash = '/battles#' + previous;
+                window.location.hash = '/battles{0}#'.format(this.props.location.search) + previous;
               }}
             >
               <Icon type="left" />
@@ -248,7 +286,7 @@ class BattlesWindow extends React.Component {
         }
         // Find next battle
         let next = Number.MAX_SAFE_INTEGER;
-        this.state.data.forEach(element => {
+        filteredBattles.forEach(element => {
           if (element.number < next && element.number > number) {
             next = element.number;
           }
@@ -258,7 +296,7 @@ class BattlesWindow extends React.Component {
             <Button
               key="next"
               onClick={() => {
-                window.location.hash = '/battles#' + next;
+                window.location.hash = '/battles{0}#'.format(this.props.location.search) + next;
               }}
             >
               <FormattedMessage id="app.battles.next" defaultMessage="Next Battle #{id}" values={{ id: next }} />
@@ -284,7 +322,7 @@ class BattlesWindow extends React.Component {
 
   hideBattle = () => {
     // Modify hash to hide battle
-    window.location.hash = '/battles';
+    window.location.hash = '/battles' + this.props.location.search;
   };
 
   deleteBattle = number => {
@@ -318,7 +356,7 @@ class BattlesWindow extends React.Component {
                 updated: false
               });
               // Modify hash
-              window.location.hash = '/battles';
+              window.location.hash = '/battles' + this.props.location.search;
             }
           })
           .catch(e => {
@@ -354,6 +392,26 @@ class BattlesWindow extends React.Component {
             );
           }
         })()}
+        {(() => {
+          if (this.state.search !== null) {
+            return (
+              <Alert
+                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.info.battles_filtered"
+                    defaultMessage="The battles shown have been filtered, please click <l>here</l> to cancel the screening."
+                    values={{
+                      l: msg => <Link to="/battles">{msg}</Link>
+                    }}
+                  />
+                }
+                type="info"
+                showIcon
+              />
+            );
+          }
+        })()}
         <div>
           <PageHeader
             title={<FormattedMessage id="app.battles" defaultMessage="Battles" />}
@@ -366,7 +424,7 @@ class BattlesWindow extends React.Component {
             })()}
           />
           <Table
-            dataSource={this.state.data}
+            dataSource={this.filteredBattles()}
             locale={{
               emptyText: (
                 <Empty
@@ -388,7 +446,7 @@ class BattlesWindow extends React.Component {
             onRow={record => {
               return {
                 onClick: () => {
-                  window.location.hash = '/battles#' + record.number;
+                  window.location.hash = '/battles{0}#'.format(this.props.location.search) + record.number;
                 }
               };
             }}
@@ -1819,12 +1877,19 @@ class BattlesWindow extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.location.hash !== prevProps.location.hash) {
-      if (this.props.location.hash !== '') {
-        this.setState({ showBattleId: parseInt(this.props.location.hash.replace('#', '')) });
-      } else {
-        this.setState({ showBattleId: null });
-      }
+    let showBattleId = null;
+    if (this.props.location.hash !== '') {
+      showBattleId = parseInt(this.props.location.hash.replace('#', ''));
+    }
+    let search = null;
+    if (this.props.location.search !== '') {
+      search = queryString.parse(this.props.location.search);
+    }
+    if (
+      this.props.location.hash !== prevProps.location.hash ||
+      this.props.location.search !== prevProps.location.search
+    ) {
+      this.setState({ showBattleId: showBattleId, search: search });
     }
     if (this.state.loaded !== prevState.loaded && this.state.loaded === false) {
       this.updateBattles();

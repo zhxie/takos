@@ -61,6 +61,11 @@
   vertical-align: super;
 }
 
+.BattleModal-players-expand .ant-table-footer {
+  border-bottom: 2px solid #e8e8e8;
+  padding: 4px 16px;
+}
+
 .BattleModal-statistics-span {
   display: flex;
   align-items: center;

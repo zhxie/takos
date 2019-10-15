@@ -1001,6 +1001,7 @@ const ja_JP = {
   'app.battles.previous': '前のバトル #{id}',
   'app.battles.next': '次のバトル #{id}',
   'app.battles.delete': 'バトルを削除する',
+  'app.battles.with': '{name} とのバトルを表示する',
   'app.battles.statistics': '統計',
   'app.salmon_run': 'サーモンラン',
   'app.gear_shop': 'ゲソタウン',
@@ -1039,6 +1040,8 @@ const ja_JP = {
     'Takos はスケジュールを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info.battles_can_not_update':
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.info.battles_filtered':
+    '表示されているバトルはフィルタリングされています。<l>ここ</l>をクリックしてスクリーニングをキャンセルしてください。',
   'app.alert.info.use_automatic_cookie_generation':
     '再ログインして自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

@@ -1001,6 +1001,7 @@ const en_US = {
   'app.battles.previous': 'Previous Battle #{id}',
   'app.battles.next': 'Next Battle #{id}',
   'app.battles.delete': 'Delete Battle',
+  'app.battles.with': 'Show battles with {name}',
   'app.battles.statistics': 'Statistics',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': 'Gear Shop',
@@ -1037,6 +1038,8 @@ const en_US = {
   'app.alert.info': 'Info',
   'app.alert.info.schedules_can_not_update': 'Takos can not update schedules, please refresh this page to update.',
   'app.alert.info.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
+  'app.alert.info.battles_filtered':
+    'The battles shown have been filtered, please click <l>here</l> to cancel the screening.',
   'app.alert.info.use_automatic_cookie_generation':
     'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':

@@ -1000,6 +1000,7 @@ const zh_CN = {
   'app.battles.previous': '上一场战斗 #{id}',
   'app.battles.next': '下一场战斗 #{id}',
   'app.battles.delete': '删除战斗',
+  'app.battles.with': '展示与 {name} 的战斗',
   'app.battles.statistics': '统计',
   'app.salmon_run': 'Salmon Run',
   'app.gear_shop': '触手镇*',
@@ -1035,6 +1036,7 @@ const zh_CN = {
   'app.alert.info': '信息',
   'app.alert.info.schedules_can_not_update': 'Takos 未能更新日程，请刷新页面以更新。',
   'app.alert.info.battles_can_not_update': 'Takos 未能更新战斗，请刷新页面以更新。',
+  'app.alert.info.battles_filtered': '展示的战斗已经过筛选，请点击<l>这里</l>以取消筛选。',
   'app.alert.info.use_automatic_cookie_generation':
     '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':
