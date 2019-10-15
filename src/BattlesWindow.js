@@ -1775,6 +1775,17 @@ class BattlesWindow extends React.Component {
                     onCancel={this.hideBattle}
                     footer={this.battle.buttons}
                     width={900}
+                    highlightPlayer={(() => {
+                      if (this.state.search === null) {
+                        return null;
+                      } else {
+                        if (this.state.search.with !== undefined) {
+                          return this.state.search.with;
+                        } else {
+                          return null;
+                        }
+                      }
+                    })()}
                   />
                 );
               }

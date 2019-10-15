@@ -936,6 +936,8 @@ const en_US = {
   players: 'Players',
   'player.nickname': 'Nickname',
   'player.you': 'You',
+  'player.her': 'Her',
+  'player.him': 'Him',
   'player.disconnect': 'Disconnect',
   'player.level': 'Level',
   'player.paint': 'Ink',

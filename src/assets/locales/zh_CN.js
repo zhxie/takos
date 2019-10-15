@@ -936,6 +936,8 @@ const zh_CN = {
   players: '玩家',
   'player.nickname': '昵称',
   'player.you': '您',
+  'player.her': '她',
+  'player.him': '他',
   'player.disconnect': '掉线',
   'player.level': '等级',
   'player.paint': '涂地*',

@@ -936,6 +936,8 @@ const ja_JP = {
   players: 'プレイヤー',
   'player.nickname': 'ニックネーム',
   'player.you': 'あなた',
+  'player.her': '彼女',
+  'player.him': '彼',
   'player.disconnect': '切断',
   'player.level': 'ランク',
   'player.paint': '塗る',

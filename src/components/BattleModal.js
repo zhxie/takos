@@ -32,7 +32,7 @@ import splatZonesIcon from '../assets/images/rule-splat-zones.png';
 import towerControlIcon from '../assets/images/rule-tower-control.png';
 import { RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle } from '../models/Battle';
 import { Mode, SplatfestMode } from '../models/Mode';
-import { RankedBattlePlayer } from '../models/Player';
+import { Style, RankedBattlePlayer } from '../models/Player';
 import Rule from '../models/Rule';
 import { Freshness, Badge } from '../models/Weapon';
 import FileFolderUrl from '../utils/FileFolderUrl';
@@ -839,6 +839,24 @@ class BattleModal extends React.Component {
                       </Tag>
                     );
                   }
+                  if (text.id === this.props.highlightPlayer) {
+                    switch (text.style) {
+                      case Style.girl:
+                        return (
+                          <Tag className="BattleModal-players-tag" color="red" key="her">
+                            <FormattedMessage id="player.her" defaultMessage="Her" />
+                          </Tag>
+                        );
+                      case Style.boy:
+                        return (
+                          <Tag className="BattleModal-players-tag" color="blue" key="him">
+                            <FormattedMessage id="player.him" defaultMessage="Him" />
+                          </Tag>
+                        );
+                      default:
+                        throw new RangeError();
+                    }
+                  }
                   if (text.isDisconnect()) {
                     return (
                       <Tag className="BattleModal-players-tag" key="disconnect">
@@ -1194,6 +1212,6 @@ class BattleModal extends React.Component {
   }
 }
 
-BattleModal.defaultProps = { visible: false, footer: null, width: 800 };
+BattleModal.defaultProps = { visible: false, footer: null, width: 800, highlightPlayer: null };
 
 export default BattleModal;
