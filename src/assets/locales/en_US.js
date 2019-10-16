@@ -997,7 +997,7 @@ const en_US = {
   'app.welcome.steps.done': 'Done',
   'app.welcome.title': 'Welcome to Takos',
   'app.welcome.cookie.1':
-    'In order to get the battle, salmon run, statistics and gear shop data, you have to log into the SplatNet.',
+    'In order to get the battle, jobs, statistics and gear shop data, you have to log into the SplatNet.',
   'app.welcome.cookie.2':
     "Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie generation introducted in <a1>splatnet2statink</a1>, or be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet, which is also called <a2>the MitM</a2>.",
   'app.description': 'A cross-platform schedule and battle statistic client of Splatoon 2.',
@@ -1009,6 +1009,11 @@ const en_US = {
   'app.schedules.current': 'Current',
   'app.schedules.next': 'Next',
   'app.schedules.future': 'Future',
+  'app.shifts': 'Shifts',
+  'app.shifts.open': 'Open!',
+  'app.shifts.soon': 'Soon!',
+  'app.shifts.next': 'Next',
+  'app.shifts.future': 'Future',
   'app.statistics': 'Statistics',
   'app.stages': 'Stages',
   'app.weapons': 'Weapons',
@@ -1028,7 +1033,7 @@ const en_US = {
   'app.settings.user.log_out': 'Log Out',
   'app.settings.appearance': 'Appearance',
   'app.settings.appearance.use_simple_lists': 'Use Simple Lists',
-  'app.settings.appearance.use_simple_lists.description': 'Use simple lists in battles and Salmon Run',
+  'app.settings.appearance.use_simple_lists.description': 'Use simple lists in battles and jobs',
   'app.settings.appearance.language': 'Language',
   'app.settings.system': 'System',
   'app.settings.system.data': 'Data',
@@ -1060,7 +1065,7 @@ const en_US = {
   'app.alert.info.use_automatic_cookie_generation_first_time':
     'If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.switch_account':
-    'If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared.',
+    'If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and jobs, will be cleared.',
   // App.modal
   'app.modal.confirm.update_cookie': 'Do you want to update cookie?',
   'app.modal.confirm.update_cookie.content':
@@ -1089,7 +1094,7 @@ const en_US = {
     'Takos can not update cookie unless you use automatic cookie generation.',
   'app.modal.confirm.log_out': 'Do you want to log out?',
   'app.modal.confirm.log_out.content':
-    'Note that when you log out, all saved data, including battles and salmon run, will be cleared.',
+    'Note that when you log out, all saved data, including battles and jobs, will be cleared.',
   'app.modal.confirm.clear_data': 'Do you want to clear data?',
   'app.modal.confirm.clear_data.content':
     'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.',
@@ -1123,13 +1128,14 @@ const en_US = {
   'app.problem.troubleshoot.importing_file': 'Your importing file',
   'app.problem.report': 'If the problem persists, you can <a>Report the issue on Github &gt;</a>',
   // App.time
-  'app.time': '{hour}:{min}:{sec}',
-  'app.time.schedule.to.min': 'in {min} min',
-  'app.time.schedule.to.hour_min': 'in {hour} hour {min} min',
-  'app.time.schedule.to.day_hour_min': 'in {day} day {hour} hour {min} min',
-  'app.time.battle.elapsed.in.sec': 'in {sec} sec',
-  'app.time.battle.elapsed.in.min_sec': 'in {min} min {sec} sec',
-  'app.time.battle.elapsed.sec': '({sec} seconds)'
+  'app.time.schedule': '{hour}:{min}:{sec}',
+  'app.time.shift': '{month}/{day} {hour}:{min}:{sec}',
+  'app.time.span.to.min': 'in {min} min',
+  'app.time.span.to.hour_min': 'in {hour} hour {min} min',
+  'app.time.span.to.day_hour_min': 'in {day} day {hour} hour {min} min',
+  'app.time.span.elapsed.in.sec': 'in {sec} sec',
+  'app.time.span.elapsed.in.min_sec': 'in {min} min {sec} sec',
+  'app.time.span.elapsed.sec': '({sec} seconds)'
 };
 
 export default en_US;

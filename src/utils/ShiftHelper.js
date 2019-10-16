@@ -14,15 +14,14 @@ class ShiftHelper {
       .then(res => {
         console.log(res);
         // Parse response
-        let details = [];
-        let schedules = [];
+        let shifts = [];
         res.details.forEach(element => {
-          details.push(Shift.parse(element));
+          shifts.push(Shift.parse(element));
         });
-        res.schedules.forEach(element => {
-          schedules.push({ startTime: element.start_time, endTime: element.end_time });
+        res.schedules.slice(shifts.length).forEach(element => {
+          shifts.push(Shift.parse(element));
         });
-        return { details, schedules };
+        return shifts;
       })
       .catch(e => {
         console.error(e);

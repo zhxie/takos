@@ -1,0 +1,46 @@
+.ShiftCard-shift {
+  cursor: default;
+  display: inline-block;
+}
+
+.ShiftCard-shift-stage {
+  cursor: default;
+  display: inline-block;
+  margin: 6px;
+}
+
+.ShiftCard-shift-stage-meta {
+  margin: 6px;
+}
+
+.ShiftCard-shift-weapon {
+  cursor: default;
+  display: inline-block;
+  margin: 6px;
+}
+
+.ShiftCard-shift-weapon-col {
+  text-align: center;
+}
+
+.ShiftCard-shift-weapon-img {
+  width: calc(100% / 16 * 9);
+}
+
+.ShiftCard-shift-weapon-meta {
+  margin: 6px;
+}
+
+.ShiftCard-shift-meta {
+  margin: 6px 6px 6px 9px;
+}
+
+.ShiftCard-shift-meta-image {
+  width: 32px;
+}
+
+@media screen and (max-width: 575px) {
+  .ShiftCard-shift-weapon-img {
+    width: 100%;
+  }
+}

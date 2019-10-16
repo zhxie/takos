@@ -11,7 +11,7 @@ class TimeConverter {
     const seconds = '0' + date.getSeconds();
     return (
       <FormattedMessage
-        id="app.time"
+        id="app.time.schedule"
         defaultMessage="{hour}:{min}:{sec}"
         values={{
           hour: hours,
@@ -25,18 +25,48 @@ class TimeConverter {
   static formatSchedulePeriod = (startTime, endTime) => {
     return (
       <div>
-        {this.formatScheduleTime(startTime)} - {this.formatScheduleTime(endTime)}
+        {TimeConverter.formatScheduleTime(startTime)} - {TimeConverter.formatScheduleTime(endTime)}
       </div>
     );
   };
 
-  static getRemainedTime = time => {
+  static formatShiftTime = time => {
+    const date = new Date(time * 1000);
+    const month = date.getMonth() + 1;
+    const day = '0' + date.getDate();
+    const hours = date.getHours();
+    const minutes = '0' + date.getMinutes();
+    const seconds = '0' + date.getSeconds();
+    return (
+      <FormattedMessage
+        id="app.time.shift"
+        defaultMessage="{month}/{day} {hour}:{min}:{sec}"
+        values={{
+          month: month,
+          day: day.substr(-2),
+          hour: hours,
+          min: minutes.substr(-2),
+          sec: seconds.substr(-2)
+        }}
+      />
+    );
+  };
+
+  static formatShiftPeriod = (startTime, endTime) => {
+    return (
+      <div>
+        {TimeConverter.formatShiftTime(startTime)} - {TimeConverter.formatShiftTime(endTime)}
+      </div>
+    );
+  };
+
+  static getTimeTo = time => {
     const now = new Date();
     const diff = new Date(time * 1000) - now;
     if (diff < 0) {
       return (
         <FormattedMessage
-          id="app.time.schedule.to.min"
+          id="app.time.span.to.min"
           defaultMessage="in {min} min"
           values={{
             min: 0
@@ -50,7 +80,7 @@ class TimeConverter {
       if (days > 0) {
         return (
           <FormattedMessage
-            id="app.time.schedule.to.day_hour_min"
+            id="app.time.span.to.day_hour_min"
             defaultMessage="in {day} day {hour} hour {min} min"
             values={{
               day: days,
@@ -62,7 +92,7 @@ class TimeConverter {
       } else if (hours > 0) {
         return (
           <FormattedMessage
-            id="app.time.schedule.to.hour_min"
+            id="app.time.span.to.hour_min"
             defaultMessage="in {hour} hour {min} min"
             values={{
               hour: hours,
@@ -73,7 +103,7 @@ class TimeConverter {
       } else {
         return (
           <FormattedMessage
-            id="app.time.schedule.to.min"
+            id="app.time.span.to.min"
             defaultMessage="in {min} min"
             values={{
               min: minutes
@@ -84,13 +114,13 @@ class TimeConverter {
     }
   };
 
-  static formatKoElapsedTime = time => {
+  static formatBattleKoElapsedTime = time => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = parseInt(time) - 60 * minutes;
     if (minutes > 0) {
       return (
         <FormattedMessage
-          id="app.time.battle.elapsed.in.min_sec"
+          id="app.time.span.elapsed.in.min_sec"
           defaultMessage="in {min} min {sec} sec"
           values={{
             min: minutes,
@@ -101,7 +131,7 @@ class TimeConverter {
     } else {
       return (
         <FormattedMessage
-          id="app.time.battle.elapsed.in.sec"
+          id="app.time.span.elapsed.in.sec"
           defaultMessage="in {sec} sec"
           values={{
             sec: seconds
@@ -111,7 +141,7 @@ class TimeConverter {
     }
   };
 
-  static formatStartTime = time => {
+  static formatBattleStartTime = time => {
     const date = new Date(time * 1000);
     return (
       <span>
@@ -121,7 +151,7 @@ class TimeConverter {
     );
   };
 
-  static formatElapsedTime = time => {
+  static formatBattleElapsedTime = time => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = '0' + (parseInt(time) - 60 * minutes);
     if (minutes > 0) {
@@ -129,7 +159,7 @@ class TimeConverter {
         <span>
           {minutes}:{seconds.substr(-2)}{' '}
           <FormattedMessage
-            id="app.time.battle.elapsed.sec"
+            id="app.time.span.elapsed.sec"
             defaultMessage="({sec} seconds)"
             values={{
               sec: parseInt(time)

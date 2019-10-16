@@ -8,6 +8,7 @@ import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
+import ShiftsWindow from './ShiftsWindow';
 import logo from './assets/images/logo.svg';
 import ConstructionResult from './components/ConstructionResult';
 
@@ -33,8 +34,8 @@ class MainWindow extends React.Component {
       this.setState({ selected: ['schedules.ranked_battle'] });
     } else if (this.props.location.pathname.startsWith('/schedules/league')) {
       this.setState({ selected: ['schedules.league_battle'] });
-    } else if (this.props.location.pathname.startsWith('/schedules/salmon')) {
-      this.setState({ selected: ['schedules.salmon_run'] });
+    } else if (this.props.location.pathname.startsWith('/shifts')) {
+      this.setState({ selected: ['shifts'] });
     } else if (this.props.location.pathname.startsWith('/stats/stages')) {
       this.setState({ selected: ['statistics.stages'] });
     } else if (this.props.location.pathname.startsWith('/stats/weapons')) {
@@ -118,13 +119,14 @@ class MainWindow extends React.Component {
                   </span>
                   <Link to="/schedules/league" />
                 </Menu.Item>
-                <Menu.Item key="schedules.salmon_run">
-                  <span>
-                    <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
-                  </span>
-                  <Link to="/schedules/salmon" />
-                </Menu.Item>
               </SubMenu>
+              <Menu.Item key="shifts">
+                <Icon type="schedule" />
+                <span>
+                  <FormattedMessage id="app.shifts" defaultMessage="Shifts" />
+                </span>
+                <Link to="/shifts" />
+              </Menu.Item>
               <SubMenu
                 key="stats"
                 title={
@@ -196,8 +198,8 @@ class MainWindow extends React.Component {
           <Switch>
             <Route exact path={`${this.props.match.url}`} component={this.renderLogo} />
             <Route exact path={`${this.props.match.url}dashboard`} component={DashboardWindow} />
-            <Route exact path={`${this.props.match.url}schedules/salmon`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}schedules/:mode`} component={SchedulesWindow} />
+            <Route exact path={`${this.props.match.url}shifts`} component={ShiftsWindow} />
             <Route exact path={`${this.props.match.url}stats/stages`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/weapons`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />

@@ -995,7 +995,7 @@ const zh_CN = {
   'app.welcome.steps.update': '更新数据',
   'app.welcome.steps.done': '完成',
   'app.welcome.title': '欢迎使用 Takos',
-  'app.welcome.cookie.1': '您需要登录到 SplatNet 以使用战斗、Salmon Run、记录与触手镇*等功能。',
+  'app.welcome.cookie.1': '您需要登录到 SplatNet 以使用战斗、打工、记录与触手镇*等功能。',
   'app.welcome.cookie.2':
     'Takos 利用 Cookie 访问 SplatNet。Cookie 可以通过 <a1>splatnet2statink</a1> 项目中介绍的自动 Cookie 生成方法产生，也可以通过其它方法，如介入设备与 SplatNet 间的通信来获得，这一方法也被称作 <a2>MitM</a2>。',
   'app.description': '一个跨平台的 Splatoon 2 日程与战斗记录客户端。',
@@ -1007,6 +1007,11 @@ const zh_CN = {
   'app.schedules.current': '现在',
   'app.schedules.next': '之后',
   'app.schedules.future': '再之后',
+  'app.shifts': '排班表',
+  'app.shifts.open': '现正开放！',
+  'app.shifts.soon': '即将',
+  'app.shifts.next': '之后',
+  'app.shifts.future': '再之后',
   'app.statistics': '记录',
   'app.stages': '场地',
   'app.weapons': '武器',
@@ -1026,7 +1031,7 @@ const zh_CN = {
   'app.settings.user.log_out': '退出登录',
   'app.settings.appearance': '外观',
   'app.settings.appearance.use_simple_lists': '使用简单列表',
-  'app.settings.appearance.use_simple_lists.description': '在战斗与 Salmon Run 界面中使用简单列表。',
+  'app.settings.appearance.use_simple_lists.description': '在战斗与打工界面中使用简单列表。',
   'app.settings.appearance.language': '语言 / Language',
   'app.settings.system': '系统',
   'app.settings.system.data': '数据',
@@ -1057,7 +1062,7 @@ const zh_CN = {
   'app.alert.info.use_automatic_cookie_generation_first_time':
     '如果您从未使用自动 Cookie 生成并希望使用之，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.switch_account':
-    '如果您希望切换账号，请首先退出登录。请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
+    '如果您希望切换账号，请首先退出登录。请注意，退出登录时，战斗、打工等已保存的数据都将被清空。',
   // App.modal
   'app.modal.confirm.update_cookie': '您希望更新 Cookie 吗？',
   'app.modal.confirm.update_cookie.content':
@@ -1081,7 +1086,7 @@ const zh_CN = {
   'app.modal.error.update_cookie_no_session_token': '无法更新 Cookie',
   'app.modal.error.update_cookie_no_session_token.content': 'Takos 只能在使用自动 Cookie 生成的情况下更新 Cookie。',
   'app.modal.confirm.log_out': '您希望退出登录吗？',
-  'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、Salmon Run 等已保存的数据都将被清空。',
+  'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、打工等已保存的数据都将被清空。',
   'app.modal.confirm.clear_data': '您希望清除数据吗？',
   'app.modal.confirm.clear_data.content': '数据一旦被清除，将无法撤销。建议您首先导出数据。',
   'app.modal.confirm.delete_battle': '您希望删除战斗吗？',
@@ -1110,13 +1115,14 @@ const zh_CN = {
   'app.problem.troubleshoot.importing_file': '您导入的文件',
   'app.problem.report': '如果这一问题持续存在，您可以<a>在 Github 上汇报它 &gt;</a>',
   // App.time
-  'app.time': '{hour}:{min}:{sec}',
-  'app.time.schedule.to.min': '{min} 分后',
-  'app.time.schedule.to.hour_min': '{hour} 小时 {min} 分后',
-  'app.time.schedule.to.day_hour_min': '{day} 日 {hour} 小时 {min} 分后',
-  'app.time.battle.elapsed.in.sec': '{sec} 秒内',
-  'app.time.battle.elapsed.in.min_sec': '{min} 分 {sec} 秒内',
-  'app.time.battle.elapsed.sec': '({sec} 秒)'
+  'app.time.schedule': '{hour}:{min}:{sec}',
+  'app.time.shift': '{month}/{day} {hour}:{min}:{sec}',
+  'app.time.span.to.min': '{min} 分后',
+  'app.time.span.to.hour_min': '{hour} 小时 {min} 分后',
+  'app.time.span.to.day_hour_min': '{day} 日 {hour} 小时 {min} 分后',
+  'app.time.span.elapsed.in.sec': '{sec} 秒内',
+  'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒内',
+  'app.time.span.elapsed.sec': '({sec} 秒)'
 };
 
 export default zh_CN;

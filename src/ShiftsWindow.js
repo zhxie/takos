@@ -1,23 +1,20 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Layout, PageHeader, Alert, Button } from 'antd';
 
-import './SchedulesWindow.css';
-import leagueIcon from './assets/images/mode-league.png';
-import rankedIcon from './assets/images/mode-ranked.png';
-import regularIcon from './assets/images/mode-regular.png';
+import './ShiftsWindow.css';
+import icon from './assets/images/salmon-run.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
-import ScheduleCard from './components/ScheduleCard';
-import { Mode } from './models/Mode';
+import ShiftCard from './components/ShiftCard';
 import TakosError from './utils/ErrorHelper';
-import ScheduleHelper from './utils/ScheduleHelper';
+import ShiftHelper from './utils/ShiftHelper';
 import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
 
-class SchedulesWindow extends React.Component {
+class ShiftsWindow extends React.Component {
   state = {
     // Data
     data: [],
@@ -26,82 +23,27 @@ class SchedulesWindow extends React.Component {
     error: false,
     errorLog: 'unknown_error',
     expired: false,
-    invalid: false,
     updated: false
   };
 
-  constructor(props) {
-    super(props);
-    if (!this.modeSelector()) {
-      this.state.invalid = true;
-    }
-  }
-
-  modeSelector = () => {
-    switch (this.props.match.params.mode) {
-      case 'regular':
-        this.mode = Mode.regularBattle;
-        break;
-      case 'ranked':
-        this.mode = Mode.rankedBattle;
-        break;
-      case 'league':
-        this.mode = Mode.leagueBattle;
-        break;
-      default:
-        return false;
-    }
-    return true;
-  };
-
-  iconSelector = () => {
-    switch (this.mode) {
-      case Mode.regularBattle:
-        return regularIcon;
-      case Mode.rankedBattle:
-        return rankedIcon;
-      case Mode.leagueBattle:
-        return leagueIcon;
-      default:
-        throw new RangeError();
-    }
-  };
-
-  updateSchedules = () => {
-    if (!this.modeSelector()) {
-      return;
-    }
+  updateShifts = () => {
     this.setState({ error: false, updated: false });
-    ScheduleHelper.getSchedules()
+    ShiftHelper.getShifts()
       .then(res => {
         if (res === null) {
-          throw new TakosError('can_not_get_schedules');
+          throw new TakosError('can_not_get_shifts');
         } else {
-          let schedules;
-          switch (this.mode) {
-            case Mode.regularBattle:
-              schedules = res.regularSchedules;
-              break;
-            case Mode.rankedBattle:
-              schedules = res.rankedSchedules;
-              break;
-            case Mode.leagueBattle:
-              schedules = res.leagueSchedules;
-              break;
-            default:
-              throw new RangeError();
-          }
-          schedules.forEach(element => {
+          res.forEach(element => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
           });
-          if (schedules.length > 0) {
-            this.setState({ data: schedules, loaded: true });
+          if (res.length > 0) {
+            this.setState({ data: res, loaded: true });
             // Set update interval
             this.timer = setInterval(this.timeout, 60000);
           } else {
-            throw new TakosError('can_not_parse_schedules');
+            throw new TakosError('can_not_parse_shifts');
           }
         }
       })
@@ -110,7 +52,7 @@ class SchedulesWindow extends React.Component {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_parse_schedules', updated: true });
+          this.setState({ error: true, errorLog: 'can_not_parse_shifts', updated: true });
         }
       });
   };
@@ -126,7 +68,7 @@ class SchedulesWindow extends React.Component {
     }
   };
 
-  renderContent = () => {
+  renderContent() {
     return (
       <div>
         {(() => {
@@ -136,8 +78,8 @@ class SchedulesWindow extends React.Component {
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.warning.schedules_can_not_update"
-                    defaultMessage="Takos can not update schedules, please refresh this page to update."
+                    id="app.alert.warning.shifts_can_not_update"
+                    defaultMessage="Takos can not update shifts, please refresh this page to update."
                   />
                 }
                 type="warning"
@@ -153,8 +95,8 @@ class SchedulesWindow extends React.Component {
                 message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.info.schedules_expired"
-                    defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                    id="app.alert.info.shifts_expired"
+                    defaultMessage="It seems that these shifts have expired, please refresh this page to update."
                   />
                 }
                 type="info"
@@ -167,9 +109,15 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 0) {
             return (
               <div>
-                <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
-                <div className="SchedulesWindow-content-card" key="1">
-                  <ScheduleCard schedule={this.state.data[0]} />
+                {(() => {
+                  if (new Date() < new Date(this.state.data[0].startTime * 1000)) {
+                    return <PageHeader title={<FormattedMessage id="app.shifts.soon" defaultMessage="Soon!" />} />;
+                  } else {
+                    return <PageHeader title={<FormattedMessage id="app.shifts.open" defaultMessage="Open!" />} />;
+                  }
+                })()}
+                <div className="ShiftsWindow-content-card" key="1">
+                  <ShiftCard shift={this.state.data[0]} />
                 </div>
               </div>
             );
@@ -179,12 +127,9 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 1) {
             return (
               <div>
-                <PageHeader
-                  title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
-                  subTitle={TimeConverter.getTimeTo(this.state.data[0].endTime)}
-                />
-                <div className="SchedulesWindow-content-card" key="2">
-                  <ScheduleCard schedule={this.state.data[1]} />
+                <PageHeader title={<FormattedMessage id="app.shifts.next" defaultMessage="Next" />} />
+                <div className="ShiftsWindow-content-card" key="2">
+                  <ShiftCard shift={this.state.data[1]} />
                 </div>
               </div>
             );
@@ -194,11 +139,11 @@ class SchedulesWindow extends React.Component {
           if (this.state.data.length > 2) {
             return (
               <div>
-                <PageHeader title={<FormattedMessage id="app.schedules.future" defaultMessage="Future" />} />
+                <PageHeader title={<FormattedMessage id="app.shifts.future" defaultMessage="Future" />} />
                 {this.state.data.slice(2).map((item, index) => {
                   return (
-                    <div className="SchedulesWindow-content-card" key={2 + index}>
-                      <ScheduleCard schedule={item} />
+                    <div className="ShiftsWindow-content-card" key={2 + index}>
+                      <ShiftCard shift={item} />
                     </div>
                   );
                 })}
@@ -208,12 +153,10 @@ class SchedulesWindow extends React.Component {
         })()}
       </div>
     );
-  };
+  }
 
   render() {
-    if (this.state.invalid) {
-      return <Redirect to="/404" />;
-    } else if (this.state.error) {
+    if (this.state.error) {
       return (
         <ErrorResult
           error={this.state.errorLog}
@@ -226,7 +169,7 @@ class SchedulesWindow extends React.Component {
           ]}
           extra={[
             [
-              <Button onClick={this.updateSchedules} type="primary">
+              <Button onClick={this.updateShifts} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">
@@ -250,16 +193,16 @@ class SchedulesWindow extends React.Component {
     } else {
       return (
         <Layout>
-          <Header className="SchedulesWindow-header" style={{ zIndex: 1 }}>
-            <img className="SchedulesWindow-header-icon" src={this.iconSelector()} alt="mode" />
-            <p className="SchedulesWindow-header-title">
-              <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
+          <Header className="ShiftsWindow-header" style={{ zIndex: 1 }}>
+            <img className="ShiftsWindow-header-icon" src={icon} alt="icon" />
+            <p className="ShiftsWindow-header-title">
+              <FormattedMessage id="app.shifts" defaultMessage="Shifts" />
             </p>
-            <p className="SchedulesWindow-header-subtitle">
-              <FormattedMessage id={this.mode.name} />
+            <p className="ShiftsWindow-header-subtitle">
+              <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
             </p>
           </Header>
-          <Content className="SchedulesWindow-content">
+          <Content className="ShiftsWindow-content">
             {(() => {
               if (!this.state.loaded) {
                 return <LoadingResult />;
@@ -274,14 +217,7 @@ class SchedulesWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.updateSchedules();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params.mode !== prevProps.match.params.mode) {
-      this.setState({ loaded: false, error: false, expired: false });
-      this.updateSchedules();
-    }
+    this.updateShifts();
   }
 
   componentWillUnmount() {
@@ -290,4 +226,4 @@ class SchedulesWindow extends React.Component {
   }
 }
 
-export default SchedulesWindow;
+export default ShiftsWindow;

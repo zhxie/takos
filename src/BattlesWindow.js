@@ -500,7 +500,7 @@ class BattlesWindow extends React.Component {
                           return (
                             <Tooltip
                               title={() => {
-                                return TimeConverter.formatKoElapsedTime(text.elapsedTime);
+                                return TimeConverter.formatBattleKoElapsedTime(text.elapsedTime);
                               }}
                             >
                               <Tag color="red" key="ko">
@@ -513,7 +513,7 @@ class BattlesWindow extends React.Component {
                           return (
                             <Tooltip
                               title={() => {
-                                return TimeConverter.formatKoElapsedTime(text.elapsedTime);
+                                return TimeConverter.formatBattleKoElapsedTime(text.elapsedTime);
                               }}
                             >
                               <Tag color="green" key="ko">

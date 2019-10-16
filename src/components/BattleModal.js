@@ -637,13 +637,13 @@ class BattleModal extends React.Component {
             }
           })()}
           <Descriptions.Item label={<FormattedMessage id="battle.time.start" defaultMessage="Start Time" />} span={2}>
-            {TimeConverter.formatStartTime(this.props.value.startTime)}
+            {TimeConverter.formatBattleStartTime(this.props.value.startTime)}
           </Descriptions.Item>
           <Descriptions.Item
             label={<FormattedMessage id="battle.time.elapsed" defaultMessage="Elapsed Time" />}
             span={2}
           >
-            {TimeConverter.formatElapsedTime(this.props.value.elapsedTime)}
+            {TimeConverter.formatBattleElapsedTime(this.props.value.elapsedTime)}
           </Descriptions.Item>
         </Descriptions>
       </div>

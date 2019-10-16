@@ -996,7 +996,7 @@ const ja_JP = {
   'app.welcome.steps.done': '完了',
   'app.welcome.title': 'Takos へようこそ',
   'app.welcome.cookie.1':
-    'バトル、サーモンラン、きろく、ゲソタウンデータを取得するには、イカリングにログインする必要があります。',
+    'バトル、バイト、きろく、ゲソタウンデータを取得するには、イカリングにログインする必要があります。',
   'app.welcome.cookie.2':
     'Takos はクッキーを使用してイカリングにアクセスします。このクッキーは、<a1>splatnet2statink</a1> で導入された自動クッキー生成によって自動的に取得されるか、<a2>MitM</a2> とも呼ばれるイカリングでデバイスのトラフィックをインターセプトするなど、他の方法で手動で取得できます。',
   'app.description': 'スプラトゥーン 2 のクロスプラットフォームスケジュールおよびバトル統計クライアント。',
@@ -1008,6 +1008,11 @@ const ja_JP = {
   'app.schedules.current': 'いま',
   'app.schedules.next': 'つぎ',
   'app.schedules.future': 'そのつぎ',
+  'app.shifts': 'シフト表',
+  'app.shifts.open': 'オープン!',
+  'app.shifts.soon': 'もうすぐ',
+  'app.shifts.next': 'つぎ',
+  'app.shifts.future': 'そのつぎ',
   'app.statistics': 'きろく',
   'app.stages': 'ステージ',
   'app.weapons': 'ブキ',
@@ -1027,7 +1032,7 @@ const ja_JP = {
   'app.settings.user.log_out': 'ログアウト',
   'app.settings.appearance': '外観',
   'app.settings.appearance.use_simple_lists': ' シンプルなリストで表示',
-  'app.settings.appearance.use_simple_lists.description': 'バトルとサーモンランで、シンプルなリストで表示します。',
+  'app.settings.appearance.use_simple_lists.description': 'バトルとバイトで、シンプルなリストで表示します。',
   'app.settings.appearance.language': '言語 / Language',
   'app.settings.system': 'システム',
   'app.settings.system.data': 'データ',
@@ -1062,7 +1067,7 @@ const ja_JP = {
   'app.alert.info.use_automatic_cookie_generation_first_time':
     '自動クッキー生成を使用しておらず、使用したい場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.switch_account':
-    'アカウントを切り替えたい場合は、最初にログアウトしてください。ログアウトすると、バトルやサーモンランなど、保存されたすべてのデータが消去されることに注意してください。',
+    'アカウントを切り替えたい場合は、最初にログアウトしてください。ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',
   // App.modal
   'app.modal.confirm.update_cookie': 'クッキーを更新しますか？',
   'app.modal.confirm.update_cookie.content':
@@ -1091,7 +1096,7 @@ const ja_JP = {
     'Takos は自動クッキー生成を使用しない限り、クッキーを更新できません。',
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
-    'ログアウトすると、バトルやサーモンランなど、保存されたすべてのデータが消去されることに注意してください。',
+    'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',
   'app.modal.confirm.clear_data': 'データを消去しますか？',
   'app.modal.confirm.clear_data.content':
     'データが消去されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
@@ -1126,13 +1131,14 @@ const ja_JP = {
   'app.problem.troubleshoot.importing_file': 'インポートファイル',
   'app.problem.report': '問題が解決しない場合は、<a>Github で問題を報告できます &gt;</a>',
   // App.time
-  'app.time': '{hour}:{min}:{sec}',
-  'app.time.schedule.to.min': '{min} 分後',
-  'app.time.schedule.to.hour_min': '{hour} 時間 {min} 分後',
-  'app.time.schedule.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後',
-  'app.time.battle.elapsed.in.sec': '{sec} 秒以内',
-  'app.time.battle.elapsed.in.min_sec': '{min} 分 {sec} 秒以内',
-  'app.time.battle.elapsed.sec': '({sec} 秒)'
+  'app.time.schedule': '{hour}:{min}:{sec}',
+  'app.time.shift': '{month}/{day} {hour}:{min}:{sec}',
+  'app.time.span.to.min': '{min} 分後',
+  'app.time.span.to.hour_min': '{hour} 時間 {min} 分後',
+  'app.time.span.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後',
+  'app.time.span.elapsed.in.sec': '{sec} 秒以内',
+  'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒以内',
+  'app.time.span.elapsed.sec': '({sec} 秒)'
 };
 
 export default ja_JP;

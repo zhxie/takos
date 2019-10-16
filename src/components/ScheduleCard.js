@@ -107,7 +107,6 @@ class ScheduleCard extends React.Component {
             </Card>
           </Col>
         </Row>
-
         <Meta
           className="ScheduleCard-schedule-meta"
           avatar={<img className="ScheduleCard-schedule-meta-image" src={this.iconSelector()} alt="mode" />}
