@@ -18,6 +18,7 @@ import towerControlIcon from './assets/images/rule-tower-control.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import ScheduleCard from './components/ScheduleCard';
+import ShiftCard from './components/ShiftCard';
 import { RankedBattle, LeagueBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import Rule from './models/Rule';
@@ -25,6 +26,7 @@ import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
 import ScheduleHelper from './utils/ScheduleHelper';
+import ShiftHelper from './utils/ShiftHelper';
 import StorageHelper from './utils/StorageHelper';
 
 const { Header, Content } = Layout;
@@ -34,8 +36,8 @@ class DashboardWindow extends React.Component {
   state = {
     // Data
     battle: null,
-    shift: null,
-    schedules: [],
+    schedules: null,
+    shifts: [],
     icon: null,
     nickname: '',
     rank: null,
@@ -47,7 +49,9 @@ class DashboardWindow extends React.Component {
     updateTotal: 0,
     battlesUpdated: false,
     schedulesUpdated: false,
-    expired: false
+    shiftsUpdated: false,
+    schedulesExpired: false,
+    shiftsExpired: false
   };
 
   modeIconSelector = mode => {
@@ -92,10 +96,13 @@ class DashboardWindow extends React.Component {
       updateTotal: 0,
       battlesUpdated: false,
       schedulesUpdated: false,
-      expired: false
+      shiftsUpdated: false,
+      schedulesExpired: false,
+      shiftsExpired: false
     });
     let errorBattles = null;
     let errorSchedules = null;
+    let errorShifts = null;
     let firstErrorLog = null;
     // Update battles
     this.updateBattles()
@@ -109,6 +116,14 @@ class DashboardWindow extends React.Component {
         return this.updateSchedules().then(res => {
           if (res instanceof TakosError) {
             errorSchedules = res;
+          }
+        });
+      })
+      .then(() => {
+        // Update shifts
+        return this.updateShifts().then(res => {
+          if (res instanceof TakosError) {
+            errorShifts = res;
           }
         });
       })
@@ -148,7 +163,22 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
-        // Handle statistics, battles and shifts
+        if (errorShifts !== null) {
+          // Handle error
+          if (errorShifts instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorShifts.message;
+            }
+          } else {
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_shifts';
+            }
+          }
+          this.setState({ shiftsUpdated: true });
+        }
+      })
+      .then(() => {
+        // Handle statistics, battles and jobs
         if (this.state.battle !== null) {
           this.setState({
             icon: this.state.battle.selfPlayer().url,
@@ -262,7 +292,7 @@ class DashboardWindow extends React.Component {
       .catch(e => {
         if (e instanceof TakosError) {
         } else {
-          console.log(e);
+          console.error(e);
         }
       });
   };
@@ -273,7 +303,7 @@ class DashboardWindow extends React.Component {
         this.setState({ rank: res });
       })
       .catch(e => {
-        console.log(e);
+        console.error(e);
       });
   };
 
@@ -300,23 +330,65 @@ class DashboardWindow extends React.Component {
             schedules.league = res.leagueSchedules[0];
           }
           this.setState({ schedules: schedules });
-          this.timer = setInterval(this.timeout, 60000);
+          // Set update interval
+          this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
         }
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          this.setState({ error: true, errorLog: e.message });
+          return new TakosError(e.message);
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_parse_schedules' });
+          return new TakosError('can_not_parse_schedules');
         }
       });
   };
 
-  timeout = () => {
+  updateShifts = () => {
+    return ShiftHelper.getShifts()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_shifts');
+        } else {
+          res.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          if (res.length > 0) {
+            this.setState({ shifts: res });
+            // Set update interval
+            this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
+          } else {
+            throw new TakosError('can_not_parse_shifts');
+          }
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return new TakosError(e.message);
+        } else {
+          console.error(e);
+          return new TakosError('can_not_parse_shifts');
+        }
+      });
+  };
+
+  schedulesTimeout = () => {
     if (this.state.schedules instanceof Array && this.state.schedules.length > 0) {
       if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
-        this.setState({ expired: true });
+        this.setState({ schedulesExpired: true });
+      } else {
+        // Force update the page to update the remaining and coming time
+        this.forceUpdate();
+      }
+    }
+  };
+
+  shiftsTimeout = () => {
+    if (this.state.shifts instanceof Array && this.state.shifts.length > 0) {
+      if (new Date(this.state.shifts[0].endTime * 1000) - new Date() < 0) {
+        this.setState({ shiftsExpired: true });
       } else {
         // Force update the page to update the remaining and coming time
         this.forceUpdate();
@@ -364,7 +436,25 @@ class DashboardWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.expired) {
+          if (this.state.shiftsUpdated) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.shifts_can_not_update"
+                    defaultMessage="Takos can not update shifts, please refresh this page to update."
+                  />
+                }
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.schedulesExpired) {
             return (
               <Alert
                 className="DashboardWindow-content-alert"
@@ -373,6 +463,24 @@ class DashboardWindow extends React.Component {
                   <FormattedMessage
                     id="app.alert.info.schedules_expired"
                     defaultMessage="It seems that these schedules have expired, please refresh this page to update."
+                  />
+                }
+                type="info"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.shiftssExpired) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.info.shifts_expired"
+                    defaultMessage="It seems that these shifts have expired, please refresh this page to update."
                   />
                 }
                 type="info"
@@ -414,7 +522,7 @@ class DashboardWindow extends React.Component {
           </Col>
         </Row>
         {(() => {
-          if (this.state.battle != null || this.state.shift !== null) {
+          if (this.state.battle != null || this.state.shifts !== null) {
             return (
               <Row gutter={16}>
                 {(() => {
@@ -663,71 +771,95 @@ class DashboardWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.schedules !== null) {
+          if (this.state.schedules !== null || this.state.shifts.length > 0) {
             return (
               <Row gutter={16}>
                 <Col className="DashboardWindow-content-column" md={24} lg={12}>
-                  <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
-                    <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
-                      {(() => {
-                        if (this.state.schedules.regular !== undefined) {
-                          return (
-                            <TabPane
-                              tab={<FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />}
-                              key="regular"
-                            >
-                              <Link to={'/schedules/regular'}>
-                                <ScheduleCard
-                                  schedule={this.state.schedules.regular}
-                                  bordered={false}
-                                  hoverable={false}
-                                  pointer={true}
-                                />
-                              </Link>
-                            </TabPane>
-                          );
-                        }
-                      })()}
-                      {(() => {
-                        if (this.state.schedules.ranked !== undefined) {
-                          return (
-                            <TabPane
-                              tab={<FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />}
-                              key="ranked"
-                            >
-                              <Link to={'/schedules/ranked'}>
-                                <ScheduleCard
-                                  schedule={this.state.schedules.ranked}
-                                  bordered={false}
-                                  hoverable={false}
-                                  pointer={true}
-                                />
-                              </Link>
-                            </TabPane>
-                          );
-                        }
-                      })()}
-                      {(() => {
-                        if (this.state.schedules.league !== undefined) {
-                          return (
-                            <TabPane
-                              tab={<FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />}
-                              key="league"
-                            >
-                              <Link to={'/schedules/league'}>
-                                <ScheduleCard
-                                  schedule={this.state.schedules.league}
-                                  bordered={false}
-                                  hoverable={false}
-                                  pointer={true}
-                                />
-                              </Link>
-                            </TabPane>
-                          );
-                        }
-                      })()}
-                    </Tabs>
-                  </Card>
+                  {(() => {
+                    if (this.state.schedules !== null) {
+                      return (
+                        <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
+                          <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
+                            {(() => {
+                              if (this.state.schedules.regular !== undefined) {
+                                return (
+                                  <TabPane
+                                    tab={<FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />}
+                                    key="regular"
+                                  >
+                                    <Link to={'/schedules/regular'}>
+                                      <ScheduleCard
+                                        schedule={this.state.schedules.regular}
+                                        bordered={false}
+                                        hoverable={false}
+                                        pointer={true}
+                                      />
+                                    </Link>
+                                  </TabPane>
+                                );
+                              }
+                            })()}
+                            {(() => {
+                              if (this.state.schedules.ranked !== undefined) {
+                                return (
+                                  <TabPane
+                                    tab={<FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />}
+                                    key="ranked"
+                                  >
+                                    <Link to={'/schedules/ranked'}>
+                                      <ScheduleCard
+                                        schedule={this.state.schedules.ranked}
+                                        bordered={false}
+                                        hoverable={false}
+                                        pointer={true}
+                                      />
+                                    </Link>
+                                  </TabPane>
+                                );
+                              }
+                            })()}
+                            {(() => {
+                              if (this.state.schedules.league !== undefined) {
+                                return (
+                                  <TabPane
+                                    tab={<FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />}
+                                    key="league"
+                                  >
+                                    <Link to={'/schedules/league'}>
+                                      <ScheduleCard
+                                        schedule={this.state.schedules.league}
+                                        bordered={false}
+                                        hoverable={false}
+                                        pointer={true}
+                                      />
+                                    </Link>
+                                  </TabPane>
+                                );
+                              }
+                            })()}
+                          </Tabs>
+                        </Card>
+                      );
+                    }
+                  })()}
+                </Col>
+                <Col className="DashboardWindow-content-column" md={24} lg={12}>
+                  {(() => {
+                    if (this.state.shifts.length > 0) {
+                      return (
+                        <Card
+                          title={<FormattedMessage id="app.shifts" defaultMessage="Shifts" />}
+                          hoverable
+                          bodyStyle={{ padding: '1px 0 0 0' }}
+                          style={{ cursor: 'default' }}
+                        >
+                          <Link to={'/shifts'}>
+                            <ShiftCard shift={this.state.shifts[0]} bordered={false} hoverable={false} pointer={true} />
+                          </Link>
+                        </Card>
+                      );
+                    }
+                  })()}
                 </Col>
               </Row>
             );
@@ -836,7 +968,8 @@ class DashboardWindow extends React.Component {
 
   componentWillUnmount() {
     // Remove update timer
-    clearInterval(this.timer);
+    clearInterval(this.schedulesTimer);
+    clearInterval(this.shiftsTimer);
   }
 }
 

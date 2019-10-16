@@ -1055,9 +1055,11 @@ const en_US = {
   'app.alert.warning.automatic_cookie_generation':
     'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.',
   'app.alert.warning.schedules_can_not_update': 'Takos can not update schedules, please refresh this page to update.',
+  'app.alert.warning.shifts_can_not_update': 'Takos can not update shifts, please refresh this page to update.',
   'app.alert.warning.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.schedules_expired': 'It seems that these schedules have expired, please refresh this page to update.',
+  'app.alert.info.shifts_expired': 'It seems that these shifts have expired, please refresh this page to update.',
   'app.alert.info.battles_filtered':
     'The battles shown have been filtered, please click <l>here</l> to cancel the screening.',
   'app.alert.info.use_automatic_cookie_generation':

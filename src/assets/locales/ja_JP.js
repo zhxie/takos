@@ -1055,11 +1055,15 @@ const ja_JP = {
     '自動クッキー生成では、2 つの非任天堂サーバーに対して、最小限の非識別情報で安全な要求を行います。開始する前に、<a>README</a> の「Security and Privacy」セクションを注意深くお読みください。',
   'app.alert.warning.schedules_can_not_update':
     'Takos はスケジュールを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.warning.shifts_can_not_update':
+    'Takos はシフト表を更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.battles_can_not_update':
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
   'app.alert.info.schedules_expired':
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
+  'app.alert.info.shifts_expired':
+    'これらのシフト表の有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info.battles_filtered':
     '表示されているバトルはフィルタリングされています。<l>ここ</l>をクリックしてスクリーニングをキャンセルしてください。',
   'app.alert.info.use_automatic_cookie_generation':
