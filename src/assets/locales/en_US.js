@@ -1135,6 +1135,9 @@ const en_US = {
   'app.time.span.to.min': 'in {min} min',
   'app.time.span.to.hour_min': 'in {hour} hour {min} min',
   'app.time.span.to.day_hour_min': 'in {day} day {hour} hour {min} min',
+  'app.time.span.remain.min': '{min} min remaining',
+  'app.time.span.remain.hour_min': '{hour} hour {min} min remaining',
+  'app.time.span.remain.day_hour_min': '{day} day {hour} hour {min} min remaining',
   'app.time.span.elapsed.in.sec': 'in {sec} sec',
   'app.time.span.elapsed.in.min_sec': 'in {min} min {sec} sec',
   'app.time.span.elapsed.sec': '({sec} seconds)'

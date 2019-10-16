@@ -1122,6 +1122,9 @@ const zh_CN = {
   'app.time.span.to.min': '{min} 分后',
   'app.time.span.to.hour_min': '{hour} 小时 {min} 分后',
   'app.time.span.to.day_hour_min': '{day} 日 {hour} 小时 {min} 分后',
+  'app.time.span.remain.min': '剩余 {min} 分',
+  'app.time.span.remain.hour_min': '剩余 {hour} 小时 {min} 分',
+  'app.time.span.remain.day_hour_min': '剩余 {day} 日 {hour} 小时 {min} 分',
   'app.time.span.elapsed.in.sec': '{sec} 秒内',
   'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒内',
   'app.time.span.elapsed.sec': '({sec} 秒)'

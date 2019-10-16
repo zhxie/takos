@@ -111,9 +111,19 @@ class ShiftsWindow extends React.Component {
               <div>
                 {(() => {
                   if (new Date() < new Date(this.state.data[0].startTime * 1000)) {
-                    return <PageHeader title={<FormattedMessage id="app.shifts.soon" defaultMessage="Soon!" />} />;
+                    return (
+                      <PageHeader
+                        title={<FormattedMessage id="app.shifts.soon" defaultMessage="Soon!" />}
+                        subTitle={TimeConverter.getTimeTo(this.state.data[0].startTime)}
+                      />
+                    );
                   } else {
-                    return <PageHeader title={<FormattedMessage id="app.shifts.open" defaultMessage="Open!" />} />;
+                    return (
+                      <PageHeader
+                        title={<FormattedMessage id="app.shifts.open" defaultMessage="Open!" />}
+                        subTitle={TimeConverter.getTimeRemained(this.state.data[0].endTime)}
+                      />
+                    );
                   }
                 })()}
                 <div className="ShiftsWindow-content-card" key="1">
@@ -127,7 +137,10 @@ class ShiftsWindow extends React.Component {
           if (this.state.data.length > 1) {
             return (
               <div>
-                <PageHeader title={<FormattedMessage id="app.shifts.next" defaultMessage="Next" />} />
+                <PageHeader
+                  title={<FormattedMessage id="app.shifts.next" defaultMessage="Next" />}
+                  subTitle={TimeConverter.getTimeTo(this.state.data[1].startTime)}
+                />
                 <div className="ShiftsWindow-content-card" key="2">
                   <ShiftCard shift={this.state.data[1]} />
                 </div>

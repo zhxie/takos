@@ -114,6 +114,60 @@ class TimeConverter {
     }
   };
 
+  static getTimeRemained = time => {
+    const now = new Date();
+    const diff = new Date(time * 1000) - now;
+    if (diff < 0) {
+      return (
+        <FormattedMessage
+          id="app.time.span.to.min"
+          defaultMessage="in {min} min"
+          values={{
+            min: 0
+          }}
+        />
+      );
+    } else {
+      const days = Math.floor(diff / (24 * 3600 * 1000));
+      const hours = Math.floor((diff - days * 24 * 3600 * 1000) / (3600 * 1000));
+      const minutes = Math.floor((diff - days * 24 * 3600 * 1000 - hours * 3600 * 1000) / (60 * 1000));
+      if (days > 0) {
+        return (
+          <FormattedMessage
+            id="app.time.span.remain.day_hour_min"
+            defaultMessage="{day} day {hour} hour {min} min remaining"
+            values={{
+              day: days,
+              hour: hours,
+              min: minutes
+            }}
+          />
+        );
+      } else if (hours > 0) {
+        return (
+          <FormattedMessage
+            id="app.time.span.remain.hour_min"
+            defaultMessage="{hour} hour {min} min remaining"
+            values={{
+              hour: hours,
+              min: minutes
+            }}
+          />
+        );
+      } else {
+        return (
+          <FormattedMessage
+            id="app.time.span.remain.min"
+            defaultMessage="in {min} min remaining"
+            values={{
+              min: minutes
+            }}
+          />
+        );
+      }
+    }
+  };
+
   static formatBattleKoElapsedTime = time => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = parseInt(time) - 60 * minutes;

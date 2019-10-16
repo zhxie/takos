@@ -1140,6 +1140,9 @@ const ja_JP = {
   'app.time.span.to.min': '{min} 分後',
   'app.time.span.to.hour_min': '{hour} 時間 {min} 分後',
   'app.time.span.to.day_hour_min': '{day} 日 {hour} 時間 {min} 分後',
+  'app.time.span.remain.min': '残り {min} 分',
+  'app.time.span.remain.hour_min': '残り {hour} 時間 {min} 分',
+  'app.time.span.remain.day_hour_min': '残り {day} 日 {hour} 時間 {min} 分',
   'app.time.span.elapsed.in.sec': '{sec} 秒以内',
   'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒以内',
   'app.time.span.elapsed.sec': '({sec} 秒)'
