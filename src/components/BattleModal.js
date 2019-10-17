@@ -35,12 +35,17 @@ import { Mode, SplatfestMode } from '../models/Mode';
 import { Style, RankedBattlePlayer } from '../models/Player';
 import Rule from '../models/Rule';
 import { Freshness, Badge } from '../models/Weapon';
+import BattleHelper from '../utils/BattleHelper';
 import FileFolderUrl from '../utils/FileFolderUrl';
 import TimeConverter from '../utils/TimeConverter';
 
 const { Column } = Table;
 
 class BattleModal extends React.Component {
+  state = {
+    icons: []
+  };
+
   modeIconSelector = mode => {
     switch (mode) {
       case Mode.regularBattle:
@@ -72,6 +77,44 @@ class BattleModal extends React.Component {
         return clamBlitzIcon;
       default:
         throw new RangeError();
+    }
+  };
+
+  getIcons = () => {
+    if (this.props.value !== null) {
+      let ids = [];
+      let icons = [];
+      this.props.value.myTeamMembers.forEach(element => {
+        if (
+          this.state.icons.find(ele => {
+            return ele.id === element.id;
+          }) === undefined
+        ) {
+          ids.push(element.id);
+          icons.push(BattleHelper.getPlayerIcon(element.id));
+        }
+      });
+      this.props.value.otherTeamMembers.forEach(element => {
+        if (
+          this.state.icons.find(ele => {
+            return ele.id === element.id;
+          }) === undefined
+        ) {
+          ids.push(element.id);
+          icons.push(BattleHelper.getPlayerIcon(element.id));
+        }
+      });
+      Promise.all(icons)
+        .then(values => {
+          let result = this.state.icons;
+          for (let i = 0; i < values.length; ++i) {
+            result.push({ id: ids[i], icon: values[i] });
+          }
+          this.setState({ icons: result });
+        })
+        .catch(e => {
+          console.error(e);
+        });
     }
   };
 
@@ -833,7 +876,14 @@ class BattleModal extends React.Component {
           render={text => {
             return (
               <span className="BattleModal-players-span">
-                <img className="BattleModal-players-player-icon" src={text.url} alt="icon" />
+                {(() => {
+                  const icon = this.state.icons.find(element => {
+                    return element.id === text.id;
+                  });
+                  if (icon !== undefined) {
+                    return <img className="BattleModal-players-player-icon" src={icon.icon} alt="icon" />;
+                  }
+                })()}
                 {text.nickname}
                 {(() => {
                   if (text.isSelf) {
@@ -1220,6 +1270,16 @@ class BattleModal extends React.Component {
         })()}
       </Modal>
     );
+  }
+
+  componentDidMount() {
+    this.getIcons();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.getIcons();
+    }
   }
 }
 
