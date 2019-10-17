@@ -14,9 +14,9 @@ class Shift extends Base {
     this.weapon4 = weapon4;
   }
 
-  hasDetail = () => {
+  get hasDetail() {
     return this.stage !== null;
-  };
+  }
 
   static parse = data => {
     try {

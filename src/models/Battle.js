@@ -40,113 +40,105 @@ class Battle extends Base {
     this.otherTeamCount = otherTeamCount;
   }
 
-  selfPlayer = () => {
+  get selfPlayer() {
     return this.myTeamMembers.find(element => {
       return (element.isSelf = true);
     });
-  };
+  }
 
-  isWin = () => {
+  get isWin() {
     return this.myTeamCount > this.otherTeamCount;
-  };
+  }
 
-  isLevelAfterWithStar = () => {
+  get isLevelAfterWithStar() {
     return this.levelAfter > 99;
-  };
+  }
 
-  levelAfterWithStar = () => {
-    return this.levelAfter - this.star() * 100;
-  };
+  get levelAfterWithStar() {
+    return this.levelAfter - this.star * 100;
+  }
 
-  myTeamPaint = () => {
+  get myTeamPaint() {
     let paint = 0;
     this.myTeamMembers.forEach(element => {
       paint = paint + element.paint;
     });
     return paint;
-  };
-  myTeamKill = () => {
+  }
+  get myTeamKill() {
     let kill = 0;
     this.myTeamMembers.forEach(element => {
       kill = kill + element.kill;
     });
     return kill;
-  };
-  myTeamAssist = () => {
-    let assit = 0;
+  }
+  get myTeamAssist() {
+    let assist = 0;
     this.myTeamMembers.forEach(element => {
-      assit = assit + element.assist;
+      assist = assist + element.assist;
     });
-    return assit;
-  };
-  myTeamKillAndAssist = () => {
-    let kill = 0;
-    this.myTeamMembers.forEach(element => {
-      kill = kill + element.killAndAssist();
-    });
-    return kill;
-  };
-  myTeamDeath = () => {
+    return assist;
+  }
+  get myTeamKillAndAssist() {
+    return this.myTeamKill + this.myTeamAssist;
+  }
+  get myTeamDeath() {
     let death = 0;
     this.myTeamMembers.forEach(element => {
       death = death + element.death;
     });
     return death;
-  };
-  myTeamSpecial = () => {
+  }
+  get myTeamSpecial() {
     let special = 0;
     this.myTeamMembers.forEach(element => {
       special = special + element.special;
     });
     return special;
-  };
+  }
 
-  otherTeamPaint = () => {
+  get otherTeamPaint() {
     let paint = 0;
     this.otherTeamMembers.forEach(element => {
       paint = paint + element.paint;
     });
     return paint;
-  };
-  otherTeamKill = () => {
+  }
+  get otherTeamKill() {
     let kill = 0;
     this.otherTeamMembers.forEach(element => {
       kill = kill + element.kill;
     });
     return kill;
-  };
-  otherTeamAssist = () => {
-    let assit = 0;
+  }
+  get otherTeamAssist() {
+    let assist = 0;
     this.otherTeamMembers.forEach(element => {
-      assit = assit + element.assist;
+      assist = assist + element.assist;
     });
-    return assit;
-  };
-  otherTeamKillAndAssist = () => {
-    let kill = 0;
-    this.otherTeamMembers.forEach(element => {
-      kill = kill + element.killAndAssist();
-    });
-    return kill;
-  };
-  otherTeamDeath = () => {
+    return assist;
+  }
+  get otherTeamKillAndAssist() {
+    return this.otherTeamKill + this.otherTeamAssist;
+  }
+  get otherTeamDeath() {
     let death = 0;
     this.otherTeamMembers.forEach(element => {
       death = death + element.death;
     });
     return death;
-  };
-  otherTeamSpecial = () => {
+  }
+  get otherTeamSpecial() {
     let special = 0;
     this.otherTeamMembers.forEach(element => {
       special = special + element.special;
     });
     return special;
-  };
+  }
 
-  star = () => {
+  get star() {
     return parseInt(this.levelAfter / 100);
-  };
+  }
 
   static parse = data => {
     try {
@@ -576,9 +568,9 @@ class RegularBattle extends Battle {
     this.winMeter = winMeter;
   }
 
-  freshness = () => {
+  get freshness() {
     return Freshness.parse(this.winMeter);
-  };
+  }
 }
 
 class RankedBattle extends Battle {
@@ -621,12 +613,12 @@ class RankedBattle extends Battle {
     this.estimatedRankPower = estimatedRankPower;
   }
 
-  isKnockOut = () => {
+  get isKnockOut() {
     return this.myTeamCount === 100;
-  };
-  isKnockedOut = () => {
+  }
+  get isKnockedOut() {
     return this.otherTeamCount === 100;
-  };
+  }
 }
 
 class RankedXBattle extends RankedBattle {
@@ -668,17 +660,17 @@ class RankedXBattle extends RankedBattle {
     this.xPowerAfter = xPowerAfter;
   }
 
-  estimatedXPower = () => {
+  get estimatedXPower() {
     return this.estimatedRankPower;
-  };
+  }
 
-  isCalculating = () => {
+  get isCalculating() {
     return this.xPowerAfter === null;
-  };
+  }
 
-  isX = () => {
+  get isX() {
     return this.rankAfter === Rank.x;
-  };
+  }
 }
 
 class LeagueBattle extends Battle {
@@ -725,16 +717,16 @@ class LeagueBattle extends Battle {
     this.maxLeaguePoint = maxLeaguePoint;
   }
 
-  isKnockOut = () => {
+  get isKnockOut() {
     return this.myTeamCount === 100;
-  };
-  isKnockedOut = () => {
+  }
+  get isKnockedOut() {
     return this.otherTeamCount === 100;
-  };
+  }
 
-  isCalculating = () => {
+  get isCalculating() {
     return this.leaguePoint === null;
-  };
+  }
 }
 
 class SplatfestBattle extends Battle {
@@ -788,9 +780,9 @@ class SplatfestBattle extends Battle {
     this.totalContributionPoint = totalContributionPoint;
   }
 
-  isCalculating = () => {
+  get isCalculating() {
     return this.splatfestPower === 0;
-  };
+  }
 }
 
 export { Battle, RegularBattle, RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle };

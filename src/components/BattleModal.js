@@ -89,7 +89,7 @@ class BattleModal extends React.Component {
     const sortedPlayers = players.slice(0).sort((a, b) => {
       if (a instanceof RankedBattlePlayer) {
         const sort = 32 * this.compare(a.sort, b.sort);
-        const killAndAssist = 16 * this.compare(a.killAndAssist(), b.killAndAssist());
+        const killAndAssist = 16 * this.compare(a.killAndAssist, b.killAndAssist);
         const special = 8 * this.compare(a.special, b.special);
         const death = 4 * this.compare(a.death, b.death);
         const kill = 2 * this.compare(a.kill, b.kill);
@@ -97,7 +97,7 @@ class BattleModal extends React.Component {
         return -(sort + killAndAssist + special + death + kill + nickname);
       } else {
         const paint = 32 * this.compare(a.paint, b.paint);
-        const killAndAssist = 16 * this.compare(a.killAndAssist(), b.killAndAssist());
+        const killAndAssist = 16 * this.compare(a.killAndAssist, b.killAndAssist);
         const special = 8 * this.compare(a.special, b.special);
         const death = 4 * this.compare(a.death, b.death);
         const kill = 2 * this.compare(a.kill, b.kill);
@@ -143,7 +143,7 @@ class BattleModal extends React.Component {
           <Descriptions.Item label={<FormattedMessage id="battle.result" defaultMessage="Result" />} span={3}>
             <span>
               {(() => {
-                if (this.props.value.isWin()) {
+                if (this.props.value.isWin) {
                   return (
                     <Tag color="magenta" key="result">
                       <FormattedMessage id="battle.win" defaultMessage="Win!" />
@@ -159,14 +159,14 @@ class BattleModal extends React.Component {
               })()}
               {(() => {
                 if (this.props.value instanceof RankedBattle || this.props.value instanceof LeagueBattle) {
-                  if (this.props.value.isKnockOut()) {
+                  if (this.props.value.isKnockOut) {
                     return (
                       <Tag color="red" key="ko">
                         <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
                       </Tag>
                     );
                   }
-                  if (this.props.value.isKnockedOut()) {
+                  if (this.props.value.isKnockedOut) {
                     return (
                       <Tag color="green" key="ko">
                         <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
@@ -220,7 +220,7 @@ class BattleModal extends React.Component {
                 <Descriptions.Item
                   label={<FormattedMessage id="battle.power.ranked.x" defaultMessage="X Power Level" />}
                   span={(() => {
-                    if (this.props.value.isX()) {
+                    if (this.props.value.isX) {
                       return 2;
                     } else {
                       return 3;
@@ -233,12 +233,12 @@ class BattleModal extends React.Component {
             }
           })()}
           {(() => {
-            if (this.props.value instanceof RankedXBattle && this.props.value.isX()) {
+            if (this.props.value instanceof RankedXBattle && this.props.value.isX) {
               return (
                 <Descriptions.Item label={<FormattedMessage id="battle.power.x" defaultMessage="X Power" />} span={2}>
                   <span>
                     {(() => {
-                      if (this.props.value.isCalculating()) {
+                      if (this.props.value.isCalculating) {
                         return <FormattedMessage id="battle.power.calculating" defaultMessage="Calculating.." />;
                       } else {
                         return this.props.value.xPowerAfter;
@@ -282,7 +282,7 @@ class BattleModal extends React.Component {
                 >
                   <span>
                     {(() => {
-                      if (this.props.value.isCalculating()) {
+                      if (this.props.value.isCalculating) {
                         return <FormattedMessage id="battle.power.calculating" defaultMessage="Calculating.." />;
                       } else {
                         if (this.props.value.leaguePoint === this.props.value.maxLeaguePoint) {
@@ -306,7 +306,7 @@ class BattleModal extends React.Component {
                 >
                   <span>
                     {(() => {
-                      if (this.props.value.isCalculating()) {
+                      if (this.props.value.isCalculating) {
                         return <FormattedMessage id="battle.power.calculating" defaultMessage="Calculating.." />;
                       } else {
                         return this.props.value.maxLeaguePoint;
@@ -357,7 +357,7 @@ class BattleModal extends React.Component {
                 >
                   <span>
                     {(() => {
-                      if (this.props.value.isCalculating()) {
+                      if (this.props.value.isCalculating) {
                         return <FormattedMessage id="battle.power.calculating" defaultMessage="Calculating.." />;
                       } else {
                         if (this.props.value.splatfestPower === this.props.value.maxSplatfestPower) {
@@ -386,7 +386,7 @@ class BattleModal extends React.Component {
                 >
                   <span>
                     {(() => {
-                      if (this.props.value.isCalculating()) {
+                      if (this.props.value.isCalculating) {
                         return <FormattedMessage id="battle.power.calculating" defaultMessage="Calculating.." />;
                       } else {
                         return this.props.value.maxSplatfestPower;
@@ -536,37 +536,37 @@ class BattleModal extends React.Component {
             })()}
           >
             {(() => {
-              if (this.props.value.isLevelAfterWithStar() > this.props.value.selfPlayer().isLevelWithStar) {
+              if (this.props.value.isLevelAfterWithStar > this.props.value.selfPlayer.isLevelWithStar) {
                 return (
                   <span>
                     <b>
                       {(() => {
-                        if (this.props.value.selfPlayer().isLevelWithStar()) {
+                        if (this.props.value.selfPlayer.isLevelWithStar) {
                           return (
                             <span>
-                              <Tooltip title={this.props.value.selfPlayer().level}>
+                              <Tooltip title={this.props.value.selfPlayer.level}>
                                 <span className="BattleModal-battle-star">★</span>
-                                {this.props.value.selfPlayer().levelWithStar()}
+                                {this.props.value.selfPlayer.levelWithStar}
                               </Tooltip>
                             </span>
                           );
                         } else {
-                          return this.props.value.selfPlayer().levelWithStar();
+                          return this.props.value.selfPlayer.levelWithStar;
                         }
                       })()}{' '}
                       →{' '}
                       {(() => {
-                        if (this.props.value.isLevelAfterWithStar()) {
+                        if (this.props.value.isLevelAfterWithStar) {
                           return (
                             <span>
                               <Tooltip title={this.props.value.levelAfter}>
                                 <span className="BattleModal-battle-star">★</span>
-                                {this.props.value.levelAfterWithStar()}
+                                {this.props.value.levelAfterWithStar}
                               </Tooltip>
                             </span>
                           );
                         } else {
-                          return this.props.value.levelAfterWithStar();
+                          return this.props.value.levelAfterWithStar;
                         }
                       })()}
                     </b>
@@ -576,32 +576,32 @@ class BattleModal extends React.Component {
                 return (
                   <span>
                     {(() => {
-                      if (this.props.value.selfPlayer().isLevelWithStar()) {
+                      if (this.props.value.selfPlayer.isLevelWithStar) {
                         return (
                           <span>
-                            <Tooltip title={this.props.value.selfPlayer().level}>
+                            <Tooltip title={this.props.value.selfPlayer.level}>
                               <span className="BattleModal-battle-star">★</span>
-                              {this.props.value.selfPlayer().levelWithStar()}
+                              {this.props.value.selfPlayer.levelWithStar}
                             </Tooltip>
                           </span>
                         );
                       } else {
-                        return this.props.value.selfPlayer().levelWithStar();
+                        return this.props.value.selfPlayer.levelWithStar;
                       }
                     })()}{' '}
                     →{' '}
                     {(() => {
-                      if (this.props.value.isLevelAfterWithStar()) {
+                      if (this.props.value.isLevelAfterWithStar) {
                         return (
                           <span>
                             <Tooltip title={this.props.value.levelAfter}>
                               <span className="BattleModal-battle-star">★</span>
-                              {this.props.value.levelAfterWithStar()}
+                              {this.props.value.levelAfterWithStar}
                             </Tooltip>
                           </span>
                         );
                       } else {
-                        return this.props.value.levelAfterWithStar();
+                        return this.props.value.levelAfterWithStar;
                       }
                     })()}
                   </span>
@@ -614,11 +614,11 @@ class BattleModal extends React.Component {
               return (
                 <Descriptions.Item label={<FormattedMessage id="battle.rank" defaultMessage="Rank" />} span={2}>
                   {(() => {
-                    if (this.props.value.rankAfter !== this.props.value.selfPlayer().rank) {
+                    if (this.props.value.rankAfter !== this.props.value.selfPlayer.rank) {
                       return (
                         <span>
                           <b>
-                            <FormattedMessage id={this.props.value.selfPlayer().rank.name} /> →{' '}
+                            <FormattedMessage id={this.props.value.selfPlayer.rank.name} /> →{' '}
                             <FormattedMessage id={this.props.value.rankAfter.name} />
                           </b>
                         </span>
@@ -626,7 +626,7 @@ class BattleModal extends React.Component {
                     } else {
                       return (
                         <span>
-                          <FormattedMessage id={this.props.value.selfPlayer().rank.name} /> →{' '}
+                          <FormattedMessage id={this.props.value.selfPlayer.rank.name} /> →{' '}
                           <FormattedMessage id={this.props.value.rankAfter.name} />
                         </span>
                       );
@@ -865,7 +865,7 @@ class BattleModal extends React.Component {
                   }
                 })()}
                 {(() => {
-                  if (text.isDisconnect()) {
+                  if (text.isDisconnect) {
                     return (
                       <Tag className="BattleModal-players-tag" key="disconnect">
                         <FormattedMessage id="player.disconnect" defaultMessage="Disconnect" />
@@ -924,7 +924,7 @@ class BattleModal extends React.Component {
           }}
         />
         {(() => {
-          if (this.props.value.selfPlayer() instanceof RankedBattlePlayer) {
+          if (this.props.value.selfPlayer instanceof RankedBattlePlayer) {
             return (
               <Column
                 title={<FormattedMessage id="rank" defaultMessage="Rank" />}
@@ -949,17 +949,17 @@ class BattleModal extends React.Component {
             return (
               <span>
                 {(() => {
-                  if (text.isLevelWithStar()) {
+                  if (text.isLevelWithStar) {
                     return (
                       <span>
                         <Tooltip title={text.level}>
                           <span className="BattleModal-players-star">★</span>
-                          {text.levelWithStar()}
+                          {text.levelWithStar}
                         </Tooltip>
                       </span>
                     );
                   } else {
-                    return text.levelWithStar();
+                    return text.levelWithStar;
                   }
                 })()}
               </span>
@@ -991,15 +991,15 @@ class BattleModal extends React.Component {
                   {(() => {
                     if (text.kill > text.death) {
                       if (text.assist > 0) {
-                        return <b>{'{0} ({1})'.format(text.killAndAssist(), text.assist)}</b>;
+                        return <b>{'{0} ({1})'.format(text.killAndAssist, text.assist)}</b>;
                       } else {
-                        return <b>{text.killAndAssist()}</b>;
+                        return <b>{text.killAndAssist}</b>;
                       }
                     } else {
                       if (text.assist > 0) {
-                        return '{0} ({1})'.format(text.killAndAssist(), text.assist);
+                        return '{0} ({1})'.format(text.killAndAssist, text.assist);
                       } else {
-                        return text.killAndAssist();
+                        return text.killAndAssist;
                       }
                     }
                   })()}{' '}
@@ -1031,7 +1031,7 @@ class BattleModal extends React.Component {
       <div>
         <PageHeader title={<FormattedMessage id="players" defaultMessage="Players" />} />
         {(() => {
-          if (this.props.value.isWin()) {
+          if (this.props.value.isWin) {
             return (
               <div>
                 {this.renderTeamPlayers(this.sortPlayers(this.props.value.myTeamMembers), true)}
@@ -1062,17 +1062,17 @@ class BattleModal extends React.Component {
                 className="BattleModal-statistics-statistic"
                 title={<FormattedMessage id="player.paint" defaultMessage="Paint" />}
                 prefix={(() => {
-                  if (this.props.value.myTeamPaint() > this.props.value.otherTeamPaint()) {
+                  if (this.props.value.myTeamPaint > this.props.value.otherTeamPaint) {
                     return <Icon type="caret-up" />;
-                  } else if (this.props.value.myTeamPaint() < this.props.value.otherTeamPaint()) {
+                  } else if (this.props.value.myTeamPaint < this.props.value.otherTeamPaint) {
                     return <Icon type="caret-down" />;
                   }
                 })()}
-                value={'{0} - {1}'.format(this.props.value.myTeamPaint(), this.props.value.otherTeamPaint())}
+                value={'{0} - {1}'.format(this.props.value.myTeamPaint, this.props.value.otherTeamPaint)}
                 valueStyle={(() => {
-                  if (this.props.value.myTeamPaint() > this.props.value.otherTeamPaint()) {
+                  if (this.props.value.myTeamPaint > this.props.value.otherTeamPaint) {
                     return { color: '#eb2f96' };
-                  } else if (this.props.value.myTeamPaint() < this.props.value.otherTeamPaint()) {
+                  } else if (this.props.value.myTeamPaint < this.props.value.otherTeamPaint) {
                     return { color: '#52c41a' };
                   }
                 })()}
@@ -1085,37 +1085,37 @@ class BattleModal extends React.Component {
                 className="BattleModal-statistics-statistic"
                 title={<FormattedMessage id="player.kill" defaultMessage="Kill" />}
                 prefix={(() => {
-                  if (this.props.value.myTeamKill() > this.props.value.otherTeamKill()) {
+                  if (this.props.value.myTeamKill > this.props.value.otherTeamKill) {
                     return <Icon type="caret-up" />;
-                  } else if (this.props.value.myTeamKill() < this.props.value.otherTeamKill()) {
+                  } else if (this.props.value.myTeamKill < this.props.value.otherTeamKill) {
                     return <Icon type="caret-down" />;
                   }
                 })()}
                 value={(() => {
                   let myTeamString = '';
-                  if (this.props.value.myTeamAssist() > 0) {
+                  if (this.props.value.myTeamAssist > 0) {
                     myTeamString = '{0} ({1})'.format(
-                      this.props.value.myTeamKillAndAssist(),
-                      this.props.value.myTeamAssist()
+                      this.props.value.myTeamKillAndAssist,
+                      this.props.value.myTeamAssist
                     );
                   } else {
-                    myTeamString = '{0}'.format(this.props.value.myTeamKillAndAssist());
+                    myTeamString = '{0}'.format(this.props.value.myTeamKillAndAssist);
                   }
                   let otherTeamString = '';
-                  if (this.props.value.otherTeamAssist() > 0) {
+                  if (this.props.value.otherTeamAssist > 0) {
                     otherTeamString = '{0} ({1})'.format(
-                      this.props.value.otherTeamKillAndAssist(),
-                      this.props.value.otherTeamAssist()
+                      this.props.value.otherTeamKillAndAssist,
+                      this.props.value.otherTeamAssist
                     );
                   } else {
-                    otherTeamString = '{0}'.format(this.props.value.otherTeamKillAndAssist());
+                    otherTeamString = '{0}'.format(this.props.value.otherTeamKillAndAssist);
                   }
                   return '{0} - {1}'.format(myTeamString, otherTeamString);
                 })()}
                 valueStyle={(() => {
-                  if (this.props.value.myTeamKill() > this.props.value.otherTeamKill()) {
+                  if (this.props.value.myTeamKill > this.props.value.otherTeamKill) {
                     return { color: '#eb2f96' };
-                  } else if (this.props.value.myTeamKill() < this.props.value.otherTeamKill()) {
+                  } else if (this.props.value.myTeamKill < this.props.value.otherTeamKill) {
                     return { color: '#52c41a' };
                   }
                 })()}
@@ -1128,17 +1128,17 @@ class BattleModal extends React.Component {
                 className="BattleModal-statistics-statistic"
                 title={<FormattedMessage id="player.death" defaultMessage="Death" />}
                 prefix={(() => {
-                  if (this.props.value.myTeamDeath() > this.props.value.otherTeamDeath()) {
+                  if (this.props.value.myTeamDeath > this.props.value.otherTeamDeath) {
                     return <Icon type="caret-up" />;
-                  } else if (this.props.value.myTeamDeath() < this.props.value.otherTeamDeath()) {
+                  } else if (this.props.value.myTeamDeath < this.props.value.otherTeamDeath) {
                     return <Icon type="caret-down" />;
                   }
                 })()}
-                value={'{0} - {1}'.format(this.props.value.myTeamDeath(), this.props.value.otherTeamDeath())}
+                value={'{0} - {1}'.format(this.props.value.myTeamDeath, this.props.value.otherTeamDeath)}
                 valueStyle={(() => {
-                  if (this.props.value.myTeamDeath() < this.props.value.otherTeamDeath()) {
+                  if (this.props.value.myTeamDeath < this.props.value.otherTeamDeath) {
                     return { color: '#eb2f96' };
-                  } else if (this.props.value.myTeamDeath() > this.props.value.otherTeamDeath()) {
+                  } else if (this.props.value.myTeamDeath > this.props.value.otherTeamDeath) {
                     return { color: '#52c41a' };
                   }
                 })()}
@@ -1151,17 +1151,17 @@ class BattleModal extends React.Component {
                 className="BattleModal-statistics-statistic"
                 title={<FormattedMessage id="player.special" defaultMessage="Special" />}
                 prefix={(() => {
-                  if (this.props.value.myTeamSpecial() > this.props.value.otherTeamSpecial()) {
+                  if (this.props.value.myTeamSpecial > this.props.value.otherTeamSpecial) {
                     return <Icon type="caret-up" />;
-                  } else if (this.props.value.myTeamSpecial() < this.props.value.otherTeamSpecial()) {
+                  } else if (this.props.value.myTeamSpecial < this.props.value.otherTeamSpecial) {
                     return <Icon type="caret-down" />;
                   }
                 })()}
-                value={'{0} - {1}'.format(this.props.value.myTeamSpecial(), this.props.value.otherTeamSpecial())}
+                value={'{0} - {1}'.format(this.props.value.myTeamSpecial, this.props.value.otherTeamSpecial)}
                 valueStyle={(() => {
-                  if (this.props.value.myTeamSpecial() > this.props.value.otherTeamSpecial()) {
+                  if (this.props.value.myTeamSpecial > this.props.value.otherTeamSpecial) {
                     return { color: '#eb2f96' };
-                  } else if (this.props.value.myTeamSpecial() < this.props.value.otherTeamSpecial()) {
+                  } else if (this.props.value.myTeamSpecial < this.props.value.otherTeamSpecial) {
                     return { color: '#52c41a' };
                   }
                 })()}

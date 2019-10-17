@@ -275,25 +275,25 @@ class BattlePlayer extends Player {
     this.sort = sort;
   }
 
-  killAndAssist = () => {
+  get killAndAssist() {
     return this.kill + this.assist;
-  };
+  }
 
-  isLevelWithStar = () => {
+  get islevelWithStar() {
     return this.level > 99;
-  };
+  }
 
-  levelWithStar = () => {
-    return this.level - this.star() * 100;
-  };
+  get levelWithStar() {
+    return this.level - this.star * 100;
+  }
 
-  star = () => {
+  get star() {
     return parseInt(this.level / 100);
-  };
+  }
 
-  isDisconnect = () => {
+  get isDisconnect() {
     return this.paint === 0;
-  };
+  }
 
   static parse = (data, url, isSelf) => {
     try {

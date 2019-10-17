@@ -181,8 +181,8 @@ class DashboardWindow extends React.Component {
         // Handle statistics, battles and jobs
         if (this.state.battle !== null) {
           this.setState({
-            icon: this.state.battle.selfPlayer().url,
-            nickname: this.state.battle.selfPlayer().nickname
+            icon: this.state.battle.selfPlayer.url,
+            nickname: this.state.battle.selfPlayer.nickname
           });
         }
         return this.getRank();
@@ -539,15 +539,15 @@ class DashboardWindow extends React.Component {
                                 className="DashboardWindow-content-statistic"
                                 title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
                                 prefix={(() => {
-                                  if (this.state.battle.isLevelAfterWithStar()) {
+                                  if (this.state.battle.isLevelAfterWithStar) {
                                     return (
-                                      <Tooltip title={this.state.battle.star()}>
+                                      <Tooltip title={this.state.battle.star}>
                                         <span className="DashboardWindow-content-statistic-star">★</span>
                                       </Tooltip>
                                     );
                                   }
                                 })()}
-                                value={this.state.battle.levelAfterWithStar()}
+                                value={this.state.battle.levelAfterWithStar}
                               />
                             </Col>
                           </Row>
@@ -645,12 +645,12 @@ class DashboardWindow extends React.Component {
                           <Statistic
                             title={<FormattedMessage id="battle.result" defaultMessage="Result" />}
                             value={(() => {
-                              if (this.state.battle.isWin()) {
+                              if (this.state.battle.isWin) {
                                 if (
                                   this.state.battle instanceof RankedBattle ||
                                   this.state.battle instanceof LeagueBattle
                                 ) {
-                                  if (this.state.battle.isKnockOut()) {
+                                  if (this.state.battle.isKnockOut) {
                                     return this.props.intl.formatMessage({
                                       id: 'battle.knock_out',
                                       defaultMessage: 'KO BONUS!'
@@ -666,12 +666,12 @@ class DashboardWindow extends React.Component {
                               }
                             })()}
                             valueStyle={(() => {
-                              if (this.state.battle.isWin()) {
+                              if (this.state.battle.isWin) {
                                 if (
                                   this.state.battle instanceof RankedBattle ||
                                   this.state.battle instanceof LeagueBattle
                                 ) {
-                                  if (this.state.battle.isKnockOut()) {
+                                  if (this.state.battle.isKnockOut) {
                                     return { color: '#f5222d' };
                                   } else {
                                     return { color: '#eb2f96' };
@@ -694,18 +694,18 @@ class DashboardWindow extends React.Component {
                               />
                             }
                             value={(() => {
-                              if (this.state.battle.selfPlayer().assist > 0) {
+                              if (this.state.battle.selfPlayer.assist > 0) {
                                 return '{0} ({1}) / {2} / {3}'.format(
-                                  this.state.battle.selfPlayer().killAndAssist(),
-                                  this.state.battle.selfPlayer().assist,
-                                  this.state.battle.selfPlayer().death,
-                                  this.state.battle.selfPlayer().special
+                                  this.state.battle.selfPlayer.killAndAssist,
+                                  this.state.battle.selfPlayer.assist,
+                                  this.state.battle.selfPlayer.death,
+                                  this.state.battle.selfPlayer.special
                                 );
                               } else {
                                 return '{0} / {1} / {2}'.format(
-                                  this.state.battle.selfPlayer().killAndAssist(),
-                                  this.state.battle.selfPlayer().death,
-                                  this.state.battle.selfPlayer().special
+                                  this.state.battle.selfPlayer.killAndAssist,
+                                  this.state.battle.selfPlayer.death,
+                                  this.state.battle.selfPlayer.special
                                 );
                               }
                             })()}
@@ -718,34 +718,34 @@ class DashboardWindow extends React.Component {
                               <span>
                                 <Tooltip
                                   title={
-                                    <FormattedMessage id={this.state.battle.selfPlayer().weapon.mainWeapon.name} />
+                                    <FormattedMessage id={this.state.battle.selfPlayer.weapon.mainWeapon.name} />
                                   }
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.mainWeaponUrl}
+                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.mainWeaponUrl}
                                     alt="main"
                                   />
                                 </Tooltip>
                                 <Tooltip
-                                  title={<FormattedMessage id={this.state.battle.selfPlayer().weapon.subWeapon.name} />}
+                                  title={<FormattedMessage id={this.state.battle.selfPlayer.weapon.subWeapon.name} />}
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.subWeaponUrlA}
+                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.subWeaponUrlA}
                                     alt="sub"
                                     style={{ marginLeft: '4px' }}
                                   />
                                 </Tooltip>
                                 <Tooltip
                                   title={
-                                    <FormattedMessage id={this.state.battle.selfPlayer().weapon.specialWeapon.name} />
+                                    <FormattedMessage id={this.state.battle.selfPlayer.weapon.specialWeapon.name} />
                                   }
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
                                     src={
-                                      FileFolderUrl.SPLATNET + this.state.battle.selfPlayer().weapon.specialWeaponUrlA
+                                      FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.specialWeaponUrlA
                                     }
                                     alt="special"
                                     style={{ marginLeft: '4px' }}

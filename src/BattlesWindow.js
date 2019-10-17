@@ -312,7 +312,6 @@ class BattlesWindow extends React.Component {
             </Button.Group>
           );
         }
-        console.log(battle);
         return { battle, buttons };
       } else {
         return null;
@@ -468,7 +467,7 @@ class BattlesWindow extends React.Component {
                 return (
                   <span>
                     {(() => {
-                      if (text.isWin()) {
+                      if (text.isWin) {
                         return (
                           <Tooltip
                             title={() => {
@@ -496,7 +495,7 @@ class BattlesWindow extends React.Component {
                     })()}
                     {(() => {
                       if (text instanceof RankedBattle || text instanceof LeagueBattle) {
-                        if (text.isKnockOut()) {
+                        if (text.isKnockOut) {
                           return (
                             <Tooltip
                               title={() => {
@@ -509,7 +508,7 @@ class BattlesWindow extends React.Component {
                             </Tooltip>
                           );
                         }
-                        if (text.isKnockedOut()) {
+                        if (text.isKnockedOut) {
                           return (
                             <Tooltip
                               title={() => {
@@ -544,7 +543,7 @@ class BattlesWindow extends React.Component {
                             }}
                           >
                             {(() => {
-                              if (text.isWin()) {
+                              if (text.isWin) {
                                 return (
                                   <Progress
                                     className="BattlesWindow-content-table-progress-win"
@@ -684,31 +683,31 @@ class BattlesWindow extends React.Component {
                 return (
                   <span>
                     {(() => {
-                      if (text.levelAfterWithStar() > text.selfPlayer().levelWithStar()) {
-                        if (text.isLevelAfterWithStar()) {
+                      if (text.levelAfterWithStar > text.selfPlayer.levelWithStar) {
+                        if (text.isLevelAfterWithStar) {
                           return (
                             <b>
                               <Tooltip title={text.levelAfter}>
                                 <span className="BattlesWindow-content-table-star">★</span>
-                                {text.levelAfterWithStar()}
+                                {text.levelAfterWithStar}
                               </Tooltip>
                             </b>
                           );
                         } else {
-                          return <b>{text.levelAfterWithStar()}</b>;
+                          return <b>{text.levelAfterWithStar}</b>;
                         }
                       } else {
-                        if (text.isLevelAfterWithStar()) {
+                        if (text.isLevelAfterWithStar) {
                           return (
                             <span>
                               <Tooltip title={text.levelAfter}>
                                 <span className="BattlesWindow-content-table-star">★</span>
-                                {text.levelAfterWithStar()}
+                                {text.levelAfterWithStar}
                               </Tooltip>
                             </span>
                           );
                         } else {
-                          return text.levelAfterWithStar();
+                          return text.levelAfterWithStar;
                         }
                       }
                     })()}
@@ -719,7 +718,7 @@ class BattlesWindow extends React.Component {
                     })()}
                     {(() => {
                       if (text instanceof RankedBattle) {
-                        if (text.selfPlayer().rank !== text.rankAfter) {
+                        if (text.selfPlayer.rank !== text.rankAfter) {
                           return (
                             <b>
                               <FormattedMessage id={text.rankAfter.name} />
@@ -974,11 +973,11 @@ class BattlesWindow extends React.Component {
               key="mainWeapon"
               align="center"
               render={text => (
-                <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.mainWeapon.name} />}>
+                <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.mainWeapon.name} />}>
                   <span>
                     <img
                       className="BattlesWindow-content-table-icon"
-                      src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.mainWeaponUrl}
+                      src={FileFolderUrl.SPLATNET + text.selfPlayer.weapon.mainWeaponUrl}
                       alt="main"
                     />
                   </span>
@@ -1543,7 +1542,7 @@ class BattlesWindow extends React.Component {
                 }
               ]}
               onFilter={(value, record) => {
-                return record.selfPlayer().weapon.mainWeapon.value === value;
+                return record.selfPlayer.weapon.mainWeapon.value === value;
               }}
             />
             {(() => {
@@ -1554,11 +1553,11 @@ class BattlesWindow extends React.Component {
                     key="subWeapon"
                     align="center"
                     render={text => (
-                      <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.subWeapon.name} />}>
+                      <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.subWeapon.name} />}>
                         <span>
                           <img
                             className="BattlesWindow-content-table-icon"
-                            src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.subWeaponUrlA}
+                            src={FileFolderUrl.SPLATNET + text.selfPlayer.weapon.subWeaponUrlA}
                             alt="sub"
                           />
                         </span>
@@ -1619,7 +1618,7 @@ class BattlesWindow extends React.Component {
                       }
                     ]}
                     onFilter={(value, record) => {
-                      return record.selfPlayer().weapon.subWeapon.value === value;
+                      return record.selfPlayer.weapon.subWeapon.value === value;
                     }}
                   />
                 );
@@ -1633,11 +1632,11 @@ class BattlesWindow extends React.Component {
                     key="specialWeapon"
                     align="center"
                     render={text => (
-                      <Tooltip title={<FormattedMessage id={text.selfPlayer().weapon.specialWeapon.name} />}>
+                      <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.specialWeapon.name} />}>
                         <span>
                           <img
                             className="BattlesWindow-content-table-icon"
-                            src={FileFolderUrl.SPLATNET + text.selfPlayer().weapon.specialWeaponUrlA}
+                            src={FileFolderUrl.SPLATNET + text.selfPlayer.weapon.specialWeaponUrlA}
                             alt="special"
                           />
                         </span>
@@ -1706,7 +1705,7 @@ class BattlesWindow extends React.Component {
                       }
                     ]}
                     onFilter={(value, record) => {
-                      return record.selfPlayer().weapon.specialWeapon.value === value;
+                      return record.selfPlayer.weapon.specialWeapon.value === value;
                     }}
                   />
                 );
@@ -1720,37 +1719,35 @@ class BattlesWindow extends React.Component {
                 return (
                   <Tooltip
                     title={() => {
-                      if (text.selfPlayer().death === 0) {
+                      if (text.selfPlayer.death === 0) {
                         return '99.99';
                       } else {
-                        return (text.selfPlayer().kill / text.selfPlayer().death).toFixed(2);
+                        return (text.selfPlayer.kill / text.selfPlayer.death).toFixed(2);
                       }
                     }}
                   >
                     <span>
                       {(() => {
-                        if (text.selfPlayer().kill > text.selfPlayer().death) {
-                          if (text.selfPlayer().assist > 0) {
-                            return (
-                              <b>{'{0} ({1})'.format(text.selfPlayer().killAndAssist(), text.selfPlayer().assist)}</b>
-                            );
+                        if (text.selfPlayer.kill > text.selfPlayer.death) {
+                          if (text.selfPlayer.assist > 0) {
+                            return <b>{'{0} ({1})'.format(text.selfPlayer.killAndAssist, text.selfPlayer.assist)}</b>;
                           } else {
-                            return <b>{text.selfPlayer().killAndAssist()}</b>;
+                            return <b>{text.selfPlayer.killAndAssist}</b>;
                           }
                         } else {
-                          if (text.selfPlayer().assist > 0) {
-                            return '{0} ({1})'.format(text.selfPlayer().killAndAssist(), text.selfPlayer().assist);
+                          if (text.selfPlayer.assist > 0) {
+                            return '{0} ({1})'.format(text.selfPlayer.killAndAssist, text.selfPlayer.assist);
                           } else {
-                            return text.selfPlayer().killAndAssist();
+                            return text.selfPlayer.killAndAssist;
                           }
                         }
                       })()}{' '}
                       /{' '}
                       {(() => {
-                        if (text.selfPlayer().death > text.selfPlayer().kill) {
-                          return <b>{text.selfPlayer().death}</b>;
+                        if (text.selfPlayer.death > text.selfPlayer.kill) {
+                          return <b>{text.selfPlayer.death}</b>;
                         } else {
-                          return text.selfPlayer().death;
+                          return text.selfPlayer.death;
                         }
                       })()}
                     </span>
