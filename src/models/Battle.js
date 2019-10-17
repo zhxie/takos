@@ -4,7 +4,6 @@ import { Rank, BattlePlayer } from './Player';
 import Rule from './Rule';
 import { ScheduledStage } from './Stage';
 import { Freshness } from './Weapon';
-import TakosError from '../utils/ErrorHelper';
 
 class Battle extends Base {
   constructor(
@@ -151,206 +150,172 @@ class Battle extends Base {
       const stage = ScheduledStage.parse(data.stage);
       if (stage.error !== null) {
         // Handle previous error
-        return new Promise(resolve => {
-          resolve(new Battle(stage.error));
-        });
+        return new Battle(stage.error);
       }
-      let myTeamMembersCount = 1;
-      let players = [];
       let myTeamMembers = [];
       let otherTeamMembers = [];
-      players.push(BattlePlayer.parsePromise(data.player_result, true));
+      myTeamMembers.push(BattlePlayer.parse(data.player_result, true));
       data.my_team_members.forEach(element => {
-        players.push(BattlePlayer.parsePromise(element, false));
-        myTeamMembersCount++;
+        myTeamMembers.push(BattlePlayer.parse(element, false));
+      });
+      myTeamMembers.forEach(element => {
+        if (element.error !== null) {
+          return new Battle(element.error);
+        }
       });
       data.other_team_members.forEach(element => {
-        players.push(BattlePlayer.parsePromise(element, false));
+        otherTeamMembers.push(BattlePlayer.parse(element, false));
+      });
+      otherTeamMembers.forEach(element => {
+        if (element.error !== null) {
+          return new Battle(element.error);
+        }
       });
       const totalPaint = parseInt(data.weapon_paint_point);
       const levelAfter = parseInt(data.player_rank) + 100 * parseInt(data.star_rank);
-      return Promise.all(players)
-        .then(values => {
-          for (let i = 0; i < myTeamMembersCount; ++i) {
-            myTeamMembers.push(values[i]);
-          }
-          for (let i = myTeamMembersCount; i < values.length; ++i) {
-            otherTeamMembers.push(values[i]);
-          }
-          myTeamMembers.forEach(element => {
-            if (element.error !== null) {
-              // Handle previous error
-              throw new TakosError(element.error);
-            }
-          });
-          otherTeamMembers.forEach(element => {
-            if (element.error !== null) {
-              // Handle previous error
-              throw new TakosError(element.error);
-            }
-          });
-        })
-        .then(() => {
-          switch (type) {
-            case Mode.regularBattle: {
-              let winMeter;
-              if (data.win_meter % 1 === 0) {
-                winMeter = parseInt(data.win_meter);
-              } else {
-                winMeter = parseFloat(data.win_meter).toFixed(1);
-              }
-              return new RegularBattle(
-                null,
-                raw,
-                rule,
-                number,
-                startTime,
-                gameMode,
-                stage,
-                myTeamMembers,
-                otherTeamMembers,
-                totalPaint,
-                levelAfter,
-                parseFloat(data.my_team_percentage).toFixed(1),
-                parseFloat(data.other_team_percentage).toFixed(1),
-                winMeter
-              );
-            }
-            case Mode.rankedBattle: {
-              if (
-                myTeamMembers.find(element => {
-                  return element.isSelf;
-                }).Rank !== Rank.x ||
-                gameMode !== Mode.rankedBattle
-              ) {
-                let estimatedRankPower = 0;
-                if (gameMode === Mode.rankedBattle) {
-                  estimatedRankPower = parseInt(data.estimate_gachi_power);
-                }
-                return new RankedBattle(
-                  null,
-                  raw,
-                  rule,
-                  number,
-                  startTime,
-                  parseInt(data.elapsed_time),
-                  gameMode,
-                  stage,
-                  myTeamMembers,
-                  otherTeamMembers,
-                  totalPaint,
-                  levelAfter,
-                  parseInt(data.my_team_count),
-                  parseInt(data.other_team_count),
-                  Rank.parse(data.udemae),
-                  estimatedRankPower
-                );
-              } else {
-                let xPowerAfter = null;
-                if (data.x_power !== null) {
-                  xPowerAfter = parseFloat(data.x_power).toFixed(1);
-                }
-                return new RankedXBattle(
-                  null,
-                  raw,
-                  rule,
-                  number,
-                  startTime,
-                  parseInt(data.elapsed_time),
-                  gameMode,
-                  stage,
-                  myTeamMembers,
-                  otherTeamMembers,
-                  totalPaint,
-                  levelAfter,
-                  parseInt(data.my_team_count),
-                  parseInt(data.other_team_count),
-                  Rank.parse(data.udemae),
-                  xPowerAfter,
-                  parseInt(data.estimate_x_power)
-                );
-              }
-            }
-            case Mode.leagueBattle: {
-              let leaguePoint = null;
-              if (data.league_point !== null) {
-                leaguePoint = parseFloat(data.league_point).toFixed(1);
-              }
-              return new LeagueBattle(
-                null,
-                raw,
-                rule,
-                number,
-                startTime,
-                parseInt(data.elapsed_time),
-                gameMode,
-                stage,
-                myTeamMembers,
-                otherTeamMembers,
-                totalPaint,
-                levelAfter,
-                parseInt(data.my_team_count),
-                parseInt(data.other_team_count),
-                parseInt(data.my_estimate_league_point),
-                parseInt(data.other_estimate_league_point),
-                leaguePoint,
-                parseFloat(data.max_league_point).toFixed(1)
-              );
-            }
-            case Mode.splatfest: {
-              let winMeter;
-              if (data.win_meter % 1 === 0) {
-                winMeter = parseInt(data.win_meter);
-              } else {
-                winMeter = parseFloat(data.win_meter).toFixed(1);
-              }
-              return new SplatfestBattle(
-                null,
-                raw,
-                rule,
-                number,
-                startTime,
-                gameMode,
-                stage,
-                myTeamMembers,
-                otherTeamMembers,
-                totalPaint,
-                levelAfter,
-                parseFloat(data.my_team_percentage).toFixed(1),
-                parseFloat(data.other_team_percentage).toFixed(1),
-                winMeter,
-                SplatfestMode.parse(data.fes_mode.key),
-                parseInt(data.my_estimate_fes_power),
-                parseInt(data.other_estimate_fes_power),
-                parseFloat(data.fes_power).toFixed(1),
-                parseFloat(data.max_fes_power).toFixed(1),
-                parseInt(data.contribution_point),
-                parseInt(data.contribution_point_total)
-              );
-            }
-            default:
-              throw new RangeError();
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            throw new TakosError(e.message);
+      switch (type) {
+        case Mode.regularBattle: {
+          let winMeter;
+          if (data.win_meter % 1 === 0) {
+            winMeter = parseInt(data.win_meter);
           } else {
-            console.error(e);
-            throw new TakosError('can_not_parse_battle');
+            winMeter = parseFloat(data.win_meter).toFixed(1);
           }
-        });
-    } catch (e) {
-      if (e instanceof TakosError) {
-        return new Promise(resolve => {
-          resolve(new Battle(e.message));
-        });
-      } else {
-        console.error(e);
-        return new Promise(resolve => {
-          resolve(new Battle('can_not_parse_battle'));
-        });
+          return new RegularBattle(
+            null,
+            raw,
+            rule,
+            number,
+            startTime,
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            totalPaint,
+            levelAfter,
+            parseFloat(data.my_team_percentage).toFixed(1),
+            parseFloat(data.other_team_percentage).toFixed(1),
+            winMeter
+          );
+        }
+        case Mode.rankedBattle: {
+          if (
+            myTeamMembers.find(element => {
+              return element.isSelf;
+            }).Rank !== Rank.x ||
+            gameMode !== Mode.rankedBattle
+          ) {
+            let estimatedRankPower = 0;
+            if (gameMode === Mode.rankedBattle) {
+              estimatedRankPower = parseInt(data.estimate_gachi_power);
+            }
+            return new RankedBattle(
+              null,
+              raw,
+              rule,
+              number,
+              startTime,
+              parseInt(data.elapsed_time),
+              gameMode,
+              stage,
+              myTeamMembers,
+              otherTeamMembers,
+              totalPaint,
+              levelAfter,
+              parseInt(data.my_team_count),
+              parseInt(data.other_team_count),
+              Rank.parse(data.udemae),
+              estimatedRankPower
+            );
+          } else {
+            let xPowerAfter = null;
+            if (data.x_power !== null) {
+              xPowerAfter = parseFloat(data.x_power).toFixed(1);
+            }
+            return new RankedXBattle(
+              null,
+              raw,
+              rule,
+              number,
+              startTime,
+              parseInt(data.elapsed_time),
+              gameMode,
+              stage,
+              myTeamMembers,
+              otherTeamMembers,
+              totalPaint,
+              levelAfter,
+              parseInt(data.my_team_count),
+              parseInt(data.other_team_count),
+              Rank.parse(data.udemae),
+              xPowerAfter,
+              parseInt(data.estimate_x_power)
+            );
+          }
+        }
+        case Mode.leagueBattle: {
+          let leaguePoint = null;
+          if (data.league_point !== null) {
+            leaguePoint = parseFloat(data.league_point).toFixed(1);
+          }
+          return new LeagueBattle(
+            null,
+            raw,
+            rule,
+            number,
+            startTime,
+            parseInt(data.elapsed_time),
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            totalPaint,
+            levelAfter,
+            parseInt(data.my_team_count),
+            parseInt(data.other_team_count),
+            parseInt(data.my_estimate_league_point),
+            parseInt(data.other_estimate_league_point),
+            leaguePoint,
+            parseFloat(data.max_league_point).toFixed(1)
+          );
+        }
+        case Mode.splatfest: {
+          let winMeter;
+          if (data.win_meter % 1 === 0) {
+            winMeter = parseInt(data.win_meter);
+          } else {
+            winMeter = parseFloat(data.win_meter).toFixed(1);
+          }
+          return new SplatfestBattle(
+            null,
+            raw,
+            rule,
+            number,
+            startTime,
+            gameMode,
+            stage,
+            myTeamMembers,
+            otherTeamMembers,
+            totalPaint,
+            levelAfter,
+            parseFloat(data.my_team_percentage).toFixed(1),
+            parseFloat(data.other_team_percentage).toFixed(1),
+            winMeter,
+            SplatfestMode.parse(data.fes_mode.key),
+            parseInt(data.my_estimate_fes_power),
+            parseInt(data.other_estimate_fes_power),
+            parseFloat(data.fes_power).toFixed(1),
+            parseFloat(data.max_fes_power).toFixed(1),
+            parseInt(data.contribution_point),
+            parseInt(data.contribution_point_total)
+          );
+        }
+        default:
+          throw new RangeError();
       }
+    } catch (e) {
+      console.error(e);
+      return new Battle('can_not_parse_battle');
     }
   };
 

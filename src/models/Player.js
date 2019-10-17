@@ -1,7 +1,6 @@
 import Base from './Base';
 import { Gear } from './Gear';
 import { Weapon } from './Weapon';
-import BattleHelper from '../utils/BattleHelper';
 
 class Species {
   constructor(name, value) {
@@ -227,14 +226,13 @@ PlayerType.rankedBattle = new PlayerType('player.ranked_battle', 1);
 PlayerType.salmonRun = new PlayerType('player.salmon_run', 2);
 
 class Player extends Base {
-  constructor(e, type, id, nickname, species, style, url, isSelf) {
+  constructor(e, type, id, nickname, species, style, isSelf) {
     super(e, null);
     this.type = type;
     this.id = id;
     this.nickname = nickname;
     this.species = species;
     this.style = style;
-    this.url = url;
     this.isSelf = isSelf;
   }
 }
@@ -248,7 +246,6 @@ class BattlePlayer extends Player {
     species,
     style,
     isSelf,
-    url,
     level,
     headgearGear,
     clothesGear,
@@ -261,7 +258,7 @@ class BattlePlayer extends Player {
     special,
     sort
   ) {
-    super(e, type, id, nickname, species, style, isSelf, url);
+    super(e, type, id, nickname, species, style, isSelf);
     this.level = level;
     this.headgearGear = headgearGear;
     this.clothesGear = clothesGear;
@@ -295,7 +292,7 @@ class BattlePlayer extends Player {
     return this.paint === 0;
   }
 
-  static parse = (data, url, isSelf) => {
+  static parse = (data, isSelf) => {
     try {
       const species = Species.parse(data.player.player_type.species);
       const style = Style.parse(data.player.player_type.style);
@@ -334,7 +331,6 @@ class BattlePlayer extends Player {
           data.player.nickname,
           species,
           style,
-          url,
           isSelf,
           level,
           headgearGear,
@@ -357,7 +353,6 @@ class BattlePlayer extends Player {
           data.player.nickname,
           species,
           style,
-          url,
           isSelf,
           level,
           rank,
@@ -377,20 +372,6 @@ class BattlePlayer extends Player {
       console.error(e);
       return new BattlePlayer('can_not_parse_player');
     }
-  };
-
-  static parsePromise = (data, isSelf) => {
-    return BattleHelper.getPlayerIcon(data.player.principal_id)
-      .then(res => {
-        if (res === null) {
-          throw new RangeError();
-        } else {
-          return this.parse(data, res, isSelf);
-        }
-      })
-      .catch(() => {
-        return new BattlePlayer('can_not_get_player_icon');
-      });
   };
 
   static deserialize = data => {
@@ -431,7 +412,6 @@ class BattlePlayer extends Player {
         data.nickname,
         species,
         style,
-        data.url,
         data.isSelf,
         level,
         headgearGear,
@@ -453,7 +433,6 @@ class BattlePlayer extends Player {
         data.nickname,
         species,
         style,
-        data.url,
         data.isSelf,
         level,
         rank,
@@ -480,7 +459,6 @@ class RegularBattlePlayer extends BattlePlayer {
     species,
     style,
     isSelf,
-    url,
     level,
     headgearGear,
     clothesGear,
@@ -501,7 +479,6 @@ class RegularBattlePlayer extends BattlePlayer {
       species,
       style,
       isSelf,
-      url,
       level,
       headgearGear,
       clothesGear,
@@ -525,7 +502,6 @@ class RankedBattlePlayer extends BattlePlayer {
     species,
     style,
     isSelf,
-    url,
     level,
     rank,
     headgearGear,
@@ -547,7 +523,6 @@ class RankedBattlePlayer extends BattlePlayer {
       species,
       style,
       isSelf,
-      url,
       level,
       headgearGear,
       clothesGear,

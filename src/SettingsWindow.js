@@ -390,7 +390,9 @@ class SettingsWindow extends React.Component {
     let firstError = null;
     const getLocalBattleRecursively = (battles, i) => {
       console.log(battles[i]);
-      return Battle.parse(battles[i])
+      return new Promise(resolve => {
+        resolve(Battle.parse(battles[i]));
+      })
         .then(res => {
           console.log(res);
           if (res.error !== null) {
