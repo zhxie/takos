@@ -112,20 +112,21 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
-        // Update schedules
-        return this.updateSchedules().then(res => {
-          if (res instanceof TakosError) {
-            errorSchedules = res;
-          }
-        });
-      })
-      .then(() => {
-        // Update shifts
-        return this.updateShifts().then(res => {
-          if (res instanceof TakosError) {
-            errorShifts = res;
-          }
-        });
+        // Update schedules and shifts
+        return Promise.all([this.updateSchedules(), this.updateShifts()])
+          .then(values => {
+            if (values[0] instanceof TakosError) {
+              errorSchedules = values[0];
+            }
+            if (values[1] instanceof TakosError) {
+              errorShifts = values[1];
+            }
+          })
+          .catch(e => {
+            console.error(e);
+            errorSchedules = e;
+            errorShifts = e;
+          });
       })
       .then(() => {
         if (errorBattles !== null) {
@@ -178,10 +179,27 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
+        // Handle icon
+        if (this.state.battle !== null) {
+          BattleHelper.getPlayerIcon(this.state.battle.selfPlayer.id)
+            .then(res => {
+              if (res === null) {
+                throw new TakosError('can_not_get_player_icon');
+              } else {
+                if (res !== '') {
+                  this.setState({ icon: res });
+                }
+              }
+            })
+            .catch(e => {
+              console.error(e);
+            });
+        }
+      })
+      .then(() => {
         // Handle statistics, battles and jobs
         if (this.state.battle !== null) {
           this.setState({
-            icon: this.state.battle.selfPlayer.url,
             nickname: this.state.battle.selfPlayer.nickname
           });
         }
@@ -717,9 +735,7 @@ class DashboardWindow extends React.Component {
                             prefix={
                               <span>
                                 <Tooltip
-                                  title={
-                                    <FormattedMessage id={this.state.battle.selfPlayer.weapon.mainWeapon.name} />
-                                  }
+                                  title={<FormattedMessage id={this.state.battle.selfPlayer.weapon.mainWeapon.name} />}
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
@@ -744,9 +760,7 @@ class DashboardWindow extends React.Component {
                                 >
                                   <img
                                     className="DashboardWindow-content-statistic-icon"
-                                    src={
-                                      FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.specialWeaponUrlA
-                                    }
+                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.specialWeaponUrlA}
                                     alt="special"
                                     style={{ marginLeft: '4px' }}
                                   />
