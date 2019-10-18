@@ -678,7 +678,7 @@ class Weapon extends Base {
     }
   };
 
-  static parseShift = data => {
+  static parseSalmonRunMain = data => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.id));
       let mainWeaponUrl;
@@ -690,7 +690,17 @@ class Weapon extends Base {
       return new Weapon(null, mainWeapon, mainWeaponUrl, null, null, null, null, null, null);
     } catch (e) {
       console.error(e);
-      return new Weapon('can_not_parse_shift_weapon');
+      return new Weapon('can_not_parse_weapon');
+    }
+  };
+
+  static parseSalmonRunSpecial = data => {
+    try {
+      const specialWeapon = SpecialWeapon.parse(parseInt(data.id));
+      return new Weapon(null, null, null, null, null, null, specialWeapon, data.image_a, data.image_b);
+    } catch (e) {
+      console.error(e);
+      return new Weapon('can_not_parse_weapon');
     }
   };
 
@@ -706,6 +716,36 @@ class Weapon extends Base {
         subWeapon,
         data.subWeaponUrlA,
         data.subWeaponUrlB,
+        specialWeapon,
+        data.specialWeaponUrlA,
+        data.specialWeaponUrlB
+      );
+    } catch (e) {
+      console.error(e);
+      return new Weapon('can_not_deserialize_weapon');
+    }
+  };
+
+  static deserializeSalmonRunMain = data => {
+    try {
+      const mainWeapon = MainWeapon.parse(parseInt(data.mainWeapon.value));
+      return new Weapon(null, mainWeapon, data.mainWeaponUrl, null, null, null, null, null, null);
+    } catch (e) {
+      console.error(e);
+      return new Weapon('can_not_deserialize_weapon');
+    }
+  };
+
+  static deserializeSalmonRunSpecial = data => {
+    try {
+      const specialWeapon = SpecialWeapon.parse(parseInt(data.specialWeapon.value));
+      return new Weapon(
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         specialWeapon,
         data.specialWeaponUrlA,
         data.specialWeaponUrlB

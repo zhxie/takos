@@ -104,6 +104,16 @@ class Stage {
         return Stage.mcPrincessDiaries;
       case 9999:
         return Stage.shiftyStation;
+      case 10000:
+        return Stage.spawningGrounds;
+      case 10001:
+        return Stage.maroonersBay;
+      case 10002:
+        return Stage.lostOutpost;
+      case 10003:
+        return Stage.salmonidSmokeyard;
+      case 10004:
+        return Stage.ruinsOfArkPolaris;
       default:
         throw new RangeError();
     }
@@ -207,7 +217,7 @@ class ScheduledStage extends Base {
       return new ScheduledStage(null, stage, data.image);
     } catch (e) {
       console.error(e);
-      return new ScheduledStage('can_not_parse_scheduled_shift_stage');
+      return new ScheduledStage('can_not_parse_scheduled_stage');
     }
   };
 
