@@ -153,15 +153,17 @@ class JobResult {
   }
 
   static parse = data => {
-    switch (data.failure_reason) {
-      case null:
-        return JobResult.clear;
-      case 'time_limit':
-        return JobPlayer.timeLimit;
-      case 'wipe_out':
-        return JobPlayer.wipeOut;
-      default:
-        throw new RangeError();
+    if (data.failure_reason === null) {
+      return JobResult.clear;
+    } else {
+      switch (data.failure_reason) {
+        case 'time_limit':
+          return JobResult.timeLimit;
+        case 'wipe_out':
+          return JobResult.wipeOut;
+        default:
+          throw new RangeError();
+      }
     }
   };
 
@@ -170,9 +172,9 @@ class JobResult {
       case 0:
         return JobResult.clear;
       case 1:
-        return JobPlayer.timeLimit;
+        return JobResult.timeLimit;
       case 2:
-        return JobPlayer.wipeOut;
+        return JobResult.wipeOut;
       default:
         throw new RangeError();
     }
@@ -217,6 +219,12 @@ class Job extends Base {
     this.result = result;
   }
 
+  get selfPlayer() {
+    return this.players.find(element => {
+      return (element.isSelf = true);
+    });
+  }
+
   get isClear() {
     return this.result === JobResult.clear;
   }
@@ -248,6 +256,13 @@ class Job extends Base {
       goldenEggPop = goldenEggPop + element.goldenEggPop;
     });
     return goldenEggPop;
+  }
+  get powerEgg() {
+    let powerEgg = 0;
+    this.waves.forEach(element => {
+      powerEgg = powerEgg + element.powerEgg;
+    });
+    return powerEgg;
   }
 
   get rate() {
@@ -326,7 +341,7 @@ class Job extends Base {
         }
       });
       let bossSalmoniodAppearances = [];
-      data.boss_counts.keys.forEach(element => {
+      Object.keys(data.boss_counts).forEach(element => {
         let bossSalmoniodAppearance = {};
         try {
           bossSalmoniodAppearance.salmoniod = Salmoniod.parse(parseInt(element));
@@ -361,7 +376,7 @@ class Job extends Base {
 
   static deserialize = data => {
     try {
-      const shift = Shift.deserialize(data.schedule);
+      const shift = Shift.deserialize(data.shift);
       if (shift.error !== null) {
         // Handle previous error
         return new Job(shift.error);
@@ -427,4 +442,4 @@ class Job extends Base {
   };
 }
 
-export default { WaterLevel, EventType, Wave, JobResult, Job };
+export { WaterLevel, EventType, Wave, JobResult, Job };

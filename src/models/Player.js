@@ -546,7 +546,7 @@ class RankedBattlePlayer extends BattlePlayer {
 }
 
 class Grade {
-  constructor(name, shortName, value) {
+  constructor(name, value) {
     this.name = name;
     this.value = value;
   }
@@ -644,7 +644,7 @@ class JobPlayer extends Player {
         specialCounts.push(parseInt(element));
       });
       let bossSalmoniodKills = [];
-      data.boss_kill_counts.keys.forEach(element => {
+      Object.keys(data.boss_kill_counts).forEach(element => {
         let bossSalmoniodKill = {};
         try {
           bossSalmoniodKill.salmoniod = Salmoniod.parse(parseInt(element));

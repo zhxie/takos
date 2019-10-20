@@ -314,13 +314,13 @@ class MainWeapon {
         return MainWeapon.random;
       case -2:
         return MainWeapon.randomGold;
-      case -20000:
+      case 20000:
         return MainWeapon.kumaBlaster;
-      case -20010:
+      case 20010:
         return MainWeapon.kumaBrella;
-      case -20020:
+      case 20020:
         return MainWeapon.kumaCharger;
-      case -20030:
+      case 20030:
         return MainWeapon.kumaSlosher;
       default:
         throw new RangeError();

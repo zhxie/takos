@@ -81,22 +81,22 @@ class Shift extends Base {
           // Handle previous error
           return new Shift(stage.error);
         }
-        weapon1 = Weapon.deserializeSalmonRunMain(data.weapons[0]);
+        weapon1 = Weapon.deserializeSalmonRunMain(data.weapon1);
         if (weapon1.error !== null) {
           // Handle previous error
           return new Shift(weapon1.error);
         }
-        weapon2 = Weapon.deserializeSalmonRunMain(data.weapons[1]);
+        weapon2 = Weapon.deserializeSalmonRunMain(data.weapon2);
         if (weapon2.error !== null) {
           // Handle previous error
           return new Shift(weapon2.error);
         }
-        weapon3 = Weapon.deserializeSalmonRunMain(data.weapons[2]);
+        weapon3 = Weapon.deserializeSalmonRunMain(data.weapon3);
         if (weapon3.error !== null) {
           // Handle previous error
           return new Shift(weapon3.error);
         }
-        weapon4 = Weapon.deserializeSalmonRunMain(data.weapons[3]);
+        weapon4 = Weapon.deserializeSalmonRunMain(data.weapon4);
         if (weapon4.error !== null) {
           // Handle previous error
           return new Shift(weapon4.error);
