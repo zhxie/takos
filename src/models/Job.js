@@ -179,9 +179,9 @@ class JobResult {
   };
 }
 
-JobResult.clear = new JobResult('job.result.clear', 0);
-JobResult.timeLimit = new JobResult('job.result.time_limit', 1);
-JobResult.wipeOut = new JobResult('job.result.wipe_out', 2);
+JobResult.clear = new JobResult('job_result.clear', 0);
+JobResult.timeLimit = new JobResult('job_result.time_limit', 1);
+JobResult.wipeOut = new JobResult('job_result.wipe_out', 2);
 
 Object.freeze(JobResult);
 

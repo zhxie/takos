@@ -573,7 +573,7 @@ class Grade {
 
 Grade.intern = new Grade('grade.intern', 0);
 Grade.apprentice = new Grade('grade.apprentice', 1);
-Grade.partTimer = new Grade('grade.partTimer', 2);
+Grade.partTimer = new Grade('grade.part_timer', 2);
 Grade.goGetter = new Grade('grade.go_getter', 3);
 Grade.overachiever = new Grade('grade.overachiever', 4);
 Grade.professional = new Grade('grade.professional', 5);
