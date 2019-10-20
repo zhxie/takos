@@ -1,6 +1,6 @@
 const zh_CN = {
   // Mode
-  mode: '游戏模式',
+  mode: '对战模式',
   'mode.regular_battle': '普通战',
   'mode.ranked_battle': '排名战',
   'mode.league_battle': '联盟战*',
@@ -9,7 +9,7 @@ const zh_CN = {
   'mode.splatfest.challenge': '挑战',
   'mode.splatfest.regular': '普通',
   // Rule
-  rule: '模式',
+  rule: '规则',
   'rule.turf_war': '地盘战',
   'rule.splat_zones': '区域模式*',
   'rule.tower_control': '夺塔模式',
@@ -31,7 +31,7 @@ const zh_CN = {
   'stage.blackbelly_skatepark': '海鲈滑板公园',
   'stage.shellendorf_institute': '海洋博物馆*',
   'stage.makomart': '鲭鲨超市*',
-  'stage.walleye_warehouse': '箱鲀仓库 / 梭鲈仓库*',
+  'stage.walleye_warehouse': '箱鲀仓库*',
   'stage.arowana_mall': '龙鱼商业街*',
   'stage.camp_triggerfish': '鲀鱼营地',
   'stage.piranha_pit': '水虎鱼矿山*',
