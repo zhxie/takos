@@ -10,6 +10,8 @@ const SPLATNET_PROXY = '/splatnetApi';
 const SPLATNET_RESULTS = '/api/results';
 const SPLATNET_RESULT = '/api/results/{0}';
 const SPLATNET_SHARE_RESULT = '/api/share/results/{0}';
+const SPLATNET_COOP_RESULTS = '/api/coop_results';
+const SPLATNET_COOP_RESULT = '/api/coop_results/{0}';
 const SPLATNET_NICKNAME_AND_ICON = '/api/nickname_and_icon?id={0}';
 
 const NINTENDO_ACCOUNTS_AUTHORIZE =
@@ -74,6 +76,12 @@ class FileFolderUrl {
   }
   static get SPLATNET_SHARE_RESULT() {
     return FileFolderUrl.SPLATNET + SPLATNET_SHARE_RESULT;
+  }
+  static get SPLATNET_COOP_RESULTS() {
+    return FileFolderUrl.SPLATNET + SPLATNET_COOP_RESULTS;
+  }
+  static get SPLATNET_COOP_RESULT() {
+    return FileFolderUrl.SPLATNET + SPLATNET_COOP_RESULT;
   }
   static get SPLATNET_NICKNAME_AND_ICON() {
     return FileFolderUrl.SPLATNET + SPLATNET_NICKNAME_AND_ICON;
