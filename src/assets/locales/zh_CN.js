@@ -1022,6 +1022,15 @@ const zh_CN = {
   'job_result.clear': 'Clear!!',
   'job_result.time_limit': '超时',
   'job_result.wipe_out': '全灭!',
+  // Job
+  'job.id.prefix': '#',
+  'job.result': '结果',
+  'job.grade': '段位',
+  'job.hazard_level': '危险度',
+  'job.hazard_level.value': '{value}%',
+  'job.hazard_level.max': '危险度 MAX!!',
+  'job.golden_egg': '金鲑鱼籽',
+  'job.power_egg': '鲑鱼籽',
   // App
   'app.welcome.steps.welcome': '欢迎',
   'app.welcome.steps.log_in': '登录',
@@ -1057,6 +1066,7 @@ const zh_CN = {
   'app.battles.statistics': '统计',
   'app.salmon_run': 'Salmon Run',
   'app.jobs': '打工',
+  'app.jobs.update': '更新数据',
   'app.gear_shop': '触手镇',
   'app.settings': '设置',
   'app.settings.user': '用户',

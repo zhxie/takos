@@ -6,6 +6,7 @@ import { Layout, Menu, Icon } from 'antd';
 import './MainWindow.css';
 import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
+import JobsWindow from './JobsWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
 import ShiftsWindow from './ShiftsWindow';
@@ -46,8 +47,8 @@ class MainWindow extends React.Component {
       this.setState({ selected: ['statistics.salmon_run'] });
     } else if (this.props.location.pathname.startsWith('/battles')) {
       this.setState({ selected: ['battles'] });
-    } else if (this.props.location.pathname.startsWith('/salmon')) {
-      this.setState({ selected: ['salmon_run'] });
+    } else if (this.props.location.pathname.startsWith('/jobs')) {
+      this.setState({ selected: ['jobs'] });
     } else if (this.props.location.pathname.startsWith('/shop')) {
       this.setState({ selected: ['gear_shop'] });
     } else if (this.props.location.pathname.startsWith('/settings')) {
@@ -170,12 +171,12 @@ class MainWindow extends React.Component {
                 </span>
                 <Link to="/battles" />
               </Menu.Item>
-              <Menu.Item key="salmon_run">
+              <Menu.Item key="jobs">
                 <Icon type="menu" />
                 <span>
-                  <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                  <FormattedMessage id="app.jobs" defaultMessage="Jobs" />
                 </span>
-                <Link to="/salmon" />
+                <Link to="/jobs" />
               </Menu.Item>
               <Menu.Item key="gear_shop">
                 <Icon type="shopping" />
@@ -205,7 +206,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
-            <Route path={`${this.props.match.url}salmon`} component={ConstructionResult} />
+            <Route path={`${this.props.match.url}jobs`} component={JobsWindow} />
             <Route path={`${this.props.match.url}shop`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}settings`} component={SettingsWindow} />
             <Redirect from="*" to="/404" />

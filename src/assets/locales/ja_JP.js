@@ -1022,6 +1022,15 @@ const ja_JP = {
   'job_result.clear': 'Clear!!',
   'job_result.time_limit': '時間切れ',
   'job_result.wipe_out': 'ゼンメツ!',
+  // Job
+  'job.id.prefix': '#',
+  'job.result': '結果',
+  'job.grade': 'ランク',
+  'job.hazard_level': 'キケン度',
+  'job.hazard_level.value': '{value}%',
+  'job.hazard_level.max': 'キケン度MAX!!',
+  'job.golden_egg': '金イクラ',
+  'job.power_egg': 'イクラ',
   // App
   'app.welcome.steps.welcome': 'ようこそ',
   'app.welcome.steps.log_in': 'ログイン',
@@ -1058,6 +1067,7 @@ const ja_JP = {
   'app.battles.statistics': '統計',
   'app.salmon_run': 'サーモンラン',
   'app.jobs': 'バイト',
+  'app.jobs.update': '更新データ',
   'app.gear_shop': 'ゲソタウン',
   'app.settings': '設定',
   'app.settings.user': 'ユーザー',

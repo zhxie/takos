@@ -1023,6 +1023,15 @@ const en_US = {
   'job_result.clear': 'Clear!',
   'job_result.time_limit': 'Time Up!',
   'job_result.wipe_out': 'DEFEAT!',
+  // Job
+  'job.id.prefix': '#',
+  'job.result': 'Result',
+  'job.grade': 'Rank',
+  'job.hazard_level': 'Hazard Level',
+  'job.hazard_level.value': '{value}%',
+  'job.hazard_level.max': 'Hazard Level MAX!!',
+  'job.golden_egg': 'Golden Egg',
+  'job.power_egg': 'Power Egg',
   // App
   'app.welcome.steps.welcome': 'Welcome',
   'app.welcome.steps.log_in': 'Log In',
@@ -1059,6 +1068,7 @@ const en_US = {
   'app.battles.statistics': 'Statistics',
   'app.salmon_run': 'Salmon Run',
   'app.jobs': 'Jobs',
+  'app.jobs.update': 'Update Data',
   'app.gear_shop': 'Gear Shop',
   'app.settings': 'Settings',
   'app.settings.user': 'User',
