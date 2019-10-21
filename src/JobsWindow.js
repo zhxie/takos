@@ -726,6 +726,18 @@ class JobsWindow extends React.Component {
                 );
               }}
             />
+            {(() => {
+              if (!StorageHelper.useSimpleLists()) {
+                return (
+                  <Column
+                    title={<FormattedMessage id="job.grizzco_points" defaultMessage="Grizzco Points" />}
+                    key="grizzcoPoint"
+                    align="center"
+                    dataIndex="grizzcoPoint"
+                  />
+                );
+              }
+            })()}
           </Table>
         </div>
       </div>
