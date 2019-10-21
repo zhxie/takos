@@ -24,6 +24,13 @@ class StorageHelper {
         if (res instanceof TakosError) {
           throw new TakosError(res.message);
         } else {
+          return StorageHelper.clearJobs();
+        }
+      })
+      .then(res => {
+        if (res instanceof TakosError) {
+          throw new TakosError(res.message);
+        } else {
           // localStorage
           window.localStorage.removeItem('sessionToken');
           window.localStorage.removeItem('cookie');
