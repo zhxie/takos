@@ -1031,6 +1031,7 @@ const zh_CN = {
   'job.hazard_level.max': '危险度 MAX!!',
   'job.golden_egg': '金鲑鱼籽',
   'job.power_egg': '鲑鱼籽',
+  'job.grizzco_points': '熊老板分数',
   // App
   'app.welcome.steps.welcome': '欢迎',
   'app.welcome.steps.log_in': '登录',
@@ -1044,7 +1045,9 @@ const zh_CN = {
   'app.dashboard': '仪表盘',
   'app.dashboard.welcome': '欢迎使用 Takos！',
   'app.dashboard.welcome.name': '欢迎使用 Takos，{name}！',
+  'app.dashboard.level_and_grade': '等级 / 段位',
   'app.dashboard.recent_battle': '最近战斗',
+  'app.dashboard.recent_job': '最近打工',
   'app.schedules': '日程',
   'app.schedules.current': '现在',
   'app.schedules.next': '之后',
@@ -1099,10 +1102,12 @@ const zh_CN = {
   'app.alert.warning.schedules_can_not_update': 'Takos 未能更新日程，请刷新页面以更新。',
   'app.alert.warning.shifts_can_not_update': 'Takos 未能更新排班表，请刷新页面以更新。',
   'app.alert.warning.battles_can_not_update': 'Takos 未能更新战斗，请刷新页面以更新。',
+  'app.alert.warning.jobs_can_not_update': 'Takos 未能更新打工，请刷新页面以更新。',
   'app.alert.info': '信息',
   'app.alert.info.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info.shifts_expired': '排班表似乎已过期，请刷新页面以更新。',
   'app.alert.info.battles_filtered': '展示的战斗已经过筛选，请点击<l>这里</l>以取消筛选。',
+  'app.alert.info.jobs_filtered': '展示的打工已经过筛选，请点击<l>这里</l>以取消筛选。',
   'app.alert.info.use_automatic_cookie_generation':
     '如果您希望重新登录并使用自动 Cookie 生成，请在浏览器中打开 <a>Nintendo Account</a>，登录，在“选择此人”上右键，复制链接地址，粘贴到下方的文本框中，并点击“更新 Cookie”。',
   'app.alert.info.use_automatic_cookie_generation_first_time':

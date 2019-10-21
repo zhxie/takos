@@ -1032,6 +1032,7 @@ const en_US = {
   'job.hazard_level.max': 'Hazard Level MAX!!',
   'job.golden_egg': 'Golden Egg',
   'job.power_egg': 'Power Egg',
+  'job.grizzco_points': 'Grizzco Points',
   // App
   'app.welcome.steps.welcome': 'Welcome',
   'app.welcome.steps.log_in': 'Log In',
@@ -1046,7 +1047,9 @@ const en_US = {
   'app.dashboard': 'Dashboard',
   'app.dashboard.welcome': 'Welcome to Takos!',
   'app.dashboard.welcome.name': 'Welcome to Takos, {name}!',
+  'app.dashboard.level_and_grade': 'Level / Rank',
   'app.dashboard.recent_battle': 'Recent Battle',
+  'app.dashboard.recent_job': 'Recent Job',
   'app.schedules': 'Schedules',
   'app.schedules.current': 'Current',
   'app.schedules.next': 'Next',
@@ -1101,11 +1104,14 @@ const en_US = {
   'app.alert.warning.schedules_can_not_update': 'Takos can not update schedules, please refresh this page to update.',
   'app.alert.warning.shifts_can_not_update': 'Takos can not update shifts, please refresh this page to update.',
   'app.alert.warning.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
+  'app.alert.warning.jobs_can_not_update': 'Takos can not update jobs, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.schedules_expired': 'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info.shifts_expired': 'It seems that these shifts have expired, please refresh this page to update.',
   'app.alert.info.battles_filtered':
     'The battles shown have been filtered, please click <l>here</l> to cancel the screening.',
+  'app.alert.info.jobs_filtered':
+    'The jobs shown have been filtered, please click <l>here</l> to cancel the screening.',
   'app.alert.info.use_automatic_cookie_generation':
     'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':

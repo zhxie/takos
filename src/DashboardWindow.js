@@ -25,6 +25,7 @@ import Rule from './models/Rule';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
+import JobHelper from './utils/JobHelper';
 import ScheduleHelper from './utils/ScheduleHelper';
 import ShiftHelper from './utils/ShiftHelper';
 import StorageHelper from './utils/StorageHelper';
@@ -36,6 +37,7 @@ class DashboardWindow extends React.Component {
   state = {
     // Data
     battle: null,
+    job: null,
     schedules: null,
     shifts: [],
     icon: null,
@@ -48,6 +50,7 @@ class DashboardWindow extends React.Component {
     updateCurrent: 0,
     updateTotal: 0,
     battlesUpdated: false,
+    jobsUpdated: false,
     schedulesUpdated: false,
     shiftsUpdated: false,
     schedulesExpired: false,
@@ -95,12 +98,14 @@ class DashboardWindow extends React.Component {
       updateCurrent: 0,
       updateTotal: 0,
       battlesUpdated: false,
+      jobsUpdated: false,
       schedulesUpdated: false,
       shiftsUpdated: false,
       schedulesExpired: false,
       shiftsExpired: false
     });
     let errorBattles = null;
+    let errorJobs = null;
     let errorSchedules = null;
     let errorShifts = null;
     let firstErrorLog = null;
@@ -109,6 +114,15 @@ class DashboardWindow extends React.Component {
       .then(res => {
         if (res instanceof TakosError) {
           errorBattles = res;
+        }
+      })
+      .then(() => {
+        // Update jobs
+        return this.updateJobs();
+      })
+      .then(res => {
+        if (res instanceof TakosError) {
+          errorJobs = res;
         }
       })
       .then(() => {
@@ -149,6 +163,26 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
+        if (errorJobs !== null) {
+          // Handle error
+          return this.getJobs()
+            .then(() => {
+              if (errorJobs instanceof TakosError) {
+                if (firstErrorLog === null) {
+                  firstErrorLog = errorJobs.message;
+                }
+              } else {
+                console.error(errorJobs);
+                if (firstErrorLog === null) {
+                  firstErrorLog = 'can_not_update_battles';
+                }
+              }
+              this.setState({ jobsUpdated: true });
+            })
+            .catch();
+        }
+      })
+      .then(() => {
         if (errorSchedules !== null) {
           // Handle error
           if (errorSchedules instanceof TakosError) {
@@ -180,8 +214,14 @@ class DashboardWindow extends React.Component {
       })
       .then(() => {
         // Handle icon
+        let id = null;
         if (this.state.battle !== null) {
-          BattleHelper.getPlayerIcon(this.state.battle.selfPlayer.id)
+          id = this.state.battle.selfPlayer.id;
+        } else if (this.state.job !== null) {
+          id = this.state.job.selfPlayer.id;
+        }
+        if (id !== null) {
+          BattleHelper.getPlayerIcon(id)
             .then(res => {
               if (res === null) {
                 throw new TakosError('can_not_get_player_icon');
@@ -198,9 +238,15 @@ class DashboardWindow extends React.Component {
       })
       .then(() => {
         // Handle statistics, battles and jobs
+        let nickname = null;
         if (this.state.battle !== null) {
+          nickname = this.state.battle.selfPlayer.nickname;
+        } else if (this.state.job !== null) {
+          nickname = this.state.job.selfPlayer.nickname;
+        }
+        if (nickname !== null) {
           this.setState({
-            nickname: this.state.battle.selfPlayer.nickname
+            nickname: nickname
           });
         }
         return this.getRank();
@@ -286,7 +332,83 @@ class DashboardWindow extends React.Component {
           return e;
         } else {
           console.error(e);
-          return new TakosError('can_not_update_data');
+          return new TakosError('can_not_update_battles');
+        }
+      });
+  };
+
+  updateJobs = () => {
+    // TODO: this method should be extracted
+    const getJobRecursively = (from, to) => {
+      return JobHelper.getJob(from)
+        .then(res => {
+          if (res.error !== null) {
+            // Handle previous error
+            throw new TakosError(res.error);
+          } else {
+            return StorageHelper.addJob(res);
+          }
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
+            if (from < to) {
+              return getJobRecursively(from + 1, to);
+            }
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_get_job');
+          }
+        });
+    };
+
+    return StorageHelper.latestJob()
+      .then(res => {
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_job_from_database');
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        const currentNumber = res;
+        return JobHelper.getTheLatestJobNumber().then(res => {
+          if (res === 0) {
+            throw new TakosError('can_not_get_jobs');
+          } else {
+            const from = Math.max(1, res - 49, currentNumber + 1);
+            const to = res;
+            return { from, to };
+          }
+        });
+      })
+      .then(res => {
+        if (res.to >= res.from) {
+          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
+        } else {
+          return this.getJobs();
+        }
+        return getJobRecursively(res.from, res.to).then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            return this.getJobs();
+          }
+        });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_jobs');
         }
       });
   };
@@ -305,6 +427,30 @@ class DashboardWindow extends React.Component {
           throw new TakosError(res.error);
         } else {
           this.setState({ battle: res });
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+        } else {
+          console.error(e);
+        }
+      });
+  };
+
+  getJobs = () => {
+    return StorageHelper.latestJob()
+      .then(res => {
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_job_from_database');
+        } else if (res !== 0) {
+          return StorageHelper.job(res);
+        }
+      })
+      .then(res => {
+        if (res.error !== null) {
+          throw new TakosError(res.error);
+        } else {
+          this.setState({ job: res });
         }
       })
       .catch(e => {
@@ -436,6 +582,24 @@ class DashboardWindow extends React.Component {
           }
         })()}
         {(() => {
+          if (this.state.jobsUpdated) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.jobs_can_not_update"
+                    defaultMessage="Takos can not update jobs, please refresh this page to update."
+                  />
+                }
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
           if (this.state.schedulesUpdated) {
             return (
               <Alert
@@ -540,17 +704,17 @@ class DashboardWindow extends React.Component {
           </Col>
         </Row>
         {(() => {
-          if (this.state.battle != null || this.state.shifts !== null) {
+          if (this.state.battle !== null || this.state.shifts !== null) {
             return (
               <Row gutter={16}>
-                {(() => {
-                  if (this.state.battle != null) {
-                    return (
-                      <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
-                        <Card
-                          title={<FormattedMessage id="battle.level" defaultMessage="Level" />}
-                          bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
-                        >
+                <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                  <Card
+                    title={<FormattedMessage id="app.dashboard.level_and_grade" defaultMessage="Level / Rank" />}
+                    bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                  >
+                    {(() => {
+                      if (this.state.battle !== null) {
+                        return (
                           <Row gutter={16}>
                             <Col className="DashboardWindow-content-column" span={24}>
                               <Statistic
@@ -569,11 +733,28 @@ class DashboardWindow extends React.Component {
                               />
                             </Col>
                           </Row>
-                        </Card>
-                      </Col>
-                    );
-                  }
-                })()}
+                        );
+                      }
+                    })()}
+                    {(() => {
+                      if (this.state.job !== null) {
+                        return (
+                          <Row gutter={16}>
+                            <Col className="DashboardWindow-content-column" span={24}>
+                              <Statistic
+                                className="DashboardWindow-content-statistic"
+                                title={<FormattedMessage id="job.grade" defaultMessage="Rank" />}
+                                value={this.props.intl.formatMessage({
+                                  id: this.state.job.grade.name
+                                })}
+                              />
+                            </Col>
+                          </Row>
+                        );
+                      }
+                    })()}
+                  </Card>
+                </Col>
                 {(() => {
                   if (this.state.rank !== null) {
                     return (
@@ -651,135 +832,251 @@ class DashboardWindow extends React.Component {
                     );
                   }
                 })()}
-                <Col className="DashboardWindow-content-column" xs={24} sm={24} md={12} lg={12} xl={6}>
-                  <Link to={'/battles#{0}'.format(this.state.battle.number)}>
-                    <Card
-                      title={<FormattedMessage id="app.dashboard.recent_battle" defaultMessage="Recent Battle" />}
-                      hoverable
-                      bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
-                    >
-                      <Row gutter={16}>
-                        <Col className="DashboardWindow-content-column" span={12}>
-                          <Statistic
-                            title={<FormattedMessage id="battle.result" defaultMessage="Result" />}
-                            value={(() => {
-                              if (this.state.battle.isWin) {
-                                if (
-                                  this.state.battle instanceof RankedBattle ||
-                                  this.state.battle instanceof LeagueBattle
-                                ) {
-                                  if (this.state.battle.isKnockOut) {
-                                    return this.props.intl.formatMessage({
-                                      id: 'battle.knock_out',
-                                      defaultMessage: 'KO BONUS!'
-                                    });
-                                  } else {
-                                    return this.props.intl.formatMessage({ id: 'battle.win', defaultMessage: 'Win!' });
-                                  }
-                                } else {
-                                  return this.props.intl.formatMessage({ id: 'battle.win', defaultMessage: 'Win!' });
-                                }
-                              } else {
-                                return this.props.intl.formatMessage({ id: 'battle.lose', defaultMessage: 'Lose..' });
-                              }
-                            })()}
-                            valueStyle={(() => {
-                              if (this.state.battle.isWin) {
-                                if (
-                                  this.state.battle instanceof RankedBattle ||
-                                  this.state.battle instanceof LeagueBattle
-                                ) {
-                                  if (this.state.battle.isKnockOut) {
-                                    return { color: '#f5222d' };
-                                  } else {
-                                    return { color: '#eb2f96' };
-                                  }
-                                } else {
-                                  return { color: '#eb2f96' };
-                                }
-                              } else {
-                                return { color: '#52c41a' };
-                              }
-                            })()}
-                          />
-                        </Col>
-                        <Col className="DashboardWindow-content-column" span={12}>
-                          <Statistic
-                            title={
-                              <FormattedMessage
-                                id="player.kill_and_death_and_special"
-                                defaultMessage="K / D / Special"
-                              />
-                            }
-                            value={(() => {
-                              if (this.state.battle.selfPlayer.assist > 0) {
-                                return '{0} ({1}) / {2} / {3}'.format(
-                                  this.state.battle.selfPlayer.killAndAssist,
-                                  this.state.battle.selfPlayer.assist,
-                                  this.state.battle.selfPlayer.death,
-                                  this.state.battle.selfPlayer.special
-                                );
-                              } else {
-                                return '{0} / {1} / {2}'.format(
-                                  this.state.battle.selfPlayer.killAndAssist,
-                                  this.state.battle.selfPlayer.death,
-                                  this.state.battle.selfPlayer.special
-                                );
-                              }
-                            })()}
-                          />
-                        </Col>
-                        <Col className="DashboardWindow-content-column" span={12}>
-                          <Statistic
-                            title={<FormattedMessage id="weapon" defaultMessage="Weapon" />}
-                            prefix={
-                              <span>
-                                <Tooltip
-                                  title={<FormattedMessage id={this.state.battle.selfPlayer.weapon.mainWeapon.name} />}
-                                >
-                                  <img
-                                    className="DashboardWindow-content-statistic-icon"
-                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.mainWeaponUrl}
-                                    alt="main"
-                                  />
-                                </Tooltip>
-                                <Tooltip
-                                  title={<FormattedMessage id={this.state.battle.selfPlayer.weapon.subWeapon.name} />}
-                                >
-                                  <img
-                                    className="DashboardWindow-content-statistic-icon"
-                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.subWeaponUrlA}
-                                    alt="sub"
-                                    style={{ marginLeft: '4px' }}
-                                  />
-                                </Tooltip>
-                                <Tooltip
+                {(() => {
+                  if (this.state.battle !== null) {
+                    return (
+                      <Col className="DashboardWindow-content-column" xs={24} sm={24} md={12} lg={12} xl={6}>
+                        <Link to={'/battles#{0}'.format(this.state.battle.number)}>
+                          <Card
+                            title={<FormattedMessage id="app.dashboard.recent_battle" defaultMessage="Recent Battle" />}
+                            hoverable
+                            bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                          >
+                            <Row gutter={16}>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="battle.result" defaultMessage="Result" />}
+                                  value={(() => {
+                                    if (this.state.battle.isWin) {
+                                      if (
+                                        this.state.battle instanceof RankedBattle ||
+                                        this.state.battle instanceof LeagueBattle
+                                      ) {
+                                        if (this.state.battle.isKnockOut) {
+                                          return this.props.intl.formatMessage({
+                                            id: 'battle.knock_out',
+                                            defaultMessage: 'KO BONUS!'
+                                          });
+                                        } else {
+                                          return this.props.intl.formatMessage({
+                                            id: 'battle.win',
+                                            defaultMessage: 'Win!'
+                                          });
+                                        }
+                                      } else {
+                                        return this.props.intl.formatMessage({
+                                          id: 'battle.win',
+                                          defaultMessage: 'Win!'
+                                        });
+                                      }
+                                    } else {
+                                      return this.props.intl.formatMessage({
+                                        id: 'battle.lose',
+                                        defaultMessage: 'Lose..'
+                                      });
+                                    }
+                                  })()}
+                                  valueStyle={(() => {
+                                    if (this.state.battle.isWin) {
+                                      if (
+                                        this.state.battle instanceof RankedBattle ||
+                                        this.state.battle instanceof LeagueBattle
+                                      ) {
+                                        if (this.state.battle.isKnockOut) {
+                                          return { color: '#f5222d' };
+                                        } else {
+                                          return { color: '#eb2f96' };
+                                        }
+                                      } else {
+                                        return { color: '#eb2f96' };
+                                      }
+                                    } else {
+                                      return { color: '#52c41a' };
+                                    }
+                                  })()}
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
                                   title={
-                                    <FormattedMessage id={this.state.battle.selfPlayer.weapon.specialWeapon.name} />
+                                    <FormattedMessage
+                                      id="player.kill_and_death_and_special"
+                                      defaultMessage="K / D / Special"
+                                    />
                                   }
-                                >
-                                  <img
-                                    className="DashboardWindow-content-statistic-icon"
-                                    src={FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.specialWeaponUrlA}
-                                    alt="special"
-                                    style={{ marginLeft: '4px' }}
-                                  />
-                                </Tooltip>
-                              </span>
-                            }
-                            value=" "
-                          />
-                        </Col>
-                        <Col className="DashboardWindow-content-column" span={12}>
-                          <Statistic
-                            title={<FormattedMessage id="stage" defaultMessage="Stage" />}
-                            value={this.props.intl.formatMessage({ id: this.state.battle.stage.stage.name })}
-                          />
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Link>
-                </Col>
+                                  value={(() => {
+                                    if (this.state.battle.selfPlayer.assist > 0) {
+                                      return '{0} ({1}) / {2} / {3}'.format(
+                                        this.state.battle.selfPlayer.killAndAssist,
+                                        this.state.battle.selfPlayer.assist,
+                                        this.state.battle.selfPlayer.death,
+                                        this.state.battle.selfPlayer.special
+                                      );
+                                    } else {
+                                      return '{0} / {1} / {2}'.format(
+                                        this.state.battle.selfPlayer.killAndAssist,
+                                        this.state.battle.selfPlayer.death,
+                                        this.state.battle.selfPlayer.special
+                                      );
+                                    }
+                                  })()}
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="weapon" defaultMessage="Weapon" />}
+                                  prefix={
+                                    <span>
+                                      <Tooltip
+                                        title={
+                                          <FormattedMessage id={this.state.battle.selfPlayer.weapon.mainWeapon.name} />
+                                        }
+                                      >
+                                        <img
+                                          className="DashboardWindow-content-statistic-icon"
+                                          src={
+                                            FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.mainWeaponUrl
+                                          }
+                                          alt="main"
+                                        />
+                                      </Tooltip>
+                                      <Tooltip
+                                        title={
+                                          <FormattedMessage id={this.state.battle.selfPlayer.weapon.subWeapon.name} />
+                                        }
+                                      >
+                                        <img
+                                          className="DashboardWindow-content-statistic-icon"
+                                          src={
+                                            FileFolderUrl.SPLATNET + this.state.battle.selfPlayer.weapon.subWeaponUrlA
+                                          }
+                                          alt="sub"
+                                          style={{ marginLeft: '4px' }}
+                                        />
+                                      </Tooltip>
+                                      <Tooltip
+                                        title={
+                                          <FormattedMessage
+                                            id={this.state.battle.selfPlayer.weapon.specialWeapon.name}
+                                          />
+                                        }
+                                      >
+                                        <img
+                                          className="DashboardWindow-content-statistic-icon"
+                                          src={
+                                            FileFolderUrl.SPLATNET +
+                                            this.state.battle.selfPlayer.weapon.specialWeaponUrlA
+                                          }
+                                          alt="special"
+                                          style={{ marginLeft: '4px' }}
+                                        />
+                                      </Tooltip>
+                                    </span>
+                                  }
+                                  value=" "
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="stage" defaultMessage="Stage" />}
+                                  value={this.props.intl.formatMessage({ id: this.state.battle.stage.stage.name })}
+                                />
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Link>
+                      </Col>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (this.state.job !== null) {
+                    return (
+                      <Col className="DashboardWindow-content-column" xs={24} sm={24} md={12} lg={12} xl={6}>
+                        <Link to={'/jobs#{0}'.format(this.state.job.number)}>
+                          <Card
+                            title={<FormattedMessage id="app.dashboard.recent_job" defaultMessage="Recent Job" />}
+                            hoverable
+                            bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                          >
+                            <Row gutter={16}>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="job.result" defaultMessage="Result" />}
+                                  value={this.props.intl.formatMessage({
+                                    id: this.state.job.result.name
+                                  })}
+                                  valueStyle={(() => {
+                                    if (this.state.job.isClear) {
+                                      return { color: '#52c41a' };
+                                    } else {
+                                      return { color: '#fa8c16' };
+                                    }
+                                  })()}
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="job.grizzco_points" defaultMessage="Grizzco Points" />}
+                                  value={this.state.job.grizzcoPoint}
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="weapon" defaultMessage="Weapon" />}
+                                  prefix={
+                                    <span>
+                                      {(() => {
+                                        return this.state.job.selfPlayer.weapons.map((element, index) => {
+                                          console.log(index);
+                                          if (index === 0) {
+                                            return (
+                                              <Tooltip
+                                                key={index}
+                                                title={<FormattedMessage id={element.mainWeapon.name} />}
+                                              >
+                                                <img
+                                                  className="DashboardWindow-content-statistic-icon"
+                                                  src={FileFolderUrl.SPLATNET + element.mainWeaponUrl}
+                                                  alt="main"
+                                                />
+                                              </Tooltip>
+                                            );
+                                          } else {
+                                            return (
+                                              <Tooltip
+                                                key={index}
+                                                title={<FormattedMessage id={element.mainWeapon.name} />}
+                                              >
+                                                <img
+                                                  className="DashboardWindow-content-statistic-icon"
+                                                  src={FileFolderUrl.SPLATNET + element.mainWeaponUrl}
+                                                  alt="main"
+                                                  style={{ marginLeft: '4px' }}
+                                                />
+                                              </Tooltip>
+                                            );
+                                          }
+                                        });
+                                      })()}
+                                    </span>
+                                  }
+                                  value=" "
+                                />
+                              </Col>
+                              <Col className="DashboardWindow-content-column" span={12}>
+                                <Statistic
+                                  title={<FormattedMessage id="stage" defaultMessage="Stage" />}
+                                  value={this.props.intl.formatMessage({ id: this.state.job.shift.stage.stage.name })}
+                                />
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Link>
+                      </Col>
+                    );
+                  }
+                })()}
               </Row>
             );
           }

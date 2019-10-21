@@ -1031,6 +1031,7 @@ const ja_JP = {
   'job.hazard_level.max': 'キケン度MAX!!',
   'job.golden_egg': '金イクラ',
   'job.power_egg': 'イクラ',
+  'job.grizzco_points': 'クマサンポイント',
   // App
   'app.welcome.steps.welcome': 'ようこそ',
   'app.welcome.steps.log_in': 'ログイン',
@@ -1045,7 +1046,9 @@ const ja_JP = {
   'app.dashboard': 'ダッシュボード',
   'app.dashboard.welcome': 'Takos へようこそ！',
   'app.dashboard.welcome.name': '{name}さん、Takos へようこそ！',
+  'app.dashboard.level_and_grade': 'レベル / ランク',
   'app.dashboard.recent_battle': '最近のバトル',
+  'app.dashboard.recent_job': '最近のバイト',
   'app.schedules': 'スケジュール',
   'app.schedules.current': 'いま',
   'app.schedules.next': 'つぎ',
@@ -1103,6 +1106,8 @@ const ja_JP = {
     'Takos はシフト表を更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.battles_can_not_update':
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.warning.jobs_can_not_update':
+    'Takos はバイトを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
   'app.alert.info.schedules_expired':
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
@@ -1110,6 +1115,8 @@ const ja_JP = {
     'これらのシフト表の有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info.battles_filtered':
     '表示されているバトルはフィルタリングされています。<l>ここ</l>をクリックしてスクリーニングをキャンセルしてください。',
+  'app.alert.info.jobs_filtered':
+    '表示されているバイトはフィルタリングされています。<l>ここ</l>をクリックしてスクリーニングをキャンセルしてください。',
   'app.alert.info.use_automatic_cookie_generation':
     '再ログインして自動クッキー生成の使用を希望する場合は、ブラウザで <a>Nintendo Account</a>を開いてログインし、「この人を選択」を右クリックして、リンクアドレスをコピーし、下のテキストボックスに貼り付けてから「クッキーを更新する」。',
   'app.alert.info.use_automatic_cookie_generation_first_time':
