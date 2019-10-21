@@ -319,45 +319,49 @@ class SettingsWindow extends React.Component {
       try {
         const data = JSON.parse(e.target.result);
         // Battle
-        for (let i = 0; i < data.battles.length; ++i) {
-          const battle = Battle.deserialize(data.battles[i]);
-          if (battle.error !== null) {
-            this.setState({
-              error: true,
-              errorLog: battle.error,
-              errorChecklist: [
-                <FormattedMessage
-                  key="file"
-                  id="app.problem.troubleshoot.importing_file"
-                  defaultMessage="Your importing file"
-                />
-              ],
-              importing: false
-            });
-            return;
-          } else {
-            battles.push(battle);
+        if (data.battle !== undefined) {
+          for (let i = 0; i < data.battles.length; ++i) {
+            const battle = Battle.deserialize(data.battles[i]);
+            if (battle.error !== null) {
+              this.setState({
+                error: true,
+                errorLog: battle.error,
+                errorChecklist: [
+                  <FormattedMessage
+                    key="file"
+                    id="app.problem.troubleshoot.importing_file"
+                    defaultMessage="Your importing file"
+                  />
+                ],
+                importing: false
+              });
+              return;
+            } else {
+              battles.push(battle);
+            }
           }
         }
         // Job
-        for (let i = 0; i < data.jobs.length; ++i) {
-          const job = Job.deserialize(data.jobs[i]);
-          if (job.error !== null) {
-            this.setState({
-              error: true,
-              errorLog: job.error,
-              errorChecklist: [
-                <FormattedMessage
-                  key="file"
-                  id="app.problem.troubleshoot.importing_file"
-                  defaultMessage="Your importing file"
-                />
-              ],
-              importing: false
-            });
-            return;
-          } else {
-            jobs.push(job);
+        if (data.jobs !== undefined) {
+          for (let i = 0; i < data.jobs.length; ++i) {
+            const job = Job.deserialize(data.jobs[i]);
+            if (job.error !== null) {
+              this.setState({
+                error: true,
+                errorLog: job.error,
+                errorChecklist: [
+                  <FormattedMessage
+                    key="file"
+                    id="app.problem.troubleshoot.importing_file"
+                    defaultMessage="Your importing file"
+                  />
+                ],
+                importing: false
+              });
+              return;
+            } else {
+              jobs.push(job);
+            }
           }
         }
       } catch (e) {
@@ -482,42 +486,92 @@ class SettingsWindow extends React.Component {
 
     let firstError = null;
     const getLocalBattleRecursively = (battles, i) => {
-      console.log(battles[i]);
-      return new Promise(resolve => {
-        resolve(Battle.parse(battles[i]));
-      })
-        .then(res => {
-          console.log(res);
-          if (res.error !== null) {
-            // Handle previous error
-            throw new TakosError(res.error);
-          } else {
-            return StorageHelper.addBattle(res);
-          }
+      if (battles.length === 0) {
+        return new Promise(resolve => {
+          resolve();
+        });
+      } else {
+        console.log(battles[i]);
+        return new Promise(resolve => {
+          resolve(Battle.parse(battles[i]));
         })
-        .then(res => {
-          if (res instanceof TakosError && !(res.message.startsWith('battle_') && res.message.endsWith('_exists'))) {
-            throw new TakosError(res.message);
-          } else {
-            if (res instanceof TakosError) {
-              if (firstError === null) {
-                firstError = res.message;
+          .then(res => {
+            console.log(res);
+            if (res.error !== null) {
+              // Handle previous error
+              throw new TakosError(res.error);
+            } else {
+              return StorageHelper.addBattle(res);
+            }
+          })
+          .then(res => {
+            if (res instanceof TakosError && !(res.message.startsWith('battle_') && res.message.endsWith('_exists'))) {
+              throw new TakosError(res.message);
+            } else {
+              if (res instanceof TakosError) {
+                if (firstError === null) {
+                  firstError = res.message;
+                }
+              }
+              this.setState({ importCurrent: this.state.importCurrent + 1 });
+              if (i + 1 < battles.length) {
+                return getLocalBattleRecursively(battles, i + 1);
               }
             }
-            this.setState({ importCurrent: this.state.importCurrent + 1 });
-            if (i + 1 < battles.length) {
-              return getLocalBattleRecursively(battles, i + 1);
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              return new TakosError(e.message);
+            } else {
+              console.error(e);
+              return new TakosError('can_not_import_battles');
             }
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return new TakosError(e.message);
-          } else {
-            console.error(e);
-            return new TakosError('can_not_import_data');
-          }
+          });
+      }
+    };
+    const getLocalJobRecursively = (jobs, i) => {
+      if (jobs.length === 0) {
+        return new Promise(resolve => {
+          resolve();
         });
+      } else {
+        console.log(jobs[i]);
+        return new Promise(resolve => {
+          resolve(Job.parse(jobs[i]));
+        })
+          .then(res => {
+            console.log(res);
+            if (res.error !== null) {
+              // Handle previous error
+              throw new TakosError(res.error);
+            } else {
+              return StorageHelper.addJob(res);
+            }
+          })
+          .then(res => {
+            if (res instanceof TakosError && !(res.message.startsWith('job_') && res.message.endsWith('_exists'))) {
+              throw new TakosError(res.message);
+            } else {
+              if (res instanceof TakosError) {
+                if (firstError === null) {
+                  firstError = res.message;
+                }
+              }
+              this.setState({ importCurrent: this.state.importCurrent + 1 });
+              if (i + 1 < jobs.length) {
+                return getLocalJobRecursively(jobs, i + 1);
+              }
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              return new TakosError(e.message);
+            } else {
+              console.error(e);
+              return new TakosError('can_not_import_jobs');
+            }
+          });
+      }
     };
 
     const readFileComplete = e => {
@@ -530,10 +584,36 @@ class SettingsWindow extends React.Component {
         }
         current++;
         if (current === total) {
-          // Parse battles
+          // Parse battles and jobs
           if (data.length > 0) {
+            // Seperate battles and jobs
+            let battles = [];
+            let jobs = [];
+            data.forEach(element => {
+              if (element.job_id !== undefined) {
+                jobs.push(element);
+              } else {
+                battles.push(element);
+              }
+            });
             this.setState({ importCurrent: 1, importTotal: data.length });
-            return getLocalBattleRecursively(data, 0)
+            // Battle
+            return getLocalBattleRecursively(battles, 0)
+              .then(res => {
+                if (res instanceof TakosError) {
+                  throw new TakosError(res.message);
+                } else {
+                  if (firstError !== null) {
+                    throw new TakosError(firstError);
+                  } else {
+                    this.setState({ importing: false });
+                  }
+                }
+              })
+              .then(() => {
+                // Job
+                return getLocalJobRecursively(jobs, 0);
+              })
               .then(res => {
                 if (res instanceof TakosError) {
                   throw new TakosError(res.message);
@@ -555,16 +635,6 @@ class SettingsWindow extends React.Component {
                         key="file"
                         id="app.problem.troubleshoot.importing_file"
                         defaultMessage="Your importing file"
-                      />,
-                      <FormattedMessage
-                        key="network"
-                        id="app.problem.troubleshoot.network"
-                        defaultMessage="Your network connection"
-                      />,
-                      <FormattedMessage
-                        key="cookie"
-                        id="app.problem.troubleshoot.cookie"
-                        defaultMessage="Your SplatNet cookie"
                       />
                     ],
                     importing: false
@@ -1011,12 +1081,7 @@ class SettingsWindow extends React.Component {
                 </Row>
               </Form.Item>
               <Form.Item
-                label={
-                  <FormattedMessage
-                    id="app.settings.system.import_and_export"
-                    defaultMessage="Import / Export"
-                  />
-                }
+                label={<FormattedMessage id="app.settings.system.import_and_export" defaultMessage="Import / Export" />}
               >
                 <Row gutter={8}>
                   <Col>
