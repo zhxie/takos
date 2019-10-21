@@ -11,6 +11,7 @@ import LoadingResult from './components/LoadingResult';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
+import JobHelper from './utils/JobHelper';
 import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
 import './utils/StringHelper';
@@ -306,6 +307,36 @@ class LoginWindow extends React.Component {
           }
         });
     };
+    // TODO: this method should be extracted
+    const getJobRecursively = (from, to) => {
+      return JobHelper.getJob(from)
+        .then(res => {
+          if (res.error !== null) {
+            // Handle previous error
+            throw new TakosError(res.error);
+          } else {
+            return StorageHelper.addJob(res);
+          }
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
+            if (from < to) {
+              return getJobRecursively(from + 1, to);
+            }
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_get_job');
+          }
+        });
+    };
 
     this.setState({ errorUpdate: false });
     return StorageHelper.latestBattle()
@@ -332,10 +363,53 @@ class LoginWindow extends React.Component {
         if (res.to >= res.from) {
           this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
         } else {
-          this.toNext();
           return;
         }
         return getBattleRecursively(res.from, res.to).then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          }
+        });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_upate_battles');
+        }
+      })
+      .then(() => {
+        this.setState({ updateCurrent: 0, updateTotal: 0 });
+        return StorageHelper.latestJob();
+      })
+      .then(res => {
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_job_from_database');
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        const currentNumber = res;
+        return JobHelper.getTheLatestJobNumber().then(res => {
+          if (res === 0) {
+            throw new TakosError('can_not_get_jobs');
+          } else {
+            const from = Math.max(1, res - 49, currentNumber + 1);
+            const to = res;
+            return { from, to };
+          }
+        });
+      })
+      .then(res => {
+        if (res.to >= res.from) {
+          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
+        } else {
+          this.toNext();
+          return;
+        }
+        return getJobRecursively(res.from, res.to).then(res => {
           if (res instanceof TakosError) {
             throw new TakosError(res.message);
           } else {
@@ -345,12 +419,20 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_upate_jobs');
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
           this.setState({ errorUpdate: true, errorUpdateLog: e.message });
         } else {
           console.error(e);
           this.setState({
             errorUpdate: true,
-            errorUpdateLog: 'can_not_update_battles'
+            errorUpdateLog: 'can_not_update_data'
           });
         }
       });

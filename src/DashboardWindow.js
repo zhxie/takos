@@ -117,6 +117,7 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
+        this.setState({ updateCurrent: 0, updateTotal: 0 });
         // Update jobs
         return this.updateJobs();
       })
