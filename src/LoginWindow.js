@@ -38,7 +38,9 @@ class LoginWindow extends React.Component {
     isValid: true,
     // Value
     cookie: '',
-    language: 'en_US'
+    language: 'en_US',
+    battlesRange: {},
+    jobsRange: {}
   };
 
   constructor(props) {
@@ -355,32 +357,11 @@ class LoginWindow extends React.Component {
           } else {
             const from = Math.max(1, res - 49, currentNumber + 1);
             const to = res;
-            return { from, to };
+            this.setState({ battlesRange: { from, to } });
           }
         });
-      })
-      .then(res => {
-        if (res.to >= res.from) {
-          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
-        } else {
-          return;
-        }
-        return getBattleRecursively(res.from, res.to).then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          }
-        });
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          throw new TakosError(e.message);
-        } else {
-          console.error(e);
-          throw new TakosError('can_not_upate_battles');
-        }
       })
       .then(() => {
-        this.setState({ updateCurrent: 0, updateTotal: 0 });
         return StorageHelper.latestJob();
       })
       .then(res => {
@@ -398,31 +379,47 @@ class LoginWindow extends React.Component {
           } else {
             const from = Math.max(1, res - 49, currentNumber + 1);
             const to = res;
-            return { from, to };
+            this.setState({ jobsRange: { from, to } });
           }
         });
       })
-      .then(res => {
-        if (res.to >= res.from) {
-          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
+      .then(() => {
+        let updatedBattles = 0;
+        if (this.state.battlesRange.to >= this.state.battlesRange.from) {
+          updatedBattles = this.state.battlesRange.to - this.state.battlesRange.from + 1;
+        }
+        let updatedJobs = 0;
+        if (this.state.jobsRange.to >= this.state.jobsRange.from) {
+          updatedJobs = this.state.jobsRange.to - this.state.jobsRange.from + 1;
+        }
+        if (updatedBattles + updatedJobs > 0) {
+          this.setState({ updateCurrent: 1, updateTotal: updatedBattles + updatedJobs });
+        }
+      })
+      .then(() => {
+        // Update battles
+        if (this.state.battlesRange.to >= this.state.battlesRange.from) {
+          return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            }
+          });
+        } else {
+          return;
+        }
+      })
+      .then(() => {
+        if (this.state.jobsRange.to >= this.state.jobsRange.from) {
+          return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              this.toNext();
+            }
+          });
         } else {
           this.toNext();
           return;
-        }
-        return getJobRecursively(res.from, res.to).then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          } else {
-            this.toNext();
-          }
-        });
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          throw new TakosError(e.message);
-        } else {
-          console.error(e);
-          throw new TakosError('can_not_upate_jobs');
         }
       })
       .catch(e => {
