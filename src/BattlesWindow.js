@@ -334,7 +334,7 @@ class BattlesWindow extends React.Component {
       content: this.props.intl.formatMessage({
         id: 'app.modal.confirm.delete_battle.content',
         defaultMessage:
-          'Once the battle is deleted, you will not be able to undo. It is recommended that you first export the data.'
+          'Once the battle is deleted, you will not be able to undo. It is recommended that you first backup the data.'
       }),
       okType: 'danger',
       autoFocusButton: 'cancel',

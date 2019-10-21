@@ -1084,11 +1084,11 @@ const en_US = {
   'app.settings.appearance.language': 'Language',
   'app.settings.system': 'System',
   'app.settings.system.data': 'Data',
-  'app.settings.system.data.export': 'Export Data',
-  'app.settings.system.data.import': 'Import Data',
+  'app.settings.system.data.backup': 'Backup',
+  'app.settings.system.data.restore': 'Restore from Backup',
   'app.settings.system.data.clear': 'Clear Data',
-  'app.settings.system.import_other': 'Import Other Format Data (Beta)',
-  'app.settings.system.import_other.splatnet_json': 'SplatNet JSON',
+  'app.settings.system.import_and_export': 'Import / Export',
+  'app.settings.system.import_and_export.import.splatnet_json': 'SplatNet JSON',
   'app.back_log_in': 'Back Log In',
   'app.to_settings': 'To Settings',
   'app.previous': 'Previous',
@@ -1149,10 +1149,10 @@ const en_US = {
     'Note that when you log out, all saved data, including battles and jobs, will be cleared.',
   'app.modal.confirm.clear_data': 'Do you want to clear data?',
   'app.modal.confirm.clear_data.content':
-    'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.',
+    'Once the data is cleared, you will not be able to undo. It is recommended that you first backup the data.',
   'app.modal.confirm.delete_battle': 'Do you want to delete battle?',
   'app.modal.confirm.delete_battle.content':
-    'Once the battle is deleted, you will not be able to undo. It is recommended that you first export the data.',
+    'Once the battle is deleted, you will not be able to undo. It is recommended that you first backup the data.',
   // App.result
   'app.result.done': 'Booyah!',
   'app.result.done.description': 'It is all done. Enjoy it!',

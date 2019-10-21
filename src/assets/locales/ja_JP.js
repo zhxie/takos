@@ -1083,11 +1083,11 @@ const ja_JP = {
   'app.settings.appearance.language': '言語 / Language',
   'app.settings.system': 'システム',
   'app.settings.system.data': 'データ',
-  'app.settings.system.data.export': 'データ書き出す',
-  'app.settings.system.data.import': 'データ読み込む',
+  'app.settings.system.data.backup': 'バックアップ',
+  'app.settings.system.data.restore': 'バックアップから復元',
   'app.settings.system.data.clear': 'データを消去する',
-  'app.settings.system.import_other': '他の形式のデータをインポートする (Beta)',
-  'app.settings.system.import_other.splatnet_json': 'イカリング JSON',
+  'app.settings.system.import_and_export': 'インポート / エクスポート',
+  'app.settings.system.import_and_export.import.splatnet_json': 'イカリング JSON',
   'app.back_log_in': 'ログインに戻る',
   'app.to_settings': '設定へ',
   'app.previous': '前へ',
@@ -1154,10 +1154,10 @@ const ja_JP = {
     'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',
   'app.modal.confirm.clear_data': 'データを消去しますか？',
   'app.modal.confirm.clear_data.content':
-    'データが消去されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
+    'データが消去されると、元に戻すことはできません。最初にデータをバックアップすることをお勧めします。',
   'app.modal.confirm.delete_battle': 'バトルを削除しますか？',
   'app.modal.confirm.delete_battle.content':
-    'バトルが削除されると、元に戻すことはできません。最初にデータを書き出すことをお勧めします。',
+    'バトルが削除されると、元に戻すことはできません。最初にデータをバックアップすることをお勧めします。',
   // App.result
   'app.result.done': 'ナイス',
   'app.result.done.description': 'すべて完了です。楽しめ！',

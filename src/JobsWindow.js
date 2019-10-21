@@ -11,7 +11,7 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import { Job } from './models/Job';
 import { Stage } from './models/Stage';
-import { MainWeapon, SubWeapon, SpecialWeapon } from './models/Weapon';
+import { MainWeapon, SpecialWeapon } from './models/Weapon';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
 import JobHelper from './utils/JobHelper';

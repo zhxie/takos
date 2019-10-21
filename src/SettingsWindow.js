@@ -8,6 +8,7 @@ import icon from './assets/images/character-c-q-cumber.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import { Battle } from './models/Battle';
+import { Job } from './models/Job';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
 import LoginHelper from './utils/LoginHelper';
@@ -285,11 +286,39 @@ class SettingsWindow extends React.Component {
           })
           .catch();
       };
+      const addJobRecursively = (jobs, i) => {
+        return StorageHelper.addJob(jobs[i])
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              if (firstError === null) {
+                firstError = e.message;
+              }
+            } else {
+              console.error(e);
+              if (firstError === null) {
+                firstError = 'can_not_import_data';
+              }
+            }
+          })
+          .then(() => {
+            if (i + 1 < jobs.length) {
+              return addJobRecursively(jobs, i + 1);
+            }
+          })
+          .catch();
+      };
 
       let battles = [];
+      let jobs = [];
       // Read file
       try {
         const data = JSON.parse(e.target.result);
+        // Battle
         for (let i = 0; i < data.battles.length; ++i) {
           const battle = Battle.deserialize(data.battles[i]);
           if (battle.error !== null) {
@@ -310,6 +339,27 @@ class SettingsWindow extends React.Component {
             battles.push(battle);
           }
         }
+        // Job
+        for (let i = 0; i < data.jobs.length; ++i) {
+          const job = Job.deserialize(data.jobs[i]);
+          if (job.error !== null) {
+            this.setState({
+              error: true,
+              errorLog: job.error,
+              errorChecklist: [
+                <FormattedMessage
+                  key="file"
+                  id="app.problem.troubleshoot.importing_file"
+                  defaultMessage="Your importing file"
+                />
+              ],
+              importing: false
+            });
+            return;
+          } else {
+            jobs.push(job);
+          }
+        }
       } catch (e) {
         console.error(e);
         this.setState({
@@ -326,46 +376,89 @@ class SettingsWindow extends React.Component {
         });
         return;
       }
-      // Add battles
-      if (battles.length > 0) {
-        addBattleRecursively(battles, 0)
-          .then(() => {
-            if (firstError !== null) {
-              throw new TakosError(firstError);
-            } else {
-              this.setState({ importing: false });
-            }
-          })
-          .catch(e => {
-            if (e instanceof TakosError) {
-              this.setState({
-                error: true,
-                errorLog: e.message,
-                errorChecklist: [
-                  <FormattedMessage
-                    key="file"
-                    id="app.problem.troubleshoot.importing_file"
-                    defaultMessage="Your importing file"
-                  />
-                ],
-                importing: false
-              });
-            } else {
-              console.error(e);
-              this.setState({
-                error: true,
-                errorLog: 'can_not_import_data',
-                errorChecklist: [
-                  <FormattedMessage
-                    key="file"
-                    id="app.problem.troubleshoot.importing_file"
-                    defaultMessage="Your importing file"
-                  />
-                ],
-                importing: false
-              });
-            }
-          });
+      if (battles.length + jobs.length > 0) {
+        // Add battles
+        if (battles.length > 0) {
+          addBattleRecursively(battles, 0)
+            .then(() => {
+              if (firstError !== null) {
+                throw new TakosError(firstError);
+              } else {
+                this.setState({ importing: false });
+              }
+            })
+            .catch(e => {
+              if (e instanceof TakosError) {
+                this.setState({
+                  error: true,
+                  errorLog: e.message,
+                  errorChecklist: [
+                    <FormattedMessage
+                      key="file"
+                      id="app.problem.troubleshoot.importing_file"
+                      defaultMessage="Your importing file"
+                    />
+                  ],
+                  importing: false
+                });
+              } else {
+                console.error(e);
+                this.setState({
+                  error: true,
+                  errorLog: 'can_not_import_data',
+                  errorChecklist: [
+                    <FormattedMessage
+                      key="file"
+                      id="app.problem.troubleshoot.importing_file"
+                      defaultMessage="Your importing file"
+                    />
+                  ],
+                  importing: false
+                });
+              }
+            });
+        }
+        // Add jobs
+        if (jobs.length > 0) {
+          addJobRecursively(jobs, 0)
+            .then(() => {
+              if (firstError !== null) {
+                throw new TakosError(firstError);
+              } else {
+                this.setState({ importing: false });
+              }
+            })
+            .catch(e => {
+              if (e instanceof TakosError) {
+                this.setState({
+                  error: true,
+                  errorLog: e.message,
+                  errorChecklist: [
+                    <FormattedMessage
+                      key="file"
+                      id="app.problem.troubleshoot.importing_file"
+                      defaultMessage="Your importing file"
+                    />
+                  ],
+                  importing: false
+                });
+              } else {
+                console.error(e);
+                this.setState({
+                  error: true,
+                  errorLog: 'can_not_import_data',
+                  errorChecklist: [
+                    <FormattedMessage
+                      key="file"
+                      id="app.problem.troubleshoot.importing_file"
+                      defaultMessage="Your importing file"
+                    />
+                  ],
+                  importing: false
+                });
+              }
+            });
+        }
       } else {
         this.setState({
           error: true,
@@ -523,27 +616,41 @@ class SettingsWindow extends React.Component {
 
   exportData = () => {
     this.setState({ exporting: true });
-    StorageHelper.battles().then(res => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = '0' + (date.getMonth() + 1);
-      const day = '0' + date.getDate();
-      // Construct data
-      let data = { version: '0.1.0' };
-      // Battles
-      let battles = [];
-      res.forEach(element => {
-        battles.push(element);
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = '0' + (date.getMonth() + 1);
+    const day = '0' + date.getDate();
+    // Construct data
+    let data = { version: '0.2.0' };
+    // Battles
+    StorageHelper.battles()
+      .then(res => {
+        let battles = [];
+        res.forEach(element => {
+          battles.push(element);
+        });
+        data.battles = battles;
+      })
+      .then(() => {
+        // Jobs
+        return StorageHelper.jobs();
+      })
+      .then(res => {
+        let jobs = [];
+        res.forEach(element => {
+          jobs.push(element);
+        });
+        data.jobs = jobs;
+      })
+      .then(() => {
+        // Export file
+        const a = document.createElement('a');
+        a.download = 'TakosBackup_{0}{1}{2}.json'.format(year, month.substr(-2), day.substr(-2));
+        a.rel = 'noopener';
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+        a.dispatchEvent(new MouseEvent('click'));
+        this.setState({ exporting: false });
       });
-      data.battles = battles;
-      // Export file
-      const a = document.createElement('a');
-      a.download = 'TakosBackup_{0}{1}{2}.json'.format(year, month.substr(-2), day.substr(-2));
-      a.rel = 'noopener';
-      a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
-      a.dispatchEvent(new MouseEvent('click'));
-      this.setState({ exporting: false });
-    });
   };
 
   showUpdateCookieConfirm = () => {
@@ -655,7 +762,7 @@ class SettingsWindow extends React.Component {
       content: this.props.intl.formatMessage({
         id: 'app.modal.confirm.clear_data.content',
         defaultMessage:
-          'Once the data is cleared, you will not be able to undo. It is recommended that you first export the data.'
+          'Once the data is cleared, you will not be able to undo. It is recommended that you first backup the data.'
       }),
       okType: 'danger',
       autoFocusButton: 'cancel',
@@ -885,7 +992,7 @@ class SettingsWindow extends React.Component {
                 <Row gutter={8}>
                   <Col>
                     <Button onClick={this.exportData} loading={this.state.exporting} type="default">
-                      <FormattedMessage id="app.settings.system.data.export" defaultMessage="Export Data" />
+                      <FormattedMessage id="app.settings.system.data.backup" defaultMessage="Backup" />
                     </Button>
                     <Button
                       type="default"
@@ -894,7 +1001,7 @@ class SettingsWindow extends React.Component {
                       }}
                       style={{ marginLeft: '8px' }}
                     >
-                      <FormattedMessage id="app.settings.system.data.import" defaultMessage="Import Data" />
+                      <FormattedMessage id="app.settings.system.data.restore" defaultMessage="Restore from Backup" />
                       <input id="import" type="file" onChange={this.importData} style={{ display: 'none' }} />
                     </Button>
                     <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
@@ -906,8 +1013,8 @@ class SettingsWindow extends React.Component {
               <Form.Item
                 label={
                   <FormattedMessage
-                    id="app.settings.system.import_other"
-                    defaultMessage="Import Other Format Data (Beta)"
+                    id="app.settings.system.import_and_export"
+                    defaultMessage="Import / Export"
                   />
                 }
               >
@@ -920,7 +1027,7 @@ class SettingsWindow extends React.Component {
                       type="default"
                     >
                       <FormattedMessage
-                        id="app.settings.system.import_other.splatnet_json"
+                        id="app.settings.system.import_and_export.import.splatnet_json"
                         defaultMessage="SplatNet JSON"
                       />
                       <input
