@@ -319,7 +319,7 @@ class SettingsWindow extends React.Component {
       try {
         const data = JSON.parse(e.target.result);
         // Battle
-        if (data.battle !== undefined) {
+        if (data.battles !== undefined) {
           for (let i = 0; i < data.battles.length; ++i) {
             const battle = Battle.deserialize(data.battles[i]);
             if (battle.error !== null) {
