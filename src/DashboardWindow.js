@@ -54,7 +54,10 @@ class DashboardWindow extends React.Component {
     schedulesUpdated: false,
     shiftsUpdated: false,
     schedulesExpired: false,
-    shiftsExpired: false
+    shiftsExpired: false,
+    // Value
+    battlesRange: {},
+    jobsRange: {}
   };
 
   modeIconSelector = mode => {
@@ -92,6 +95,67 @@ class DashboardWindow extends React.Component {
   };
 
   updateData = () => {
+    // TODO: this method should be extracted
+    const getBattleRecursively = (from, to) => {
+      return BattleHelper.getBattle(from)
+        .then(res => {
+          if (res.error !== null) {
+            // Handle previous error
+            throw new TakosError(res.error);
+          } else {
+            return StorageHelper.addBattle(res);
+          }
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
+            if (from < to) {
+              return getBattleRecursively(from + 1, to);
+            }
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_get_battle');
+          }
+        });
+    };
+    // TODO: this method should be extracted
+    const getJobRecursively = (from, to) => {
+      return JobHelper.getJob(from)
+        .then(res => {
+          if (res.error !== null) {
+            // Handle previous error
+            throw new TakosError(res.error);
+          } else {
+            return StorageHelper.addJob(res);
+          }
+        })
+        .then(res => {
+          if (res instanceof TakosError) {
+            throw new TakosError(res.message);
+          } else {
+            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
+            if (from < to) {
+              return getJobRecursively(from + 1, to);
+            }
+          }
+        })
+        .catch(e => {
+          if (e instanceof TakosError) {
+            return new TakosError(e.message);
+          } else {
+            console.error(e);
+            return new TakosError('can_not_get_job');
+          }
+        });
+    };
+
     this.setState({
       loaded: false,
       error: false,
@@ -102,7 +166,9 @@ class DashboardWindow extends React.Component {
       schedulesUpdated: false,
       shiftsUpdated: false,
       schedulesExpired: false,
-      shiftsExpired: false
+      shiftsExpired: false,
+      battlesRange: {},
+      jobsRange: {}
     });
     let errorBattles = null;
     let errorJobs = null;
@@ -110,20 +176,138 @@ class DashboardWindow extends React.Component {
     let errorShifts = null;
     let firstErrorLog = null;
     // Update battles
-    this.updateBattles()
+
+    return StorageHelper.latestBattle()
       .then(res => {
-        if (res instanceof TakosError) {
-          errorBattles = res;
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_battle_from_database');
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        const currentNumber = res;
+        return BattleHelper.getTheLatestBattleNumber().then(res => {
+          if (res === 0) {
+            throw new TakosError('can_not_get_battles');
+          } else {
+            const from = Math.max(1, res - 49, currentNumber + 1);
+            const to = res;
+            this.setState({ battlesRange: { from, to } });
+          }
+        });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          errorBattles = e;
+        } else {
+          console.error(e);
+          errorBattles = new TakosError('can_not_update_battles');
         }
       })
       .then(() => {
-        this.setState({ updateCurrent: 0, updateTotal: 0 });
+        return StorageHelper.latestJob();
+      })
+      .then(res => {
+        if (res === -1) {
+          throw new TakosError('can_not_get_the_latest_job_from_database');
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        const currentNumber = res;
+        return JobHelper.getTheLatestJobNumber().then(res => {
+          if (res === 0) {
+            throw new TakosError('can_not_get_jobs');
+          } else {
+            const from = Math.max(1, res - 49, currentNumber + 1);
+            const to = res;
+            this.setState({ jobsRange: { from, to } });
+          }
+        });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          errorJobs = e;
+        } else {
+          console.error(e);
+          errorBattles = new TakosError('can_not_update_jobs');
+        }
+      })
+      .then(() => {
+        let updatedBattles = 0;
+        if (this.state.battlesRange.to >= this.state.battlesRange.from) {
+          updatedBattles = this.state.battlesRange.to - this.state.battlesRange.from + 1;
+        }
+        let updatedJobs = 0;
+        if (this.state.jobsRange.to >= this.state.jobsRange.from) {
+          updatedJobs = this.state.jobsRange.to - this.state.jobsRange.from + 1;
+        }
+        if (updatedBattles + updatedJobs > 0) {
+          this.setState({ updateCurrent: 1, updateTotal: updatedBattles + updatedJobs });
+        }
+      })
+      .then(() => {
+        // Update battles
+        if (this.state.battlesRange.to >= this.state.battlesRange.from) {
+          return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to)
+            .then(res => {
+              if (res instanceof TakosError) {
+                throw new TakosError(res.message);
+              } else {
+                return this.getBattles();
+              }
+            })
+            .catch(e => {
+              if (e instanceof TakosError) {
+                return new TakosError(e.message);
+              } else {
+                console.error(e);
+                return new TakosError('can_not_update_battles');
+              }
+            });
+        } else {
+          return this.getBattles();
+        }
+      })
+      .then(res => {
+        if (res instanceof TakosError) {
+          errorBattles = res;
+        } else if (res instanceof Error) {
+          console.error(res);
+          errorBattles = new TakosError('can_not_update_battles');
+        }
+      })
+      .then(() => {
         // Update jobs
-        return this.updateJobs();
+        if (this.state.jobsRange.to >= this.state.jobsRange.from) {
+          return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to)
+            .then(res => {
+              if (res instanceof TakosError) {
+                throw new TakosError(res.message);
+              } else {
+                return this.getJobs();
+              }
+            })
+            .catch(e => {
+              if (e instanceof TakosError) {
+                return new TakosError(e.message);
+              } else {
+                console.error(e);
+                return new TakosError('can_not_update_jobs');
+              }
+            });
+        } else {
+          return this.getJobs();
+        }
       })
       .then(res => {
         if (res instanceof TakosError) {
           errorJobs = res;
+        } else if (res instanceof Error) {
+          console.error(res);
+          errorJobs = new TakosError('can_not_update_jobs');
         }
       })
       .then(() => {
@@ -260,158 +444,6 @@ class DashboardWindow extends React.Component {
         }
       })
       .catch();
-  };
-
-  updateBattles = () => {
-    // TODO: this method should be extracted
-    const getBattleRecursively = (from, to) => {
-      return BattleHelper.getBattle(from)
-        .then(res => {
-          if (res.error !== null) {
-            // Handle previous error
-            throw new TakosError(res.error);
-          } else {
-            return StorageHelper.addBattle(res);
-          }
-        })
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          } else {
-            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
-            if (from < to) {
-              return getBattleRecursively(from + 1, to);
-            }
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return new TakosError(e.message);
-          } else {
-            console.error(e);
-            return new TakosError('can_not_get_battle');
-          }
-        });
-    };
-
-    return StorageHelper.latestBattle()
-      .then(res => {
-        if (res === -1) {
-          throw new TakosError('can_not_get_the_latest_battle_from_database');
-        } else {
-          return res;
-        }
-      })
-      .then(res => {
-        const currentNumber = res;
-        return BattleHelper.getTheLatestBattleNumber().then(res => {
-          if (res === 0) {
-            throw new TakosError('can_not_get_battles');
-          } else {
-            const from = Math.max(1, res - 49, currentNumber + 1);
-            const to = res;
-            return { from, to };
-          }
-        });
-      })
-      .then(res => {
-        if (res.to >= res.from) {
-          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
-        } else {
-          return this.getBattles();
-        }
-        return getBattleRecursively(res.from, res.to).then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          } else {
-            return this.getBattles();
-          }
-        });
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          return e;
-        } else {
-          console.error(e);
-          return new TakosError('can_not_update_battles');
-        }
-      });
-  };
-
-  updateJobs = () => {
-    // TODO: this method should be extracted
-    const getJobRecursively = (from, to) => {
-      return JobHelper.getJob(from)
-        .then(res => {
-          if (res.error !== null) {
-            // Handle previous error
-            throw new TakosError(res.error);
-          } else {
-            return StorageHelper.addJob(res);
-          }
-        })
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          } else {
-            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
-            if (from < to) {
-              return getJobRecursively(from + 1, to);
-            }
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return new TakosError(e.message);
-          } else {
-            console.error(e);
-            return new TakosError('can_not_get_job');
-          }
-        });
-    };
-
-    return StorageHelper.latestJob()
-      .then(res => {
-        if (res === -1) {
-          throw new TakosError('can_not_get_the_latest_job_from_database');
-        } else {
-          return res;
-        }
-      })
-      .then(res => {
-        const currentNumber = res;
-        return JobHelper.getTheLatestJobNumber().then(res => {
-          if (res === 0) {
-            throw new TakosError('can_not_get_jobs');
-          } else {
-            const from = Math.max(1, res - 49, currentNumber + 1);
-            const to = res;
-            return { from, to };
-          }
-        });
-      })
-      .then(res => {
-        if (res.to >= res.from) {
-          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
-        } else {
-          return this.getJobs();
-        }
-        return getJobRecursively(res.from, res.to).then(res => {
-          if (res instanceof TakosError) {
-            throw new TakosError(res.message);
-          } else {
-            return this.getJobs();
-          }
-        });
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          return e;
-        } else {
-          console.error(e);
-          return new TakosError('can_not_update_jobs');
-        }
-      });
   };
 
   getBattles = () => {
@@ -705,7 +737,7 @@ class DashboardWindow extends React.Component {
           </Col>
         </Row>
         {(() => {
-          if (this.state.battle !== null || this.state.shifts !== null) {
+          if (this.state.battle !== null || this.state.job !== null) {
             return (
               <Row gutter={16}>
                 <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
@@ -1029,7 +1061,6 @@ class DashboardWindow extends React.Component {
                                     <span>
                                       {(() => {
                                         return this.state.job.selfPlayer.weapons.map((element, index) => {
-                                          console.log(index);
                                           if (index === 0) {
                                             return (
                                               <Tooltip

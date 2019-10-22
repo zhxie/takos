@@ -361,6 +361,14 @@ class LoginWindow extends React.Component {
           }
         });
       })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_update_battles');
+        }
+      })
       .then(() => {
         return StorageHelper.latestJob();
       })
@@ -382,6 +390,14 @@ class LoginWindow extends React.Component {
             this.setState({ jobsRange: { from, to } });
           }
         });
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_update_jobs');
+        }
       })
       .then(() => {
         let updatedBattles = 0;
@@ -408,7 +424,16 @@ class LoginWindow extends React.Component {
           return;
         }
       })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_update_battles');
+        }
+      })
       .then(() => {
+        // Update jobs
         if (this.state.jobsRange.to >= this.state.jobsRange.from) {
           return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
             if (res instanceof TakosError) {
@@ -420,6 +445,14 @@ class LoginWindow extends React.Component {
         } else {
           this.toNext();
           return;
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          throw new TakosError(e.message);
+        } else {
+          console.error(e);
+          throw new TakosError('can_not_update_jobs');
         }
       })
       .catch(e => {
