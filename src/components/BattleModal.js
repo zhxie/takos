@@ -223,7 +223,7 @@ class BattleModal extends React.Component {
           <Descriptions.Item label={<FormattedMessage id="battle.count" defaultMessage="Count" />} span={3}>
             <span className="BattleModal-battle-span">
               <Progress
-                className="BattlesModal-battle-progress"
+                className="BattleModal-battle-progress"
                 percent={(() => {
                   if (this.props.value.otherTeamCount === 0) {
                     return 100;
@@ -238,7 +238,35 @@ class BattleModal extends React.Component {
                 showInfo={false}
                 strokeLinecap="square"
               />
-              {this.props.value.myTeamCount} - {this.props.value.otherTeamCount}
+              {(() => {
+                if (this.props.value.rule === Rule.turfWar) {
+                  return (
+                    <span>
+                      <FormattedMessage
+                        id="battle.count.percentage"
+                        defaultMessage="{count}%"
+                        values={{
+                          count: this.props.value.myTeamCount
+                        }}
+                      />{' '}
+                      -{' '}
+                      <FormattedMessage
+                        id="battle.count.percentage"
+                        defaultMessage="{count}%"
+                        values={{
+                          count: this.props.value.otherTeamCount
+                        }}
+                      />
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span>
+                      {this.props.value.myTeamCount} - {this.props.value.otherTeamCount}
+                    </span>
+                  );
+                }
+              })()}
             </span>
           </Descriptions.Item>
           {(() => {
@@ -680,7 +708,7 @@ class BattleModal extends React.Component {
             }
           })()}
           <Descriptions.Item label={<FormattedMessage id="battle.time.start" defaultMessage="Start Time" />} span={2}>
-            {TimeConverter.formatBattleStartTime(this.props.value.startTime)}
+            {TimeConverter.formatResultStartTime(this.props.value.startTime)}
           </Descriptions.Item>
           <Descriptions.Item
             label={<FormattedMessage id="battle.time.elapsed" defaultMessage="Elapsed Time" />}

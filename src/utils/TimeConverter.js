@@ -195,7 +195,7 @@ class TimeConverter {
     }
   };
 
-  static formatBattleStartTime = time => {
+  static formatResultStartTime = time => {
     const date = new Date(time * 1000);
     return (
       <span>

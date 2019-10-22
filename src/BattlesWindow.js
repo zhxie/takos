@@ -355,7 +355,7 @@ class BattlesWindow extends React.Component {
                 updated: false
               });
               // Modify hash
-              window.location.hash = '/battles' + this.props.location.search;
+              window.location.hash = '/battles' + thisHandler.props.location.search;
             }
           })
           .catch(e => {
@@ -466,33 +466,49 @@ class BattlesWindow extends React.Component {
               render={text => {
                 return (
                   <span>
-                    {(() => {
-                      if (text.isWin) {
-                        return (
-                          <Tooltip
-                            title={() => {
-                              return '{0} - {1}'.format(text.myTeamCount, text.otherTeamCount);
-                            }}
-                          >
+                    <Tooltip
+                      title={() => {
+                        if (text.rule === Rule.turfWar) {
+                          return (
+                            <span>
+                              <FormattedMessage
+                                id="battle.count.percentage"
+                                defaultMessage="{count}%"
+                                values={{
+                                  count: text.myTeamCount
+                                }}
+                              />{' '}
+                              -{' '}
+                              <FormattedMessage
+                                id="battle.count.percentage"
+                                defaultMessage="{count}%"
+                                values={{
+                                  count: text.otherTeamCount
+                                }}
+                              />
+                            </span>
+                          );
+                        } else {
+                          return '{0} - {1}'.format(text.myTeamCount, text.otherTeamCount);
+                        }
+                      }}
+                    >
+                      {(() => {
+                        if (text.isWin) {
+                          return (
                             <Tag color="magenta" key="result">
                               <FormattedMessage id="battle.win" defaultMessage="Win!" />
                             </Tag>
-                          </Tooltip>
-                        );
-                      } else {
-                        return (
-                          <Tooltip
-                            title={() => {
-                              return '{0} - {1}'.format(text.myTeamCount, text.otherTeamCount);
-                            }}
-                          >
+                          );
+                        } else {
+                          return (
                             <Tag color="green" key="result">
                               <FormattedMessage id="battle.lose" defaultMessage="Lose.." />
                             </Tag>
-                          </Tooltip>
-                        );
-                      }
-                    })()}
+                          );
+                        }
+                      })()}
+                    </Tooltip>
                     {(() => {
                       if (text instanceof RankedBattle || text instanceof LeagueBattle) {
                         if (text.isKnockOut) {

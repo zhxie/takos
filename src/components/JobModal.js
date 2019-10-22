@@ -1,0 +1,318 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import {
+  Modal,
+  PageHeader,
+  Descriptions,
+  Tag,
+  Progress,
+  Tooltip,
+  Table,
+  Empty,
+  Button,
+  Row,
+  Col,
+  Card,
+  Statistic,
+  Icon
+} from 'antd';
+
+import './JobModal.css';
+import { OctolingsDeathIcon } from './CustomIcons';
+import icon from '../assets/images/salmon-run.png';
+import goldenEggIcon from '../assets/images/salmon-run-golden-egg.png';
+import powerEggIcon from '../assets/images/salmon-run-power-egg.png';
+import { Job } from '../models/Job';
+import { Style, JobPlayer } from '../models/Player';
+import FileFolderUrl from '../utils/FileFolderUrl';
+import JobHelper from '../utils/JobHelper';
+import TimeConverter from '../utils/TimeConverter';
+
+const { Column } = Table;
+
+class JobModal extends React.Component {
+  state = {
+    icons: []
+  };
+
+  getIcons = () => {
+    if (this.props.value !== null) {
+      let ids = [];
+      let icons = [];
+      this.props.value.players.forEach(element => {
+        if (
+          this.state.icons.find(ele => {
+            return ele.id === element.id;
+          }) === undefined
+        ) {
+          ids.push(element.id);
+          icons.push(JobHelper.getPlayerIcon(element.id));
+        }
+      });
+      Promise.all(icons)
+        .then(values => {
+          let result = this.state.icons;
+          for (let i = 0; i < values.length; ++i) {
+            result.push({ id: ids[i], icon: values[i] });
+          }
+          this.setState({ icons: result });
+        })
+        .catch(e => {
+          console.error(e);
+        });
+    }
+  };
+
+  render() {
+    return (
+      <Modal
+        title={(() => {
+          return (
+            <span>
+              <FormattedMessage id="job" defaultMessage="Job" />{' '}
+              <FormattedMessage
+                id="job.id"
+                defaultMessage="#{id}"
+                values={{
+                  id: (() => {
+                    if (this.props.value === undefined || this.props.value === null) {
+                      return '';
+                    } else {
+                      return this.props.value.number.toString();
+                    }
+                  })()
+                }}
+              />
+            </span>
+          );
+        })()}
+        visible={this.props.visible}
+        onCancel={this.props.onCancel}
+        footer={this.props.footer}
+        column={2}
+        width={this.props.width}
+        centered
+      >
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderJob();
+          }
+        })()}
+      </Modal>
+    );
+  }
+
+  renderJob() {
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="job" defaultMessage="Job" />} />
+        <Descriptions bordered>
+          <Descriptions.Item label={<FormattedMessage id="stage" defaultMessage="Stage" />} span={3}>
+            <div>
+              <img
+                className="JobModal-job-stage"
+                src={FileFolderUrl.SPLATNET + this.props.value.shift.stage.url}
+                alt="stage"
+              />
+              <br />
+              <FormattedMessage id={this.props.value.shift.stage.stage.name} />
+            </div>
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.weapons" defaultMessage="Supplied Weapons" />} span={3}>
+            <span>
+              <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon1.mainWeapon.name} />}>
+                <img
+                  className="JobModal-job-weapon-image"
+                  src={FileFolderUrl.SPLATNET + this.props.value.shift.weapon1.mainWeaponUrl}
+                  alt="weapon1"
+                />
+              </Tooltip>
+              <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon2.mainWeapon.name} />}>
+                <img
+                  className="JobModal-job-weapon-image-adj"
+                  src={FileFolderUrl.SPLATNET + this.props.value.shift.weapon2.mainWeaponUrl}
+                  alt="weapon1"
+                />
+              </Tooltip>
+              <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon3.mainWeapon.name} />}>
+                <img
+                  className="JobModal-job-weapon-image-adj"
+                  src={FileFolderUrl.SPLATNET + this.props.value.shift.weapon3.mainWeaponUrl}
+                  alt="weapon1"
+                />
+              </Tooltip>
+              <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon4.mainWeapon.name} />}>
+                <img
+                  className="JobModal-job-weapon-image-adj"
+                  src={FileFolderUrl.SPLATNET + this.props.value.shift.weapon4.mainWeaponUrl}
+                  alt="weapon1"
+                />
+              </Tooltip>
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.result" defaultMessage="Result" />} span={3}>
+            <span>
+              {(() => {
+                if (this.props.value.isClear) {
+                  return (
+                    <Tag color="green" key="result">
+                      <FormattedMessage id={this.props.value.result.name} />
+                    </Tag>
+                  );
+                } else {
+                  return (
+                    <span>
+                      <Tag color="orange" key="fail">
+                        <FormattedMessage id="job_result.defeat" defaultMessage="Defeat" />
+                      </Tag>
+                      <Tag color="orange" key="result">
+                        <FormattedMessage id={this.props.value.result.name} />
+                      </Tag>
+                    </span>
+                  );
+                }
+              })()}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.hazard_level" defaultMessage="Hazard Level" />} span={3}>
+            <span>
+              {(() => {
+                if (this.props.value.hazardLevel >= 200) {
+                  return (
+                    <span className="JobModal-job-span">
+                      <Progress
+                        className="JobModal-job-progress"
+                        percent={100}
+                        showInfo={false}
+                        strokeColor="#fa541c"
+                      />
+                      <FormattedMessage id="job.hazard_level.max" defaultMessage="Hazard Level MAX!!" />
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span className="JobModal-job-span">
+                      <Progress
+                        className="JobModal-job-progress"
+                        percent={(this.props.value.hazardLevel / 200) * 100}
+                        showInfo={false}
+                        strokeColor="#fa8c16"
+                      />
+                      <FormattedMessage
+                        id="job.hazard_level.value"
+                        defaultMessage="{value}%"
+                        values={{
+                          value: this.props.value.hazardLevel
+                        }}
+                      />
+                    </span>
+                  );
+                }
+              })()}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <span>
+                <img className="JobModal-job-icon" src={goldenEggIcon} alt="goldenEgg" />
+                <FormattedMessage id="job.golden_egg" defaultMessage="Golden Egg" />
+              </span>
+            }
+            span={2}
+          >
+            {this.props.value.goldenEgg}
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <span>
+                <img className="JobModal-job-icon" src={powerEggIcon} alt="powerEgg" />
+                <FormattedMessage id="job.power_egg" defaultMessage="Power Egg" />
+              </span>
+            }
+            span={2}
+          >
+            {this.props.value.powerEgg}
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.score" defaultMessage="Score" />} span={2}>
+            {this.props.value.score}
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={<FormattedMessage id="job.grizzco_points" defaultMessage="Grizzco Points" />}
+            span={2}
+          >
+            {this.props.value.grizzcoPoint}
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.grade" defaultMessage="Rank" />} span={2}>
+            <span>
+              {(() => {
+                if (this.props.value.gradePointDelta !== 0) {
+                  return (
+                    <span>
+                      <b>
+                        {(() => {
+                          return <FormattedMessage id={this.props.value.grade.name} />;
+                        })()}{' '}
+                        / {this.props.value.gradePoint}
+                      </b>
+                      {(() => {
+                        if (this.props.value.gradePointDelta > 0) {
+                          return (
+                            <Tag className="JobModal-job-tag" color="orange" key="result">
+                              <FormattedMessage id="job.grade.up" defaultMessage="You Got a Raise!'" />
+                            </Tag>
+                          );
+                        } else {
+                          return (
+                            <Tag className="JobModal-job-tag" color="orange" key="result">
+                              <FormattedMessage id="job.grade.down" defaultMessage="Pay Cut.." />
+                            </Tag>
+                          );
+                        }
+                      })()}
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span>
+                      {(() => {
+                        return <FormattedMessage id={this.props.value.grade.name} />;
+                      })()}{' '}
+                      / {this.props.value.gradePoint}
+                    </span>
+                  );
+                }
+              })()}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.rate" defaultMessage="Pay Grade" />} span={2}>
+            <FormattedMessage
+              id="job.rate.value"
+              defaultMessage="{value}%"
+              values={{
+                value: this.props.value.rate
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label={<FormattedMessage id="job.time.start" defaultMessage="Start Time" />} span={3}>
+            {TimeConverter.formatResultStartTime(this.props.value.startTime)}
+          </Descriptions.Item>
+        </Descriptions>
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    this.getIcons();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.getIcons();
+    }
+  }
+}
+
+JobModal.defaultProps = { visible: false, footer: null, width: 800, highlightPlayer: null };
+
+export default JobModal;

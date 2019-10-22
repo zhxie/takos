@@ -15,16 +15,16 @@
   width: 100%;
 }
 
-.BattlesModal-battle-progress {
+.BattleModal-battle-progress {
   margin-right: 8px;
   max-width: 400px;
 }
 
-.BattlesModal-battle-progress .ant-progress-bg {
+.BattleModal-battle-progress .ant-progress-bg {
   background-color: #eb2f96;
 }
 
-.BattlesModal-battle-progress .ant-progress-inner {
+.Battlesodal-battle-progress .ant-progress-inner {
   background-color: #52c41a;
 }
 

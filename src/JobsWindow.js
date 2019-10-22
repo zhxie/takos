@@ -8,15 +8,14 @@ import './JobsWindow.css';
 import icon from './assets/images/salmon-run.png';
 import { OctolingsDeathIcon } from './components/CustomIcons';
 import ErrorResult from './components/ErrorResult';
+import JobModal from './components/JobModal';
 import LoadingResult from './components/LoadingResult';
-import { Job } from './models/Job';
 import { Stage } from './models/Stage';
 import { MainWeapon, SpecialWeapon } from './models/Weapon';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
 import JobHelper from './utils/JobHelper';
 import StorageHelper from './utils/StorageHelper';
-import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
 const { Column } = Table;
@@ -175,6 +174,128 @@ class JobsWindow extends React.Component {
     }
   };
 
+  showJob = number => {
+    if (this.state.data instanceof Array) {
+      const job = this.state.data.find(element => {
+        return element.number === number;
+      });
+      if (job !== undefined) {
+        let buttons = [];
+        buttons.push(
+          <Button key="delete" type="danger" onClick={this.deleteJob.bind(this, number)}>
+            <FormattedMessage id="app.jobs.delete" defaultMessage="Delete Job" />
+          </Button>
+        );
+        const filteredJobs = this.filteredJobs();
+        let toButtons = [];
+        // Find previous job
+        let previous = 0;
+        filteredJobs.forEach(element => {
+          if (element.number > previous && element.number < number) {
+            previous = element.number;
+          }
+        });
+        if (previous > 0) {
+          toButtons.push(
+            <Button
+              key="previous"
+              onClick={() => {
+                window.location.hash = '/jobs{0}#'.format(this.props.location.search) + previous;
+              }}
+            >
+              <Icon type="left" />
+              <FormattedMessage id="app.jobs.previous" defaultMessage="Previous Job #{id}" values={{ id: previous }} />
+            </Button>
+          );
+        }
+        // Find next job
+        let next = Number.MAX_SAFE_INTEGER;
+        filteredJobs.forEach(element => {
+          if (element.number < next && element.number > number) {
+            next = element.number;
+          }
+        });
+        if (next < Number.MAX_SAFE_INTEGER) {
+          toButtons.push(
+            <Button
+              key="next"
+              onClick={() => {
+                window.location.hash = '/jobs{0}#'.format(this.props.location.search) + next;
+              }}
+            >
+              <FormattedMessage id="app.jobs.next" defaultMessage="Next Job #{id}" values={{ id: next }} />
+              <Icon type="right" />
+            </Button>
+          );
+        }
+        if (toButtons.length > 0) {
+          buttons.push(
+            <Button.Group key="group" style={{ marginLeft: '8px' }}>
+              {toButtons.map(element => {
+                return element;
+              })}
+            </Button.Group>
+          );
+        }
+        return { job, buttons };
+      } else {
+        return null;
+      }
+    }
+  };
+
+  hideJob = () => {
+    // Modify hash to hide job
+    window.location.hash = '/jobs' + this.props.location.search;
+  };
+
+  deleteJob = number => {
+    const thisHandler = this;
+    confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.delete_job',
+        defaultMessage: 'Do you want to delete job?'
+      }),
+      content: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.delete_job.content',
+        defaultMessage:
+          'Once the job is deleted, you will not be able to undo. It is recommended that you first backup the data.'
+      }),
+      okType: 'danger',
+      autoFocusButton: 'cancel',
+      icon: <Icon type="exclamation-circle" />,
+      onOk() {
+        StorageHelper.removeJob(number)
+          .then(res => {
+            if (res instanceof TakosError) {
+              throw new TakosError(res.message);
+            } else {
+              thisHandler.setState({
+                data: [],
+                loaded: false,
+                error: false,
+                showJobId: null,
+                updateCurrent: 0,
+                updateTotal: 0,
+                updated: false
+              });
+              // Modify hash
+              window.location.hash = '/jobs' + thisHandler.props.location.search;
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              thisHandler.setState({ error: true, errorLog: e.message, updated: true });
+            } else {
+              console.error(e);
+              thisHandler.setState({ error: true, errorLog: 'unknown_error', updated: true });
+            }
+          });
+      },
+      onCancel() {}
+    });
+  };
+
   constructor(props) {
     super(props);
     if (this.props.location.hash !== '') {
@@ -290,9 +411,14 @@ class JobsWindow extends React.Component {
                   );
                 } else {
                   return (
-                    <Tag color="orange" key="result">
-                      <FormattedMessage id={text.result.name} />
-                    </Tag>
+                    <span>
+                      <Tag color="orange" key="fail">
+                        <FormattedMessage id="job_result.defeat" defaultMessage="Defeat" />
+                      </Tag>
+                      <Tag color="orange" key="result">
+                        <FormattedMessage id={text.result.name} />
+                      </Tag>
+                    </span>
                   );
                 }
               }}
@@ -739,6 +865,38 @@ class JobsWindow extends React.Component {
               }
             })()}
           </Table>
+          {(() => {
+            // Find job
+            if (this.state.showJobId !== null) {
+              this.job = this.showJob(this.state.showJobId);
+            }
+            if (this.job === null) {
+              return <Redirect to="/404" />;
+            } else {
+              if (this.job !== undefined) {
+                return (
+                  <JobModal
+                    value={this.job.job}
+                    visible={this.state.showJobId !== null}
+                    onCancel={this.hideJob}
+                    footer={this.job.buttons}
+                    width={900}
+                    highlightPlayer={(() => {
+                      if (this.state.search === null) {
+                        return null;
+                      } else {
+                        if (this.state.search.with !== undefined) {
+                          return this.state.search.with;
+                        } else {
+                          return null;
+                        }
+                      }
+                    })()}
+                  />
+                );
+              }
+            }
+          })()}
         </div>
       </div>
     );
