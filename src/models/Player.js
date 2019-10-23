@@ -614,7 +614,7 @@ class JobPlayer extends Player {
     return 2 - used;
   }
 
-  get Kill() {
+  get kill() {
     let kill = 0;
     this.bossSalmoniodKills.forEach(element => {
       kill = kill + element.kill;

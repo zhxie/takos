@@ -1006,6 +1006,8 @@ const zh_CN = {
   'battle.time.start': '开始时间',
   'battle.time.elapsed': '战斗时间',
   // Salmoniod
+  salmoniod: '鲑鱼',
+  salmoniods: '鲑鱼',
   'salmoniod.goldie': '金鲑',
   'salmoniod.steelhead': '轰鳟',
   'salmoniod.flyfish': '双肩飞鱼',
@@ -1056,6 +1058,9 @@ const zh_CN = {
   'job.wave.index': 'WAVE {index}',
   'job.wave.index.prefix': '#',
   'job.wave.result': '结果',
+  'job.salmoniod.kill': '击败',
+  'job.salmoniod.kill_ratio': '击败率',
+  'job.salmoniod.appearance': '出现数量',
   // App
   'app.welcome.steps.welcome': '欢迎',
   'app.welcome.steps.log_in': '登录',

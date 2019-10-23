@@ -756,7 +756,6 @@ class BattleModal extends React.Component {
           data.push(headgear);
           data.push(clothes);
           data.push(shoes);
-          // TODO: foorter for extra actions like filter player
           return (
             <Table
               className="BattleModal-players-expand"

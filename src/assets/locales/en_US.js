@@ -1007,6 +1007,8 @@ const en_US = {
   'battle.time.start': 'Start Time',
   'battle.time.elapsed': 'Elapsed Time',
   // Salmoniod
+  salmoniod: 'Salmoniod',
+  salmoniods: 'Salmoniods',
   'salmoniod.goldie': 'Goldie',
   'salmoniod.steelhead': 'Steelhead',
   'salmoniod.flyfish': 'Flyfish',
@@ -1057,6 +1059,9 @@ const en_US = {
   'job.wave.index': 'WAVE {index}',
   'job.wave.index.prefix': '#',
   'job.wave.result': 'Result',
+  'job.salmoniod.kill': 'Splat',
+  'job.salmoniod.kill_ratio': 'Splat Ratio',
+  'job.salmoniod.appearance': 'Appearances',
   // App
   'app.welcome.steps.welcome': 'Welcome',
   'app.welcome.steps.log_in': 'Log In',

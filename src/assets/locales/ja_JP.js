@@ -1006,6 +1006,8 @@ const ja_JP = {
   'battle.time.start': '開始時間',
   'battle.time.elapsed': '試合時間',
   // Salmoniod
+  salmoniod: 'シャケ',
+  salmoniods: 'シャケ',
   'salmoniod.goldie': 'キンシャケ',
   'salmoniod.steelhead': 'バクダン',
   'salmoniod.flyfish': 'カタパッド',
@@ -1056,6 +1058,9 @@ const ja_JP = {
   'job.wave.index': 'WAVE {index}',
   'job.wave.index.prefix': '#',
   'job.wave.result': '結果',
+  'job.salmoniod.kill': '倒す',
+  'job.salmoniod.kill_ratio': '倒すレート',
+  'job.salmoniod.appearance': '出現数',
   // App
   'app.welcome.steps.welcome': 'ようこそ',
   'app.welcome.steps.log_in': 'ログイン',

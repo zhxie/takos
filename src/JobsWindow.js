@@ -145,6 +145,9 @@ class JobsWindow extends React.Component {
           element.waves.forEach((element, index) => {
             element.key = index;
           });
+          element.bossSalmoniodAppearances.forEach(element => {
+            element.key = element.salmoniod.value;
+          });
         });
         this.setState({
           data: res

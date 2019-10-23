@@ -20,11 +20,20 @@ import {
 
 import './JobModal.css';
 import { OctolingsDeathIcon } from './CustomIcons';
-import icon from '../assets/images/salmon-run.png';
 import goldenEggIcon from '../assets/images/salmon-run-golden-egg.png';
 import powerEggIcon from '../assets/images/salmon-run-power-egg.png';
+import drizzlerIcon from '../assets/images/salmoniod-drizzler.png';
+import flyfishIcon from '../assets/images/salmoniod-flyfish.png';
+import goldieIcon from '../assets/images/salmoniod-goldie.png';
+import grillerIcon from '../assets/images/salmoniod-griller.png';
+import mawsIcon from '../assets/images/salmoniod-maws.png';
+import scrapperIcon from '../assets/images/salmoniod-scrapper.png';
+import steelEelIcon from '../assets/images/salmoniod-steel-eel.png';
+import steelheadIcon from '../assets/images/salmoniod-steelhead.png';
+import stingerIcon from '../assets/images/salmoniod-stinger.png';
 import { WaterLevel, Job } from '../models/Job';
 import { Style, JobPlayer } from '../models/Player';
+import Salmoniod from '../models/Salmoniod';
 import FileFolderUrl from '../utils/FileFolderUrl';
 import JobHelper from '../utils/JobHelper';
 import TimeConverter from '../utils/TimeConverter';
@@ -64,6 +73,31 @@ class JobModal extends React.Component {
     }
   };
 
+  iconSelector = salmoniod => {
+    switch (salmoniod) {
+      case Salmoniod.goldie:
+        return goldieIcon;
+      case Salmoniod.steelhead:
+        return steelheadIcon;
+      case Salmoniod.flyfish:
+        return flyfishIcon;
+      case Salmoniod.scrapper:
+        return scrapperIcon;
+      case Salmoniod.steelEel:
+        return steelEelIcon;
+      case Salmoniod.stinger:
+        return stingerIcon;
+      case Salmoniod.maws:
+        return mawsIcon;
+      case Salmoniod.griller:
+        return grillerIcon;
+      case Salmoniod.drizzler:
+        return drizzlerIcon;
+      default:
+        throw new RangeError();
+    }
+  };
+
   renderJob() {
     return (
       <div>
@@ -80,7 +114,10 @@ class JobModal extends React.Component {
               <FormattedMessage id={this.props.value.shift.stage.stage.name} />
             </div>
           </Descriptions.Item>
-          <Descriptions.Item label={<FormattedMessage id="job.supplied_weapons" defaultMessage="Supplied Weapons" />} span={3}>
+          <Descriptions.Item
+            label={<FormattedMessage id="job.supplied_weapons" defaultMessage="Supplied Weapons" />}
+            span={3}
+          >
             <span>
               <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon1.mainWeapon.name} />}>
                 <img
@@ -333,7 +370,7 @@ class JobModal extends React.Component {
               return (
                 <Tooltip title={<FormattedMessage id={text.waterLevel.name} />}>
                   <Progress
-                    className="JobModal-job-progress"
+                    className="JobModal-wave-progress"
                     percent={(() => {
                       switch (text.waterLevel) {
                         case WaterLevel.normal:
@@ -415,6 +452,8 @@ class JobModal extends React.Component {
           }}
           scroll={{ x: 'max-content' }}
           pagination={false}
+          expandRowByClick={true}
+          // TODO: expand rows
         >
           <Column
             title={<FormattedMessage id="player.nickname" defaultMessage="Nickname" />}
@@ -516,15 +555,21 @@ class JobModal extends React.Component {
             key="specialUse"
             align="center"
             render={text => {
-              let use = '';
+              let str = '';
+              let use = 0;
               text.specialCounts.forEach((element, index) => {
                 if (index === 0) {
-                  use = use + element;
+                  str = str + element;
                 } else {
-                  use = use + ' - ' + element;
+                  str = str + ' - ' + element;
                 }
+                use = use + element;
               });
-              return use;
+              if (use === 2) {
+                return <b>{str}</b>;
+              } else {
+                return str;
+              }
             }}
           />
           <Column
@@ -540,6 +585,12 @@ class JobModal extends React.Component {
             dataIndex="powerEgg"
           />
           <Column
+            title={<FormattedMessage id="player.kill" defaultMessage="Splat" />}
+            key="kill"
+            align="center"
+            dataIndex="kill"
+          />
+          <Column
             title={<FormattedMessage id="player.help" defaultMessage="Help" />}
             key="help"
             align="center"
@@ -550,6 +601,99 @@ class JobModal extends React.Component {
             key="death"
             align="center"
             dataIndex="death"
+          />
+        </Table>
+      </div>
+    );
+  }
+
+  renderSalmoniods() {
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="salmoniods" defaultMessage="Salmoniods" />} />
+        <Table
+          dataSource={this.props.value.bossSalmoniodAppearances.filter(element => element.appearance !== 0)}
+          locale={{
+            emptyText: (
+              <Empty
+                image={
+                  <OctolingsDeathIcon
+                    style={{
+                      margin: '20px 0',
+                      width: '8em',
+                      fill: '#fafafa',
+                      stroke: '#e1e1e1',
+                      strokeWidth: '0.5px'
+                    }}
+                  />
+                }
+              />
+            )
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={false}
+        >
+          <Column
+            title={<FormattedMessage id="salmoniod" defaultMessage="Salmoniod" />}
+            key="salmoniod"
+            align="center"
+            render={text => {
+              return (
+                <span>
+                  <img className="JobModal-salmoniods-icon" src={this.iconSelector(text.salmoniod)} alt="salmoniod" />
+                  <FormattedMessage id={text.salmoniod.name} />
+                </span>
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.salmoniod.kill_ratio" defaultMessage="Splat Ratio" />}
+            key="killRatio"
+            align="center"
+            render={text => {
+              const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+              const appearance = text.appearance;
+              let ratio = 0;
+              if (appearance !== 0) {
+                ratio = kill / appearance;
+              }
+              return (
+                <Tooltip title={ratio.toFixed(2)}>
+                  <Progress
+                    className="JobModal-salmoniods-progress"
+                    percent={ratio * 100}
+                    showInfo={false}
+                    strokeColor="#fa8c16"
+                  />
+                </Tooltip>
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.salmoniod.kill" defaultMessage="Splat" />}
+            key="kill"
+            align="center"
+            render={text => {
+              const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+              if (kill === text.appearance) {
+                return <b>{kill}</b>;
+              } else {
+                return kill;
+              }
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.salmoniod.appearance" defaultMessage="Appearances" />}
+            key="appearance"
+            align="center"
+            render={text => {
+              const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+              if (kill === text.appearance) {
+                return <b>{text.appearance}</b>;
+              } else {
+                return text.appearance;
+              }
+            }}
           />
         </Table>
       </div>
@@ -599,6 +743,11 @@ class JobModal extends React.Component {
         {(() => {
           if (this.props.value !== undefined && this.props.value !== null) {
             return this.renderPlayers();
+          }
+        })()}
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderSalmoniods();
           }
         })()}
       </Modal>
