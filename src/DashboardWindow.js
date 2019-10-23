@@ -776,7 +776,7 @@ class DashboardWindow extends React.Component {
                             <Col className="DashboardWindow-content-column" span={24}>
                               <Statistic
                                 className="DashboardWindow-content-statistic"
-                                title={<FormattedMessage id="job.grade" defaultMessage="Rank" />}
+                                title={<FormattedMessage id="grade" defaultMessage="Rank" />}
                                 value={this.props.intl.formatMessage({
                                   id: this.state.job.grade.name
                                 })}

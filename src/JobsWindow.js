@@ -142,6 +142,9 @@ class JobsWindow extends React.Component {
           element.players.forEach(element => {
             element.key = element.id;
           });
+          element.waves.forEach((element, index) => {
+            element.key = index;
+          });
         });
         this.setState({
           data: res
@@ -424,7 +427,7 @@ class JobsWindow extends React.Component {
               }}
             />
             <Column
-              title={<FormattedMessage id="job.grade" defaultMessage="Rank" />}
+              title={<FormattedMessage id="grade" defaultMessage="Rank" />}
               key="grade"
               align="center"
               render={text => {

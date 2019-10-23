@@ -112,6 +112,10 @@ class Wave extends Base {
     this.powerEgg = powerEgg;
   }
 
+  get isClear() {
+    return this.goldenEgg >= this.quota;
+  }
+
   static parse = data => {
     try {
       return new Wave(

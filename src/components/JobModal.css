@@ -33,3 +33,32 @@
   margin-left: 8px;
   margin-right: 0;
 }
+
+.JobModal-waves-tag {
+  margin: 0;
+}
+
+.JobModal-players-span {
+  display: flex;
+  align-items: center;
+}
+
+.JobModal-players-player-icon {
+  height: 32px;
+  border-radius: 16px;
+  margin-right: 8px;
+}
+
+.JobModal-players-icon {
+  height: 32px;
+}
+
+.JobModal-players-icon-adj {
+  height: 32px;
+  margin-left: 8px;
+}
+
+.JobModal-players-tag {
+  margin-left: 8px;
+  margin-right: 0;
+}

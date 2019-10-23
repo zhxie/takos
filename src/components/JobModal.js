@@ -23,7 +23,7 @@ import { OctolingsDeathIcon } from './CustomIcons';
 import icon from '../assets/images/salmon-run.png';
 import goldenEggIcon from '../assets/images/salmon-run-golden-egg.png';
 import powerEggIcon from '../assets/images/salmon-run-power-egg.png';
-import { Job } from '../models/Job';
+import { WaterLevel, Job } from '../models/Job';
 import { Style, JobPlayer } from '../models/Player';
 import FileFolderUrl from '../utils/FileFolderUrl';
 import JobHelper from '../utils/JobHelper';
@@ -64,45 +64,6 @@ class JobModal extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <Modal
-        title={(() => {
-          return (
-            <span>
-              <FormattedMessage id="job" defaultMessage="Job" />{' '}
-              <FormattedMessage
-                id="job.id"
-                defaultMessage="#{id}"
-                values={{
-                  id: (() => {
-                    if (this.props.value === undefined || this.props.value === null) {
-                      return '';
-                    } else {
-                      return this.props.value.number.toString();
-                    }
-                  })()
-                }}
-              />
-            </span>
-          );
-        })()}
-        visible={this.props.visible}
-        onCancel={this.props.onCancel}
-        footer={this.props.footer}
-        column={2}
-        width={this.props.width}
-        centered
-      >
-        {(() => {
-          if (this.props.value !== undefined && this.props.value !== null) {
-            return this.renderJob();
-          }
-        })()}
-      </Modal>
-    );
-  }
-
   renderJob() {
     return (
       <div>
@@ -119,7 +80,7 @@ class JobModal extends React.Component {
               <FormattedMessage id={this.props.value.shift.stage.stage.name} />
             </div>
           </Descriptions.Item>
-          <Descriptions.Item label={<FormattedMessage id="job.weapons" defaultMessage="Supplied Weapons" />} span={3}>
+          <Descriptions.Item label={<FormattedMessage id="job.supplied_weapons" defaultMessage="Supplied Weapons" />} span={3}>
             <span>
               <Tooltip title={<FormattedMessage id={this.props.value.shift.weapon1.mainWeapon.name} />}>
                 <img
@@ -243,7 +204,7 @@ class JobModal extends React.Component {
           >
             {this.props.value.grizzcoPoint}
           </Descriptions.Item>
-          <Descriptions.Item label={<FormattedMessage id="job.grade" defaultMessage="Rank" />} span={2}>
+          <Descriptions.Item label={<FormattedMessage id="grade" defaultMessage="Rank" />} span={2}>
             <span>
               {(() => {
                 if (this.props.value.gradePointDelta !== 0) {
@@ -259,13 +220,13 @@ class JobModal extends React.Component {
                         if (this.props.value.gradePointDelta > 0) {
                           return (
                             <Tag className="JobModal-job-tag" color="orange" key="result">
-                              <FormattedMessage id="job.grade.up" defaultMessage="You Got a Raise!'" />
+                              <FormattedMessage id="grade.up" defaultMessage="You Got a Raise!'" />
                             </Tag>
                           );
                         } else {
                           return (
                             <Tag className="JobModal-job-tag" color="orange" key="result">
-                              <FormattedMessage id="job.grade.down" defaultMessage="Pay Cut.." />
+                              <FormattedMessage id="grade.down" defaultMessage="Pay Cut.." />
                             </Tag>
                           );
                         }
@@ -299,6 +260,348 @@ class JobModal extends React.Component {
           </Descriptions.Item>
         </Descriptions>
       </div>
+    );
+  }
+
+  renderWaves() {
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="job.wave" defaultMessage="WAVE" />} />
+        <Table
+          dataSource={this.props.value.waves}
+          locale={{
+            emptyText: (
+              <Empty
+                image={
+                  <OctolingsDeathIcon
+                    style={{
+                      margin: '20px 0',
+                      width: '8em',
+                      fill: '#fafafa',
+                      stroke: '#e1e1e1',
+                      strokeWidth: '0.5px'
+                    }}
+                  />
+                }
+              />
+            )
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={false}
+        >
+          <Column
+            title={<FormattedMessage id="job.wave.index.prefix" defaultMessage="#" />}
+            key="wave"
+            align="center"
+            render={(text, record, index) => {
+              return (
+                <FormattedMessage
+                  id="job.wave.index"
+                  defaultMessage="WAVE {index}"
+                  values={{
+                    index: index + 1
+                  }}
+                />
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.wave.result" defaultMessage="Result" />}
+            key="result"
+            align="center"
+            render={text => {
+              if (text.isClear) {
+                return (
+                  <Tag className="JobModal-waves-tag" color="green" key="result">
+                    <FormattedMessage id="job_result.clear" defaultMessage="Clear!" />
+                  </Tag>
+                );
+              } else {
+                return (
+                  <Tag className="JobModal-waves-tag" color="orange" key="fail">
+                    <FormattedMessage id="job_result.defeat" defaultMessage="Defeat" />
+                  </Tag>
+                );
+              }
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="water_level" defaultMessage="Water Level" />}
+            key="waterLevel"
+            align="center"
+            render={text => {
+              return (
+                <Tooltip title={<FormattedMessage id={text.waterLevel.name} />}>
+                  <Progress
+                    className="JobModal-job-progress"
+                    percent={(() => {
+                      switch (text.waterLevel) {
+                        case WaterLevel.normal:
+                          return 60;
+                        case WaterLevel.low:
+                          return 20;
+                        case WaterLevel.high:
+                          return 100;
+                        default:
+                          throw new RangeError();
+                      }
+                    })()}
+                    showInfo={false}
+                    strokeColor="#fa8c16"
+                  />
+                </Tooltip>
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="event_type" defaultMessage="Event Type" />}
+            key="eventType"
+            align="center"
+            render={text => {
+              return <FormattedMessage id={text.eventType.name} />;
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.golden_egg.quota" defaultMessage="Quota" />}
+            key="quota"
+            align="center"
+            dataIndex="quota"
+          />
+          <Column
+            title={<FormattedMessage id="job.golden_egg" defaultMessage="Golden Egg" />}
+            key="goldenEgg"
+            align="center"
+            dataIndex="goldenEgg"
+          />
+          <Column
+            title={<FormattedMessage id="job.golden_egg.pop" defaultMessage="Appearances" />}
+            key="goldenEggPop"
+            align="center"
+            dataIndex="goldenEggPop"
+          />
+          <Column
+            title={<FormattedMessage id="job.power_egg" defaultMessage="Power Egg" />}
+            key="powerEgg"
+            align="center"
+            dataIndex="powerEgg"
+          />
+        </Table>
+      </div>
+    );
+  }
+
+  renderPlayers() {
+    return (
+      <div>
+        <PageHeader title={<FormattedMessage id="players" defaultMessage="Players" />} />
+        <Table
+          dataSource={this.props.value.players}
+          locale={{
+            emptyText: (
+              <Empty
+                image={
+                  <OctolingsDeathIcon
+                    style={{
+                      margin: '20px 0',
+                      width: '8em',
+                      fill: '#fafafa',
+                      stroke: '#e1e1e1',
+                      strokeWidth: '0.5px'
+                    }}
+                  />
+                }
+              />
+            )
+          }}
+          scroll={{ x: 'max-content' }}
+          pagination={false}
+        >
+          <Column
+            title={<FormattedMessage id="player.nickname" defaultMessage="Nickname" />}
+            key="nickname"
+            align="center"
+            render={text => {
+              return (
+                <span className="JobModal-players-span">
+                  {(() => {
+                    const icon = this.state.icons.find(element => {
+                      return element.id === text.id;
+                    });
+                    if (icon !== undefined) {
+                      return <img className="JobModal-players-player-icon" src={icon.icon} alt="icon" />;
+                    }
+                  })()}
+                  {text.nickname}
+                  {(() => {
+                    if (text.isSelf) {
+                      return (
+                        <Tag className="JobModal-players-tag" color="magenta" key="self">
+                          <FormattedMessage id="player.you" defaultMessage="You" />
+                        </Tag>
+                      );
+                    }
+                  })()}
+                  {(() => {
+                    if (text.id === this.props.highlightPlayer) {
+                      switch (text.style) {
+                        case Style.girl:
+                          return (
+                            <Tag className="JobModal-players-tag" color="red" key="her">
+                              <FormattedMessage id="player.her" defaultMessage="Her" />
+                            </Tag>
+                          );
+                        case Style.boy:
+                          return (
+                            <Tag className="JobModal-players-tag" color="blue" key="him">
+                              <FormattedMessage id="player.him" defaultMessage="Him" />
+                            </Tag>
+                          );
+                        default:
+                          throw new RangeError();
+                      }
+                    }
+                  })()}
+                </span>
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="weapons" defaultMessage="Weapons" />}
+            key="weapons"
+            align="center"
+            render={text => {
+              return text.weapons.map((element, index) => {
+                if (index === 0) {
+                  return (
+                    <Tooltip key={index} title={<FormattedMessage id={element.mainWeapon.name} />}>
+                      <img
+                        className="JobModal-players-icon"
+                        src={FileFolderUrl.SPLATNET + element.mainWeaponUrl}
+                        alt="main"
+                      />
+                    </Tooltip>
+                  );
+                } else {
+                  return (
+                    <Tooltip key={index} title={<FormattedMessage id={element.mainWeapon.name} />}>
+                      <img
+                        className="JobModal-players-icon-adj"
+                        src={FileFolderUrl.SPLATNET + element.mainWeaponUrl}
+                        alt="main"
+                      />
+                    </Tooltip>
+                  );
+                }
+              });
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
+            key="specialWeapon"
+            align="center"
+            render={text => {
+              return (
+                <Tooltip title={<FormattedMessage id={text.specialWeapon.specialWeapon.name} />}>
+                  <img
+                    className="JobModal-players-icon"
+                    src={FileFolderUrl.SPLATNET + text.specialWeapon.specialWeaponUrlA}
+                    alt="special"
+                  />
+                </Tooltip>
+              );
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="player.special_use" defaultMessage="Special Use" />}
+            key="specialUse"
+            align="center"
+            render={text => {
+              let use = '';
+              text.specialCounts.forEach((element, index) => {
+                if (index === 0) {
+                  use = use + element;
+                } else {
+                  use = use + ' - ' + element;
+                }
+              });
+              return use;
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="player.golden_egg" defaultMessage="Golden Egg" />}
+            key="goldenEgg"
+            align="center"
+            dataIndex="goldenEgg"
+          />
+          <Column
+            title={<FormattedMessage id="player.power_egg" defaultMessage="Power Egg" />}
+            key="powerEgg"
+            align="center"
+            dataIndex="powerEgg"
+          />
+          <Column
+            title={<FormattedMessage id="player.help" defaultMessage="Help" />}
+            key="help"
+            align="center"
+            dataIndex="help"
+          />
+          <Column
+            title={<FormattedMessage id="player.death" defaultMessage="Death" />}
+            key="death"
+            align="center"
+            dataIndex="death"
+          />
+        </Table>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <Modal
+        title={(() => {
+          return (
+            <span>
+              <FormattedMessage id="job" defaultMessage="Job" />{' '}
+              <FormattedMessage
+                id="job.id"
+                defaultMessage="#{id}"
+                values={{
+                  id: (() => {
+                    if (this.props.value === undefined || this.props.value === null) {
+                      return '';
+                    } else {
+                      return this.props.value.number.toString();
+                    }
+                  })()
+                }}
+              />
+            </span>
+          );
+        })()}
+        visible={this.props.visible}
+        onCancel={this.props.onCancel}
+        footer={this.props.footer}
+        column={2}
+        width={this.props.width}
+        centered
+      >
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderJob();
+          }
+        })()}
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderWaves();
+          }
+        })()}
+        {(() => {
+          if (this.props.value !== undefined && this.props.value !== null) {
+            return this.renderPlayers();
+          }
+        })()}
+      </Modal>
     );
   }
 
