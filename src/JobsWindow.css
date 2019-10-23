@@ -37,6 +37,15 @@
   width: calc(100% - 32px);
 }
 
+.JobsWindow-content-tag {
+  margin: 0;
+}
+
+.JobsWindow-content-tag-adj {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
 .JobsWindow-content-table-icon {
   height: 32px;
 }

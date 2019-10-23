@@ -405,17 +405,17 @@ class JobsWindow extends React.Component {
               render={text => {
                 if (text.isClear) {
                   return (
-                    <Tag color="green" key="result">
+                    <Tag className="JobsWindow-content-tag" color="green" key="result">
                       <FormattedMessage id={text.result.name} />
                     </Tag>
                   );
                 } else {
                   return (
                     <span>
-                      <Tag color="orange" key="fail">
+                      <Tag className="JobsWindow-content-tag" color="orange" key="fail">
                         <FormattedMessage id="job_result.defeat" defaultMessage="Defeat" />
                       </Tag>
-                      <Tag color="orange" key="result">
+                      <Tag className="JobsWindow-content-tag-adj" color="orange" key="result">
                         <FormattedMessage id={text.result.name} />
                       </Tag>
                     </span>

@@ -496,13 +496,13 @@ class BattlesWindow extends React.Component {
                       {(() => {
                         if (text.isWin) {
                           return (
-                            <Tag color="magenta" key="result">
+                            <Tag className="BattlesWindow-content-tag" color="magenta" key="result">
                               <FormattedMessage id="battle.win" defaultMessage="Win!" />
                             </Tag>
                           );
                         } else {
                           return (
-                            <Tag color="green" key="result">
+                            <Tag className="BattlesWindow-content-tag" color="green" key="result">
                               <FormattedMessage id="battle.lose" defaultMessage="Lose.." />
                             </Tag>
                           );
@@ -518,7 +518,7 @@ class BattlesWindow extends React.Component {
                                 return TimeConverter.formatBattleKoElapsedTime(text.elapsedTime);
                               }}
                             >
-                              <Tag color="red" key="ko">
+                              <Tag className="BattlesWindow-content-tag-adj" color="red" key="ko">
                                 <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
                               </Tag>
                             </Tooltip>
@@ -531,7 +531,7 @@ class BattlesWindow extends React.Component {
                                 return TimeConverter.formatBattleKoElapsedTime(text.elapsedTime);
                               }}
                             >
-                              <Tag color="green" key="ko">
+                              <Tag className="BattlesWindow-content-tag-adj" color="green" key="ko">
                                 <FormattedMessage id="battle.knock_out" defaultMessage="KO BONUS!" />
                               </Tag>
                             </Tooltip>

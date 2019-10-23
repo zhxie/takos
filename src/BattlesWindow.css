@@ -37,6 +37,15 @@
   width: calc(100% - 32px);
 }
 
+.BattlesWindow-content-tag {
+  margin: 0;
+}
+
+.BattlesWindow-content-tag-adj {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
 .BattlesWindow-content-table-progress-win .ant-progress-bg {
   background-color: #eb2f96;
 }
