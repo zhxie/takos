@@ -39,11 +39,11 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   });
-  mainWindow.webContents.setUserAgent('Takos/0.1.0');
+  mainWindow.webContents.setUserAgent('Takos/0.2.0');
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3000/', { userAgent: 'Takos/0.1.0' });
+    mainWindow.loadURL('http://localhost:3000/', { userAgent: 'Takos/0.2.0' });
   } else {
-    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'), { userAgent: 'Takos/0.1.0' });
+    mainWindow.loadFile(path.join(__dirname, '/../build/index.html'), { userAgent: 'Takos/0.2.0' });
   }
   mainWindow.on('closed', function() {
     mainWindow = null;

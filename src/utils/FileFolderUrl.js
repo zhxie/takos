@@ -1,4 +1,4 @@
-const USER_AGENT = 'Takos/0.1.0';
+const USER_AGENT = 'Takos/0.2.0';
 
 const SPLATOON2_INK = 'https://splatoon2.ink';
 const SPLATOON2_INK_PROXY = '/splatoon2inkApi';
