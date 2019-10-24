@@ -11,8 +11,9 @@
 ## Features
 
 - Automatic cookie generation of SplatNet
-- Get current and coming schedules
-- Get battles including details of players' gears and weapons
+- Get current and coming schedules and shifts
+- Get battles and jobs with details including weapons and gears
+- View battles and jobs with filter
 - English (North America), Japanese and Chinese
 
 ## Security and Privacy
