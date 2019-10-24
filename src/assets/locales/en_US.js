@@ -975,6 +975,8 @@ const en_US = {
   'player.golden_egg': 'Golden Egg',
   'player.power_egg': 'Power Egg',
   'player.help': 'Rescue',
+  'player.salmoniod.kill': "Player's Splat",
+  'player.salmoniod.kill_ratio': 'Splat Ratio',
   // Battle
   battle: 'Battle',
   'battle.id': '#{id}',
@@ -1062,6 +1064,7 @@ const en_US = {
   'job.salmoniod.kill': 'Splat',
   'job.salmoniod.kill_ratio': 'Splat Ratio',
   'job.salmoniod.appearance': 'Appearances',
+  'job.salmoniod.appearance_ratio': 'Appearance Ratio',
   // App
   'app.welcome.steps.welcome': 'Welcome',
   'app.welcome.steps.log_in': 'Log In',
@@ -1104,6 +1107,7 @@ const en_US = {
   'app.jobs.previous': 'Previous Job #{id}',
   'app.jobs.next': 'Next Job #{id}',
   'app.jobs.delete': 'Delete Job',
+  'app.jobs.with': 'Show jobs with {name}',
   'app.gear_shop': 'Gear Shop',
   'app.settings': 'Settings',
   'app.settings.user': 'User',

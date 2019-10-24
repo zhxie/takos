@@ -1,22 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import {
-  Modal,
-  PageHeader,
-  Descriptions,
-  Tag,
-  Progress,
-  Tooltip,
-  Table,
-  Empty,
-  Button,
-  Row,
-  Col,
-  Card,
-  Statistic,
-  Icon
-} from 'antd';
+import { Modal, PageHeader, Descriptions, Tag, Progress, Tooltip, Table, Empty, Button, Divider } from 'antd';
 
 import './JobModal.css';
 import { OctolingsDeathIcon } from './CustomIcons';
@@ -31,8 +16,8 @@ import scrapperIcon from '../assets/images/salmoniod-scrapper.png';
 import steelEelIcon from '../assets/images/salmoniod-steel-eel.png';
 import steelheadIcon from '../assets/images/salmoniod-steelhead.png';
 import stingerIcon from '../assets/images/salmoniod-stinger.png';
-import { WaterLevel, Job } from '../models/Job';
-import { Style, JobPlayer } from '../models/Player';
+import { WaterLevel } from '../models/Job';
+import { Style } from '../models/Player';
 import Salmoniod from '../models/Salmoniod';
 import FileFolderUrl from '../utils/FileFolderUrl';
 import JobHelper from '../utils/JobHelper';
@@ -453,7 +438,160 @@ class JobModal extends React.Component {
           scroll={{ x: 'max-content' }}
           pagination={false}
           expandRowByClick={true}
-          // TODO: expand rows
+          expandedRowRender={(record, index) => {
+            return (
+              <Table
+                className="JobModal-players-expand"
+                dataSource={record.bossSalmoniodKills.filter(
+                  element => this.props.value.getBossSalmoniodKill(element.salmoniod) !== 0
+                )}
+                locale={{
+                  emptyText: (
+                    <Empty
+                      image={
+                        <OctolingsDeathIcon
+                          style={{
+                            margin: '20px 0',
+                            width: '8em',
+                            fill: '#fafafa',
+                            stroke: '#e1e1e1'
+                          }}
+                        />
+                      }
+                    />
+                  )
+                }}
+                scroll={{ x: 'max-content' }}
+                pagination={false}
+                footer={(() => {
+                  if (index !== 0) {
+                    return () => {
+                      return (
+                        <span>
+                          <Link to={'/jobs?with={0}'.format(record.id)}>
+                            <Button type="link">
+                              <FormattedMessage
+                                id="app.jobs.with"
+                                defaultMessage="Show jobs with {name}"
+                                values={{ name: record.nickname }}
+                              />
+                            </Button>
+                          </Link>
+                          <Divider type="vertical" />
+                          <Link to={'/battles?with={0}'.format(record.id)}>
+                            <Button type="link">
+                              <FormattedMessage
+                                id="app.battles.with"
+                                defaultMessage="Show battles with {name}"
+                                values={{ name: record.nickname }}
+                              />
+                            </Button>
+                          </Link>
+                        </span>
+                      );
+                    };
+                  }
+                })()}
+              >
+                <Column
+                  title={<FormattedMessage id="salmoniod" defaultMessage="Salmoniod" />}
+                  key="salmoniod"
+                  align="center"
+                  render={text => {
+                    return (
+                      <span>
+                        <img
+                          className="JobModal-players-expand-icon"
+                          src={this.iconSelector(text.salmoniod)}
+                          alt="salmoniod"
+                        />
+                        <FormattedMessage id={text.salmoniod.name} />
+                      </span>
+                    );
+                  }}
+                />
+                <Column
+                  title={<FormattedMessage id="player.salmoniod.kill_ratio" defaultMessage="Splat Ratio" />}
+                  key="killRatio"
+                  align="center"
+                  render={text => {
+                    const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                      return element.salmoniod === text.salmoniod;
+                    }).appearance;
+                    let ratio = 0;
+                    if (kill !== 0) {
+                      ratio = text.kill / kill;
+                    }
+                    let ratio2 = 0;
+                    if (appearance !== 0) {
+                      ratio2 = kill / appearance;
+                    }
+                    let ratio3 = 0;
+                    if (appearance !== 0) {
+                      ratio3 = text.kill / appearance;
+                    }
+                    return (
+                      <Tooltip title={ratio.toFixed(2)}>
+                        <Progress
+                          className="JobModal-players-progress"
+                          percent={ratio2 * 100}
+                          successPercent={ratio3 * 100}
+                          showInfo={false}
+                          strokeColor="#fa8c16"
+                        />
+                      </Tooltip>
+                    );
+                  }}
+                />
+                <Column
+                  title={<FormattedMessage id="player.salmoniod.kill" defaultMessage="Player's Splat" />}
+                  key="thisKill"
+                  align="center"
+                  render={text => {
+                    const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+                    if (kill === text.kill) {
+                      return <b>{text.kill}</b>;
+                    } else {
+                      return text.kill;
+                    }
+                  }}
+                />
+                <Column
+                  title={<FormattedMessage id="job.salmoniod.kill" defaultMessage="Splat" />}
+                  key="kill"
+                  align="center"
+                  render={text => {
+                    const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                      return element.salmoniod === text.salmoniod;
+                    }).appearance;
+                    if (kill === text.kill || kill === appearance) {
+                      return <b>{kill}</b>;
+                    } else {
+                      return kill;
+                    }
+                  }}
+                />
+                <Column
+                  title={<FormattedMessage id="job.salmoniod.appearance" defaultMessage="Appearances" />}
+                  key="appearance"
+                  align="center"
+                  render={text => {
+                    const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
+                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                      return element.salmoniod === text.salmoniod;
+                    }).appearance;
+                    if (kill === appearance) {
+                      return <b>{appearance}</b>;
+                    } else {
+                      return appearance;
+                    }
+                  }}
+                />
+              </Table>
+            );
+          }}
         >
           <Column
             title={<FormattedMessage id="player.nickname" defaultMessage="Nickname" />}
@@ -680,6 +818,29 @@ class JobModal extends React.Component {
               } else {
                 return kill;
               }
+            }}
+          />
+          <Column
+            title={<FormattedMessage id="job.salmoniod.appearance_ratio" defaultMessage="Appearance Ratio" />}
+            key="appearanceRatio"
+            align="center"
+            render={text => {
+              const appearance = text.appearance;
+              const totalAppearance = this.props.value.appearances;
+              let ratio = 0;
+              if (totalAppearance !== 0) {
+                ratio = appearance / totalAppearance;
+              }
+              return (
+                <Tooltip title={ratio.toFixed(2)}>
+                  <Progress
+                    className="JobModal-salmoniods-progress"
+                    percent={ratio * 100}
+                    showInfo={false}
+                    strokeColor="#fa8c16"
+                  />
+                </Tooltip>
+              );
             }}
           />
           <Column

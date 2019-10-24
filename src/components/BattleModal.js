@@ -15,7 +15,8 @@ import {
   Col,
   Card,
   Statistic,
-  Icon
+  Icon,
+  Divider
 } from 'antd';
 
 import './BattleModal.css';
@@ -765,7 +766,6 @@ class BattleModal extends React.Component {
                   <Empty
                     image={
                       <OctolingsDeathIcon
-                        className="BattleModal-players-empty-icon"
                         style={{
                           margin: '20px 0',
                           width: '8em',
@@ -783,15 +783,27 @@ class BattleModal extends React.Component {
                 if (!record.isSelf) {
                   return () => {
                     return (
-                      <Link to={'/battles?with={0}'.format(record.id)}>
-                        <Button type="link">
-                          <FormattedMessage
-                            id="app.battles.with"
-                            defaultMessage="Show battles with {name}"
-                            values={{ name: record.nickname }}
-                          />
-                        </Button>
-                      </Link>
+                      <span>
+                        <Link to={'/battles?with={0}'.format(record.id)}>
+                          <Button type="link">
+                            <FormattedMessage
+                              id="app.battles.with"
+                              defaultMessage="Show battles with {name}"
+                              values={{ name: record.nickname }}
+                            />
+                          </Button>
+                        </Link>
+                        <Divider type="vertical" />
+                        <Link to={'/jobs?with={0}'.format(record.id)}>
+                          <Button type="link">
+                            <FormattedMessage
+                              id="app.jobs.with"
+                              defaultMessage="Show jobs with {name}"
+                              values={{ name: record.nickname }}
+                            />
+                          </Button>
+                        </Link>
+                      </span>
                     );
                   };
                 }

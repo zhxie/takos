@@ -974,6 +974,8 @@ const zh_CN = {
   'player.golden_egg': '金鲑鱼籽',
   'player.power_egg': '鲑鱼籽',
   'player.help': '帮助',
+  'player.salmoniod.kill': '玩家的击败',
+  'player.salmoniod.kill_ratio': '击败率',
   // Battle
   battle: '战斗',
   'battle.id': '#{id}',
@@ -1061,6 +1063,7 @@ const zh_CN = {
   'job.salmoniod.kill': '击败',
   'job.salmoniod.kill_ratio': '击败率',
   'job.salmoniod.appearance': '出现数量',
+  'job.salmoniod.appearance_ratio': '出现率',
   // App
   'app.welcome.steps.welcome': '欢迎',
   'app.welcome.steps.log_in': '登录',
@@ -1102,6 +1105,7 @@ const zh_CN = {
   'app.jobs.previous': '上一场打工 #{id}',
   'app.jobs.next': '下一场打工 #{id}',
   'app.jobs.delete': '删除打工',
+  'app.jobs.with': '展示与 {name} 的打工',
   'app.gear_shop': '触手镇',
   'app.settings': '设置',
   'app.settings.user': '用户',

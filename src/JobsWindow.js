@@ -141,6 +141,9 @@ class JobsWindow extends React.Component {
           element.key = element.number;
           element.players.forEach(element => {
             element.key = element.id;
+            element.bossSalmoniodKills.forEach(element => {
+              element.key = element.salmoniod.value;
+            });
           });
           element.waves.forEach((element, index) => {
             element.key = index;
@@ -886,7 +889,7 @@ class JobsWindow extends React.Component {
                     visible={this.state.showJobId !== null}
                     onCancel={this.hideJob}
                     footer={this.job.buttons}
-                    width={900}
+                    width={950}
                     highlightPlayer={(() => {
                       if (this.state.search === null) {
                         return null;

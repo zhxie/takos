@@ -974,6 +974,8 @@ const ja_JP = {
   'player.golden_egg': '金イクラ',
   'player.power_egg': 'イクラ',
   'player.help': '助ける',
+  'player.salmoniod.kill': 'プレイヤーの倒す',
+  'player.salmoniod.kill_ratio': '倒す率',
   // Battle
   battle: 'バトル',
   'battle.id': '#{id}',
@@ -1059,8 +1061,9 @@ const ja_JP = {
   'job.wave.index.prefix': '#',
   'job.wave.result': '結果',
   'job.salmoniod.kill': '倒す',
-  'job.salmoniod.kill_ratio': '倒すレート',
+  'job.salmoniod.kill_ratio': '倒す率',
   'job.salmoniod.appearance': '出現数',
+  'job.salmoniod.appearance_ratio': '出現率',
   // App
   'app.welcome.steps.welcome': 'ようこそ',
   'app.welcome.steps.log_in': 'ログイン',
@@ -1103,6 +1106,7 @@ const ja_JP = {
   'app.jobs.previous': '前のバイト #{id}',
   'app.jobs.next': '次のバイト #{id}',
   'app.jobs.delete': 'バイトを削除する',
+  'app.jobs.with': '{name} とのバイトを表示する',
   'app.gear_shop': 'ゲソタウン',
   'app.settings': '設定',
   'app.settings.user': 'ユーザー',

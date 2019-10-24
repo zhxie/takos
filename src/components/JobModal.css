@@ -39,7 +39,6 @@
 }
 
 .JobModal-wave-progress {
-  margin-right: 8px;
   max-width: 400px;
 }
 
@@ -68,12 +67,29 @@
   margin-right: 0;
 }
 
+.JobModal-players-expand-icon {
+  height: 32px;
+  margin-right: 8px;
+}
+
+.JobModal-players-expand .ant-table-footer {
+  border-bottom: 2px solid #e8e8e8;
+  padding: 4px 16px;
+}
+
+.JobModal-players-progress {
+  max-width: 400px;
+}
+
+.JobModal-players-progress .ant-progress-success-bg {
+  background-color: #fa541c;
+}
+
 .JobModal-salmoniods-icon {
   height: 32px;
   margin-right: 8px;
 }
 
 .JobModal-salmoniods-progress {
-  margin-right: 8px;
   max-width: 400px;
 }
