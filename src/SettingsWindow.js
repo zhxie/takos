@@ -264,13 +264,15 @@ class SettingsWindow extends React.Component {
         return StorageHelper.addBattle(battles[i])
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             }
           })
           .catch(e => {
             if (e instanceof TakosError) {
               if (firstError === null) {
                 firstError = e.message;
+              } else {
+                console.error(e);
               }
             } else {
               console.error(e);
@@ -290,13 +292,15 @@ class SettingsWindow extends React.Component {
         return StorageHelper.addJob(jobs[i])
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             }
           })
           .catch(e => {
             if (e instanceof TakosError) {
               if (firstError === null) {
                 firstError = e.message;
+              } else {
+                console.error(e);
               }
             } else {
               console.error(e);
@@ -506,11 +510,13 @@ class SettingsWindow extends React.Component {
           })
           .then(res => {
             if (res instanceof TakosError && !(res.message.startsWith('battle_') && res.message.endsWith('_exists'))) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               if (res instanceof TakosError) {
                 if (firstError === null) {
                   firstError = res.message;
+                } else {
+                  console.error(res);
                 }
               }
               this.setState({ importCurrent: this.state.importCurrent + 1 });
@@ -521,7 +527,7 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              return new TakosError(e.message);
+              return e;
             } else {
               console.error(e);
               return new TakosError('can_not_import_battles');
@@ -550,11 +556,13 @@ class SettingsWindow extends React.Component {
           })
           .then(res => {
             if (res instanceof TakosError && !(res.message.startsWith('job_') && res.message.endsWith('_exists'))) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               if (res instanceof TakosError) {
                 if (firstError === null) {
                   firstError = res.message;
+                } else {
+                  console.error(res);
                 }
               }
               this.setState({ importCurrent: this.state.importCurrent + 1 });
@@ -565,7 +573,7 @@ class SettingsWindow extends React.Component {
           })
           .catch(e => {
             if (e instanceof TakosError) {
-              return new TakosError(e.message);
+              return e;
             } else {
               console.error(e);
               return new TakosError('can_not_import_jobs');
@@ -601,7 +609,7 @@ class SettingsWindow extends React.Component {
             return getLocalBattleRecursively(battles, 0)
               .then(res => {
                 if (res instanceof TakosError) {
-                  throw new TakosError(res.message);
+                  throw res;
                 } else {
                   if (firstError !== null) {
                     throw new TakosError(firstError);
@@ -616,7 +624,7 @@ class SettingsWindow extends React.Component {
               })
               .then(res => {
                 if (res instanceof TakosError) {
-                  throw new TakosError(res.message);
+                  throw res;
                 } else {
                   if (firstError !== null) {
                     throw new TakosError(firstError);
@@ -804,7 +812,7 @@ class SettingsWindow extends React.Component {
         StorageHelper.initializeStorage()
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               thisHandler.setState({ toLogin: true });
             }
@@ -841,7 +849,7 @@ class SettingsWindow extends React.Component {
         StorageHelper.clearData()
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             }
           })
           .catch(e => {

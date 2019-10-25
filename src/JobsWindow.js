@@ -50,7 +50,7 @@ class JobsWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -60,7 +60,7 @@ class JobsWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_job');
@@ -103,7 +103,7 @@ class JobsWindow extends React.Component {
         }
         return getJobRecursively(res.from, res.to).then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             return this.getJobs();
           }
@@ -277,7 +277,7 @@ class JobsWindow extends React.Component {
         StorageHelper.removeJob(number)
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               thisHandler.setState({
                 data: [],

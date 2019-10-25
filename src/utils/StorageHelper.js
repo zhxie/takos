@@ -22,14 +22,14 @@ class StorageHelper {
     return StorageHelper.clearBattles()
       .then(res => {
         if (res instanceof TakosError) {
-          throw new TakosError(res.message);
+          throw res;
         } else {
           return StorageHelper.clearJobs();
         }
       })
       .then(res => {
         if (res instanceof TakosError) {
-          throw new TakosError(res.message);
+          throw res;
         } else {
           // localStorage
           window.localStorage.removeItem('sessionToken');
@@ -38,7 +38,7 @@ class StorageHelper {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          return e;
         } else {
           console.error(e);
           return new TakosError('can_not_initialize_storage');
@@ -50,19 +50,19 @@ class StorageHelper {
     return StorageHelper.clearBattles()
       .then(res => {
         if (res instanceof TakosError) {
-          throw new TakosError(res.message);
+          throw res;
         } else {
           return StorageHelper.clearJobs();
         }
       })
       .then(res => {
         if (res instanceof TakosError) {
-          throw new TakosError(res.message);
+          throw res;
         }
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          return e;
         } else {
           console.error(e);
           return new TakosError('can_not_clear_data');
@@ -194,7 +194,7 @@ class StorageHelper {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          return e;
         } else {
           console.error(e);
           return new TakosError('can_not_handle_database');
@@ -373,7 +373,7 @@ class StorageHelper {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          return e;
         } else {
           console.error(e);
           return new TakosError('can_not_handle_database');

@@ -48,7 +48,7 @@ class LoginWindow extends React.Component {
     StorageHelper.initializeStorage()
       .then(res => {
         if (res instanceof TakosError) {
-          throw new TakosError(res.message);
+          throw res;
         }
       })
       .catch(e => {
@@ -292,7 +292,7 @@ class LoginWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -302,7 +302,7 @@ class LoginWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_battle');
@@ -322,7 +322,7 @@ class LoginWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -332,7 +332,7 @@ class LoginWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_job');
@@ -363,7 +363,7 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          throw new TakosError(e.message);
+          throw e;
         } else {
           console.error(e);
           throw new TakosError('can_not_update_battles');
@@ -393,7 +393,7 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          throw new TakosError(e.message);
+          throw e;
         } else {
           console.error(e);
           throw new TakosError('can_not_update_jobs');
@@ -417,7 +417,7 @@ class LoginWindow extends React.Component {
         if (this.state.battlesRange.to >= this.state.battlesRange.from) {
           return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             }
           });
         } else {
@@ -426,7 +426,7 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          throw new TakosError(e.message);
+          throw e;
         } else {
           console.error(e);
           throw new TakosError('can_not_update_battles');
@@ -437,7 +437,7 @@ class LoginWindow extends React.Component {
         if (this.state.jobsRange.to >= this.state.jobsRange.from) {
           return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               this.toNext();
             }
@@ -449,7 +449,7 @@ class LoginWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          throw new TakosError(e.message);
+          throw e;
         } else {
           console.error(e);
           throw new TakosError('can_not_update_jobs');

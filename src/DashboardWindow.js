@@ -110,7 +110,7 @@ class DashboardWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -120,7 +120,7 @@ class DashboardWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_battle');
@@ -140,7 +140,7 @@ class DashboardWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -150,7 +150,7 @@ class DashboardWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_job');
@@ -255,14 +255,14 @@ class DashboardWindow extends React.Component {
           return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to)
             .then(res => {
               if (res instanceof TakosError) {
-                throw new TakosError(res.message);
+                throw res;
               } else {
                 return this.getBattles();
               }
             })
             .catch(e => {
               if (e instanceof TakosError) {
-                return new TakosError(e.message);
+                return e;
               } else {
                 console.error(e);
                 return new TakosError('can_not_update_battles');
@@ -286,14 +286,14 @@ class DashboardWindow extends React.Component {
           return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to)
             .then(res => {
               if (res instanceof TakosError) {
-                throw new TakosError(res.message);
+                throw res;
               } else {
                 return this.getJobs();
               }
             })
             .catch(e => {
               if (e instanceof TakosError) {
-                return new TakosError(e.message);
+                return e;
               } else {
                 console.error(e);
                 return new TakosError('can_not_update_jobs');
@@ -336,6 +336,8 @@ class DashboardWindow extends React.Component {
               if (errorBattles instanceof TakosError) {
                 if (firstErrorLog === null) {
                   firstErrorLog = errorBattles.message;
+                } else {
+                  console.error(errorBattles);
                 }
               } else {
                 console.error(errorBattles);
@@ -356,6 +358,8 @@ class DashboardWindow extends React.Component {
               if (errorJobs instanceof TakosError) {
                 if (firstErrorLog === null) {
                   firstErrorLog = errorJobs.message;
+                } else {
+                  console.error(errorJobs);
                 }
               } else {
                 console.error(errorJobs);
@@ -374,6 +378,8 @@ class DashboardWindow extends React.Component {
           if (errorSchedules instanceof TakosError) {
             if (firstErrorLog === null) {
               firstErrorLog = errorSchedules.message;
+            } else {
+              console.error(errorSchedules);
             }
           } else {
             if (firstErrorLog === null) {
@@ -389,6 +395,8 @@ class DashboardWindow extends React.Component {
           if (errorShifts instanceof TakosError) {
             if (firstErrorLog === null) {
               firstErrorLog = errorShifts.message;
+            } else {
+              console.error(errorShifts);
             }
           } else {
             if (firstErrorLog === null) {
@@ -534,7 +542,7 @@ class DashboardWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          return e;
         } else {
           console.error(e);
           return new TakosError('can_not_parse_schedules');

@@ -111,7 +111,7 @@ class BattlesWindow extends React.Component {
         })
         .then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             this.setState({ updateCurrent: this.state.updateCurrent + 1 });
             if (from < to) {
@@ -121,7 +121,7 @@ class BattlesWindow extends React.Component {
         })
         .catch(e => {
           if (e instanceof TakosError) {
-            return new TakosError(e.message);
+            return e;
           } else {
             console.error(e);
             return new TakosError('can_not_get_battle');
@@ -164,7 +164,7 @@ class BattlesWindow extends React.Component {
         }
         return getBattleRecursively(res.from, res.to).then(res => {
           if (res instanceof TakosError) {
-            throw new TakosError(res.message);
+            throw res;
           } else {
             return this.getBattles();
           }
@@ -343,7 +343,7 @@ class BattlesWindow extends React.Component {
         StorageHelper.removeBattle(number)
           .then(res => {
             if (res instanceof TakosError) {
-              throw new TakosError(res.message);
+              throw res;
             } else {
               thisHandler.setState({
                 data: [],
