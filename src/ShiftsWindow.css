@@ -47,4 +47,6 @@
   display: inline-block;
   margin: 6px;
   max-height: 251.5px;
+  max-width: 442px;
+  width: calc(100% - 12px);
 }

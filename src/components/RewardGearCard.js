@@ -15,11 +15,13 @@ class RewardGearCard extends React.Component {
         hoverable={this.props.hoverable}
         bordered={this.props.bordered}
         cover={
-          <img
-            className="RewardGearCard-card-stage-cover"
-            alt="gear"
-            src={FileFolderUrl.SPLATNET + this.props.gear.url}
-          />
+          <div className="RewardGearCard-card-stage-cover-wrapper">
+            <img
+              className="RewardGearCard-card-stage-cover"
+              alt="gear"
+              src={FileFolderUrl.SPLATNET + this.props.gear.url}
+            />
+          </div>
         }
         bodyStyle={{
           padding: '6px'

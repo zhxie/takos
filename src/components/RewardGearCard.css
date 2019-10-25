@@ -1,6 +1,12 @@
 .RewardGearCard-card {
   cursor: default;
   display: inline-block;
+  width: 100%;
+}
+
+.RewardGearCard-card-stage-cover-wrapper {
+  text-align: center;
+  width: 100%;
 }
 
 .RewardGearCard-card-stage-cover {

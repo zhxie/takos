@@ -17,6 +17,7 @@ import splatZonesIcon from './assets/images/rule-splat-zones.png';
 import towerControlIcon from './assets/images/rule-tower-control.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import RewardGearCard from './components/RewardGearCard';
 import ScheduleCard from './components/ScheduleCard';
 import ShiftCard from './components/ShiftCard';
 import { RankedBattle, LeagueBattle } from './models/Battle';
@@ -40,6 +41,7 @@ class DashboardWindow extends React.Component {
     job: null,
     schedules: null,
     shifts: [],
+    gear: null,
     icon: null,
     nickname: '',
     rank: null,
@@ -541,6 +543,7 @@ class DashboardWindow extends React.Component {
   };
 
   updateShifts = () => {
+    let firstError = null;
     return ShiftHelper.getShifts()
       .then(res => {
         if (res === null) {
@@ -562,12 +565,55 @@ class DashboardWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          return new TakosError(e.message);
+          if (firstError === null) {
+            firstError = e;
+          } else {
+            console.error(e);
+          }
         } else {
           console.error(e);
-          return new TakosError('can_not_parse_shifts');
+          if (firstError === null) {
+            firstError = new TakosError('can_not_update_shifts');
+          }
         }
-      });
+      })
+      .then(() => {
+        return ShiftHelper.getRewardGear();
+      })
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_reward_gear');
+        } else {
+          if (res.error !== null) {
+            throw new TakosError(res.error);
+          } else {
+            this.setState({ gear: res });
+          }
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          if (firstError === null) {
+            firstError = e;
+          } else {
+            console.error(e);
+          }
+        } else {
+          console.error(e);
+          if (firstError === null) {
+            firstError = new TakosError('can_not_update_reward_gear');
+          }
+        }
+      })
+      .then(() => {
+        if (firstError !== null) {
+          return firstError;
+        } else {
+          // Set update interval
+          this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
+        }
+      })
+      .catch();
   };
 
   schedulesTimeout = () => {
@@ -1187,17 +1233,49 @@ class DashboardWindow extends React.Component {
                 </Col>
                 <Col className="DashboardWindow-content-column" md={24} lg={12}>
                   {(() => {
-                    if (this.state.shifts.length > 0) {
+                    if (this.state.shifts.length > 0 || this.state.gear !== null) {
                       return (
-                        <Card
-                          title={<FormattedMessage id="app.shifts" defaultMessage="Shifts" />}
-                          hoverable
-                          bodyStyle={{ padding: '1px 0 0 0' }}
-                          style={{ cursor: 'default' }}
-                        >
-                          <Link to={'/shifts'}>
-                            <ShiftCard shift={this.state.shifts[0]} bordered={false} hoverable={false} pointer={true} />
-                          </Link>
+                        <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
+                          <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
+                            {(() => {
+                              if (this.state.shifts.length > 0) {
+                                return (
+                                  <TabPane
+                                    tab={<FormattedMessage id="app.shifts" defaultMessage="Shifts" />}
+                                    key="shifts"
+                                  >
+                                    <Link to={'/shifts'}>
+                                      <ShiftCard
+                                        shift={this.state.shifts[0]}
+                                        bordered={false}
+                                        hoverable={false}
+                                        pointer={true}
+                                      />
+                                    </Link>
+                                  </TabPane>
+                                );
+                              }
+                            })()}
+                            {(() => {
+                              if (this.state.gear !== null) {
+                                return (
+                                  <TabPane
+                                    tab={<FormattedMessage id="app.shifts.reward" defaultMessage="Current Gear" />}
+                                    key="gear"
+                                  >
+                                    <Link to={'/shifts'}>
+                                      <RewardGearCard
+                                        gear={this.state.gear}
+                                        bordered={false}
+                                        hoverable={false}
+                                        pointer={true}
+                                      />
+                                    </Link>
+                                  </TabPane>
+                                );
+                              }
+                            })()}
+                          </Tabs>
                         </Card>
                       );
                     }

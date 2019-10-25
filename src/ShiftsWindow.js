@@ -30,8 +30,7 @@ class ShiftsWindow extends React.Component {
 
   updateShifts = () => {
     this.setState({ error: false, updated: false });
-    let errorShifts = null;
-    let errorRewardGear = null;
+    let firstError = null;
     ShiftHelper.getShifts()
       .then(res => {
         if (res === null) {
@@ -51,10 +50,16 @@ class ShiftsWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          errorShifts = e;
+          if (firstError === null) {
+            firstError = e;
+          } else {
+            console.error(e);
+          }
         } else {
           console.error(e);
-          errorShifts = new TakosError(e.message);
+          if (firstError === null) {
+            firstError = new TakosError('can_not_update_shifts');
+          }
         }
       })
       .then(() => {
@@ -73,23 +78,28 @@ class ShiftsWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          errorRewardGear = e;
+          if (firstError === null) {
+            firstError = e;
+          } else {
+            console.error(e);
+          }
         } else {
           console.error(e);
-          errorRewardGear = new TakosError(e.message);
+          if (firstError === null) {
+            firstError = new TakosError('can_not_update_reward_gear');
+          }
         }
       })
       .then(() => {
-        if (errorShifts !== null) {
-          this.setState({ error: true, errorLog: errorShifts.message, updated: true });
-        } else if (errorRewardGear !== null) {
-          this.setState({ error: true, errorLog: errorRewardGear.message, updated: true });
+        if (firstError !== null) {
+          this.setState({ error: true, errorLog: firstError.message, updated: true });
         } else {
           this.setState({ loaded: true });
           // Set update interval
           this.timer = setInterval(this.timeout, 60000);
         }
-      });
+      })
+      .catch();
   };
 
   timeout = () => {
