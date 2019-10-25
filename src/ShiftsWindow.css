@@ -42,3 +42,9 @@
   margin: 6px;
   max-width: 442px;
 }
+
+.ShiftsWindow-content-card-gear {
+  display: inline-block;
+  margin: 6px;
+  max-height: 251.5px;
+}

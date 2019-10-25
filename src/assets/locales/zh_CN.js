@@ -1085,6 +1085,7 @@ const zh_CN = {
   'app.schedules.next': '之后',
   'app.schedules.future': '再之后',
   'app.shifts': '排班表',
+  'app.shifts.reward': '本次的装备',
   'app.shifts.open': '现正开放！',
   'app.shifts.soon': '即将',
   'app.shifts.next': '之后',

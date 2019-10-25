@@ -4,6 +4,7 @@ const SPLATOON2_INK = 'https://splatoon2.ink';
 const SPLATOON2_INK_PROXY = '/splatoon2inkApi';
 const SPLATOON2_INK_SCHEDULES = '/data/schedules.json';
 const SPLATOON2_INK_SHIFTS = '/data/coop-schedules.json';
+const SPLATOON2_INT_SHIFT_REWARD_GEAR = '/data/timeline.json';
 
 const SPLATNET = 'https://app.splatoon2.nintendo.net';
 const SPLATNET_PROXY = '/splatnetApi';
@@ -59,6 +60,9 @@ class FileFolderUrl {
   }
   static get SPLATOON2_INK_SHIFTS() {
     return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INK_SHIFTS;
+  }
+  static get SPLATOON2_INT_SHIFT_REWARD_GEAR() {
+    return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INT_SHIFT_REWARD_GEAR;
   }
 
   static get SPLATNET() {

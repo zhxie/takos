@@ -7,6 +7,7 @@ import './ShiftsWindow.css';
 import icon from './assets/images/salmon-run.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import RewardGearCard from './components/RewardGearCard';
 import ShiftCard from './components/ShiftCard';
 import TakosError from './utils/ErrorHelper';
 import ShiftHelper from './utils/ShiftHelper';
@@ -17,7 +18,8 @@ const { Header, Content } = Layout;
 class ShiftsWindow extends React.Component {
   state = {
     // Data
-    data: [],
+    shifts: [],
+    gear: null,
     // Render
     loaded: false,
     error: false,
@@ -28,6 +30,8 @@ class ShiftsWindow extends React.Component {
 
   updateShifts = () => {
     this.setState({ error: false, updated: false });
+    let errorShifts = null;
+    let errorRewardGear = null;
     ShiftHelper.getShifts()
       .then(res => {
         if (res === null) {
@@ -39,9 +43,7 @@ class ShiftsWindow extends React.Component {
             }
           });
           if (res.length > 0) {
-            this.setState({ data: res, loaded: true });
-            // Set update interval
-            this.timer = setInterval(this.timeout, 60000);
+            this.setState({ shifts: res });
           } else {
             throw new TakosError('can_not_parse_shifts');
           }
@@ -49,17 +51,50 @@ class ShiftsWindow extends React.Component {
       })
       .catch(e => {
         if (e instanceof TakosError) {
-          this.setState({ error: true, errorLog: e.message, updated: true });
+          errorShifts = e;
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_parse_shifts', updated: true });
+          errorShifts = new TakosError(e.message);
+        }
+      })
+      .then(() => {
+        return ShiftHelper.getRewardGear();
+      })
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_reward_gear');
+        } else {
+          if (res.error !== null) {
+            throw new TakosError(res.error);
+          } else {
+            this.setState({ gear: res });
+          }
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          errorRewardGear = e;
+        } else {
+          console.error(e);
+          errorRewardGear = new TakosError(e.message);
+        }
+      })
+      .then(() => {
+        if (errorShifts !== null) {
+          this.setState({ error: true, errorLog: errorShifts.message, updated: true });
+        } else if (errorRewardGear !== null) {
+          this.setState({ error: true, errorLog: errorRewardGear.message, updated: true });
+        } else {
+          this.setState({ loaded: true });
+          // Set update interval
+          this.timer = setInterval(this.timeout, 60000);
         }
       });
   };
 
   timeout = () => {
-    if (this.state.data instanceof Array && this.state.data.length > 0) {
-      if (new Date(this.state.data[0].endTime * 1000) - new Date() < 0) {
+    if (this.state.shifts instanceof Array && this.state.shifts.length > 0) {
+      if (new Date(this.state.shifts[0].endTime * 1000) - new Date() < 0) {
         this.setState({ expired: true });
       } else {
         // Force update the page to update the remaining and coming time
@@ -106,54 +141,63 @@ class ShiftsWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.data.length > 0) {
+          if (this.state.shifts.length > 0) {
             return (
               <div>
                 {(() => {
-                  if (new Date() < new Date(this.state.data[0].startTime * 1000)) {
+                  if (new Date() < new Date(this.state.shifts[0].startTime * 1000)) {
                     return (
                       <PageHeader
                         title={<FormattedMessage id="app.shifts.soon" defaultMessage="Soon!" />}
-                        subTitle={TimeConverter.getTimeTo(this.state.data[0].startTime)}
+                        subTitle={TimeConverter.getTimeTo(this.state.shifts[0].startTime)}
                       />
                     );
                   } else {
                     return (
                       <PageHeader
                         title={<FormattedMessage id="app.shifts.open" defaultMessage="Open!" />}
-                        subTitle={TimeConverter.getTimeRemained(this.state.data[0].endTime)}
+                        subTitle={TimeConverter.getTimeRemained(this.state.shifts[0].endTime)}
                       />
                     );
                   }
                 })()}
                 <div className="ShiftsWindow-content-card" key="1">
-                  <ShiftCard shift={this.state.data[0]} />
+                  <ShiftCard shift={this.state.shifts[0]} />
                 </div>
+                {(() => {
+                  if (this.state.gear !== null) {
+                    return (
+                      <div className="ShiftsWindow-content-card-gear" key="gear">
+                        <RewardGearCard gear={this.state.gear} />
+                      </div>
+                    );
+                  }
+                })()}
               </div>
             );
           }
         })()}
         {(() => {
-          if (this.state.data.length > 1) {
+          if (this.state.shifts.length > 1) {
             return (
               <div>
                 <PageHeader
                   title={<FormattedMessage id="app.shifts.next" defaultMessage="Next" />}
-                  subTitle={TimeConverter.getTimeTo(this.state.data[1].startTime)}
+                  subTitle={TimeConverter.getTimeTo(this.state.shifts[1].startTime)}
                 />
                 <div className="ShiftsWindow-content-card" key="2">
-                  <ShiftCard shift={this.state.data[1]} />
+                  <ShiftCard shift={this.state.shifts[1]} />
                 </div>
               </div>
             );
           }
         })()}
         {(() => {
-          if (this.state.data.length > 2) {
+          if (this.state.shifts.length > 2) {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="app.shifts.future" defaultMessage="Future" />} />
-                {this.state.data.slice(2).map((item, index) => {
+                {this.state.shifts.slice(2).map((item, index) => {
                   return (
                     <div className="ShiftsWindow-content-card" key={2 + index}>
                       <ShiftCard shift={item} />

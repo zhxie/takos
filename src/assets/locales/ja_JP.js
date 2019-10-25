@@ -1086,6 +1086,7 @@ const ja_JP = {
   'app.schedules.next': 'つぎ',
   'app.schedules.future': 'そのつぎ',
   'app.shifts': 'シフト表',
+  'app.shifts.reward': '今回のギア',
   'app.shifts.open': 'オープン!',
   'app.shifts.soon': 'もうすぐ',
   'app.shifts.next': 'つぎ',

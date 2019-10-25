@@ -176,7 +176,6 @@ class DashboardWindow extends React.Component {
     let errorShifts = null;
     let firstErrorLog = null;
     // Update battles
-
     return StorageHelper.latestBattle()
       .then(res => {
         if (res === -1) {

@@ -1890,6 +1890,30 @@ class Gear extends Base {
     return Gear.parse(GearType.shoes, gearData, abilitiesData);
   };
 
+  static parseReward = data => {
+    try {
+      let gear;
+      switch (data.kind) {
+        case 'head':
+          gear = HeadgearGear.parse(parseInt(data.id));
+          break;
+        case 'clothes':
+          gear = ClothesGear.parse(parseInt(data.id));
+          break;
+        case 'shoes':
+          gear = ShoesGear.parse(parseInt(data.id));
+          break;
+        default:
+          throw new RangeError();
+      }
+      const brand = Brand.parse(data.brand);
+      return new Gear(null, gear, data.image, brand, null, null);
+    } catch (e) {
+      console.error(e);
+      return new Gear('can_not_parse_reward_gear');
+    }
+  };
+
   static deserialize = (type, data) => {
     try {
       let gear;

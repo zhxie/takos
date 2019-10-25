@@ -1,0 +1,25 @@
+.RewardGearCard-card {
+  cursor: default;
+  display: inline-block;
+}
+
+.RewardGearCard-card-stage-cover {
+  height: auto;
+  max-height: 174.5px;
+  width: auto;
+}
+
+.RewardGearCard-card-meta {
+  margin: 6px 6px 6px 9px;
+}
+
+.RewardGearCard-card-meta-image {
+  width: 32px;
+}
+
+@media screen and (max-width: 575px) {
+  .RewardGearCard-card-stage-cover {
+    width: 100%;
+    max-height: none;
+  }
+}

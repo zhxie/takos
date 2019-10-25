@@ -1087,6 +1087,7 @@ const en_US = {
   'app.schedules.next': 'Next',
   'app.schedules.future': 'Future',
   'app.shifts': 'Shifts',
+  'app.shifts.reward': 'Current Gear',
   'app.shifts.open': 'Open!',
   'app.shifts.soon': 'Soon!',
   'app.shifts.next': 'Next',
