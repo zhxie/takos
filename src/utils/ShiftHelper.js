@@ -37,7 +37,7 @@ class ShiftHelper {
         'User-Agent': FileFolderUrl.USER_AGENT
       })
     };
-    return fetch(FileFolderUrl.SPLATOON2_INT_SHIFT_REWARD_GEAR, init)
+    return fetch(FileFolderUrl.SPLATOON2_INK_SHIFT_REWARD_GEAR, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);

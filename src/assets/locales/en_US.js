@@ -1110,6 +1110,7 @@ const en_US = {
   'app.jobs.delete': 'Delete Job',
   'app.jobs.with': 'Show jobs with {name}',
   'app.gear_shop': 'Gear Shop',
+  'app.gear_shop.order': 'Ordered',
   'app.settings': 'Settings',
   'app.settings.user': 'User',
   'app.settings.user.cookie': 'Cookie',
@@ -1142,9 +1143,13 @@ const en_US = {
   'app.alert.warning.shifts_can_not_update': 'Takos can not update shifts, please refresh this page to update.',
   'app.alert.warning.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
   'app.alert.warning.jobs_can_not_update': 'Takos can not update jobs, please refresh this page to update.',
+  'app.alert.warning.ordered_gear_can_not_update':
+    'Takos can not update ordered gear, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.schedules_expired': 'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info.shifts_expired': 'It seems that these shifts have expired, please refresh this page to update.',
+  'app.alert.info.shop_gears_expired':
+    'It seems that these shop gears have expired, please refresh this page to update.',
   'app.alert.info.battles_filtered':
     'The battles shown have been filtered, please click <l>here</l> to cancel the screening.',
   'app.alert.info.jobs_filtered':

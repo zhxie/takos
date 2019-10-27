@@ -6,6 +6,7 @@ import { Layout, Menu, Icon } from 'antd';
 import './MainWindow.css';
 import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
+import GearShopWindow from './GearShopWindow';
 import JobsWindow from './JobsWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
@@ -207,7 +208,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
             <Route path={`${this.props.match.url}jobs`} component={JobsWindow} />
-            <Route path={`${this.props.match.url}shop`} component={ConstructionResult} />
+            <Route path={`${this.props.match.url}shop`} component={GearShopWindow} />
             <Route exact path={`${this.props.match.url}settings`} component={SettingsWindow} />
             <Redirect from="*" to="/404" />
           </Switch>

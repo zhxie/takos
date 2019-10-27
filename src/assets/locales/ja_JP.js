@@ -1109,6 +1109,7 @@ const ja_JP = {
   'app.jobs.delete': 'バイトを削除する',
   'app.jobs.with': '{name} とのバイトを表示する',
   'app.gear_shop': 'ゲソタウン',
+  'app.gear_shop.order': '注文済み',
   'app.settings': '設定',
   'app.settings.user': 'ユーザー',
   'app.settings.user.cookie': 'クッキー',
@@ -1145,11 +1146,15 @@ const ja_JP = {
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.jobs_can_not_update':
     'Takos はバイトを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.warning.ordered_gear_can_not_update':
+    'Takos は注文済みギアを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
   'app.alert.info.schedules_expired':
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info.shifts_expired':
     'これらのシフト表の有効期限が切れているようです。更新するには、このページを更新してください。',
+  'app.alert.info.shop_gears_expired':
+    'これらのゲソタウンギアの有効期限が切れているようです。更新するには、このページを更新してください。',
   'app.alert.info.battles_filtered':
     '表示されているバトルはフィルタリングされています。<l>ここ</l>をクリックしてスクリーニングをキャンセルしてください。',
   'app.alert.info.jobs_filtered':

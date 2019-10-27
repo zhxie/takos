@@ -4,7 +4,8 @@ const SPLATOON2_INK = 'https://splatoon2.ink';
 const SPLATOON2_INK_PROXY = '/splatoon2inkApi';
 const SPLATOON2_INK_SCHEDULES = '/data/schedules.json';
 const SPLATOON2_INK_SHIFTS = '/data/coop-schedules.json';
-const SPLATOON2_INT_SHIFT_REWARD_GEAR = '/data/timeline.json';
+const SPLATOON2_INK_SHIFT_REWARD_GEAR = '/data/timeline.json';
+const SPLATOON2_INK_GEAR_SHOP = '/data/merchandises.json';
 
 const SPLATNET = 'https://app.splatoon2.nintendo.net';
 const SPLATNET_PROXY = '/splatnetApi';
@@ -14,6 +15,7 @@ const SPLATNET_SHARE_RESULT = '/api/share/results/{0}';
 const SPLATNET_COOP_RESULTS = '/api/coop_results';
 const SPLATNET_COOP_RESULT = '/api/coop_results/{0}';
 const SPLATNET_NICKNAME_AND_ICON = '/api/nickname_and_icon?id={0}';
+const SPLATNET_GEAR_SHOP = '/api/onlineshop/merchandises';
 
 const NINTENDO_ACCOUNTS_AUTHORIZE =
   'https://accounts.nintendo.com/connect/1.0.0/authorize?state={0}&redirect_uri=npf71b963c1b7b6d119%3A%2F%2Fauth&client_id=71b963c1b7b6d119&scope=openid+user+user.birthday+user.mii+user.screenName&response_type=session_token_code&session_token_code_challenge={1}&session_token_code_challenge_method=S256&theme=login_form';
@@ -42,7 +44,7 @@ const NINTENDO_SERVICE_WEB_SERVICE_TOKEN = '/v2/Game/GetWebServiceToken';
 
 class FileFolderUrl {
   // Set to true to proxy through http-proxy-middleware
-  static useProxy = false;
+  static useProxy = true;
 
   static get USER_AGENT() {
     return USER_AGENT;
@@ -61,8 +63,11 @@ class FileFolderUrl {
   static get SPLATOON2_INK_SHIFTS() {
     return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INK_SHIFTS;
   }
-  static get SPLATOON2_INT_SHIFT_REWARD_GEAR() {
-    return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INT_SHIFT_REWARD_GEAR;
+  static get SPLATOON2_INK_SHIFT_REWARD_GEAR() {
+    return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INK_SHIFT_REWARD_GEAR;
+  }
+  static get SPLATOON2_INK_GEAR_SHOP() {
+    return FileFolderUrl.SPLATOON2_INK + SPLATOON2_INK_GEAR_SHOP;
   }
 
   static get SPLATNET() {
@@ -89,6 +94,9 @@ class FileFolderUrl {
   }
   static get SPLATNET_NICKNAME_AND_ICON() {
     return FileFolderUrl.SPLATNET + SPLATNET_NICKNAME_AND_ICON;
+  }
+  static get SPLATNET_GEAR_SHOP() {
+    return FileFolderUrl.SPLATNET + SPLATNET_GEAR_SHOP;
   }
 
   static get NINTENDO_ACCOUNTS_AUTHORIZE() {

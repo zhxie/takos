@@ -1978,4 +1978,71 @@ class Gear extends Base {
   };
 }
 
-export { GearType, HeadgearGear, ClothesGear, ShoesGear, Gear };
+class ShopGear extends Base {
+  constructor(e, gear, price, originalGear, originalPrice, endTime) {
+    super(e, null);
+    this.gear = gear;
+    this.price = price;
+    this.originalGear = originalGear;
+    this.originalPrice = originalPrice;
+    this.endTime = endTime;
+  }
+
+  static parse = data => {
+    try {
+      const baseGear = Gear.parseReward(data.gear);
+      if (baseGear.error !== null) {
+        // Handle previous error
+        return new ShopGear(baseGear.error);
+      }
+      const primaryAbility = Ability.parsePrimary(data.skill);
+      if (primaryAbility.error !== null) {
+        // Handle previous error
+        return new ShopGear(primaryAbility.error);
+      }
+      let gear = baseGear;
+      gear.primaryAbility = primaryAbility;
+      const originalPrimaryAbility = Ability.parsePrimary(data.original_gear.skill);
+      if (originalPrimaryAbility.error !== null) {
+        // Handle previous error
+        return new ShopGear(originalPrimaryAbility.error);
+      }
+      let originalGear = baseGear;
+      originalGear.primaryAbility = originalPrimaryAbility;
+      return new ShopGear(
+        null,
+        gear,
+        parseInt(data.price),
+        originalGear,
+        parseInt(data.original_gear.price),
+        parseInt(data.end_time)
+      );
+    } catch (e) {
+      console.error(e);
+      return new ShopGear('can_not_parse_shop_gear');
+    }
+  };
+
+  static parseOrdered = data => {
+    try {
+      const baseGear = Gear.parseReward(data.gear);
+      if (baseGear.error !== null) {
+        // Handle previous error
+        return new ShopGear(baseGear.error);
+      }
+      const primaryAbility = Ability.parsePrimary(data.skill);
+      if (primaryAbility.error !== null) {
+        // Handle previous error
+        return new ShopGear(primaryAbility.error);
+      }
+      let gear = baseGear;
+      gear.primaryAbility = primaryAbility;
+      return new ShopGear(null, gear, parseInt(data.price), null, null, parseInt(data.end_time));
+    } catch (e) {
+      console.error(e);
+      return new ShopGear('can_not_parse_ordered_gear');
+    }
+  };
+}
+
+export { GearType, HeadgearGear, ClothesGear, ShoesGear, Gear, ShopGear };
