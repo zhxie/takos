@@ -45,7 +45,7 @@ class ErrorResult extends React.Component {
             </Paragraph>
             {this.props.checklist.map(element => {
               return (
-                <Paragraph>
+                <Paragraph key={element.key}>
                   <Icon style={{ color: 'red' }} type="info-circle" /> {element}
                 </Paragraph>
               );

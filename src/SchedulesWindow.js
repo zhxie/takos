@@ -226,7 +226,7 @@ class SchedulesWindow extends React.Component {
           ]}
           extra={[
             [
-              <Button onClick={this.updateSchedules} type="primary">
+              <Button key="update" onClick={this.updateSchedules} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">

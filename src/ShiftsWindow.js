@@ -236,7 +236,7 @@ class ShiftsWindow extends React.Component {
           ]}
           extra={[
             [
-              <Button onClick={this.updateShifts} type="primary">
+              <Button key="update" onClick={this.updateShifts} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">
