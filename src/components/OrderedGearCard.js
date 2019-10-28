@@ -1,6 +1,6 @@
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Card, Icon, Tooltip, Row, Col, Statistic } from 'antd';
+import { Card, Tooltip, Row, Col, Statistic } from 'antd';
 
 import './OrderedGearCard.css';
 import cashIcon from '../assets/images/cash.png';

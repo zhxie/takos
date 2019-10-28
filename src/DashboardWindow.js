@@ -20,12 +20,14 @@ import LoadingResult from './components/LoadingResult';
 import RewardGearCard from './components/RewardGearCard';
 import ScheduleCard from './components/ScheduleCard';
 import ShiftCard from './components/ShiftCard';
+import ShopGearCard from './components/ShopGearCard';
 import { RankedBattle, LeagueBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import Rule from './models/Rule';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import FileFolderUrl from './utils/FileFolderUrl';
+import GearShopHelper from './utils/GearShopHelper';
 import JobHelper from './utils/JobHelper';
 import ScheduleHelper from './utils/ScheduleHelper';
 import ShiftHelper from './utils/ShiftHelper';
@@ -41,7 +43,8 @@ class DashboardWindow extends React.Component {
     job: null,
     schedules: null,
     shifts: [],
-    gear: null,
+    shiftGear: null,
+    shopGears: null,
     icon: null,
     nickname: '',
     rank: null,
@@ -55,8 +58,10 @@ class DashboardWindow extends React.Component {
     jobsUpdated: false,
     schedulesUpdated: false,
     shiftsUpdated: false,
+    shopGearsUpdated: false,
     schedulesExpired: false,
     shiftsExpired: false,
+    shopGearsExpired: false,
     // Value
     battlesRange: {},
     jobsRange: {}
@@ -167,8 +172,10 @@ class DashboardWindow extends React.Component {
       jobsUpdated: false,
       schedulesUpdated: false,
       shiftsUpdated: false,
+      shopGearsUpdated: false,
       schedulesExpired: false,
       shiftsExpired: false,
+      shopGearsExpired: false,
       battlesRange: {},
       jobsRange: {}
     });
@@ -176,6 +183,7 @@ class DashboardWindow extends React.Component {
     let errorJobs = null;
     let errorSchedules = null;
     let errorShifts = null;
+    let errorShopGears = null;
     let firstErrorLog = null;
     // Update battles
     return StorageHelper.latestBattle()
@@ -313,7 +321,7 @@ class DashboardWindow extends React.Component {
       })
       .then(() => {
         // Update schedules and shifts
-        return Promise.all([this.updateSchedules(), this.updateShifts()])
+        return Promise.all([this.updateSchedules(), this.updateShifts(), this.updateShopGears()])
           .then(values => {
             if (values[0] instanceof TakosError) {
               errorSchedules = values[0];
@@ -321,11 +329,15 @@ class DashboardWindow extends React.Component {
             if (values[1] instanceof TakosError) {
               errorShifts = values[1];
             }
+            if (values[2] instanceof TakosError) {
+              errorShopGears = values[2];
+            }
           })
           .catch(e => {
             console.error(e);
             errorSchedules = e;
             errorShifts = e;
+            errorShopGears = e;
           });
       })
       .then(() => {
@@ -404,6 +416,23 @@ class DashboardWindow extends React.Component {
             }
           }
           this.setState({ shiftsUpdated: true });
+        }
+      })
+      .then(() => {
+        if (errorShopGears !== null) {
+          // Handle error
+          if (errorShopGears instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorShopGears.message;
+            } else {
+              console.error(errorShopGears);
+            }
+          } else {
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_shop_gears';
+            }
+          }
+          this.setState({ shopGearsUpdated: true });
         }
       })
       .then(() => {
@@ -545,7 +574,7 @@ class DashboardWindow extends React.Component {
           return e;
         } else {
           console.error(e);
-          return new TakosError('can_not_parse_schedules');
+          return new TakosError('can_not_update_schedules');
         }
       });
   };
@@ -595,7 +624,7 @@ class DashboardWindow extends React.Component {
           if (res.error !== null) {
             throw new TakosError(res.error);
           } else {
-            this.setState({ gear: res });
+            this.setState({ shiftGear: res });
           }
         }
       })
@@ -624,6 +653,32 @@ class DashboardWindow extends React.Component {
       .catch();
   };
 
+  updateShopGears = () => {
+    return GearShopHelper.getShopGears()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_shop_gears');
+        } else {
+          res.forEach(element => {
+            if (element.error !== null) {
+              throw element.error;
+            }
+          });
+          this.setState({ shopGears: res });
+          // Set update interval
+          this.shopGearsTimer = setInterval(this.shopGearTimeout, 60000);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_shop_gears');
+        }
+      });
+  };
+
   schedulesTimeout = () => {
     if (this.state.schedules instanceof Array && this.state.schedules.length > 0) {
       if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
@@ -639,6 +694,17 @@ class DashboardWindow extends React.Component {
     if (this.state.shifts instanceof Array && this.state.shifts.length > 0) {
       if (new Date(this.state.shifts[0].endTime * 1000) - new Date() < 0) {
         this.setState({ shiftsExpired: true });
+      } else {
+        // Force update the page to update the remaining and coming time
+        this.forceUpdate();
+      }
+    }
+  };
+
+  shopGearTimeout = () => {
+    if (this.state.gears instanceof Array && this.state.gears.length > 0) {
+      if (new Date(this.state.shopGears[0].endTime * 1000) - new Date() < 0) {
+        this.setState({ shopGearsExpired: true });
       } else {
         // Force update the page to update the remaining and coming time
         this.forceUpdate();
@@ -722,6 +788,24 @@ class DashboardWindow extends React.Component {
           }
         })()}
         {(() => {
+          if (this.state.shopGearsUpdated) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.shop_gears_can_not_update"
+                    defaultMessage="Takos can not update shop gears, please refresh this page to update."
+                  />
+                }
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
           if (this.state.schedulesExpired) {
             return (
               <Alert
@@ -749,6 +833,24 @@ class DashboardWindow extends React.Component {
                   <FormattedMessage
                     id="app.alert.info.shifts_expired"
                     defaultMessage="It seems that these shifts have expired, please refresh this page to update."
+                  />
+                }
+                type="info"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.shopGearsExpired) {
+            return (
+              <Alert
+                className="DashboardWindow-content-alert"
+                message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.info.shop_gears_expired"
+                    defaultMessage="It seems that these shop gears have expired, please refresh this page to update."
                   />
                 }
                 type="info"
@@ -1241,7 +1343,7 @@ class DashboardWindow extends React.Component {
                 </Col>
                 <Col className="DashboardWindow-content-column" md={24} lg={12}>
                   {(() => {
-                    if (this.state.shifts.length > 0 || this.state.gear !== null) {
+                    if (this.state.shifts.length > 0 || this.state.shiftGear !== null) {
                       return (
                         <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
                           <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
@@ -1265,7 +1367,7 @@ class DashboardWindow extends React.Component {
                               }
                             })()}
                             {(() => {
-                              if (this.state.gear !== null) {
+                              if (this.state.shiftGear !== null) {
                                 return (
                                   <TabPane
                                     tab={<FormattedMessage id="app.shifts.reward" defaultMessage="Current Gear" />}
@@ -1273,7 +1375,7 @@ class DashboardWindow extends React.Component {
                                   >
                                     <Link to={'/shifts'}>
                                       <RewardGearCard
-                                        gear={this.state.gear}
+                                        gear={this.state.shiftGear}
                                         bordered={false}
                                         hoverable={false}
                                         pointer={true}
@@ -1289,6 +1391,38 @@ class DashboardWindow extends React.Component {
                     }
                   })()}
                 </Col>
+              </Row>
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.shopGears !== null) {
+            return (
+              <Row gutter={16}>
+                {(() => {
+                  if (this.state.shopGears !== null) {
+                    return (
+                      <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                        <Card
+                          hoverable
+                          title={<FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />}
+                          headStyle={{ borderBottom: '2px solid #e8e8e8' }}
+                          bodyStyle={{ padding: '0' }}
+                          style={{ cursor: 'default' }}
+                        >
+                          <Link to="/shop">
+                            <ShopGearCard
+                              gear={this.state.shopGears[0]}
+                              bordered={false}
+                              hoverable={false}
+                              pointer={true}
+                            />
+                          </Link>
+                        </Card>
+                      </Col>
+                    );
+                  }
+                })()}
               </Row>
             );
           }
@@ -1398,6 +1532,7 @@ class DashboardWindow extends React.Component {
     // Remove update timer
     clearInterval(this.schedulesTimer);
     clearInterval(this.shiftsTimer);
+    clearInterval(this.shopGearsTimer);
   }
 }
 

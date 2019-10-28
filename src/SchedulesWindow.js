@@ -101,7 +101,7 @@ class SchedulesWindow extends React.Component {
             // Set update interval
             this.timer = setInterval(this.timeout, 60000);
           } else {
-            throw new TakosError('can_not_parse_schedules');
+            throw new TakosError('can_not_update_schedules');
           }
         }
       })
@@ -110,7 +110,7 @@ class SchedulesWindow extends React.Component {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
           console.error(e);
-          this.setState({ error: true, errorLog: 'can_not_parse_schedules', updated: true });
+          this.setState({ error: true, errorLog: 'can_not_update_schedules', updated: true });
         }
       });
   };

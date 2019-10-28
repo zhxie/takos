@@ -25,7 +25,11 @@ class ShopGearCard extends React.Component {
             };
           }
         })()}
-        actions={[<Icon type="shopping-cart" key="order" onClick={this.props.action} />]}
+        actions={(() => {
+          if (this.props.action !== undefined) {
+            return [<Icon type="shopping-cart" key="order" onClick={this.props.action} />];
+          }
+        })()}
       >
         <Row>
           <Col xs={24} sm={12}>
