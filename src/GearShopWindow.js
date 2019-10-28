@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button } from 'antd';
+import { Layout, PageHeader, Alert, Button, Modal } from 'antd';
 
 import './GearShopWindow.css';
 import icon from './assets/images/character-cooler-heads-2.png';
@@ -14,6 +14,7 @@ import GearShopHelper from './utils/GearShopHelper';
 import TimeConverter from './utils/TimeConverter';
 
 const { Header, Content } = Layout;
+const { confirm } = Modal;
 
 class GearShopWindow extends React.Component {
   state = {
@@ -123,6 +124,42 @@ class GearShopWindow extends React.Component {
       .catch();
   };
 
+  orderGear = id => {
+    const thisHandler = this;
+    confirm({
+      title: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.order_gear',
+        defaultMessage: 'Do you want to order gear?'
+      }),
+      content: this.props.intl.formatMessage({
+        id: 'app.modal.confirm.order_gear.content',
+        defaultMessage:
+          'You can order one piece of gear at a time, and ordering more gear before making your purchase will cancel the original order.'
+      }),
+      autoFocusButton: 'cancel',
+      onOk() {
+        return GearShopHelper.orderGear(id)
+          .then(res => {
+            if (res === true) {
+              thisHandler.setState({ loaded: false });
+              thisHandler.updateData();
+            } else {
+              throw new TakosError('can_not_order_gear');
+            }
+          })
+          .catch(e => {
+            if (e instanceof TakosError) {
+              thisHandler.setState({ loaded: false, error: true, errorLog: e.message });
+            } else {
+              console.error(e);
+              thisHandler.setState({ loaded: false, error: true, errorLog: 'can_not_order_gear' });
+            }
+          });
+      },
+      onCancel() {}
+    });
+  };
+
   timeout = () => {
     if (this.state.gears instanceof Array && this.state.gears.length > 0) {
       if (new Date(this.state.gears[0].endTime * 1000) - new Date() < 0) {
@@ -192,7 +229,7 @@ class GearShopWindow extends React.Component {
                 {this.state.gears.map((item, index) => {
                   return (
                     <div className="GearShopWindow-content-card" key={1 + index}>
-                      <ShopGearCard gear={item} />
+                      <ShopGearCard gear={item} action={this.orderGear.bind(this, item.id)} />
                     </div>
                   );
                 })}

@@ -1176,6 +1176,9 @@ const en_US = {
     '3. Expand "Cookies" and click the corresponding page in the sidebar, and click OK',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
     'Finally, refresh the list, double click on value with the corresponding name "iksm_session", copy it, and paste into the text box below.',
+  'app.modal.confirm.order_gear': 'Do you want to order the gear?',
+  'app.modal.confirm.order_gear.content':
+    'You can order one piece of gear at a time. Ordering more gear before making your purchase will cancel the original order.',
   'app.modal.error.get_session_token': 'Can not update cookie',
   'app.modal.error.get_session_token.content':
     'Your network can not be reached, or the link is expired. Please refresh the page and try again.',

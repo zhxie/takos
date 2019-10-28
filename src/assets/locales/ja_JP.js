@@ -1181,6 +1181,9 @@ const ja_JP = {
     '3. サイドバーの「Cookies」を展開し、対応するページをクリックして、「OK」をクリックします',
   'app.modal.confirm.update_cookie.octoling_operation_required.content.steps.4':
     '最後に、リストを更新し、対応する名前「iksm_session」の値をダブルクリックしてコピーし、下のテキストボックスに貼り付けます。',
+  'app.modal.confirm.order_gear': 'ギアを注文しますか？',
+  'app.modal.confirm.order_gear.content':
+    'ご注文は、1回につき1コとなります。購入前に新しく注文すると、注文済みのギアはキャンセルされます。',
   'app.modal.error.get_session_token': 'クッキーを更新できません',
   'app.modal.error.get_session_token.content':
     'ネットワークにアクセスできないか、リンクの有効期限が切れています。ページを更新してもう一度お試しください。',
