@@ -74,7 +74,7 @@ class ShiftCard extends React.Component {
                       }
                     })()}
                   >
-                    <Row gutter={12}>
+                    <Row gutter={16}>
                       <Col className="ShiftCard-shift-weapon-col" xs={6} sm={12}>
                         <Tooltip title={<FormattedMessage id={this.props.shift.weapon1.mainWeapon.name} />}>
                           <img

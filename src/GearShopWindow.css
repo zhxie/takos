@@ -28,3 +28,9 @@
   padding: 16px;
   width: calc(100% - 32px);
 }
+
+.GearShopWindow-content-card {
+  display: inline-block;
+  margin: 6px;
+  max-width: 442px;
+}

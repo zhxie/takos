@@ -1,0 +1,43 @@
+.ShopGearCard-gear {
+  cursor: default;
+  display: inline-block;
+}
+
+.ShopGearCard-gear-gear {
+  cursor: default;
+  display: block;
+  margin: 6px;
+}
+
+.ShopGearCard-gear-gear-image {
+  width: 100%;
+}
+
+.ShopGearCard-gear-ability {
+  cursor: default;
+  display: inline-block;
+  margin: 6px;
+  width: calc(100% - 12px);
+}
+
+.ShopGearCard-gear-ability-icon {
+  width: 32px;
+}
+
+.ShopGearCard-gear-meta {
+  margin: 6px 6px 6px 9px;
+}
+
+.ShopGearCard-gear-meta-image {
+  width: 32px;
+}
+
+.ShopGearCard-gear-meta-cash {
+  display: flex;
+  align-items: center;
+}
+
+.ShopGearCard-gear-meta-cash-image {
+  margin-right: 4px;
+  width: 16px;
+}

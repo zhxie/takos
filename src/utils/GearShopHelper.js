@@ -1,6 +1,6 @@
 import FileFolderUrl from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
-import { ShopGear } from '../models/Gear';
+import { ShopGear, OrderedGear } from '../models/Gear';
 
 class GearShopHelper {
   static getShopGears = () => {
@@ -40,12 +40,12 @@ class GearShopHelper {
       .then(res => {
         console.log(res);
         // Parse response
-        const gear = ShopGear.parseOrdered(res.ordered_info);
+        const gear = OrderedGear.parse(res.ordered_info);
         return gear;
       })
       .catch(e => {
         console.error(e);
-        return new ShopGear('can_not_get_ordered_gear');
+        return new OrderedGear('can_not_get_ordered_gear');
       });
   };
 }

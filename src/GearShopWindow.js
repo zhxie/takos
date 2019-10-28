@@ -7,6 +7,7 @@ import './GearShopWindow.css';
 import icon from './assets/images/character-cooler-heads-2.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import ShopGearCard from './components/ShopGearCard';
 import TakosError from './utils/ErrorHelper';
 import GearShopHelper from './utils/GearShopHelper';
 import TimeConverter from './utils/TimeConverter';
@@ -169,7 +170,7 @@ class GearShopWindow extends React.Component {
             );
           }
         })()}
-        {() => {
+        {(() => {
           if (this.state.order !== null) {
             return (
               <div>
@@ -177,8 +178,8 @@ class GearShopWindow extends React.Component {
               </div>
             );
           }
-        }}
-        {() => {
+        })()}
+        {(() => {
           if (this.state.gears.length > 0) {
             return (
               <div>
@@ -186,10 +187,17 @@ class GearShopWindow extends React.Component {
                   title={<FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />}
                   subTitle={TimeConverter.getTimeRemained(this.state.gears[0].endTime)}
                 />
+                {this.state.gears.map((item, index) => {
+                  return (
+                    <div className="GearShopWindow-content-card" key={1 + index}>
+                      <ShopGearCard gear={item} />
+                    </div>
+                  );
+                })}
               </div>
             );
           }
-        }}
+        })()}
       </div>
     );
   };

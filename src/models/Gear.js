@@ -1,6 +1,7 @@
 import { Ability } from './Ability';
 import Base from './Base';
 import { Brand } from './Brand';
+import deepCopy from '../utils/ObjectHelper';
 
 class GearType {
   constructor(name, value) {
@@ -2000,30 +2001,37 @@ class ShopGear extends Base {
         // Handle previous error
         return new ShopGear(primaryAbility.error);
       }
-      let gear = baseGear;
+      let gear = deepCopy(baseGear);
       gear.primaryAbility = primaryAbility;
-      const originalPrimaryAbility = Ability.parsePrimary(data.original_gear.skill);
-      if (originalPrimaryAbility.error !== null) {
-        // Handle previous error
-        return new ShopGear(originalPrimaryAbility.error);
+      let originalPrimaryAbility = null;
+      let originalGear = null;
+      let originalPrice = null;
+      if (data.original_gear !== null) {
+        originalPrimaryAbility = Ability.parsePrimary(data.original_gear.skill);
+        if (originalPrimaryAbility.error !== null) {
+          // Handle previous error
+          return new ShopGear(originalPrimaryAbility.error);
+        }
+        originalGear = deepCopy(baseGear);
+        originalGear.primaryAbility = originalPrimaryAbility;
+        originalPrice = parseInt(data.original_gear.price);
       }
-      let originalGear = baseGear;
-      originalGear.primaryAbility = originalPrimaryAbility;
-      return new ShopGear(
-        null,
-        gear,
-        parseInt(data.price),
-        originalGear,
-        parseInt(data.original_gear.price),
-        parseInt(data.end_time)
-      );
+      return new ShopGear(null, gear, parseInt(data.price), originalGear, originalPrice, parseInt(data.end_time));
     } catch (e) {
       console.error(e);
       return new ShopGear('can_not_parse_shop_gear');
     }
   };
+}
 
-  static parseOrdered = data => {
+class OrderedGear extends Base {
+  constructor(e, gear, price) {
+    super(e, null);
+    this.gear = gear;
+    this.price = price;
+  }
+
+  static parse = data => {
     try {
       const baseGear = Gear.parseReward(data.gear);
       if (baseGear.error !== null) {
@@ -2037,12 +2045,12 @@ class ShopGear extends Base {
       }
       let gear = baseGear;
       gear.primaryAbility = primaryAbility;
-      return new ShopGear(null, gear, parseInt(data.price), null, null, parseInt(data.end_time));
+      return new OrderedGear(null, gear, parseInt(data.price));
     } catch (e) {
       console.error(e);
-      return new ShopGear('can_not_parse_ordered_gear');
+      return new OrderedGear('can_not_parse_ordered_gear');
     }
   };
 }
 
-export { GearType, HeadgearGear, ClothesGear, ShoesGear, Gear, ShopGear };
+export { GearType, HeadgearGear, ClothesGear, ShoesGear, Gear, ShopGear, OrderedGear };
