@@ -175,7 +175,7 @@ class GearShopWindow extends React.Component {
     return (
       <div>
         {(() => {
-          if (this.state.updated) {
+          if (this.state.orderUpdated) {
             return (
               <Alert
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
@@ -183,6 +183,23 @@ class GearShopWindow extends React.Component {
                   <FormattedMessage
                     id="app.alert.warning.ordered_gear_can_not_update"
                     defaultMessage="Takos can not update ordered gear, please refresh this page to update."
+                  />
+                }
+                type="warning"
+                showIcon
+              />
+            );
+          }
+        })()}
+        {(() => {
+          if (this.state.gearsUpdated) {
+            return (
+              <Alert
+                message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+                description={
+                  <FormattedMessage
+                    id="app.alert.warning.shop_gears_can_not_update"
+                    defaultMessage="Takos can not update shop gears, please refresh this page to update."
                   />
                 }
                 type="warning"

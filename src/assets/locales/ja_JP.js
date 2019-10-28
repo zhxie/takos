@@ -1147,6 +1147,8 @@ const ja_JP = {
     'Takos はバトルを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.jobs_can_not_update':
     'Takos はバイトを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.warning.shop_gears_can_not_update':
+    'Takos はゲソタウンギアを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.ordered_gear_can_not_update':
     'Takos は注文済みギアを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',

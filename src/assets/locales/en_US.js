@@ -1144,6 +1144,7 @@ const en_US = {
   'app.alert.warning.shifts_can_not_update': 'Takos can not update shifts, please refresh this page to update.',
   'app.alert.warning.battles_can_not_update': 'Takos can not update battles, please refresh this page to update.',
   'app.alert.warning.jobs_can_not_update': 'Takos can not update jobs, please refresh this page to update.',
+  'app.alert.warning.shop_gears_can_not_update': 'Takos can not update shop gears, please refresh this page to update.',
   'app.alert.warning.ordered_gear_can_not_update':
     'Takos can not update ordered gear, please refresh this page to update.',
   'app.alert.info': 'Info',
