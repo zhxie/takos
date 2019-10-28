@@ -1110,6 +1110,7 @@ const ja_JP = {
   'app.jobs.with': '{name} とのバイトを表示する',
   'app.gear_shop': 'ゲソタウン',
   'app.gear_shop.order': '注文済み',
+  'app.gear_shop.original_ability': 'オリジナルギアパワー',
   'app.settings': '設定',
   'app.settings.user': 'ユーザー',
   'app.settings.user.cookie': 'クッキー',

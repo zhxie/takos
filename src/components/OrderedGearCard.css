@@ -1,47 +1,47 @@
-.ShopGearCard-gear {
+.OrderedGearCard-gear {
   cursor: default;
   display: inline-block;
 }
 
-.ShopGearCard-gear-gear {
+.OrderedGearCard-gear-gear {
   cursor: default;
   display: block;
   margin: 6px;
 }
 
-.ShopGearCard-gear-column {
+.OrderedGearCard-gear-column {
   margin-bottom: 12px;
 }
 
-.ShopGearCard-gear-gear-image {
+.OrderedGearCard-gear-gear-image {
   width: 100%;
 }
 
-.ShopGearCard-gear-ability {
+.OrderedGearCard-gear-ability {
   cursor: default;
   display: inline-block;
   margin: 6px;
   width: calc(100% - 12px);
 }
 
-.ShopGearCard-gear-ability-icon {
+.OrderedGearCard-gear-ability-icon {
   width: 32px;
 }
 
-.ShopGearCard-gear-meta {
+.OrderedGearCard-gear-meta {
   margin: 6px 6px 6px 9px;
 }
 
-.ShopGearCard-gear-meta-image {
+.OrderedGearCard-gear-meta-image {
   width: 32px;
 }
 
-.ShopGearCard-gear-meta-cash {
+.OrderedGearCard-gear-meta-cash {
   display: flex;
   align-items: center;
 }
 
-.ShopGearCard-gear-meta-cash-image {
+.OrderedGearCard-gear-meta-cash-image {
   margin-right: 4px;
   width: 16px;
 }

@@ -1980,8 +1980,9 @@ class Gear extends Base {
 }
 
 class ShopGear extends Base {
-  constructor(e, gear, price, originalGear, originalPrice, endTime) {
+  constructor(e, id, gear, price, originalGear, originalPrice, endTime) {
     super(e, null);
+    this.id = id;
     this.gear = gear;
     this.price = price;
     this.originalGear = originalGear;
@@ -2016,7 +2017,15 @@ class ShopGear extends Base {
         originalGear.primaryAbility = originalPrimaryAbility;
         originalPrice = parseInt(data.original_gear.price);
       }
-      return new ShopGear(null, gear, parseInt(data.price), originalGear, originalPrice, parseInt(data.end_time));
+      return new ShopGear(
+        null,
+        data.id,
+        gear,
+        parseInt(data.price),
+        originalGear,
+        originalPrice,
+        parseInt(data.end_time)
+      );
     } catch (e) {
       console.error(e);
       return new ShopGear('can_not_parse_shop_gear');
@@ -2025,8 +2034,9 @@ class ShopGear extends Base {
 }
 
 class OrderedGear extends Base {
-  constructor(e, gear, price) {
+  constructor(e, id, gear, price) {
     super(e, null);
+    this.id = id;
     this.gear = gear;
     this.price = price;
   }
@@ -2045,7 +2055,7 @@ class OrderedGear extends Base {
       }
       let gear = baseGear;
       gear.primaryAbility = primaryAbility;
-      return new OrderedGear(null, gear, parseInt(data.price));
+      return new OrderedGear(null, data.id, gear, parseInt(data.price));
     } catch (e) {
       console.error(e);
       return new OrderedGear('can_not_parse_ordered_gear');

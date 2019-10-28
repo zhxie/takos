@@ -1111,6 +1111,7 @@ const en_US = {
   'app.jobs.with': 'Show jobs with {name}',
   'app.gear_shop': 'Gear Shop',
   'app.gear_shop.order': 'Ordered',
+  'app.gear_shop.original_ability': 'Original Ability',
   'app.settings': 'Settings',
   'app.settings.user': 'User',
   'app.settings.user.cookie': 'Cookie',

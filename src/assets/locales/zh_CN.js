@@ -1109,6 +1109,7 @@ const zh_CN = {
   'app.jobs.with': '展示与 {name} 的打工',
   'app.gear_shop': '触手镇',
   'app.gear_shop.order': '已预订',
+  'app.gear_shop.original_ability': '原始能力',
   'app.settings': '设置',
   'app.settings.user': '用户',
   'app.settings.user.cookie': 'Cookie',

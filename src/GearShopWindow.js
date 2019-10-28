@@ -7,6 +7,7 @@ import './GearShopWindow.css';
 import icon from './assets/images/character-cooler-heads-2.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import OrderedGearCard from './components/OrderedGearCard';
 import ShopGearCard from './components/ShopGearCard';
 import TakosError from './utils/ErrorHelper';
 import GearShopHelper from './utils/GearShopHelper';
@@ -175,6 +176,7 @@ class GearShopWindow extends React.Component {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="app.gear_shop.order" defaultMessage="Ordered" />} />
+                <OrderedGearCard gear={this.state.order} />
               </div>
             );
           }
