@@ -919,7 +919,7 @@ class SettingsWindow extends React.Component {
     } else {
       return (
         <Layout>
-          <Header className="SettingsWindow-header" style={{ zIndex: 1 }}>
+          <Header className="SettingsWindow-header" style={{ zIndex: 3 }}>
             <img className="SettingsWindow-header-icon" src={icon} alt="settings" />
             <p className="SettingsWindow-header-title">
               <FormattedMessage id="app.settings" defaultMessage="Settings" />
