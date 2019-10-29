@@ -183,6 +183,7 @@ class DashboardWindow extends React.Component {
     let errorJobs = null;
     let errorSchedules = null;
     let errorShifts = null;
+    let errorRewardGear = null;
     let errorShopGears = null;
     let firstErrorLog = null;
     // Update battles
@@ -321,7 +322,26 @@ class DashboardWindow extends React.Component {
       })
       .then(() => {
         // Update schedules and shifts
-        return Promise.all([this.updateSchedules(), this.updateShifts(), this.updateShopGears()])
+        return Promise.all([
+          ScheduleHelper.updateSchedules(res => {
+            this.setState({ schedules: res });
+            // Set update interval
+            this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
+          }),
+          ShiftHelper.updateShifts(res => {
+            this.setState({ shifts: res });
+            // Set update interval
+            this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
+          }),
+          ShiftHelper.updateRewardGear(res => {
+            this.setState({ shiftGear: res });
+          }),
+          GearShopHelper.updateShopGears(res => {
+            this.setState({ shopGears: res });
+            // Set update interval
+            this.shopGearsTimer = setInterval(this.shopGearTimeout, 60000);
+          })
+        ])
           .then(values => {
             if (values[0] instanceof TakosError) {
               errorSchedules = values[0];
@@ -330,13 +350,17 @@ class DashboardWindow extends React.Component {
               errorShifts = values[1];
             }
             if (values[2] instanceof TakosError) {
-              errorShopGears = values[2];
+              errorRewardGear = values[2];
+            }
+            if (values[3] instanceof TakosError) {
+              errorShopGears = values[3];
             }
           })
           .catch(e => {
             console.error(e);
             errorSchedules = e;
             errorShifts = e;
+            errorRewardGear = e;
             errorShopGears = e;
           });
       })
@@ -402,7 +426,7 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
-        if (errorShifts !== null) {
+        if (errorShifts !== null || errorRewardGear !== null) {
           // Handle error
           if (errorShifts instanceof TakosError) {
             if (firstErrorLog === null) {
@@ -410,9 +434,19 @@ class DashboardWindow extends React.Component {
             } else {
               console.error(errorShifts);
             }
-          } else {
+          } else if (errorRewardGear instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorRewardGear.message;
+            } else {
+              console.error(errorRewardGear);
+            }
+          } else if (errorShifts !== null) {
             if (firstErrorLog === null) {
               firstErrorLog = 'can_not_update_shifts';
+            }
+          } else {
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_reward_gear';
             }
           }
           this.setState({ shiftsUpdated: true });
@@ -539,146 +573,6 @@ class DashboardWindow extends React.Component {
       })
       .catch(e => {
         console.error(e);
-      });
-  };
-
-  updateSchedules = () => {
-    return ScheduleHelper.getSchedules()
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_schedules');
-        } else {
-          res.regularSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          res.rankedSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          res.leagueSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          if (res.regularSchedules.length > 0 && res.rankedSchedules.length > 0 && res.leagueSchedules.length > 0) {
-            this.setState({ schedules: res });
-            // Set update interval
-            this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
-          } else {
-            throw new TakosError('can_not_parse_schedules');
-          }
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          return e;
-        } else {
-          console.error(e);
-          return new TakosError('can_not_update_schedules');
-        }
-      });
-  };
-
-  updateShifts = () => {
-    let firstError = null;
-    return ShiftHelper.getShifts()
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_shifts');
-        } else {
-          res.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          if (res.length > 0) {
-            this.setState({ shifts: res });
-            // Set update interval
-            this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
-          } else {
-            throw new TakosError('can_not_parse_shifts');
-          }
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          if (firstError === null) {
-            firstError = e;
-          } else {
-            console.error(e);
-          }
-        } else {
-          console.error(e);
-          if (firstError === null) {
-            firstError = new TakosError('can_not_update_shifts');
-          }
-        }
-      })
-      .then(() => {
-        return ShiftHelper.getRewardGear();
-      })
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_reward_gear');
-        } else {
-          if (res.error !== null) {
-            throw new TakosError(res.error);
-          } else {
-            this.setState({ shiftGear: res });
-          }
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          if (firstError === null) {
-            firstError = e;
-          } else {
-            console.error(e);
-          }
-        } else {
-          console.error(e);
-          if (firstError === null) {
-            firstError = new TakosError('can_not_update_reward_gear');
-          }
-        }
-      })
-      .then(() => {
-        if (firstError !== null) {
-          return firstError;
-        } else {
-          // Set update interval
-          this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
-        }
-      })
-      .catch();
-  };
-
-  updateShopGears = () => {
-    return GearShopHelper.getShopGears()
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_shop_gears');
-        } else {
-          res.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          this.setState({ shopGears: res });
-          // Set update interval
-          this.shopGearsTimer = setInterval(this.shopGearTimeout, 60000);
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          return e;
-        } else {
-          console.error(e);
-          return new TakosError('can_not_update_shop_gears');
-        }
       });
   };
 

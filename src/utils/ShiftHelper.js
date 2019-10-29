@@ -1,3 +1,4 @@
+import TakosError from './ErrorHelper';
 import FileFolderUrl from './FileFolderUrl';
 import { Gear } from '../models/Gear';
 import Shift from '../models/Shift';
@@ -30,6 +31,34 @@ class ShiftHelper {
       });
   };
 
+  static updateShifts = onSuccess => {
+    return ShiftHelper.getShifts()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_shifts');
+        } else {
+          res.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          if (res.length > 0) {
+            onSuccess(res);
+          } else {
+            throw new TakosError('can_not_parse_shifts');
+          }
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_shifts');
+        }
+      });
+  };
+
   static getRewardGear = () => {
     const init = {
       method: 'GET',
@@ -48,6 +77,29 @@ class ShiftHelper {
       .catch(e => {
         console.error(e);
         return null;
+      });
+  };
+
+  static updateRewardGear = onSuccess => {
+    return ShiftHelper.getRewardGear()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_reward_gear');
+        } else {
+          if (res.error !== null) {
+            throw new TakosError(res.error);
+          } else {
+            onSuccess(res);
+          }
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_reward_gear');
+        }
       });
   };
 }

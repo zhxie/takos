@@ -24,75 +24,66 @@ class ShiftsWindow extends React.Component {
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
-    expired: false,
-    updated: false
+    updated: false,
+    expired: false
   };
 
-  updateShifts = () => {
-    this.setState({ error: false, updated: false });
-    let firstError = null;
-    ShiftHelper.getShifts()
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_shifts');
-        } else {
-          res.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
+  updateData = () => {
+    this.setState({ error: false, updated: false, expired: false });
+    let errorShifts = null;
+    let errorRewardGear = null;
+    let firstErrorLog = null;
+    return Promise.all([
+      ShiftHelper.updateShifts(res => {
+        this.setState({ shifts: res });
+      }),
+      ShiftHelper.updateRewardGear(res => {
+        this.setState({ gear: res });
+      })
+    ])
+      .then(values => {
+        if (values[0] instanceof TakosError) {
+          errorShifts = values[0];
+        }
+        if (values[1] instanceof TakosError) {
+          errorRewardGear = values[1];
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        errorShifts = e;
+        errorRewardGear = e;
+      })
+      .then(() => {
+        if (errorShifts !== null || errorRewardGear !== null) {
+          // Handle error
+          if (errorShifts instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorShifts.message;
+            } else {
+              console.error(errorShifts);
             }
-          });
-          if (res.length > 0) {
-            this.setState({ shifts: res });
+          } else if (errorRewardGear instanceof TakosError) {
+            if (firstErrorLog === null) {
+              firstErrorLog = errorRewardGear.message;
+            } else {
+              console.error(errorRewardGear);
+            }
+          } else if (errorShifts !== null) {
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_shifts';
+            }
           } else {
-            throw new TakosError('can_not_parse_shifts');
+            if (firstErrorLog === null) {
+              firstErrorLog = 'can_not_update_reward_gear';
+            }
           }
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          if (firstError === null) {
-            firstError = e;
-          } else {
-            console.error(e);
-          }
-        } else {
-          console.error(e);
-          if (firstError === null) {
-            firstError = new TakosError('can_not_update_shifts');
-          }
+          this.setState({ updated: true });
         }
       })
       .then(() => {
-        return ShiftHelper.getRewardGear();
-      })
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_reward_gear');
-        } else {
-          if (res.error !== null) {
-            throw new TakosError(res.error);
-          } else {
-            this.setState({ gear: res });
-          }
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          if (firstError === null) {
-            firstError = e;
-          } else {
-            console.error(e);
-          }
-        } else {
-          console.error(e);
-          if (firstError === null) {
-            firstError = new TakosError('can_not_update_reward_gear');
-          }
-        }
-      })
-      .then(() => {
-        if (firstError !== null) {
-          this.setState({ error: true, errorLog: firstError.message, updated: true });
+        if (firstErrorLog !== null) {
+          this.setState({ error: true, errorLog: firstErrorLog });
         } else {
           this.setState({ loaded: true });
           // Set update interval
@@ -236,7 +227,7 @@ class ShiftsWindow extends React.Component {
           ]}
           extra={[
             [
-              <Button key="update" onClick={this.updateShifts} type="primary">
+              <Button key="update" onClick={this.updateData} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">
@@ -284,7 +275,7 @@ class ShiftsWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.updateShifts();
+    this.updateData();
   }
 
   componentWillUnmount() {

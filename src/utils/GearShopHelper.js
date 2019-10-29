@@ -1,3 +1,4 @@
+import TakosError from './ErrorHelper';
 import FileFolderUrl from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import { ShopGear, OrderedGear } from '../models/Gear';
@@ -27,6 +28,30 @@ class GearShopHelper {
       });
   };
 
+  static updateShopGears = onSuccess => {
+    return GearShopHelper.getShopGears()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_shop_gears');
+        } else {
+          res.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          onSuccess(res);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_shop_gears');
+        }
+      });
+  };
+
   static getOrderedGear = () => {
     const init = {
       method: 'GET',
@@ -50,6 +75,29 @@ class GearShopHelper {
       .catch(e => {
         console.error(e);
         return new OrderedGear('can_not_get_ordered_gear');
+      });
+  };
+
+  static updateOrderedGear = onSuccess => {
+    return GearShopHelper.getOrderedGear()
+      .then(res => {
+        if (res !== null) {
+          if (res.error != null) {
+            throw res.error;
+          } else {
+            onSuccess(res);
+          }
+        } else {
+          onSuccess(null);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_ordered_gear');
+        }
       });
   };
 

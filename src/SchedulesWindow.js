@@ -25,9 +25,9 @@ class SchedulesWindow extends React.Component {
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
-    expired: false,
     invalid: false,
-    updated: false
+    updated: false,
+    expired: false
   };
 
   constructor(props) {
@@ -80,45 +80,25 @@ class SchedulesWindow extends React.Component {
     }
   };
 
-  updateSchedules = () => {
+  updateData = () => {
     if (!this.modeSelector()) {
       return;
     }
-    this.setState({ error: false, updated: false });
-    ScheduleHelper.getSchedules()
+    this.setState({ error: false, updated: false, expired: false });
+    return ScheduleHelper.updateSchedules(res => {
+      this.setState({ data: res, loaded: true });
+      // Set update interval
+      this.timer = setInterval(this.timeout, 60000);
+    })
       .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_schedules');
-        } else {
-          res.regularSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          res.rankedSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          res.leagueSchedules.forEach(element => {
-            if (element.error !== null) {
-              throw new TakosError(element.error);
-            }
-          });
-          if (res.regularSchedules.length > 0 && res.rankedSchedules.length > 0 && res.leagueSchedules.length > 0) {
-            this.setState({ data: res, loaded: true });
-            // Set update interval
-            this.timer = setInterval(this.timeout, 60000);
-          } else {
-            throw new TakosError('can_not_parse_schedules');
-          }
+        if (res instanceof TakosError) {
+          throw res;
         }
       })
       .catch(e => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
-          console.error(e);
           this.setState({ error: true, errorLog: 'can_not_update_schedules', updated: true });
         }
       });
@@ -237,7 +217,7 @@ class SchedulesWindow extends React.Component {
           ]}
           extra={[
             [
-              <Button key="update" onClick={this.updateSchedules} type="primary">
+              <Button key="update" onClick={this.updateData} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">
@@ -285,14 +265,14 @@ class SchedulesWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.updateSchedules();
+    this.updateData();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.mode !== prevProps.match.params.mode) {
       // Instead of update schedules, just switch to another view
       // this.setState({ loaded: false, error: false, expired: false });
-      // this.updateSchedules();
+      // this.updateData();
       this.modeSelector();
     }
   }
