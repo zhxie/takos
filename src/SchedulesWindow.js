@@ -20,7 +20,7 @@ const { Header, Content } = Layout;
 class SchedulesWindow extends React.Component {
   state = {
     // Data
-    data: [],
+    data: null,
     // Render
     loaded: false,
     error: false,
@@ -67,6 +67,19 @@ class SchedulesWindow extends React.Component {
     }
   };
 
+  dataSelector = () => {
+    switch (this.mode) {
+      case Mode.regularBattle:
+        return this.state.data.regularSchedules;
+      case Mode.rankedBattle:
+        return this.state.data.rankedSchedules;
+      case Mode.leagueBattle:
+        return this.state.data.leagueSchedules;
+      default:
+        throw new RangeError();
+    }
+  };
+
   updateSchedules = () => {
     if (!this.modeSelector()) {
       return;
@@ -77,31 +90,27 @@ class SchedulesWindow extends React.Component {
         if (res === null) {
           throw new TakosError('can_not_get_schedules');
         } else {
-          let schedules;
-          switch (this.mode) {
-            case Mode.regularBattle:
-              schedules = res.regularSchedules;
-              break;
-            case Mode.rankedBattle:
-              schedules = res.rankedSchedules;
-              break;
-            case Mode.leagueBattle:
-              schedules = res.leagueSchedules;
-              break;
-            default:
-              throw new RangeError();
-          }
-          schedules.forEach(element => {
+          res.regularSchedules.forEach(element => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
           });
-          if (schedules.length > 0) {
-            this.setState({ data: schedules, loaded: true });
+          res.rankedSchedules.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          res.leagueSchedules.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          if (res.regularSchedules.length > 0 && res.rankedSchedules.length > 0 && res.leagueSchedules.length > 0) {
+            this.setState({ data: res, loaded: true });
             // Set update interval
             this.timer = setInterval(this.timeout, 60000);
           } else {
-            throw new TakosError('can_not_update_schedules');
+            throw new TakosError('can_not_parse_schedules');
           }
         }
       })
@@ -116,8 +125,8 @@ class SchedulesWindow extends React.Component {
   };
 
   timeout = () => {
-    if (this.state.data instanceof Array && this.state.data.length > 0) {
-      if (new Date(this.state.data[0].endTime * 1000) - new Date() < 0) {
+    if (this.state.data != null) {
+      if (new Date(this.state.data.regularSchedules[0].endTime * 1000) - new Date() < 0) {
         this.setState({ expired: true });
       } else {
         // Force update the page to update the remaining and coming time
@@ -164,44 +173,46 @@ class SchedulesWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.data.length > 0) {
+          if (this.state.data !== null && this.dataSelector().length > 0) {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="app.schedules.current" defaultMessage="Current" />} />
                 <div className="SchedulesWindow-content-card" key="1">
-                  <ScheduleCard schedule={this.state.data[0]} />
+                  <ScheduleCard schedule={this.dataSelector()[0]} />
                 </div>
               </div>
             );
           }
         })()}
         {(() => {
-          if (this.state.data.length > 1) {
+          if (this.state.data !== null && this.dataSelector().length > 1) {
             return (
               <div>
                 <PageHeader
                   title={<FormattedMessage id="app.schedules.next" defaultMessage="Next" />}
-                  subTitle={TimeConverter.getTimeTo(this.state.data[0].endTime)}
+                  subTitle={TimeConverter.getTimeTo(this.dataSelector()[0].endTime)}
                 />
                 <div className="SchedulesWindow-content-card" key="2">
-                  <ScheduleCard schedule={this.state.data[1]} />
+                  <ScheduleCard schedule={this.dataSelector()[1]} />
                 </div>
               </div>
             );
           }
         })()}
         {(() => {
-          if (this.state.data.length > 2) {
+          if (this.state.data !== null && this.dataSelector().length > 2) {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="app.schedules.future" defaultMessage="Future" />} />
-                {this.state.data.slice(2).map((item, index) => {
-                  return (
-                    <div className="SchedulesWindow-content-card" key={2 + index}>
-                      <ScheduleCard schedule={item} />
-                    </div>
-                  );
-                })}
+                {this.dataSelector()
+                  .slice(2)
+                  .map((item, index) => {
+                    return (
+                      <div className="SchedulesWindow-content-card" key={2 + index}>
+                        <ScheduleCard schedule={item} />
+                      </div>
+                    );
+                  })}
               </div>
             );
           }
@@ -279,8 +290,10 @@ class SchedulesWindow extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.mode !== prevProps.match.params.mode) {
-      this.setState({ loaded: false, error: false, expired: false });
-      this.updateSchedules();
+      // Instead of update schedules, just switch to another view
+      // this.setState({ loaded: false, error: false, expired: false });
+      // this.updateSchedules();
+      this.modeSelector();
     }
   }
 

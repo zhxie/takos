@@ -35,50 +35,19 @@ class GearShopWindow extends React.Component {
     let errorOrder = null;
     let errorGears = null;
     let firstErrorLog = null;
-    return GearShopHelper.getOrderedGear()
-      .then(res => {
-        if (res !== null) {
-          if (res.error != null) {
-            throw res.error;
-          } else {
-            this.setState({ order: res });
-          }
-        } else {
-          this.setState({ order: null });
+    return Promise.all([this.updateOrderedGear(), this.updateShopGears()])
+      .then(values => {
+        if (values[0] instanceof TakosError) {
+          errorOrder = values[0];
+        }
+        if (values[1] instanceof TakosError) {
+          errorGears = values[1];
         }
       })
       .catch(e => {
-        if (e instanceof TakosError) {
-          errorOrder = e;
-        } else {
-          console.error(e);
-          errorOrder = new TakosError('can_not_update_ordered_gear');
-        }
-      })
-      .then(() => {
-        return GearShopHelper.getShopGears();
-      })
-      .then(res => {
-        if (res === null) {
-          throw new TakosError('can_not_get_shop_gears');
-        } else {
-          res.forEach(element => {
-            if (element.error !== null) {
-              throw element.error;
-            }
-          });
-          this.setState({ gears: res });
-          // Set update interval
-          this.timer = setInterval(this.timeout, 60000);
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          errorGears = e;
-        } else {
-          console.error(e);
-          errorGears = new TakosError('can_not_update_shop_gears');
-        }
+        console.error(e);
+        errorOrder = e;
+        errorGears = e;
       })
       .then(() => {
         if (errorOrder !== null) {
@@ -122,6 +91,55 @@ class GearShopWindow extends React.Component {
         }
       })
       .catch();
+  };
+
+  updateOrderedGear = () => {
+    return GearShopHelper.getOrderedGear()
+      .then(res => {
+        if (res !== null) {
+          if (res.error != null) {
+            throw res.error;
+          } else {
+            this.setState({ order: res });
+          }
+        } else {
+          this.setState({ order: null });
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_ordered_gear');
+        }
+      });
+  };
+
+  updateShopGears = () => {
+    return GearShopHelper.getShopGears()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_get_shop_gears');
+        } else {
+          res.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          this.setState({ gears: res });
+          // Set update interval
+          this.timer = setInterval(this.timeout, 60000);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_shop_gears');
+        }
+      });
   };
 
   orderGear = id => {

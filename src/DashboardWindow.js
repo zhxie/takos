@@ -548,25 +548,28 @@ class DashboardWindow extends React.Component {
         if (res === null) {
           throw new TakosError('can_not_get_schedules');
         } else {
-          let schedules = {};
-          if (res.regularSchedules[0].error !== null) {
-            throw new TakosError(res.regularSchedules[0].error);
+          res.regularSchedules.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          res.rankedSchedules.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          res.leagueSchedules.forEach(element => {
+            if (element.error !== null) {
+              throw new TakosError(element.error);
+            }
+          });
+          if (res.regularSchedules.length > 0 && res.rankedSchedules.length > 0 && res.leagueSchedules.length > 0) {
+            this.setState({ schedules: res });
+            // Set update interval
+            this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
           } else {
-            schedules.regular = res.regularSchedules[0];
+            throw new TakosError('can_not_parse_schedules');
           }
-          if (res.rankedSchedules[0].error !== null) {
-            throw new TakosError(res.rankedSchedules[0].error);
-          } else {
-            schedules.ranked = res.rankedSchedules[0];
-          }
-          if (res.leagueSchedules[0].error !== null) {
-            throw new TakosError(res.leagueSchedules[0].error);
-          } else {
-            schedules.league = res.leagueSchedules[0];
-          }
-          this.setState({ schedules: schedules });
-          // Set update interval
-          this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
         }
       })
       .catch(e => {
@@ -661,7 +664,7 @@ class DashboardWindow extends React.Component {
         } else {
           res.forEach(element => {
             if (element.error !== null) {
-              throw element.error;
+              throw new TakosError(element.error);
             }
           });
           this.setState({ shopGears: res });
@@ -680,8 +683,8 @@ class DashboardWindow extends React.Component {
   };
 
   schedulesTimeout = () => {
-    if (this.state.schedules instanceof Array && this.state.schedules.length > 0) {
-      if (new Date(this.state.schedules.regular.endTime * 1000) - new Date() < 0) {
+    if (this.state.schedules !== null) {
+      if (new Date(this.state.schedules.regularSchedules[0].endTime * 1000) - new Date() < 0) {
         this.setState({ schedulesExpired: true });
       } else {
         // Force update the page to update the remaining and coming time
@@ -1279,7 +1282,7 @@ class DashboardWindow extends React.Component {
                         <Card hoverable bodyStyle={{ padding: '0' }} style={{ cursor: 'default' }}>
                           <Tabs size="large" tabBarStyle={{ margin: '0', padding: '2px 8px 0 8px' }}>
                             {(() => {
-                              if (this.state.schedules.regular !== undefined) {
+                              if (this.state.schedules.regularSchedules.length > 0) {
                                 return (
                                   <TabPane
                                     tab={<FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />}
@@ -1287,7 +1290,7 @@ class DashboardWindow extends React.Component {
                                   >
                                     <Link to={'/schedules/regular'}>
                                       <ScheduleCard
-                                        schedule={this.state.schedules.regular}
+                                        schedule={this.state.schedules.regularSchedules[0]}
                                         bordered={false}
                                         hoverable={false}
                                         pointer={true}
@@ -1298,7 +1301,7 @@ class DashboardWindow extends React.Component {
                               }
                             })()}
                             {(() => {
-                              if (this.state.schedules.ranked !== undefined) {
+                              if (this.state.schedules.rankedSchedules.length > 0) {
                                 return (
                                   <TabPane
                                     tab={<FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />}
@@ -1306,7 +1309,7 @@ class DashboardWindow extends React.Component {
                                   >
                                     <Link to={'/schedules/ranked'}>
                                       <ScheduleCard
-                                        schedule={this.state.schedules.ranked}
+                                        schedule={this.state.schedules.rankedSchedules[0]}
                                         bordered={false}
                                         hoverable={false}
                                         pointer={true}
@@ -1317,7 +1320,7 @@ class DashboardWindow extends React.Component {
                               }
                             })()}
                             {(() => {
-                              if (this.state.schedules.league !== undefined) {
+                              if (this.state.schedules.leagueSchedules.length > 0) {
                                 return (
                                   <TabPane
                                     tab={<FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />}
@@ -1325,7 +1328,7 @@ class DashboardWindow extends React.Component {
                                   >
                                     <Link to={'/schedules/league'}>
                                       <ScheduleCard
-                                        schedule={this.state.schedules.league}
+                                        schedule={this.state.schedules.leagueSchedules[0]}
                                         bordered={false}
                                         hoverable={false}
                                         pointer={true}
