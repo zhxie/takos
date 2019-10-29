@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, Alert, Button, Row, Col, Card, Statistic, Tooltip, Tabs } from 'antd';
+import { Alert, Button, Row, Col, Card, Statistic, Tooltip, Tabs } from 'antd';
 
 import './DashboardWindow.css';
 import icon from './assets/images/character-judd.png';
@@ -21,6 +21,7 @@ import RewardGearCard from './components/RewardGearCard';
 import ScheduleCard from './components/ScheduleCard';
 import ShiftCard from './components/ShiftCard';
 import ShopGearCard from './components/ShopGearCard';
+import WindowLayout from './components/WindowLayout';
 import { RankedBattle, LeagueBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import Rule from './models/Rule';
@@ -33,7 +34,6 @@ import ScheduleHelper from './utils/ScheduleHelper';
 import ShiftHelper from './utils/ShiftHelper';
 import StorageHelper from './utils/StorageHelper';
 
-const { Header, Content } = Layout;
 const { TabPane } = Tabs;
 
 class DashboardWindow extends React.Component {
@@ -1366,51 +1366,43 @@ class DashboardWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="DashboardWindow-header" style={{ zIndex: 1 }}>
-            <img className="DashboardWindow-header-icon" src={icon} alt="dashboard" />
-            <p className="DashboardWindow-header-title">
-              <FormattedMessage id="app.dashboard" defaultMessage="Dashboard" />
-            </p>
-          </Header>
-          <Content className="DashboardWindow-content">
-            {(() => {
-              if (!this.state.loaded) {
-                if (this.state.updateTotal === 0) {
-                  return (
-                    <LoadingResult
-                      description={
-                        <FormattedMessage
-                          id="app.result.loading.description.check_update_data"
-                          defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
-                        />
-                      }
-                    />
-                  );
-                } else if (this.state.updateCurrent > this.state.updateTotal) {
-                  return <LoadingResult />;
-                } else {
-                  return (
-                    <LoadingResult
-                      description={
-                        <FormattedMessage
-                          id="app.result.loading.description.update_data"
-                          defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
-                          values={{
-                            current: this.state.updateCurrent,
-                            total: this.state.updateTotal
-                          }}
-                        />
-                      }
-                    />
-                  );
-                }
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.dashboard" defaultMessage="Dashboard" />}>
+          {(() => {
+            if (!this.state.loaded) {
+              if (this.state.updateTotal === 0) {
+                return (
+                  <LoadingResult
+                    description={
+                      <FormattedMessage
+                        id="app.result.loading.description.check_update_data"
+                        defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
+                      />
+                    }
+                  />
+                );
+              } else if (this.state.updateCurrent > this.state.updateTotal) {
+                return <LoadingResult />;
               } else {
-                return this.renderContent();
+                return (
+                  <LoadingResult
+                    description={
+                      <FormattedMessage
+                        id="app.result.loading.description.update_data"
+                        defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
+                        values={{
+                          current: this.state.updateCurrent,
+                          total: this.state.updateTotal
+                        }}
+                      />
+                    }
+                  />
+                );
               }
-            })()}
-          </Content>
-        </Layout>
+            } else {
+              return this.renderContent();
+            }
+          })()}
+        </WindowLayout>
       );
     }
   }

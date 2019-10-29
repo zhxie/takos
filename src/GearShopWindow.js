@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button, Modal } from 'antd';
+import { PageHeader, Alert, Button, Modal } from 'antd';
 
 import './GearShopWindow.css';
 import icon from './assets/images/character-cooler-heads-2.png';
@@ -9,11 +9,11 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import OrderedGearCard from './components/OrderedGearCard';
 import ShopGearCard from './components/ShopGearCard';
+import WindowLayout from './components/WindowLayout';
 import TakosError from './utils/ErrorHelper';
 import GearShopHelper from './utils/GearShopHelper';
 import TimeConverter from './utils/TimeConverter';
 
-const { Header, Content } = Layout;
 const { confirm } = Modal;
 
 class GearShopWindow extends React.Component {
@@ -274,23 +274,15 @@ class GearShopWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="GearShopWindow-header" style={{ zIndex: 1 }}>
-            <img className="GearShopWindow-header-icon" src={icon} alt="icon" />
-            <p className="GearShopWindow-header-title">
-              <FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />
-            </p>
-          </Header>
-          <Content className="GearShopWindow-content">
-            {(() => {
-              if (!this.state.loaded) {
-                return <LoadingResult />;
-              } else {
-                return this.renderContent();
-              }
-            })()}
-          </Content>
-        </Layout>
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />}>
+          {(() => {
+            if (!this.state.loaded) {
+              return <LoadingResult />;
+            } else {
+              return this.renderContent();
+            }
+          })()}
+        </WindowLayout>
       );
     }
   }

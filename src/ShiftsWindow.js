@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button } from 'antd';
+import { PageHeader, Alert, Button } from 'antd';
 
 import './ShiftsWindow.css';
 import icon from './assets/images/salmon-run.png';
@@ -9,11 +9,10 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import RewardGearCard from './components/RewardGearCard';
 import ShiftCard from './components/ShiftCard';
+import WindowLayout from './components/WindowLayout';
 import TakosError from './utils/ErrorHelper';
 import ShiftHelper from './utils/ShiftHelper';
 import TimeConverter from './utils/TimeConverter';
-
-const { Header, Content } = Layout;
 
 class ShiftsWindow extends React.Component {
   state = {
@@ -250,26 +249,19 @@ class ShiftsWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="ShiftsWindow-header" style={{ zIndex: 1 }}>
-            <img className="ShiftsWindow-header-icon" src={icon} alt="icon" />
-            <p className="ShiftsWindow-header-title">
-              <FormattedMessage id="app.shifts" defaultMessage="Shifts" />
-            </p>
-            <p className="ShiftsWindow-header-subtitle">
-              <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
-            </p>
-          </Header>
-          <Content className="ShiftsWindow-content">
-            {(() => {
-              if (!this.state.loaded) {
-                return <LoadingResult />;
-              } else {
-                return this.renderContent();
-              }
-            })()}
-          </Content>
-        </Layout>
+        <WindowLayout
+          icon={icon}
+          title={<FormattedMessage id="app.shifts" defaultMessage="Shifts" />}
+          subtitle={<FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />}
+        >
+          {(() => {
+            if (!this.state.loaded) {
+              return <LoadingResult />;
+            } else {
+              return this.renderContent();
+            }
+          })()}
+        </WindowLayout>
       );
     }
   }

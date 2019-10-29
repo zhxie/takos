@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Button } from 'antd';
+import { PageHeader, Alert, Button } from 'antd';
 
 import './SchedulesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
@@ -10,12 +10,11 @@ import regularIcon from './assets/images/mode-regular.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import ScheduleCard from './components/ScheduleCard';
+import WindowLayout from './components/WindowLayout';
 import { Mode } from './models/Mode';
 import TakosError from './utils/ErrorHelper';
 import ScheduleHelper from './utils/ScheduleHelper';
 import TimeConverter from './utils/TimeConverter';
-
-const { Header, Content } = Layout;
 
 class SchedulesWindow extends React.Component {
   state = {
@@ -240,26 +239,19 @@ class SchedulesWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="SchedulesWindow-header" style={{ zIndex: 1 }}>
-            <img className="SchedulesWindow-header-icon" src={this.iconSelector()} alt="mode" />
-            <p className="SchedulesWindow-header-title">
-              <FormattedMessage id="app.schedules" defaultMessage="Schedules" />
-            </p>
-            <p className="SchedulesWindow-header-subtitle">
-              <FormattedMessage id={this.mode.name} />
-            </p>
-          </Header>
-          <Content className="SchedulesWindow-content">
-            {(() => {
-              if (!this.state.loaded) {
-                return <LoadingResult />;
-              } else {
-                return this.renderContent();
-              }
-            })()}
-          </Content>
-        </Layout>
+        <WindowLayout
+          icon={this.iconSelector()}
+          title={<FormattedMessage id="app.schedules" defaultMessage="Schedules" />}
+          subtitle={<FormattedMessage id={this.mode.name} />}
+        >
+          {(() => {
+            if (!this.state.loaded) {
+              return <LoadingResult />;
+            } else {
+              return this.renderContent();
+            }
+          })()}
+        </WindowLayout>
       );
     }
   }

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Layout, PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select, Tooltip, Switch } from 'antd';
+import { PageHeader, Alert, Form, Row, Col, Input, Icon, Button, Modal, Select, Tooltip, Switch } from 'antd';
 
 import './SettingsWindow.css';
 import icon from './assets/images/character-c-q-cumber.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import WindowLayout from './components/WindowLayout';
 import { Battle } from './models/Battle';
 import { Job } from './models/Job';
 import TakosError from './utils/ErrorHelper';
@@ -15,7 +16,6 @@ import LoginHelper from './utils/LoginHelper';
 import StorageHelper from './utils/StorageHelper';
 import './utils/StringHelper';
 
-const { Header, Content } = Layout;
 const { confirm } = Modal;
 const { Option } = Select;
 
@@ -918,205 +918,197 @@ class SettingsWindow extends React.Component {
       }
     } else {
       return (
-        <Layout>
-          <Header className="SettingsWindow-header" style={{ zIndex: 3 }}>
-            <img className="SettingsWindow-header-icon" src={icon} alt="settings" />
-            <p className="SettingsWindow-header-title">
-              <FormattedMessage id="app.settings" defaultMessage="Settings" />
-            </p>
-          </Header>
-          <Content className="SettingsWindow-content">
-            <PageHeader title={<FormattedMessage id="app.settings.user" defaultMessage="User" />} />
-            <Alert
-              message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
-              description={
-                <p style={{ margin: 0 }}>
-                  <FormattedMessage
-                    id="app.alert.warning.automatic_cookie_generation"
-                    defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
-                    values={{
-                      a: msg => (
-                        <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
-                      )
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.settings" defaultMessage="Settings" />} zIndex={3}>
+          <PageHeader title={<FormattedMessage id="app.settings.user" defaultMessage="User" />} />
+          <Alert
+            message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
+            description={
+              <p style={{ margin: 0 }}>
+                <FormattedMessage
+                  id="app.alert.warning.automatic_cookie_generation"
+                  defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
+                  values={{
+                    a: msg => (
+                      <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+                    )
+                  }}
+                />
+              </p>
+            }
+            type="warning"
+            showIcon
+            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+          />
+          <Alert
+            message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+            description={
+              <p style={{ margin: 0 }}>
+                <FormattedMessage
+                  id="app.alert.info.use_automatic_cookie_generation"
+                  defaultMessage='If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                  values={{
+                    a: msg => (
+                      <a
+                        href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
+                          this.loginParameters.state,
+                          this.loginParameters.codeChallenge
+                        )}
+                      >
+                        {msg}
+                      </a>
+                    )
+                  }}
+                />
+              </p>
+            }
+            type="info"
+            showIcon
+            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+          />
+          <Alert
+            message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
+            description={
+              <p style={{ margin: 0 }}>
+                <FormattedMessage
+                  id="app.alert.info.switch_account"
+                  defaultMessage="If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared."
+                />
+              </p>
+            }
+            type="info"
+            showIcon
+            style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
+          />
+          <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+            <Form.Item label={<FormattedMessage id="app.settings.user.cookie" defaultMessage="Cookie" />}>
+              <Row gutter={8}>
+                <Col sm={18} md={12}>
+                  <Input
+                    value={this.state.cookie}
+                    onChange={e => {
+                      this.cookieOnChange(e.target.value);
                     }}
-                  />
-                </p>
-              }
-              type="warning"
-              showIcon
-              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-            />
-            <Alert
-              message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
-              description={
-                <p style={{ margin: 0 }}>
-                  <FormattedMessage
-                    id="app.alert.info.use_automatic_cookie_generation"
-                    defaultMessage='If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
-                    values={{
-                      a: msg => (
-                        <a
-                          href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
-                            this.loginParameters.state,
-                            this.loginParameters.codeChallenge
-                          )}
-                        >
-                          {msg}
-                        </a>
-                      )
-                    }}
-                  />
-                </p>
-              }
-              type="info"
-              showIcon
-              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-            />
-            <Alert
-              message={<FormattedMessage id="app.alert.info" defaultMessage="Info" />}
-              description={
-                <p style={{ margin: 0 }}>
-                  <FormattedMessage
-                    id="app.alert.info.switch_account"
-                    defaultMessage="If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and salmon run, will be cleared."
-                  />
-                </p>
-              }
-              type="info"
-              showIcon
-              style={{ margin: '12px 24px 0 24px', width: 'calc(100% - 48px)' }}
-            />
-            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
-              <Form.Item label={<FormattedMessage id="app.settings.user.cookie" defaultMessage="Cookie" />}>
-                <Row gutter={8}>
-                  <Col sm={18} md={12}>
-                    <Input
-                      value={this.state.cookie}
-                      onChange={e => {
-                        this.cookieOnChange(e.target.value);
-                      }}
-                      allowClear
-                      prefix={(() => {
-                        if (this.state.isUrl) {
-                          return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                        } else if (this.state.isCookie) {
-                          return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                        } else {
-                          return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
-                        }
-                      })()}
-                    />
-                  </Col>
-                  <Col span={6}>
-                    <Button onClick={this.showUpdateCookieConfirm}>
-                      <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
-                    </Button>
-                  </Col>
-                </Row>
-              </Form.Item>
-              <Form.Item label={<FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />}>
-                <Row gutter={8}>
-                  <Col>
-                    <Button type="danger" onClick={this.showLogOutConfirm}>
-                      <FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />
-                    </Button>
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Form>
-            <PageHeader title={<FormattedMessage id="app.settings.appearance" defaultMessage="Appearance" />} />
-            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
-              <Form.Item
-                label={
-                  <FormattedMessage id="app.settings.appearance.use_simple_lists" defaultMessage="Use Simple Lists" />
-                }
-              >
-                <Row gutter={8}>
-                  <Col>
-                    <Tooltip
-                      placement="right"
-                      title={
-                        <FormattedMessage
-                          id="app.settings.appearance.use_simple_lists.description"
-                          defaultMessage="Use simple lists in battles and Salmon Run"
-                        />
+                    allowClear
+                    prefix={(() => {
+                      if (this.state.isUrl) {
+                        return <Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                      } else if (this.state.isCookie) {
+                        return <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />;
+                      } else {
+                        return <Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />;
                       }
-                    >
-                      <Switch checked={this.state.useSimpleLists} onChange={this.changeUseSimpleLists} />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </Form.Item>
-              <Form.Item label={<FormattedMessage id="app.settings.appearance.language" defaultMessage="Language" />}>
-                <Row gutter={8}>
-                  <Col span={6}>
-                    <Select
-                      value={this.state.language}
-                      onChange={this.changeLanguage}
-                      defaultValue="en_US"
-                      style={{ width: 120, margin: '0' }}
-                    >
-                      <Option value="en_US">English</Option>
-                      <Option value="ja_JP">日本語</Option>
-                      <Option value="zh_CN">中文</Option>
-                    </Select>
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Form>
-            <PageHeader title={<FormattedMessage id="app.settings.system" defaultMessage="System" />} />
-            <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
-              <Form.Item label={<FormattedMessage id="app.settings.system.data" defaultMessage="Data" />}>
-                <Row gutter={8}>
-                  <Col>
-                    <Button onClick={this.exportData} loading={this.state.exporting} type="default">
-                      <FormattedMessage id="app.settings.system.data.backup" defaultMessage="Backup" />
-                    </Button>
-                    <Button
-                      type="default"
-                      onClick={() => {
-                        document.getElementById('import').click();
-                      }}
-                      style={{ marginLeft: '8px' }}
-                    >
-                      <FormattedMessage id="app.settings.system.data.restore" defaultMessage="Restore from Backup" />
-                      <input id="import" type="file" onChange={this.importData} style={{ display: 'none' }} />
-                    </Button>
-                    <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
-                      <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
-                    </Button>
-                  </Col>
-                </Row>
-              </Form.Item>
-              <Form.Item
-                label={<FormattedMessage id="app.settings.system.import_and_export" defaultMessage="Import / Export" />}
-              >
-                <Row gutter={8}>
-                  <Col>
-                    <Button
-                      onClick={() => {
-                        document.getElementById('importFromSplatnetJson').click();
-                      }}
-                      type="default"
-                    >
+                    })()}
+                  />
+                </Col>
+                <Col span={6}>
+                  <Button onClick={this.showUpdateCookieConfirm}>
+                    <FormattedMessage id="app.settings.user.cookie.update" defaultMessage="Update cookie" />
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+            <Form.Item label={<FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />}>
+              <Row gutter={8}>
+                <Col>
+                  <Button type="danger" onClick={this.showLogOutConfirm}>
+                    <FormattedMessage id="app.settings.user.log_out" defaultMessage="Log Out" />
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
+          <PageHeader title={<FormattedMessage id="app.settings.appearance" defaultMessage="Appearance" />} />
+          <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+            <Form.Item
+              label={
+                <FormattedMessage id="app.settings.appearance.use_simple_lists" defaultMessage="Use Simple Lists" />
+              }
+            >
+              <Row gutter={8}>
+                <Col>
+                  <Tooltip
+                    placement="right"
+                    title={
                       <FormattedMessage
-                        id="app.settings.system.import_and_export.import.splatnet_json"
-                        defaultMessage="SplatNet JSON"
+                        id="app.settings.appearance.use_simple_lists.description"
+                        defaultMessage="Use simple lists in battles and Salmon Run"
                       />
-                      <input
-                        id="importFromSplatnetJson"
-                        type="file"
-                        multiple="multiple"
-                        onChange={this.importDataFromSplatnetJson}
-                        style={{ display: 'none' }}
-                      />
-                    </Button>
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Form>
-          </Content>
-        </Layout>
+                    }
+                  >
+                    <Switch checked={this.state.useSimpleLists} onChange={this.changeUseSimpleLists} />
+                  </Tooltip>
+                </Col>
+              </Row>
+            </Form.Item>
+            <Form.Item label={<FormattedMessage id="app.settings.appearance.language" defaultMessage="Language" />}>
+              <Row gutter={8}>
+                <Col span={6}>
+                  <Select
+                    value={this.state.language}
+                    onChange={this.changeLanguage}
+                    defaultValue="en_US"
+                    style={{ width: 120, margin: '0' }}
+                  >
+                    <Option value="en_US">English</Option>
+                    <Option value="ja_JP">日本語</Option>
+                    <Option value="zh_CN">中文</Option>
+                  </Select>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
+          <PageHeader title={<FormattedMessage id="app.settings.system" defaultMessage="System" />} />
+          <Form className="SettingsWindow-content-form" labelCol={{ span: 24 }}>
+            <Form.Item label={<FormattedMessage id="app.settings.system.data" defaultMessage="Data" />}>
+              <Row gutter={8}>
+                <Col>
+                  <Button onClick={this.exportData} loading={this.state.exporting} type="default">
+                    <FormattedMessage id="app.settings.system.data.backup" defaultMessage="Backup" />
+                  </Button>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      document.getElementById('import').click();
+                    }}
+                    style={{ marginLeft: '8px' }}
+                  >
+                    <FormattedMessage id="app.settings.system.data.restore" defaultMessage="Restore from Backup" />
+                    <input id="import" type="file" onChange={this.importData} style={{ display: 'none' }} />
+                  </Button>
+                  <Button type="danger" onClick={this.showClearDataConfirm} style={{ marginLeft: '8px' }}>
+                    <FormattedMessage id="app.settings.system.data.clear" defaultMessage="Clear Data" />
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+            <Form.Item
+              label={<FormattedMessage id="app.settings.system.import_and_export" defaultMessage="Import / Export" />}
+            >
+              <Row gutter={8}>
+                <Col>
+                  <Button
+                    onClick={() => {
+                      document.getElementById('importFromSplatnetJson').click();
+                    }}
+                    type="default"
+                  >
+                    <FormattedMessage
+                      id="app.settings.system.import_and_export.import.splatnet_json"
+                      defaultMessage="SplatNet JSON"
+                    />
+                    <input
+                      id="importFromSplatnetJson"
+                      type="file"
+                      multiple="multiple"
+                      onChange={this.importDataFromSplatnetJson}
+                      style={{ display: 'none' }}
+                    />
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
+        </WindowLayout>
       );
     }
   }

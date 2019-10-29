@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
+import { PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
 
 import './BattlesWindow.css';
 import leagueIcon from './assets/images/mode-league.png';
@@ -19,6 +19,7 @@ import { OctolingsDeathIcon } from './components/CustomIcons';
 import BattleModal from './components/BattleModal';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import WindowLayout from './components/WindowLayout'
 import { RankedBattle, LeagueBattle, SplatfestBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import Rule from './models/Rule';
@@ -30,7 +31,6 @@ import FileFolderUrl from './utils/FileFolderUrl';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
 
-const { Header, Content } = Layout;
 const { Column } = Table;
 const { confirm } = Modal;
 
@@ -1847,15 +1847,8 @@ class BattlesWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="BattlesWindow-header" style={{ zIndex: 1 }}>
-            <img className="BattlesWindow-header-icon" src={regularIcon} alt="battle" />
-            <p className="BattlesWindow-header-title">
-              <FormattedMessage id="app.battles" defaultMessage="Battles" />
-            </p>
-          </Header>
-          <Content className="BattlesWindow-content">
-            {(() => {
+        <WindowLayout icon={regularIcon} title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} >
+          {(() => {
               if (!this.state.loaded) {
                 if (this.state.updateTotal === 0) {
                   return (
@@ -1890,8 +1883,7 @@ class BattlesWindow extends React.Component {
                 return this.renderContent();
               }
             })()}
-          </Content>
-        </Layout>
+        </WindowLayout>
       );
     }
   }

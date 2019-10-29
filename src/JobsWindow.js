@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import { Layout, PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
+import { PageHeader, Alert, Button, Table, Tag, Tooltip, Empty, Progress, Modal, Icon } from 'antd';
 
 import './JobsWindow.css';
 import icon from './assets/images/salmon-run.png';
@@ -10,6 +10,7 @@ import { OctolingsDeathIcon } from './components/CustomIcons';
 import ErrorResult from './components/ErrorResult';
 import JobModal from './components/JobModal';
 import LoadingResult from './components/LoadingResult';
+import WindowLayout from './components/WindowLayout'
 import { Stage } from './models/Stage';
 import { MainWeapon, SpecialWeapon } from './models/Weapon';
 import TakosError from './utils/ErrorHelper';
@@ -17,7 +18,6 @@ import FileFolderUrl from './utils/FileFolderUrl';
 import JobHelper from './utils/JobHelper';
 import StorageHelper from './utils/StorageHelper';
 
-const { Header, Content } = Layout;
 const { Column } = Table;
 const { confirm } = Modal;
 
@@ -35,6 +35,20 @@ class JobsWindow extends React.Component {
     showJobId: null,
     search: null
   };
+
+  constructor(props) {
+    super(props);
+    if (this.props.location.hash !== '') {
+      this.state.showJobId = parseInt(this.props.location.hash.replace('#', ''));
+    } else {
+      this.state.showJobId = null;
+    }
+    if (this.props.location.search !== '') {
+      this.state.search = queryString.parse(this.props.location.search);
+    } else {
+      this.state.search = null;
+    }
+  }
 
   updateJobs = () => {
     // TODO: this method should be extracted
@@ -304,20 +318,6 @@ class JobsWindow extends React.Component {
       onCancel() {}
     });
   };
-
-  constructor(props) {
-    super(props);
-    if (this.props.location.hash !== '') {
-      this.state.showJobId = parseInt(this.props.location.hash.replace('#', ''));
-    } else {
-      this.state.showJobId = null;
-    }
-    if (this.props.location.search !== '') {
-      this.state.search = queryString.parse(this.props.location.search);
-    } else {
-      this.state.search = null;
-    }
-  }
 
   renderContent = () => {
     return (
@@ -949,15 +949,8 @@ class JobsWindow extends React.Component {
       );
     } else {
       return (
-        <Layout>
-          <Header className="JobsWindow-header" style={{ zIndex: 1 }}>
-            <img className="JobsWindow-header-icon" src={icon} alt="salmon" />
-            <p className="JobsWindow-header-title">
-              <FormattedMessage id="app.jobs" defaultMessage="Jobs" />
-            </p>
-          </Header>
-          <Content className="JobsWindow-content">
-            {(() => {
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />} >
+          {(() => {
               if (!this.state.loaded) {
                 if (this.state.updateTotal === 0) {
                   return (
@@ -992,8 +985,7 @@ class JobsWindow extends React.Component {
                 return this.renderContent();
               }
             })()}
-          </Content>
-        </Layout>
+        </WindowLayout>
       );
     }
   }
