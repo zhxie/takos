@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import { PageHeader, Alert, Button } from 'antd';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { PageHeader, Alert, Button, Modal } from 'antd';
 
 import './StagesStatisticsWindow.css';
 import icon from './assets/images/rule-tower-control.png';
@@ -133,7 +133,19 @@ class StagesStatisticsWindow extends React.Component {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
-        anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        anchorElement.scrollIntoView({ block: 'start', behavior: 'instant' });
+      } else {
+        Modal.info({
+          title: this.props.intl.formatMessage({
+            id: 'app.modal.info.no_matching_stage',
+            defaultMessage: 'No matching stage'
+          }),
+          content: this.props.intl.formatMessage({
+            id: 'app.modal.info.no_matching_stage.content',
+            defaultMessage:
+              'Takos can not find a matching stage in statistics. You can switch whether to show SplatNet stats in statistics in settings.'
+          })
+        });
       }
     }
   };
@@ -160,7 +172,9 @@ class StagesStatisticsWindow extends React.Component {
         })()}
         {(() => {
           if (this.state.record !== null || this.state.statistics !== null) {
-            const data = this.formatData();
+            const data = this.formatData().sort((a, b) => {
+              return a.stage.stage.value - b.stage.stage.value;
+            });
             const battles = data.filter(element => !element.isSalmonRun);
             const jobs = data.filter(element => element.isSalmonRun);
             return (
@@ -268,4 +282,4 @@ class StagesStatisticsWindow extends React.Component {
   }
 }
 
-export default StagesStatisticsWindow;
+export default injectIntl(StagesStatisticsWindow);

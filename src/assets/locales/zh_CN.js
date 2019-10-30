@@ -1185,6 +1185,9 @@ const zh_CN = {
     '同时，您也可以尝试使用 <a1>Ikas</a1>、<a2>splatnet2statink</a2>、<a3>Salmonia</a3> 等第三方应用来获取 Cookie。',
   'app.modal.error.update_cookie_no_session_token': '无法更新 Cookie',
   'app.modal.error.update_cookie_no_session_token.content': 'Takos 只能在使用自动 Cookie 生成的情况下更新 Cookie。',
+  'app.modal.info.no_matching_stage': '没有匹配的场地',
+  'app.modal.info.no_matching_stage.content':
+    'Takos 未能在记录中找到匹配的场地。您可以在设置中切换是否在记录中显示 SplatNet 记录。',
   'app.modal.confirm.log_out': '您希望退出登录吗？',
   'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、打工等已保存的数据都将被清空。',
   'app.modal.confirm.clear_data': '您希望清除数据吗？',

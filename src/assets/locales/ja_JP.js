@@ -1202,6 +1202,9 @@ const ja_JP = {
   'app.modal.error.update_cookie_no_session_token': 'クッキーを更新できません',
   'app.modal.error.update_cookie_no_session_token.content':
     'Takos は自動クッキー生成を使用しない限り、クッキーを更新できません。',
+  'app.modal.info.no_matching_stage': '一致するステージはありません',
+  'app.modal.info.no_matching_stage.content':
+    'Takos は統計内で一致するステージを見つけることができませんでした。設定を切り替えて、統計にイカリングのきろくを表示できます。',
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
     'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',

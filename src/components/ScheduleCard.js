@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Card, Row, Col } from 'antd';
 
@@ -51,60 +52,50 @@ class ScheduleCard extends React.Component {
       >
         <Row>
           <Col xs={24} sm={12}>
-            <Card
-              className="ScheduleCard-schedule-stage"
-              hoverable
-              cover={
-                <img
-                  className="ScheduleCard-schedule-stage-cover"
-                  alt="stage 1"
-                  src={FileFolderUrl.SPLATNET + this.props.schedule.stage1.url}
-                />
-              }
-              bodyStyle={{
-                padding: '6px'
-              }}
-              style={(() => {
-                if (this.props.pointer) {
-                  return {
-                    cursor: 'pointer'
-                  };
+            <Link to={'/stats/stages#{0}'.format(this.props.schedule.stage1.stage.value)}>
+              <Card
+                className="ScheduleCard-schedule-stage"
+                hoverable
+                cover={
+                  <img
+                    className="ScheduleCard-schedule-stage-cover"
+                    alt="stage 1"
+                    src={FileFolderUrl.SPLATNET + this.props.schedule.stage1.url}
+                  />
                 }
-              })()}
-            >
-              <Meta
-                className="ScheduleCard-schedule-stage-meta"
-                title={<FormattedMessage id={this.props.schedule.stage1.stage.name} />}
-              />
-            </Card>
+                bodyStyle={{
+                  padding: '6px'
+                }}
+              >
+                <Meta
+                  className="ScheduleCard-schedule-stage-meta"
+                  title={<FormattedMessage id={this.props.schedule.stage1.stage.name} />}
+                />
+              </Card>
+            </Link>
           </Col>
           <Col xs={24} sm={12}>
-            <Card
-              className="ScheduleCard-schedule-stage"
-              hoverable
-              cover={
-                <img
-                  className="ScheduleCard-schedule-stage-cover"
-                  alt="stage 2"
-                  src={FileFolderUrl.SPLATNET + this.props.schedule.stage2.url}
-                />
-              }
-              bodyStyle={{
-                padding: '6px'
-              }}
-              style={(() => {
-                if (this.props.pointer) {
-                  return {
-                    cursor: 'pointer'
-                  };
+            <Link to={'/stats/stages#{0}'.format(this.props.schedule.stage2.stage.value)}>
+              <Card
+                className="ScheduleCard-schedule-stage"
+                hoverable
+                cover={
+                  <img
+                    className="ScheduleCard-schedule-stage-cover"
+                    alt="stage 2"
+                    src={FileFolderUrl.SPLATNET + this.props.schedule.stage2.url}
+                  />
                 }
-              })()}
-            >
-              <Meta
-                className="ScheduleCard-schedule-stage-meta"
-                title={<FormattedMessage id={this.props.schedule.stage2.stage.name} />}
-              />
-            </Card>
+                bodyStyle={{
+                  padding: '6px'
+                }}
+              >
+                <Meta
+                  className="ScheduleCard-schedule-stage-meta"
+                  title={<FormattedMessage id={this.props.schedule.stage2.stage.name} />}
+                />
+              </Card>
+            </Link>
           </Col>
         </Row>
         <Meta

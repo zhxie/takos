@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Card, Row, Col, Tooltip } from 'antd';
 
@@ -32,32 +33,27 @@ class ShiftCard extends React.Component {
             return (
               <Row className="ShiftCard-shift-row">
                 <Col xs={24} sm={12}>
-                  <Card
-                    className="ShiftCard-shift-stage"
-                    hoverable
-                    cover={
-                      <img
-                        className="ShiftCard-shift-stage-cover"
-                        alt="stage"
-                        src={FileFolderUrl.SPLATNET + this.props.shift.stage.url}
-                      />
-                    }
-                    bodyStyle={{
-                      padding: '6px'
-                    }}
-                    style={(() => {
-                      if (this.props.pointer) {
-                        return {
-                          cursor: 'pointer'
-                        };
+                  <Link to={'/stats/stages#{0}'.format(this.props.shift.stage.stage.value)}>
+                    <Card
+                      className="ShiftCard-shift-stage"
+                      hoverable
+                      cover={
+                        <img
+                          className="ShiftCard-shift-stage-cover"
+                          alt="stage"
+                          src={FileFolderUrl.SPLATNET + this.props.shift.stage.url}
+                        />
                       }
-                    })()}
-                  >
-                    <Meta
-                      className="ShiftCard-shift-stage-meta"
-                      title={<FormattedMessage id={this.props.shift.stage.stage.name} />}
-                    />
-                  </Card>
+                      bodyStyle={{
+                        padding: '6px'
+                      }}
+                    >
+                      <Meta
+                        className="ShiftCard-shift-stage-meta"
+                        title={<FormattedMessage id={this.props.shift.stage.stage.name} />}
+                      />
+                    </Card>
+                  </Link>
                 </Col>
                 <Col xs={24} sm={12}>
                   <Card
