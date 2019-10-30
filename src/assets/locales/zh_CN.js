@@ -1093,6 +1093,7 @@ const zh_CN = {
   'app.statistics': '记录',
   'app.stages': '场地',
   'app.weapons': '武器',
+  'app.gears': '装备',
   'app.battles': '战斗',
   'app.battles.update': '更新数据',
   'app.battles.previous': '上一场战斗 #{id}',

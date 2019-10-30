@@ -1094,6 +1094,7 @@ const ja_JP = {
   'app.statistics': 'きろく',
   'app.stages': 'ステージ',
   'app.weapons': 'ブキ',
+  'app.gears': 'ギア',
   'app.battles': 'バトル',
   'app.battles.update': '更新データ',
   'app.battles.previous': '前のバトル #{id}',

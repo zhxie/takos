@@ -1095,6 +1095,7 @@ const en_US = {
   'app.statistics': 'Statistics',
   'app.stages': 'Stages',
   'app.weapons': 'Weapons',
+  'app.gears': 'Gears',
   'app.battles': 'Battles',
   'app.battles.update': 'Update Data',
   'app.battles.previous': 'Previous Battle #{id}',

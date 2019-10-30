@@ -11,6 +11,7 @@ import JobsWindow from './JobsWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
 import ShiftsWindow from './ShiftsWindow';
+import StagesWindow from './StagesWindow';
 import logo from './assets/images/logo.svg';
 import ConstructionResult from './components/ConstructionResult';
 
@@ -42,6 +43,8 @@ class MainWindow extends React.Component {
       this.setState({ selected: ['statistics.stages'] });
     } else if (this.props.location.pathname.startsWith('/stats/weapons')) {
       this.setState({ selected: ['statistics.weapons'] });
+    } else if (this.props.location.pathname.startsWith('/stats/gears')) {
+      this.setState({ selected: ['statistics.gears'] });
     } else if (this.props.location.pathname.startsWith('/stats/battles')) {
       this.setState({ selected: ['statistics.battles'] });
     } else if (this.props.location.pathname.startsWith('/stats/salmon')) {
@@ -152,6 +155,12 @@ class MainWindow extends React.Component {
                   </span>
                   <Link to="/stats/weapons" />
                 </Menu.Item>
+                <Menu.Item key="statistics.gears">
+                  <span>
+                    <FormattedMessage id="app.gears" defaultMessage="Gears" />
+                  </span>
+                  <Link to="/stats/gears" />
+                </Menu.Item>
                 <Menu.Item key="statistics.battles">
                   <span>
                     <FormattedMessage id="app.battles" defaultMessage="Battles" />
@@ -202,13 +211,14 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}dashboard`} component={DashboardWindow} />
             <Route exact path={`${this.props.match.url}schedules/:mode`} component={SchedulesWindow} />
             <Route exact path={`${this.props.match.url}shifts`} component={ShiftsWindow} />
-            <Route exact path={`${this.props.match.url}stats/stages`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/stages`} component={StagesWindow} />
             <Route exact path={`${this.props.match.url}stats/weapons`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/gears`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
             <Route path={`${this.props.match.url}jobs`} component={JobsWindow} />
-            <Route path={`${this.props.match.url}shop`} component={GearShopWindow} />
+            <Route exact path={`${this.props.match.url}shop`} component={GearShopWindow} />
             <Route exact path={`${this.props.match.url}settings`} component={SettingsWindow} />
             <Redirect from="*" to="/404" />
           </Switch>
