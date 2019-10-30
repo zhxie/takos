@@ -41,7 +41,7 @@ class Battle extends Base {
 
   get selfPlayer() {
     return this.myTeamMembers.find(element => {
-      return (element.isSelf = true);
+      return element.isSelf === true;
     });
   }
 
