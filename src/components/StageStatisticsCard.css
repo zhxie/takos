@@ -1,0 +1,26 @@
+.StageStatisticsCard-stage {
+  margin-bottom: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.StageStatisticsCard-progress {
+  max-width: 400px;
+  width: 100%;
+}
+
+.StageStatisticsCard-battle-progress {
+  max-width: 400px;
+}
+
+.StageStatisticsCard-battle-progress .ant-progress-bg {
+  background-color: #eb2f96;
+}
+
+.StageStatisticsCard-battle-progress .ant-progress-inner {
+  background-color: #52c41a;
+}
+
+.StageStatisticsCard-job-progress {
+  max-width: 400px;
+}

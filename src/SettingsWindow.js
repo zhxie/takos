@@ -37,7 +37,8 @@ class SettingsWindow extends React.Component {
     // Value
     cookie: '',
     language: 'en_US',
-    useSimpleLists: false
+    useSimpleLists: false,
+    showSplatNetStats: false
   };
 
   constructor(props) {
@@ -74,6 +75,13 @@ class SettingsWindow extends React.Component {
       this.setState({ useSimpleLists: value });
     }
     StorageHelper.setUseSimpleLists(value);
+  };
+
+  changeShowSplatNetStats = value => {
+    if (this.state.showSplatNetStats !== value) {
+      this.setState({ showSplatNetStats: value });
+    }
+    StorageHelper.setShowSplatNetStats(value);
   };
 
   getSessionToken = () => {
@@ -1040,6 +1048,20 @@ class SettingsWindow extends React.Component {
                 </Col>
               </Row>
             </Form.Item>
+            <Form.Item
+              label={
+                <FormattedMessage
+                  id="app.settings.appearance.show_splatnet_stats"
+                  defaultMessage="Show SplatNet Stats in Statistics"
+                />
+              }
+            >
+              <Row gutter={8}>
+                <Col>
+                  <Switch checked={this.state.showSplatNetStats} onChange={this.changeShowSplatNetStats} />
+                </Col>
+              </Row>
+            </Form.Item>
             <Form.Item label={<FormattedMessage id="app.settings.appearance.language" defaultMessage="Language" />}>
               <Row gutter={8}>
                 <Col span={6}>
@@ -1131,7 +1153,7 @@ class SettingsWindow extends React.Component {
         this.setState({ language: 'en_US' });
         break;
     }
-    this.setState({ useSimpleLists: StorageHelper.useSimpleLists() });
+    this.setState({ useSimpleLists: StorageHelper.useSimpleLists(), showSplatNetStats: StorageHelper.showSplatNetStats() });
   }
 }
 

@@ -98,6 +98,13 @@ class StorageHelper {
     window.localStorage.setItem('useSimpleLists', value);
   };
 
+  static showSplatNetStats = () => {
+    return window.localStorage.getItem('showSplatNetStats') === 'true';
+  };
+  static setShowSplatNetStats = value => {
+    window.localStorage.setItem('showSplatNetStats', value);
+  };
+
   static sessionToken = () => {
     return window.localStorage.getItem('sessionToken');
   };

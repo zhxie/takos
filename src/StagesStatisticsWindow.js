@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { PageHeader, Alert, Button } from 'antd';
 
-import './ShiftsWindow.css';
+import './StagesStatisticsWindow.css';
 import icon from './assets/images/rule-tower-control.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
+import StageStatisticsCard from './components/StageStatisticsCard';
 import WindowLayout from './components/WindowLayout';
 import TakosError from './utils/ErrorHelper';
 import StatisticsHelper from './utils/StatisticsHelper';
+import StorageHelper from './utils/StorageHelper';
 
-class StagesWindow extends React.Component {
+class StagesStatisticsWindow extends React.Component {
   state = {
     // Data
     record: null,
@@ -93,12 +95,15 @@ class StagesWindow extends React.Component {
           this.setState({ loaded: true });
         }
       })
+      .then(() => {
+        this.scrollToAnchor(this.props.location.hash.replace('#', ''));
+      })
       .catch();
   };
 
   formatData = () => {
     let stages = [];
-    if (this.state.record !== null) {
+    if (StorageHelper.showSplatNetStats()) {
       // Record
       this.state.record.forEach(element => {
         let stage = {
@@ -107,34 +112,8 @@ class StagesWindow extends React.Component {
           record: element.result,
           statistics: null
         };
-        if (this.state.statistics !== null) {
-          const statisticsStage = this.state.statistics.find(ele => {
-            return ele.stage.stage === element.stage.stage;
-          });
-          if (statisticsStage !== undefined) {
-            stage.statistics = statisticsStage.result;
-          }
-        }
         stages.push(stage);
       });
-      // Statistics
-      if (this.state.statistics !== null) {
-        this.state.statistics.forEach(element => {
-          if (
-            stages.find(ele => {
-              return ele.stage.stage === element.stage.stage;
-            }) === undefined
-          ) {
-            let stage = {
-              stage: element.stage,
-              isSalmonRun: element.isSalmonRun,
-              record: null,
-              statistics: element.result
-            };
-            stages.push(stage);
-          }
-        });
-      }
     } else {
       // Statistics
       this.state.statistics.forEach(element => {
@@ -148,6 +127,15 @@ class StagesWindow extends React.Component {
       });
     }
     return stages;
+  };
+
+  scrollToAnchor = anchorName => {
+    if (anchorName) {
+      let anchorElement = document.getElementById(anchorName);
+      if (anchorElement) {
+        anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      }
+    }
   };
 
   renderContent() {
@@ -172,9 +160,51 @@ class StagesWindow extends React.Component {
         })()}
         {(() => {
           if (this.state.record !== null || this.state.statistics !== null) {
+            const data = this.formatData();
+            const battles = data.filter(element => !element.isSalmonRun);
+            const jobs = data.filter(element => element.isSalmonRun);
             return (
               <div>
-                <PageHeader title={<FormattedMessage id="app.stages" defaultMessage="Stages" />} />
+                {(() => {
+                  if (battles.length > 0) {
+                    return (
+                      <div>
+                        <PageHeader title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} />
+                        {battles.map(element => {
+                          return (
+                            <div
+                              className="StagesStatisticsWindow-content-table"
+                              key={element.stage.stage.value}
+                              id={element.stage.stage.value}
+                            >
+                              <StageStatisticsCard stage={element} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (jobs.length > 0) {
+                    return (
+                      <div>
+                        <PageHeader title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />} />
+                        {jobs.map(element => {
+                          return (
+                            <div
+                              className="StagesStatisticsWindow-content-table"
+                              key={element.stage.stage.value}
+                              id={element.stage.stage.value}
+                            >
+                              <StageStatisticsCard stage={element} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+                })()}
               </div>
             );
           }
@@ -238,4 +268,4 @@ class StagesWindow extends React.Component {
   }
 }
 
-export default StagesWindow;
+export default StagesStatisticsWindow;
