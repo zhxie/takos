@@ -1192,6 +1192,9 @@ const zh_CN = {
   'app.modal.info.no_matching_stage': '没有匹配的场地',
   'app.modal.info.no_matching_stage.content':
     'Takos 未能在记录中找到匹配的场地。您可以在设置中切换是否在记录中显示 SplatNet 记录。',
+  'app.modal.info.no_matching_weapon': '没有匹配的武器',
+  'app.modal.info.no_matching_weapon.content':
+    'Takos 未能在记录中找到匹配的武器。您可以在设置中切换是否在记录中显示 SplatNet 记录。',
   'app.modal.confirm.log_out': '您希望退出登录吗？',
   'app.modal.confirm.log_out.content': '请注意，退出登录时，战斗、打工等已保存的数据都将被清空。',
   'app.modal.confirm.clear_data': '您希望清除数据吗？',

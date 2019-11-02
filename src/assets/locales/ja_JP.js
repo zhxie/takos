@@ -1210,6 +1210,9 @@ const ja_JP = {
   'app.modal.info.no_matching_stage': '一致するステージはありません',
   'app.modal.info.no_matching_stage.content':
     'Takos は統計内で一致するステージを見つけることができませんでした。設定を切り替えて、統計にイカリングのきろくを表示できます。',
+  'app.modal.info.no_matching_weapon': '一致するブキはありません',
+  'app.modal.info.no_matching_weapon.content':
+    'Takos は統計内で一致するブキを見つけることができませんでした。設定を切り替えて、統計にイカリングのきろくを表示できます。',
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
     'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',

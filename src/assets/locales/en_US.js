@@ -1204,6 +1204,9 @@ const en_US = {
   'app.modal.info.no_matching_stage': 'No matching stage',
   'app.modal.info.no_matching_stage.content':
     'Takos can not find a matching stage in statistics. You can switch whether to show SplatNet stats in statistics in settings.',
+  'app.modal.info.no_matching_weapon': 'No matching weapon',
+  'app.modal.info.no_matching_weapon.content':
+    'Takos can not find a matching weapon in statistics. You can switch whether to show SplatNet stats in statistics in settings.',
   'app.modal.confirm.log_out': 'Do you want to log out?',
   'app.modal.confirm.log_out.content':
     'Note that when you log out, all saved data, including battles and jobs, will be cleared.',
