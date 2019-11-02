@@ -23,6 +23,7 @@
 }
 
 .ShiftCard-shift-weapon-img {
+  margin: 4px;
   width: calc(100% / 16 * 9);
 }
 
