@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { PageHeader, Alert, Button, Modal } from 'antd';
 
-import './StagesStatisticsWindow.css';
-import icon from './assets/images/rule-tower-control.png';
+import './WeaponsStatisticsWindow.css';
+import icon from './assets/images/weapon-splattershot.png';
 import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
-import StageStatisticsCard from './components/StageStatisticsCard';
+import WeaponStatisticsCard from './components/WeaponStatisticsCard';
 import WindowLayout from './components/WindowLayout';
 import TakosError from './utils/ErrorHelper';
 import StatisticsHelper from './utils/StatisticsHelper';
 import StorageHelper from './utils/StorageHelper';
 
-class StagesStatisticsWindow extends React.Component {
+class WeaponsStatisticsWindow extends React.Component {
   state = {
     // Data
     records: null,
@@ -35,10 +35,10 @@ class StagesStatisticsWindow extends React.Component {
     let errorStatistics = null;
     let firstErrorLog = null;
     return Promise.all([
-      StatisticsHelper.updateStagesRecords(res => {
+      StatisticsHelper.updateWeaponsRecords(res => {
         this.setState({ records: res });
       }),
-      StatisticsHelper.updateStagesStatistics(res => {
+      StatisticsHelper.updateWeaponsStatistics(res => {
         this.setState({ statistics: res });
       })
     ])
@@ -66,7 +66,7 @@ class StagesStatisticsWindow extends React.Component {
             }
           } else {
             if (firstErrorLog === null) {
-              firstErrorLog = 'can_not_update_stages_records';
+              firstErrorLog = 'can_not_update_weapons_records';
             }
           }
           this.setState({ updated: true });
@@ -83,7 +83,7 @@ class StagesStatisticsWindow extends React.Component {
             }
           } else {
             if (firstErrorLog === null) {
-              firstErrorLog = 'can_not_update_stages_statistics';
+              firstErrorLog = 'can_not_update_weapons_statistics';
             }
           }
         }
@@ -102,20 +102,20 @@ class StagesStatisticsWindow extends React.Component {
   };
 
   formatData = () => {
-    let stages = [];
+    let weapons = [];
     if (StorageHelper.showSplatNetStats()) {
       // Records
       this.state.records.forEach(element => {
         element.isSalmonRun = false;
-        stages.push(element);
+        weapons.push(element);
       });
     } else {
       // Statistics
       this.state.statistics.forEach(element => {
-        stages.push(element);
+        weapons.push(element);
       });
     }
-    return stages;
+    return weapons;
   };
 
   scrollToAnchor = anchorName => {
@@ -126,13 +126,13 @@ class StagesStatisticsWindow extends React.Component {
       } else {
         Modal.info({
           title: this.props.intl.formatMessage({
-            id: 'app.modal.info.no_matching_stage',
-            defaultMessage: 'No matching stage'
+            id: 'app.modal.info.no_matching_weapon',
+            defaultMessage: 'No matching weapon'
           }),
           content: this.props.intl.formatMessage({
-            id: 'app.modal.info.no_matching_stage.content',
+            id: 'app.modal.info.no_matching_weapon.content',
             defaultMessage:
-              'Takos can not find a matching stage in statistics. You can switch whether to show SplatNet stats in statistics in settings.'
+              'Takos can not find a matching weapon in statistics. You can switch whether to show SplatNet stats in statistics in settings.'
           })
         });
       }
@@ -161,7 +161,7 @@ class StagesStatisticsWindow extends React.Component {
         })()}
         {(() => {
           const data = this.formatData().sort((a, b) => {
-            return a.stage.stage.value - b.stage.stage.value;
+            return a.weapon.mainWeapon.value - b.weapon.mainWeapon.value;
           });
           if (data.length > 0) {
             const battles = data.filter(element => !element.isSalmonRun);
@@ -176,11 +176,11 @@ class StagesStatisticsWindow extends React.Component {
                         {battles.map(element => {
                           return (
                             <div
-                              className="StagesStatisticsWindow-content-card"
-                              key={element.stage.stage.value}
-                              id={element.stage.stage.value}
+                              className="BattlesStatisticsWindow-content-card"
+                              key={'battle_' + element.weapon.mainWeapon.value}
+                              id={element.weapon.mainWeapon.value}
                             >
-                              <StageStatisticsCard stage={element} />
+                              <WeaponStatisticsCard weapon={element} />
                             </div>
                           );
                         })}
@@ -196,11 +196,11 @@ class StagesStatisticsWindow extends React.Component {
                         {jobs.map(element => {
                           return (
                             <div
-                              className="StagesStatisticsWindow-content-card"
-                              key={element.stage.stage.value}
-                              id={element.stage.stage.value}
+                              className="BattlesStatisticsWindow-content-card"
+                              key={'job_' + element.weapon.mainWeapon.value}
+                              id={element.weapon.mainWeapon.value}
                             >
-                              <StageStatisticsCard stage={element} />
+                              <WeaponStatisticsCard weapon={element} />
                             </div>
                           );
                         })}
@@ -253,7 +253,7 @@ class StagesStatisticsWindow extends React.Component {
       );
     } else {
       return (
-        <WindowLayout icon={icon} title={<FormattedMessage id="app.stages" defaultMessage="Stages" />}>
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.weapons" defaultMessage="Weapons" />}>
           {(() => {
             if (!this.state.loaded) {
               return <LoadingResult />;
@@ -271,4 +271,4 @@ class StagesStatisticsWindow extends React.Component {
   }
 }
 
-export default injectIntl(StagesStatisticsWindow);
+export default injectIntl(WeaponsStatisticsWindow);

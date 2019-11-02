@@ -264,6 +264,7 @@ const en_US = {
   'weapon.special.ultra_stamp': 'Ultra Stamp',
   // Freshness
   freshness: 'Freshness',
+  'freshness.max': 'Max Freshness',
   'freshness.dry': 'Dry',
   'freshness.raw': 'Raw',
   'freshness.fresh': 'Fresh',
@@ -1098,6 +1099,8 @@ const en_US = {
   'app.statistics': 'Statistics',
   'app.stages': 'Stages',
   'app.weapons': 'Weapons',
+  'app.weapons.win_ratio': 'Win Ratio',
+  'app.weapons.clear_ratio': 'Clear Ratio',
   'app.gears': 'Gears',
   'app.battles': 'Battles',
   'app.battles.update': 'Update Data',

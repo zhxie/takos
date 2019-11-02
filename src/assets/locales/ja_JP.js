@@ -263,6 +263,7 @@ const ja_JP = {
   'weapon.special.ultra_stamp': 'ウルトラハンコ',
   // Freshness
   freshness: 'チョーシ',
+  'freshness.max': 'ベストチョーシ',
   'freshness.dry': 'チョーシあげていこう',
   'freshness.raw': 'チョーシぼちぼち',
   'freshness.fresh': 'チョーシいいね！',
@@ -1097,6 +1098,8 @@ const ja_JP = {
   'app.statistics': 'きろく',
   'app.stages': 'ステージ',
   'app.weapons': 'ブキ',
+  'app.weapons.win_ratio': '勝利率',
+  'app.weapons.clear_ratio': 'クリア率',
   'app.gears': 'ギア',
   'app.battles': 'バトル',
   'app.battles.update': '更新データ',

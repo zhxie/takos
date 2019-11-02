@@ -1,0 +1,6 @@
+.BattlesStatisticsWindow-content-card {
+  display: inline-block;
+  margin: 6px;
+  max-width: 533px;
+  width: calc(100% - 12px);
+}

@@ -4,10 +4,6 @@
   width: 100%;
 }
 
-.StageStatisticsCard-progress {
-  width: 100%;
-}
-
 .StageStatisticsCard-battle-progress .ant-progress-bg {
   background-color: #eb2f96;
 }

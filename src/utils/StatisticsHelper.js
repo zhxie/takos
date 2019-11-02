@@ -2,9 +2,10 @@ import TakosError from './ErrorHelper';
 import FileFolderUrl from './FileFolderUrl';
 import StorageHelper from './StorageHelper';
 import { RankedBattle, LeagueBattle } from '../models/Battle';
+import { JobResult } from '../models/Job';
 import Rule from '../models/Rule';
 import { ScheduledStage } from '../models/Stage';
-import { JobResult } from '../models/Job';
+import { Weapon } from '../models/Weapon';
 
 class StatisticsHelper {
   static getStagesRecords = () => {
@@ -61,7 +62,7 @@ class StatisticsHelper {
     return StatisticsHelper.getStagesRecords()
       .then(res => {
         if (res === null) {
-          throw new TakosError('can_not_parse_stages_record');
+          throw new TakosError('can_not_parse_stages_records');
         } else {
           onSuccess(res);
         }
@@ -71,7 +72,7 @@ class StatisticsHelper {
           return e;
         } else {
           console.error(e);
-          return new TakosError('can_not_update_stages_record');
+          return new TakosError('can_not_update_stages_records');
         }
       });
   };
@@ -234,6 +235,184 @@ class StatisticsHelper {
         } else {
           console.error(e);
           return new TakosError('can_not_update_stages_statistics');
+        }
+      });
+  };
+
+  static getWeaponsRecords = () => {
+    const init = {
+      method: 'GET',
+      headers: new Headers({
+        Cookie: 'iksm_session={0}'.format(StorageHelper.cookie()),
+        'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
+      })
+    };
+    return fetch(FileFolderUrl.SPLATNET_RECORDS, init)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        // Parse response
+        let weapons = [];
+        Object.keys(res.records.weapon_stats).forEach(element => {
+          const weapon = Weapon.parse(res.records.weapon_stats[element].weapon);
+          let winMeter;
+          if (res.records.weapon_stats[element].win_meter % 1 === 0) {
+            winMeter = parseInt(res.records.weapon_stats[element].win_meter);
+          } else {
+            winMeter = parseFloat(res.records.weapon_stats[element].win_meter).toFixed(1);
+          }
+          let maxWinMeter;
+          if (res.records.weapon_stats[element].max_win_meter % 1 === 0) {
+            maxWinMeter = parseInt(res.records.weapon_stats[element].max_win_meter);
+          } else {
+            maxWinMeter = parseFloat(res.records.weapon_stats[element].max_win_meter).toFixed(1);
+          }
+          weapons.push({
+            weapon: weapon,
+            win: parseInt(res.records.weapon_stats[element].win_count),
+            lose: parseInt(res.records.weapon_stats[element].lose_count),
+            winMeter: winMeter,
+            maxWinMeter: maxWinMeter,
+            totalPaint: parseInt(res.records.weapon_stats[element].total_paint_point)
+          });
+        });
+        return weapons;
+      })
+      .catch(e => {
+        console.error(e);
+        return null;
+      });
+  };
+
+  static updateWeaponsRecords = onSuccess => {
+    return StatisticsHelper.getWeaponsRecords()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_parse_weapons_records');
+        } else {
+          onSuccess(res);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_weapons_records');
+        }
+      });
+  };
+
+  static getWeaponsStatistics = () => {
+    let weapons = [];
+    return StorageHelper.battles()
+      .then(res =>
+        res.sort((a, b) => {
+          return b.number - a.number;
+        })
+      )
+      .then(res => {
+        res.forEach(element => {
+          let weapon = weapons.find(ele => {
+            return !ele.isSalmonRun && ele.weapon.mainWeapon === element.selfPlayer.weapon.mainWeapon;
+          });
+          if (weapon === undefined) {
+            weapons.push({
+              weapon: element.selfPlayer.weapon,
+              isSalmonRun: false,
+              win: 0,
+              lose: 0,
+              winMeter: null,
+              maxWinMeter: 0,
+              totalPaint: 0
+            });
+            // Find weapon again
+            weapon = weapons.find(ele => {
+              return !ele.isSalmonRun && ele.weapon.mainWeapon === element.selfPlayer.weapon.mainWeapon;
+            });
+          }
+          if (element.isWin) {
+            weapon.win++;
+          } else {
+            weapon.lose++;
+          }
+          if (weapon.winMeter === null && element.winMeter !== undefined) {
+            weapon.winMeter = element.winMeter;
+          }
+          if (element.winMeter !== undefined) {
+            const maxWinMeter = Math.max(parseFloat(weapon.maxWinMeter), parseFloat(element.winMeter));
+            if (maxWinMeter % 1 === 0) {
+              weapon.maxWinMeter = parseInt(maxWinMeter);
+            } else {
+              weapon.maxWinMeter = maxWinMeter.toFixed(1);
+            }
+          }
+          weapon.totalPaint = weapon.totalPaint + element.selfPlayer.paint;
+        });
+      })
+      .then(() => {
+        return StorageHelper.jobs();
+      })
+      .then(res => {
+        res.forEach(element => {
+          // Weapons
+          element.selfPlayer.weapons.forEach(ele => {
+            let weapon = weapons.find(e => {
+              return e.isSalmonRun && e.weapon.mainWeapon === ele.mainWeapon;
+            });
+            if (weapon === undefined) {
+              weapons.push({
+                weapon: ele,
+                isSalmonRun: true,
+                clear: 0,
+                timeLimit: 0,
+                wipeOut: 0
+              });
+              // Find weapon again
+              weapon = weapons.find(e => {
+                return e.isSalmonRun && e.weapon.mainWeapon === ele.mainWeapon;
+              });
+            }
+            switch (element.result) {
+              case JobResult.clear:
+                weapon.clear++;
+                break;
+              case JobResult.timeLimit:
+                weapon.timeLimit++;
+                break;
+              case JobResult.wipeOut:
+                weapon.wipeOut++;
+                break;
+              default:
+                throw new RangeError();
+            }
+          });
+        });
+      })
+      .then(() => {
+        return weapons;
+      })
+      .catch(e => {
+        console.error(e);
+        return null;
+      });
+  };
+
+  static updateWeaponsStatistics = onSuccess => {
+    return StatisticsHelper.getWeaponsStatistics()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_parse_weapons_statistics');
+        } else {
+          onSuccess(res);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_weapons_statistics');
         }
       });
   };

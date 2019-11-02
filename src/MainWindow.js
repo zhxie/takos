@@ -12,6 +12,7 @@ import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
 import ShiftsWindow from './ShiftsWindow';
 import StagesStatisticsWindow from './StagesStatisticsWindow';
+import WeaponsStatisticsWindow from './WeaponsStatisticsWindow';
 import logo from './assets/images/logo.svg';
 import ConstructionResult from './components/ConstructionResult';
 
@@ -212,7 +213,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}schedules/:mode`} component={SchedulesWindow} />
             <Route exact path={`${this.props.match.url}shifts`} component={ShiftsWindow} />
             <Route exact path={`${this.props.match.url}stats/stages`} component={StagesStatisticsWindow} />
-            <Route exact path={`${this.props.match.url}stats/weapons`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/weapons`} component={WeaponsStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/gears`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
