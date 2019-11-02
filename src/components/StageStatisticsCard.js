@@ -62,32 +62,91 @@ class StageStatisticsCard extends React.Component {
                         </Tooltip>
                       </Col>
                       <Col span={12}>
-                        {element.win}
                         {(() => {
-                          if (element.knockOut !== undefined && element.knockOut > 0) {
+                          if (element.win > element.lose) {
                             return (
                               <span>
-                                {' '}
-                                (<FormattedMessage id="battle.knock_out.abbreviation" defaultMessage="KO" />{' '}
-                                <Tooltip title={(element.knockOut / (element.win + element.lose)).toFixed(2)}>
-                                  {element.knockOut}
-                                </Tooltip>
-                                )
+                                <b>
+                                  {element.win}
+                                  {(() => {
+                                    if (element.knockOut !== undefined && element.knockOut > 0) {
+                                      return (
+                                        <span>
+                                          {' '}
+                                          (<FormattedMessage
+                                            id="battle.knock_out.abbreviation"
+                                            defaultMessage="KO"
+                                          />{' '}
+                                          <Tooltip title={(element.knockOut / (element.win + element.lose)).toFixed(2)}>
+                                            {element.knockOut}
+                                          </Tooltip>
+                                          )
+                                        </span>
+                                      );
+                                    }
+                                  })()}{' '}
+                                  - {element.lose}
+                                  {(() => {
+                                    if (element.knockedOut !== undefined && element.knockedOut > 0) {
+                                      return (
+                                        <span>
+                                          {' '}
+                                          (<FormattedMessage
+                                            id="battle.knock_out.abbreviation"
+                                            defaultMessage="KO"
+                                          />{' '}
+                                          <Tooltip
+                                            title={(element.knockedOut / (element.win + element.lose)).toFixed(2)}
+                                          >
+                                            {element.knockedOut}
+                                          </Tooltip>
+                                          )
+                                        </span>
+                                      );
+                                    }
+                                  })()}
+                                </b>
                               </span>
                             );
-                          }
-                        })()}{' '}
-                        - {element.lose}
-                        {(() => {
-                          if (element.knockedOut !== undefined && element.knockedOut > 0) {
+                          } else {
                             return (
                               <span>
-                                {' '}
-                                (<FormattedMessage id="battle.knock_out.abbreviation" defaultMessage="KO" />{' '}
-                                <Tooltip title={(element.knockedOut / (element.win + element.lose)).toFixed(2)}>
-                                  {element.knockedOut}
-                                </Tooltip>
-                                )
+                                {element.win}
+                                {(() => {
+                                  if (element.knockOut !== undefined && element.knockOut > 0) {
+                                    return (
+                                      <span>
+                                        {' '}
+                                        (<FormattedMessage
+                                          id="battle.knock_out.abbreviation"
+                                          defaultMessage="KO"
+                                        />{' '}
+                                        <Tooltip title={(element.knockOut / (element.win + element.lose)).toFixed(2)}>
+                                          {element.knockOut}
+                                        </Tooltip>
+                                        )
+                                      </span>
+                                    );
+                                  }
+                                })()}{' '}
+                                - {element.lose}
+                                {(() => {
+                                  if (element.knockedOut !== undefined && element.knockedOut > 0) {
+                                    return (
+                                      <span>
+                                        {' '}
+                                        (<FormattedMessage
+                                          id="battle.knock_out.abbreviation"
+                                          defaultMessage="KO"
+                                        />{' '}
+                                        <Tooltip title={(element.knockedOut / (element.win + element.lose)).toFixed(2)}>
+                                          {element.knockedOut}
+                                        </Tooltip>
+                                        )
+                                      </span>
+                                    );
+                                  }
+                                })()}
                               </span>
                             );
                           }
@@ -142,35 +201,91 @@ class StageStatisticsCard extends React.Component {
                         </Tooltip>
                       </Col>
                       <Col span={12}>
-                        {element.clear} - {element.timeLimit + element.wipeOut}
                         {(() => {
-                          if (element.timeLimit + element.wipeOut > 0) {
+                          if (element.clear > element.timeLimit + element.wipeOut) {
                             return (
                               <span>
-                                {' '}
-                                (
-                                <FormattedMessage
-                                  id="job_result.time_limit.abbreviation"
-                                  defaultMessage="Time Up"
-                                />{' '}
-                                <Tooltip
-                                  title={(
-                                    element.timeLimit /
-                                    (element.clear + element.timeLimit + element.wipeOut)
-                                  ).toFixed(2)}
-                                >
-                                  {element.timeLimit}
-                                </Tooltip>{' '}
-                                / <FormattedMessage id="job_result.wipe_out.abbreviation" defaultMessage="DEFEAT" />{' '}
-                                <Tooltip
-                                  title={(
-                                    element.wipeOut /
-                                    (element.clear + element.timeLimit + element.wipeOut)
-                                  ).toFixed(2)}
-                                >
-                                  {element.wipeOut}
-                                </Tooltip>
-                                )
+                                <b>
+                                  {element.clear} - {element.timeLimit + element.wipeOut}
+                                  {(() => {
+                                    if (element.timeLimit + element.wipeOut > 0) {
+                                      return (
+                                        <span>
+                                          {' '}
+                                          (
+                                          <FormattedMessage
+                                            id="job_result.time_limit.abbreviation"
+                                            defaultMessage="Time Up"
+                                          />{' '}
+                                          <Tooltip
+                                            title={(
+                                              element.timeLimit /
+                                              (element.clear + element.timeLimit + element.wipeOut)
+                                            ).toFixed(2)}
+                                          >
+                                            {element.timeLimit}
+                                          </Tooltip>{' '}
+                                          /{' '}
+                                          <FormattedMessage
+                                            id="job_result.wipe_out.abbreviation"
+                                            defaultMessage="DEFEAT"
+                                          />{' '}
+                                          <Tooltip
+                                            title={(
+                                              element.wipeOut /
+                                              (element.clear + element.timeLimit + element.wipeOut)
+                                            ).toFixed(2)}
+                                          >
+                                            {element.wipeOut}
+                                          </Tooltip>
+                                          )
+                                        </span>
+                                      );
+                                    }
+                                  })()}
+                                </b>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {element.clear} - {element.timeLimit + element.wipeOut}
+                                {(() => {
+                                  if (element.timeLimit + element.wipeOut > 0) {
+                                    return (
+                                      <span>
+                                        {' '}
+                                        (
+                                        <FormattedMessage
+                                          id="job_result.time_limit.abbreviation"
+                                          defaultMessage="Time Up"
+                                        />{' '}
+                                        <Tooltip
+                                          title={(
+                                            element.timeLimit /
+                                            (element.clear + element.timeLimit + element.wipeOut)
+                                          ).toFixed(2)}
+                                        >
+                                          {element.timeLimit}
+                                        </Tooltip>{' '}
+                                        /{' '}
+                                        <FormattedMessage
+                                          id="job_result.wipe_out.abbreviation"
+                                          defaultMessage="DEFEAT"
+                                        />{' '}
+                                        <Tooltip
+                                          title={(
+                                            element.wipeOut /
+                                            (element.clear + element.timeLimit + element.wipeOut)
+                                          ).toFixed(2)}
+                                        >
+                                          {element.wipeOut}
+                                        </Tooltip>
+                                        )
+                                      </span>
+                                    );
+                                  }
+                                })()}
                               </span>
                             );
                           }

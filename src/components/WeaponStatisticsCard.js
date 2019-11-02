@@ -80,7 +80,23 @@ class WeaponStatisticsCard extends React.Component {
                       </Tooltip>
                     </Col>
                     <Col span={12}>
-                      {this.props.weapon.win} - {this.props.weapon.lose}
+                      {(() => {
+                        if (this.props.weapon.win > this.props.weapon.lose) {
+                          return (
+                            <span>
+                              <b>
+                                {this.props.weapon.win} - {this.props.weapon.lose}
+                              </b>
+                            </span>
+                          );
+                        } else {
+                          return (
+                            <span>
+                              {this.props.weapon.win} - {this.props.weapon.lose}
+                            </span>
+                          );
+                        }
+                      })()}
                     </Col>
                   </Row>
                 </Descriptions.Item>
@@ -275,32 +291,96 @@ class WeaponStatisticsCard extends React.Component {
                       </Tooltip>
                     </Col>
                     <Col span={12}>
-                      {this.props.weapon.clear} - {this.props.weapon.timeLimit + this.props.weapon.wipeOut}
                       {(() => {
-                        if (this.props.weapon.timeLimit + this.props.weapon.wipeOut > 0) {
+                        if (this.props.weapon.clear > this.props.weapon.timeLimit + this.props.weapon.wipeOut) {
                           return (
                             <span>
-                              {' '}
-                              (
-                              <FormattedMessage id="job_result.time_limit.abbreviation" defaultMessage="Time Up" />{' '}
-                              <Tooltip
-                                title={(
-                                  this.props.weapon.timeLimit /
-                                  (this.props.weapon.clear + this.props.weapon.timeLimit + this.props.weapon.wipeOut)
-                                ).toFixed(2)}
-                              >
-                                {this.props.weapon.timeLimit}
-                              </Tooltip>{' '}
-                              / <FormattedMessage id="job_result.wipe_out.abbreviation" defaultMessage="DEFEAT" />{' '}
-                              <Tooltip
-                                title={(
-                                  this.props.weapon.wipeOut /
-                                  (this.props.weapon.clear + this.props.weapon.timeLimit + this.props.weapon.wipeOut)
-                                ).toFixed(2)}
-                              >
-                                {this.props.weapon.wipeOut}
-                              </Tooltip>
-                              )
+                              <b>
+                                {this.props.weapon.clear} - {this.props.weapon.timeLimit + this.props.weapon.wipeOut}
+                                {(() => {
+                                  if (this.props.weapon.timeLimit + this.props.weapon.wipeOut > 0) {
+                                    return (
+                                      <span>
+                                        {' '}
+                                        (
+                                        <FormattedMessage
+                                          id="job_result.time_limit.abbreviation"
+                                          defaultMessage="Time Up"
+                                        />{' '}
+                                        <Tooltip
+                                          title={(
+                                            this.props.weapon.timeLimit /
+                                            (this.props.weapon.clear +
+                                              this.props.weapon.timeLimit +
+                                              this.props.weapon.wipeOut)
+                                          ).toFixed(2)}
+                                        >
+                                          {this.props.weapon.timeLimit}
+                                        </Tooltip>{' '}
+                                        /{' '}
+                                        <FormattedMessage
+                                          id="job_result.wipe_out.abbreviation"
+                                          defaultMessage="DEFEAT"
+                                        />{' '}
+                                        <Tooltip
+                                          title={(
+                                            this.props.weapon.wipeOut /
+                                            (this.props.weapon.clear +
+                                              this.props.weapon.timeLimit +
+                                              this.props.weapon.wipeOut)
+                                          ).toFixed(2)}
+                                        >
+                                          {this.props.weapon.wipeOut}
+                                        </Tooltip>
+                                        )
+                                      </span>
+                                    );
+                                  }
+                                })()}
+                              </b>
+                            </span>
+                          );
+                        } else {
+                          return (
+                            <span>
+                              {this.props.weapon.clear} - {this.props.weapon.timeLimit + this.props.weapon.wipeOut}
+                              {(() => {
+                                if (this.props.weapon.timeLimit + this.props.weapon.wipeOut > 0) {
+                                  return (
+                                    <span>
+                                      {' '}
+                                      (
+                                      <FormattedMessage
+                                        id="job_result.time_limit.abbreviation"
+                                        defaultMessage="Time Up"
+                                      />{' '}
+                                      <Tooltip
+                                        title={(
+                                          this.props.weapon.timeLimit /
+                                          (this.props.weapon.clear +
+                                            this.props.weapon.timeLimit +
+                                            this.props.weapon.wipeOut)
+                                        ).toFixed(2)}
+                                      >
+                                        {this.props.weapon.timeLimit}
+                                      </Tooltip>{' '}
+                                      /{' '}
+                                      <FormattedMessage id="job_result.wipe_out.abbreviation" defaultMessage="DEFEAT" />{' '}
+                                      <Tooltip
+                                        title={(
+                                          this.props.weapon.wipeOut /
+                                          (this.props.weapon.clear +
+                                            this.props.weapon.timeLimit +
+                                            this.props.weapon.wipeOut)
+                                        ).toFixed(2)}
+                                      >
+                                        {this.props.weapon.wipeOut}
+                                      </Tooltip>
+                                      )
+                                    </span>
+                                  );
+                                }
+                              })()}
                             </span>
                           );
                         }
