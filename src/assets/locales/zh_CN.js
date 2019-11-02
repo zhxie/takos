@@ -1149,6 +1149,7 @@ const zh_CN = {
   'app.alert.warning.jobs_can_not_update': 'Takos 未能更新打工，请刷新页面以更新。',
   'app.alert.warning.shop_gears_can_not_update': 'Takos 未能更新触手镇装备，请刷新页面以更新。',
   'app.alert.warning.ordered_gear_can_not_update': 'Takos 未能更新已预订的装备，请刷新页面以更新。',
+  'app.alert.warning.records_can_not_update': 'Takos 未能更新记录，请刷新页面以更新。',
   'app.alert.info': '信息',
   'app.alert.info.schedules_expired': '日程似乎已过期，请刷新页面以更新。',
   'app.alert.info.shifts_expired': '排班表似乎已过期，请刷新页面以更新。',

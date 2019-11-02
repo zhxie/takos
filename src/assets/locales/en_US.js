@@ -1153,6 +1153,7 @@ const en_US = {
   'app.alert.warning.shop_gears_can_not_update': 'Takos can not update shop gears, please refresh this page to update.',
   'app.alert.warning.ordered_gear_can_not_update':
     'Takos can not update ordered gear, please refresh this page to update.',
+  'app.alert.warning.records_can_not_update': 'Takos can not update stats, please refresh this page to update.',
   'app.alert.info': 'Info',
   'app.alert.info.schedules_expired': 'It seems that these schedules have expired, please refresh this page to update.',
   'app.alert.info.shifts_expired': 'It seems that these shifts have expired, please refresh this page to update.',

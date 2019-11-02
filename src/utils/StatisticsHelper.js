@@ -7,7 +7,7 @@ import { ScheduledStage } from '../models/Stage';
 import { JobResult } from '../models/Job';
 
 class StatisticsHelper {
-  static getStagesRecord = () => {
+  static getStagesRecords = () => {
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -15,7 +15,7 @@ class StatisticsHelper {
         'X-Cookie': 'iksm_session={0}'.format(StorageHelper.cookie())
       })
     };
-    return fetch(FileFolderUrl.SPLATNET_RECORD, init)
+    return fetch(FileFolderUrl.SPLATNET_RECORDS, init)
       .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -57,8 +57,8 @@ class StatisticsHelper {
       });
   };
 
-  static updateStagesRecord = onSuccess => {
-    return StatisticsHelper.getStagesRecord()
+  static updateStagesRecords = onSuccess => {
+    return StatisticsHelper.getStagesRecords()
       .then(res => {
         if (res === null) {
           throw new TakosError('can_not_parse_stages_record');

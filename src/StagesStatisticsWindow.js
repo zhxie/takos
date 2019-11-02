@@ -16,7 +16,7 @@ import StorageHelper from './utils/StorageHelper';
 class StagesStatisticsWindow extends React.Component {
   state = {
     // Data
-    record: null,
+    records: null,
     statistics: null,
     // Render
     loaded: false,
@@ -31,12 +31,12 @@ class StagesStatisticsWindow extends React.Component {
       error: false,
       updated: false
     });
-    let errorRecord = null;
+    let errorRecords = null;
     let errorStatistics = null;
     let firstErrorLog = null;
     return Promise.all([
-      StatisticsHelper.updateStagesRecord(res => {
-        this.setState({ record: res });
+      StatisticsHelper.updateStagesRecords(res => {
+        this.setState({ records: res });
       }),
       StatisticsHelper.updateStagesStatistics(res => {
         this.setState({ statistics: res });
@@ -44,7 +44,7 @@ class StagesStatisticsWindow extends React.Component {
     ])
       .then(values => {
         if (values[0] instanceof TakosError) {
-          errorRecord = values[0];
+          errorRecords = values[0];
         }
         if (values[1] instanceof TakosError) {
           errorStatistics = values[1];
@@ -52,21 +52,21 @@ class StagesStatisticsWindow extends React.Component {
       })
       .catch(e => {
         console.error(e);
-        errorRecord = e;
+        errorRecords = e;
         errorStatistics = e;
       })
       .then(() => {
-        if (errorRecord !== null) {
+        if (errorRecords !== null) {
           // Handle error
-          if (errorRecord instanceof TakosError) {
+          if (errorRecords instanceof TakosError) {
             if (firstErrorLog === null) {
-              firstErrorLog = errorRecord.message;
+              firstErrorLog = errorRecords.message;
             } else {
-              console.error(errorRecord);
+              console.error(errorRecords);
             }
           } else {
             if (firstErrorLog === null) {
-              firstErrorLog = 'can_not_update_stages_record';
+              firstErrorLog = 'can_not_update_stages_records';
             }
           }
           this.setState({ updated: true });
@@ -104,12 +104,12 @@ class StagesStatisticsWindow extends React.Component {
   formatData = () => {
     let stages = [];
     if (StorageHelper.showSplatNetStats()) {
-      // Record
-      this.state.record.forEach(element => {
+      // Records
+      this.state.records.forEach(element => {
         let stage = {
           stage: element.stage,
           isSalmonRun: false,
-          record: element.result,
+          records: element.result,
           statistics: null
         };
         stages.push(stage);
@@ -120,7 +120,7 @@ class StagesStatisticsWindow extends React.Component {
         let stage = {
           stage: element.stage,
           isSalmonRun: element.isSalmonRun,
-          record: null,
+          records: null,
           statistics: element.result
         };
         stages.push(stage);
@@ -160,7 +160,7 @@ class StagesStatisticsWindow extends React.Component {
                 message={<FormattedMessage id="app.alert.warning" defaultMessage="Warning" />}
                 description={
                   <FormattedMessage
-                    id="app.alert.warning.record_can_not_update"
+                    id="app.alert.warning.records_can_not_update"
                     defaultMessage="Takos can not update stats, please refresh this page to update."
                   />
                 }
@@ -171,7 +171,7 @@ class StagesStatisticsWindow extends React.Component {
           }
         })()}
         {(() => {
-          if (this.state.record !== null || this.state.statistics !== null) {
+          if (this.state.records !== null || this.state.statistics !== null) {
             const data = this.formatData().sort((a, b) => {
               return a.stage.stage.value - b.stage.stage.value;
             });

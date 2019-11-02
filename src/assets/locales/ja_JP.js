@@ -1156,6 +1156,8 @@ const ja_JP = {
     'Takos はゲソタウンギアを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.warning.ordered_gear_can_not_update':
     'Takos は注文済みギアを更新できませんでした。更新するには、このページを更新してください。',
+  'app.alert.warning.records_can_not_update':
+    'Takos はきろくを更新できませんでした。更新するには、このページを更新してください。',
   'app.alert.info': 'お知らせ',
   'app.alert.info.schedules_expired':
     'これらのスケジュールの有効期限が切れているようです。更新するには、このページを更新してください。',
