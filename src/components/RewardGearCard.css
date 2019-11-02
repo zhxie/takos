@@ -10,6 +10,7 @@
 }
 
 .RewardGearCard-card-stage-cover {
+  cursor: pointer;
   height: auto;
   max-height: 174.5px;
   width: auto;

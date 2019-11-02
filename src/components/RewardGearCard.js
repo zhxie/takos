@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Card, Tooltip } from 'antd';
 
@@ -15,13 +16,15 @@ class RewardGearCard extends React.Component {
         hoverable={this.props.hoverable}
         bordered={this.props.bordered}
         cover={
-          <div className="RewardGearCard-card-stage-cover-wrapper">
-            <img
-              className="RewardGearCard-card-stage-cover"
-              alt="gear"
-              src={FileFolderUrl.SPLATNET + this.props.gear.url}
-            />
-          </div>
+          <Link to={'/stats/gears?type={0}#{1}'.format(this.props.gear.gear.type.value, this.props.gear.gear.value)}>
+            <div className="RewardGearCard-card-stage-cover-wrapper">
+              <img
+                className="RewardGearCard-card-stage-cover"
+                alt="gear"
+                src={FileFolderUrl.SPLATNET + this.props.gear.url}
+              />
+            </div>
+          </Link>
         }
         bodyStyle={{
           padding: '6px'

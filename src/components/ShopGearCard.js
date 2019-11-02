@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Card, Icon, Tooltip, Row, Col, Statistic } from 'antd';
 
@@ -33,26 +34,26 @@ class ShopGearCard extends React.Component {
       >
         <Row>
           <Col xs={24} sm={12}>
-            <Card
-              className="ShopGearCard-gear-gear"
-              hoverable
-              bodyStyle={{
-                padding: '6px'
-              }}
-              style={(() => {
-                if (this.props.pointer) {
-                  return {
-                    cursor: 'pointer'
-                  };
-                }
-              })()}
+            <Link
+              to={'/stats/gears?type={0}#{1}'.format(
+                this.props.gear.gear.gear.type.value,
+                this.props.gear.gear.gear.value
+              )}
             >
-              <img
-                className="ShopGearCard-gear-gear-image"
-                alt="gear"
-                src={FileFolderUrl.SPLATNET + this.props.gear.gear.url}
-              />
-            </Card>
+              <Card
+                className="ShopGearCard-gear-gear"
+                hoverable
+                bodyStyle={{
+                  padding: '6px'
+                }}
+              >
+                <img
+                  className="ShopGearCard-gear-gear-image"
+                  alt="gear"
+                  src={FileFolderUrl.SPLATNET + this.props.gear.gear.url}
+                />
+              </Card>
+            </Link>
           </Col>
           <Col xs={24} sm={12}>
             <Card

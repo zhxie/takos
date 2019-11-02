@@ -41,14 +41,14 @@ class GearsStatisticsWindow extends React.Component {
       })
       .then(() => {
         const search = queryString.parse(this.props.location.search);
-        switch (search.type) {
-          case 'headgear':
+        switch (parseInt(search.type)) {
+          case 0:
             this.scrollToAnchor(this.props.location.hash.replace('#', 'headgear-'));
             break;
-          case 'clothes':
+          case 1:
             this.scrollToAnchor(this.props.location.hash.replace('#', 'clothes-'));
             break;
-          case 'shoes':
+          case 2:
             this.scrollToAnchor(this.props.location.hash.replace('#', 'shoes-'));
             break;
           default:
