@@ -7,6 +7,7 @@ import './MainWindow.css';
 import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
 import GearShopWindow from './GearShopWindow';
+import GearsStatisticsWindow from './GearsStatisticsWindow';
 import JobsWindow from './JobsWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
@@ -214,7 +215,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}shifts`} component={ShiftsWindow} />
             <Route exact path={`${this.props.match.url}stats/stages`} component={StagesStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/weapons`} component={WeaponsStatisticsWindow} />
-            <Route exact path={`${this.props.match.url}stats/gears`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/gears`} component={GearsStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
             <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />

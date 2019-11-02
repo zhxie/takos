@@ -333,6 +333,7 @@ const en_US = {
   // Gear
   gear: 'Gear',
   'gear.headgear': 'Headgear',
+  'gear.headgears': 'Headgears',
   'gear.headgear.white_headband': 'White Headband',
   'gear.headgear.urchins_cap': 'Urchins Cap',
   'gear.headgear.lightweight_cap': 'Lightweight Cap',

@@ -416,6 +416,71 @@ class StatisticsHelper {
         }
       });
   };
+
+  static getGearsStatistics = () => {
+    let gears = {
+      headgears: [],
+      clothes: [],
+      shoes: []
+    };
+    return StorageHelper.battles()
+      .then(res =>
+        res.sort((a, b) => {
+          return b.number - a.number;
+        })
+      )
+      .then(res => {
+        res.forEach(element => {
+          // Headgear
+          let headgear = gears.headgears.find(ele => {
+            return ele.gear === element.selfPlayer.headgearGear.gear;
+          });
+          if (headgear === undefined) {
+            gears.headgears.push(element.selfPlayer.headgearGear);
+          }
+          // Clothes
+          let clothes = gears.clothes.find(ele => {
+            return ele.gear === element.selfPlayer.clothesGear.gear;
+          });
+          if (clothes === undefined) {
+            gears.clothes.push(element.selfPlayer.clothesGear);
+          }
+          // Shoes
+          let shoes = gears.shoes.find(ele => {
+            return ele.gear === element.selfPlayer.shoesGear.gear;
+          });
+          if (shoes === undefined) {
+            gears.shoes.push(element.selfPlayer.shoesGear);
+          }
+        });
+      })
+      .then(() => {
+        return gears;
+      })
+      .catch(e => {
+        console.error(e);
+        return null;
+      });
+  };
+
+  static updateGearsStatistics = onSuccess => {
+    return StatisticsHelper.getGearsStatistics()
+      .then(res => {
+        if (res === null) {
+          throw new TakosError('can_not_parse_gears_statistics');
+        } else {
+          onSuccess(res);
+        }
+      })
+      .catch(e => {
+        if (e instanceof TakosError) {
+          return e;
+        } else {
+          console.error(e);
+          return new TakosError('can_not_update_gears_statistics');
+        }
+      });
+  };
 }
 
 export default StatisticsHelper;

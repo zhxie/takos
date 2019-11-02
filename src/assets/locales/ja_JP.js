@@ -332,6 +332,7 @@ const ja_JP = {
   // Gear
   gear: 'ギア',
   'gear.headgear': 'アタマ',
+  'gear.headgears': 'アタマ',
   'gear.headgear.white_headband': 'ヘッドバンド ホワイト',
   'gear.headgear.urchins_cap': 'ウーニーズBBキャップ',
   'gear.headgear.lightweight_cap': 'キャンプキャップ',

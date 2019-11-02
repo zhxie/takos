@@ -332,6 +332,7 @@ const zh_CN = {
   // Gear
   gear: '防具',
   'gear.headgear': '帽子',
+  'gear.headgears': '帽子',
   'gear.headgear.white_headband': '白头箍',
   'gear.headgear.urchins_cap': '海胆篮球帽',
   'gear.headgear.lightweight_cap': '野营球帽',

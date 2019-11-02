@@ -91,7 +91,7 @@ class WeaponsStatisticsWindow extends React.Component {
       })
       .then(() => {
         if (firstErrorLog !== null) {
-          this.setState({ error: true, errorLog: firstErrorLog });
+          throw new Error();
         } else {
           this.setState({ loaded: true });
         }
@@ -104,7 +104,9 @@ class WeaponsStatisticsWindow extends React.Component {
           this.scrollToAnchor(this.props.location.hash.replace('#', ''));
         }
       })
-      .catch();
+      .catch(() => {
+        this.setState({ error: true, errorLog: firstErrorLog });
+      });
   };
 
   formatData = () => {
