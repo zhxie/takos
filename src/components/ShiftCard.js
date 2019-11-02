@@ -72,40 +72,48 @@ class ShiftCard extends React.Component {
                   >
                     <Row gutter={16}>
                       <Col className="ShiftCard-shift-weapon-col" xs={6} sm={12}>
-                        <Tooltip title={<FormattedMessage id={this.props.shift.weapon1.mainWeapon.name} />}>
-                          <img
-                            className="ShiftCard-shift-weapon-img"
-                            src={FileFolderUrl.SPLATNET + this.props.shift.weapon1.mainWeaponUrl}
-                            alt="weapon1"
-                          />
-                        </Tooltip>
+                        <Link to={'/stats/weapons?salmon=true#{0}'.format(this.props.shift.weapon1.mainWeapon.value)}>
+                          <Tooltip title={<FormattedMessage id={this.props.shift.weapon1.mainWeapon.name} />}>
+                            <img
+                              className="ShiftCard-shift-weapon-img"
+                              src={FileFolderUrl.SPLATNET + this.props.shift.weapon1.mainWeaponUrl}
+                              alt="weapon1"
+                            />
+                          </Tooltip>
+                        </Link>
                       </Col>
                       <Col className="ShiftCard-shift-weapon-col" xs={6} sm={12}>
-                        <Tooltip title={<FormattedMessage id={this.props.shift.weapon2.mainWeapon.name} />}>
-                          <img
-                            className="ShiftCard-shift-weapon-img"
-                            src={FileFolderUrl.SPLATNET + this.props.shift.weapon2.mainWeaponUrl}
-                            alt="weapon2"
-                          />
-                        </Tooltip>
+                        <Link to={'/stats/weapons?salmon=true#{0}'.format(this.props.shift.weapon2.mainWeapon.value)}>
+                          <Tooltip title={<FormattedMessage id={this.props.shift.weapon2.mainWeapon.name} />}>
+                            <img
+                              className="ShiftCard-shift-weapon-img"
+                              src={FileFolderUrl.SPLATNET + this.props.shift.weapon2.mainWeaponUrl}
+                              alt="weapon2"
+                            />
+                          </Tooltip>
+                        </Link>
                       </Col>
                       <Col className="ShiftCard-shift-weapon-col" xs={6} sm={12}>
-                        <Tooltip title={<FormattedMessage id={this.props.shift.weapon3.mainWeapon.name} />}>
-                          <img
-                            className="ShiftCard-shift-weapon-img"
-                            src={FileFolderUrl.SPLATNET + this.props.shift.weapon3.mainWeaponUrl}
-                            alt="weapon3"
-                          />
-                        </Tooltip>
+                        <Link to={'/stats/weapons?salmon=true#{0}'.format(this.props.shift.weapon3.mainWeapon.value)}>
+                          <Tooltip title={<FormattedMessage id={this.props.shift.weapon3.mainWeapon.name} />}>
+                            <img
+                              className="ShiftCard-shift-weapon-img"
+                              src={FileFolderUrl.SPLATNET + this.props.shift.weapon3.mainWeaponUrl}
+                              alt="weapon3"
+                            />
+                          </Tooltip>
+                        </Link>
                       </Col>
                       <Col className="ShiftCard-shift-weapon-col" xs={6} sm={12}>
-                        <Tooltip title={<FormattedMessage id={this.props.shift.weapon4.mainWeapon.name} />}>
-                          <img
-                            className="ShiftCard-shift-weapon-img"
-                            src={FileFolderUrl.SPLATNET + this.props.shift.weapon4.mainWeaponUrl}
-                            alt="weapon4"
-                          />
-                        </Tooltip>
+                        <Link to={'/stats/weapons?salmon=true#{0}'.format(this.props.shift.weapon4.mainWeapon.value)}>
+                          <Tooltip title={<FormattedMessage id={this.props.shift.weapon4.mainWeapon.name} />}>
+                            <img
+                              className="ShiftCard-shift-weapon-img"
+                              src={FileFolderUrl.SPLATNET + this.props.shift.weapon4.mainWeaponUrl}
+                              alt="weapon4"
+                            />
+                          </Tooltip>
+                        </Link>
                       </Col>
                     </Row>
                   </Card>

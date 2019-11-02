@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import queryString from 'query-string';
 import { PageHeader, Alert, Button, Modal } from 'antd';
 
 import './WeaponsStatisticsWindow.css';
@@ -96,7 +97,12 @@ class WeaponsStatisticsWindow extends React.Component {
         }
       })
       .then(() => {
-        this.scrollToAnchor(this.props.location.hash.replace('#', ''));
+        const search = queryString.parse(this.props.location.search);
+        if (search.salmon !== undefined && search.salmon === 'true') {
+          this.scrollToAnchor(this.props.location.hash.replace('#', 'salmon-'));
+        } else {
+          this.scrollToAnchor(this.props.location.hash.replace('#', ''));
+        }
       })
       .catch();
   };
@@ -112,6 +118,9 @@ class WeaponsStatisticsWindow extends React.Component {
     } else {
       // Statistics
       this.state.statistics.forEach(element => {
+        if (element.winMeter === null) {
+          element.winMeter = 0;
+        }
         weapons.push(element);
       });
     }
@@ -177,7 +186,7 @@ class WeaponsStatisticsWindow extends React.Component {
                           return (
                             <div
                               className="BattlesStatisticsWindow-content-card"
-                              key={'battle_' + element.weapon.mainWeapon.value}
+                              key={element.weapon.mainWeapon.value}
                               id={element.weapon.mainWeapon.value}
                             >
                               <WeaponStatisticsCard weapon={element} />
@@ -197,8 +206,8 @@ class WeaponsStatisticsWindow extends React.Component {
                           return (
                             <div
                               className="BattlesStatisticsWindow-content-card"
-                              key={'job_' + element.weapon.mainWeapon.value}
-                              id={element.weapon.mainWeapon.value}
+                              key={element.weapon.mainWeapon.value}
+                              id={'salmon-' + element.weapon.mainWeapon.value}
                             >
                               <WeaponStatisticsCard weapon={element} />
                             </div>
