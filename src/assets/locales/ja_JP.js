@@ -1214,6 +1214,9 @@ const ja_JP = {
   'app.modal.info.no_matching_weapon': '一致するブキはありません',
   'app.modal.info.no_matching_weapon.content':
     'Takos は統計内で一致するブキを見つけることができませんでした。設定を切り替えて、統計にイカリングのきろくを表示できます。',
+    'app.modal.info.no_matching_gear': '一致するギアはありません',
+  'app.modal.info.no_matching_gear.content':
+    'Takos は統計内で一致するギアを見つけることができませんでした。',
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
     'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',
