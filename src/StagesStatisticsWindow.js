@@ -106,24 +106,13 @@ class StagesStatisticsWindow extends React.Component {
     if (StorageHelper.showSplatNetStats()) {
       // Records
       this.state.records.forEach(element => {
-        let stage = {
-          stage: element.stage,
-          isSalmonRun: false,
-          records: element.result,
-          statistics: null
-        };
-        stages.push(stage);
+        element.isSalmonRun = false;
+        stages.push(element);
       });
     } else {
       // Statistics
       this.state.statistics.forEach(element => {
-        let stage = {
-          stage: element.stage,
-          isSalmonRun: element.isSalmonRun,
-          records: null,
-          statistics: element.result
-        };
-        stages.push(stage);
+        stages.push(element);
       });
     }
     return stages;
@@ -187,7 +176,7 @@ class StagesStatisticsWindow extends React.Component {
                         {battles.map(element => {
                           return (
                             <div
-                              className="StagesStatisticsWindow-content-table"
+                              className="StagesStatisticsWindow-content-card"
                               key={element.stage.stage.value}
                               id={element.stage.stage.value}
                             >
@@ -207,7 +196,7 @@ class StagesStatisticsWindow extends React.Component {
                         {jobs.map(element => {
                           return (
                             <div
-                              className="StagesStatisticsWindow-content-table"
+                              className="StagesStatisticsWindow-content-card"
                               key={element.stage.stage.value}
                               id={element.stage.stage.value}
                             >
