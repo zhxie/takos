@@ -98,7 +98,7 @@ class WeaponsStatisticsWindow extends React.Component {
       })
       .then(() => {
         const search = queryString.parse(this.props.location.search);
-        if (search.salmon !== undefined && search.salmon === 'true') {
+        if (search.salmon !== undefined && search.salmon === '1') {
           this.scrollToAnchor(this.props.location.hash.replace('#', 'salmon-'));
         } else {
           this.scrollToAnchor(this.props.location.hash.replace('#', ''));
