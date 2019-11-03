@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
 import { PageHeader, Alert, Button, Row, Col, Card, Statistic } from 'antd';
+import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
 import './JobsStatisticsWindow.css';
 import icon from './assets/images/salmon-run.png';
@@ -323,6 +324,21 @@ class JobsStatisticsWindow extends React.Component {
               }
             });
           });
+          let chartData = [];
+          data
+            .sort((a, b) => {
+              return a.number - b.number;
+            })
+            .slice(-20)
+            .forEach(element => {
+              chartData.push({
+                number: element.number.toString(),
+                hazardLevel: parseFloat(element.hazardLevel),
+                rate: element.rate,
+                score: element.score,
+                grizzcoPoint: element.grizzcoPoint
+              });
+            });
           if (data.length > 0) {
             return (
               <div>
@@ -1043,6 +1059,225 @@ class JobsStatisticsWindow extends React.Component {
                   })}
                 </Row>
                 <PageHeader title={<FormattedMessage id="app.trending" defaultMessage="Trending" />} />
+                <Row gutter={16}>
+                  <Col className="JobsStatisticsWindow-content-column" md={24} lg={12}>
+                    <Card
+                      className="JobsStatisticsWindow-content-card"
+                      hoverable
+                      title={<FormattedMessage id="job.hazard_level" defaultMessage="Hazard Level" />}
+                      bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                    >
+                      <Chart
+                        data={chartData}
+                        scale={{
+                          hazardLevel: { minLimit: 0, maxLimit: 200 },
+                          number: { range: [0, 1] }
+                        }}
+                        height={200}
+                        padding={[0, 6]}
+                        forceFit
+                      >
+                        <Axis />
+                        <Tooltip
+                          crosshairs={{
+                            type: 'y'
+                          }}
+                        />
+                        <Geom
+                          type="line"
+                          position="number*hazardLevel"
+                          tooltip={[
+                            'number*hazardLevel',
+                            (number, hazardLevel) => {
+                              return {
+                                name: this.props.intl.formatMessage({
+                                  id: 'job.hazard_level',
+                                  defaultMessage: 'Hazard Level'
+                                }),
+                                title: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.id',
+                                    defaultMessage: '#{id}'
+                                  },
+                                  { id: number }
+                                ),
+                                value: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.hazard_level.value',
+                                    defaultMessage: '{value}%'
+                                  },
+                                  { value: hazardLevel }
+                                )
+                              };
+                            }
+                          ]}
+                          size={2}
+                          shape={'smooth'}
+                          color="#fa8c16"
+                        />
+                      </Chart>
+                    </Card>
+                  </Col>
+                  <Col className="JobsStatisticsWindow-content-column" md={24} lg={12}>
+                    <Card
+                      className="JobsStatisticsWindow-content-card"
+                      hoverable
+                      title={<FormattedMessage id="job.rate" defaultMessage="Pay Grade" />}
+                      bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                    >
+                      <Chart
+                        data={chartData}
+                        scale={{
+                          number: { range: [0, 1] }
+                        }}
+                        height={200}
+                        padding={[0, 6]}
+                        forceFit
+                      >
+                        <Axis />
+                        <Tooltip
+                          crosshairs={{
+                            type: 'y'
+                          }}
+                        />
+                        <Geom
+                          type="line"
+                          position="number*rate"
+                          tooltip={[
+                            'number*rate',
+                            (number, rate) => {
+                              return {
+                                name: this.props.intl.formatMessage({
+                                  id: 'job.rate',
+                                  defaultMessage: 'Pay Grade'
+                                }),
+                                title: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.id',
+                                    defaultMessage: '#{id}'
+                                  },
+                                  { id: number }
+                                ),
+                                value: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.rate.value',
+                                    defaultMessage: '{value}%'
+                                  },
+                                  { value: rate }
+                                )
+                              };
+                            }
+                          ]}
+                          size={2}
+                          shape={'smooth'}
+                          color="#fa8c16"
+                        />
+                      </Chart>
+                    </Card>
+                  </Col>
+                  <Col className="JobsStatisticsWindow-content-column" md={24} lg={12}>
+                    <Card
+                      className="JobsStatisticsWindow-content-card"
+                      hoverable
+                      title={<FormattedMessage id="job.score" defaultMessage="Job Score" />}
+                      bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                    >
+                      <Chart
+                        data={chartData}
+                        scale={{
+                          number: { range: [0, 1] }
+                        }}
+                        height={200}
+                        padding={[0, 6]}
+                        forceFit
+                      >
+                        <Axis />
+                        <Tooltip
+                          crosshairs={{
+                            type: 'y'
+                          }}
+                        />
+                        <Geom
+                          type="line"
+                          position="number*score"
+                          tooltip={[
+                            'number*score',
+                            (number, score) => {
+                              return {
+                                name: this.props.intl.formatMessage({
+                                  id: 'job.score',
+                                  defaultMessage: 'Job Score'
+                                }),
+                                title: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.id',
+                                    defaultMessage: '#{id}'
+                                  },
+                                  { id: number }
+                                ),
+                                value: score
+                              };
+                            }
+                          ]}
+                          size={2}
+                          shape={'smooth'}
+                          color="#fa8c16"
+                        />
+                      </Chart>
+                    </Card>
+                  </Col>
+                  <Col className="JobsStatisticsWindow-content-column" md={24} lg={12}>
+                    <Card
+                      className="JobsStatisticsWindow-content-card"
+                      hoverable
+                      title={<FormattedMessage id="job.grizzco_points" defaultMessage="Grizzco Points" />}
+                      bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                    >
+                      <Chart
+                        data={chartData}
+                        scale={{
+                          number: { range: [0, 1] }
+                        }}
+                        height={200}
+                        padding={[0, 6]}
+                        forceFit
+                      >
+                        <Axis />
+                        <Tooltip
+                          crosshairs={{
+                            type: 'y'
+                          }}
+                        />
+                        <Geom
+                          type="line"
+                          position="number*grizzcoPoint"
+                          tooltip={[
+                            'number*grizzcoPoint',
+                            (number, grizzcoPoint) => {
+                              return {
+                                name: this.props.intl.formatMessage({
+                                  id: 'job.grizzco_points',
+                                  defaultMessage: 'Grizzco Points'
+                                }),
+                                title: this.props.intl.formatMessage(
+                                  {
+                                    id: 'job.id',
+                                    defaultMessage: '#{id}'
+                                  },
+                                  { id: number }
+                                ),
+                                value: grizzcoPoint
+                              };
+                            }
+                          ]}
+                          size={2}
+                          shape={'smooth'}
+                          color="#fa8c16"
+                        />
+                      </Chart>
+                    </Card>
+                  </Col>
+                </Row>
               </div>
             );
           }
@@ -1148,4 +1383,4 @@ class JobsStatisticsWindow extends React.Component {
   }
 }
 
-export default JobsStatisticsWindow;
+export default injectIntl(JobsStatisticsWindow);

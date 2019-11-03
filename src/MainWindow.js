@@ -170,7 +170,7 @@ class MainWindow extends React.Component {
                   </span>
                   <Link to="/stats/battles" />
                 </Menu.Item>
-                <Menu.Item key="statistics.salmon">
+                <Menu.Item key="statistics.jobs">
                   <span>
                     <FormattedMessage id="app.jobs" defaultMessage="Salmon Run" />
                   </span>
