@@ -335,6 +335,7 @@ class JobsWindow extends React.Component {
                 }
                 type="warning"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }
@@ -355,6 +356,7 @@ class JobsWindow extends React.Component {
                 }
                 type="info"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }

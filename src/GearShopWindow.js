@@ -165,6 +165,7 @@ class GearShopWindow extends React.Component {
                 }
                 type="warning"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }
@@ -182,6 +183,7 @@ class GearShopWindow extends React.Component {
                 }
                 type="warning"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }
@@ -199,6 +201,7 @@ class GearShopWindow extends React.Component {
                 }
                 type="info"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }

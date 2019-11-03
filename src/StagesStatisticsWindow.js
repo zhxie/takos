@@ -157,6 +157,7 @@ class StagesStatisticsWindow extends React.Component {
                 }
                 type="warning"
                 showIcon
+                style={{ marginBottom: '12px' }}
               />
             );
           }
