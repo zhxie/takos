@@ -8,6 +8,7 @@ import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
 import GearShopWindow from './GearShopWindow';
 import GearsStatisticsWindow from './GearsStatisticsWindow';
+import JobsStatisticsWindow from './JobsStatisticsWindow';
 import JobsWindow from './JobsWindow';
 import SchedulesWindow from './SchedulesWindow';
 import SettingsWindow from './SettingsWindow';
@@ -49,8 +50,8 @@ class MainWindow extends React.Component {
       this.setState({ selected: ['statistics.gears'] });
     } else if (this.props.location.pathname.startsWith('/stats/battles')) {
       this.setState({ selected: ['statistics.battles'] });
-    } else if (this.props.location.pathname.startsWith('/stats/salmon')) {
-      this.setState({ selected: ['statistics.salmon_run'] });
+    } else if (this.props.location.pathname.startsWith('/stats/jobs')) {
+      this.setState({ selected: ['statistics.jobs'] });
     } else if (this.props.location.pathname.startsWith('/battles')) {
       this.setState({ selected: ['battles'] });
     } else if (this.props.location.pathname.startsWith('/jobs')) {
@@ -171,9 +172,9 @@ class MainWindow extends React.Component {
                 </Menu.Item>
                 <Menu.Item key="statistics.salmon">
                   <span>
-                    <FormattedMessage id="app.salmon_run" defaultMessage="Salmon Run" />
+                    <FormattedMessage id="app.jobs" defaultMessage="Salmon Run" />
                   </span>
-                  <Link to="/stats/salmon" />
+                  <Link to="/stats/jobs" />
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="battles">
@@ -217,7 +218,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}stats/weapons`} component={WeaponsStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/gears`} component={GearsStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
-            <Route exact path={`${this.props.match.url}stats/salmon`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/jobs`} component={JobsStatisticsWindow} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
             <Route path={`${this.props.match.url}jobs`} component={JobsWindow} />
             <Route exact path={`${this.props.match.url}shop`} component={GearShopWindow} />

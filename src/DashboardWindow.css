@@ -6,6 +6,10 @@
   margin-bottom: 16px;
 }
 
+.DashboardWindow-content-card {
+  cursor: default;
+}
+
 .DashboardWindow-content-statistic .ant-statistic-content-prefix {
   margin-right: 0;
 }

@@ -606,7 +606,7 @@ class JobPlayer extends Player {
     this.death = death;
   }
 
-  get specialRamained() {
+  get specialRemained() {
     let used = 0;
     this.specialCounts.forEach(element => {
       used = used + element;

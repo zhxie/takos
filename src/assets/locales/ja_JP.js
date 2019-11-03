@@ -1116,6 +1116,16 @@ const ja_JP = {
   'app.jobs.next': '次のバイト #{id}',
   'app.jobs.delete': 'バイトを削除する',
   'app.jobs.with': '{name} とのバイトを表示する',
+  'app.jobs.count': 'バイト回数',
+  'app.jobs.clear_waves': 'WAVE クリア数',
+  'app.jobs.water_levels': '水位',
+  'app.jobs.event_types': 'イベント',
+  'app.jobs.salmoniods.appearance.total': '累計出現数',
+  'app.jobs.salmoniods.appearance.average': '平均出現数',
+  'app.jobs.salmoniods.kill.total': '累計倒す',
+  'app.jobs.salmoniods.kill.total.your': 'あなたの累計倒す',
+  'app.jobs.salmoniods.kill.average': '平均倒す',
+  'app.jobs.salmoniods.kill.average.your': 'あなたの平均倒す',
   'app.gear_shop': 'ゲソタウン',
   'app.gear_shop.order': '注文済み',
   'app.gear_shop.original_ability': 'オリジナルギアパワー',
@@ -1144,6 +1154,13 @@ const ja_JP = {
   'app.done': '完了',
   'app.retry': 'リトライ',
   'app.share': 'シェア',
+  'app.local': 'ローカル',
+  'app.splatnet': 'イカリング',
+  'app.total': '累計',
+  'app.total.your': 'あなたの累計',
+  'app.average': '平均',
+  'app.average.your': 'あなたの平均',
+  'app.trending': 'トレンド',
   // App.alert
   'app.alert.warning': '警告',
   'app.alert.warning.automatic_cookie_generation':
@@ -1214,9 +1231,8 @@ const ja_JP = {
   'app.modal.info.no_matching_weapon': '一致するブキはありません',
   'app.modal.info.no_matching_weapon.content':
     'Takos は統計内で一致するブキを見つけることができませんでした。設定を切り替えて、統計にイカリングのきろくを表示できます。',
-    'app.modal.info.no_matching_gear': '一致するギアはありません',
-  'app.modal.info.no_matching_gear.content':
-    'Takos は統計内で一致するギアを見つけることができませんでした。',
+  'app.modal.info.no_matching_gear': '一致するギアはありません',
+  'app.modal.info.no_matching_gear.content': 'Takos は統計内で一致するギアを見つけることができませんでした。',
   'app.modal.confirm.log_out': 'ログアウトしますか？',
   'app.modal.confirm.log_out.content':
     'ログアウトすると、バトルやバイトなど、保存されたすべてのデータが消去されることに注意してください。',

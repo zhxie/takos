@@ -1026,10 +1026,10 @@ const en_US = {
   // Water Level
   water_level: 'Water Level',
   'water_level.normal': 'Normal',
-  'water_level.low': 'Low tide',
-  'water_level.high': 'High tide',
+  'water_level.low': 'Low Tide',
+  'water_level.high': 'High Tide',
   // Event Type
-  'Event Type': 'Event',
+  event_type: 'Event',
   'event_type.water_levels': '-',
   'event_type.rush': 'Rush',
   'event_type.fog': 'Fog',
@@ -1117,6 +1117,16 @@ const en_US = {
   'app.jobs.next': 'Next Job #{id}',
   'app.jobs.delete': 'Delete Job',
   'app.jobs.with': 'Show jobs with {name}',
+  'app.jobs.count': 'Job Times',
+  'app.jobs.clear_waves': 'Clear WAVEs',
+  'app.jobs.water_levels': 'Water Levels',
+  'app.jobs.event_types': 'Events',
+  'app.jobs.salmoniods.appearance.total': 'Total Appearances',
+  'app.jobs.salmoniods.appearance.average': 'Average Appearances',
+  'app.jobs.salmoniods.kill.total': 'Total Splat',
+  'app.jobs.salmoniods.kill.total.your': 'Your Total Splat',
+  'app.jobs.salmoniods.kill.average': 'Average Splat',
+  'app.jobs.salmoniods.kill.average.your': 'Your Average Splat',
   'app.gear_shop': 'Gear Shop',
   'app.gear_shop.order': 'Ordered',
   'app.gear_shop.original_ability': 'Original Ability',
@@ -1146,6 +1156,13 @@ const en_US = {
   'app.done': 'Done',
   'app.retry': 'Retry',
   'app.share': 'Share',
+  'app.local': 'Local',
+  'app.splatnet': 'SplatNet',
+  'app.total': 'Total',
+  'app.total.your': 'Your Total',
+  'app.average': 'Average',
+  'app.average.your': 'Your Average',
+  'app.trending': 'Trending',
   // App.alert
   'app.alert.warning': 'Warning',
   'app.alert.warning.automatic_cookie_generation':
@@ -1208,9 +1225,8 @@ const en_US = {
   'app.modal.info.no_matching_weapon': 'No matching weapon',
   'app.modal.info.no_matching_weapon.content':
     'Takos can not find a matching weapon in statistics. You can switch whether to show SplatNet stats in statistics in settings.',
-    'app.modal.info.no_matching_gear': 'No matching gear',
-  'app.modal.info.no_matching_gear.content':
-    'Takos can not find a matching gear in statistics.',
+  'app.modal.info.no_matching_gear': 'No matching gear',
+  'app.modal.info.no_matching_gear.content': 'Takos can not find a matching gear in statistics.',
   'app.modal.confirm.log_out': 'Do you want to log out?',
   'app.modal.confirm.log_out.content':
     'Note that when you log out, all saved data, including battles and jobs, will be cleared.',

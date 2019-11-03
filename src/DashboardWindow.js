@@ -759,6 +759,8 @@ class DashboardWindow extends React.Component {
         <Row>
           <Col className="DashboardWindow-content-column" md={24} lg={12}>
             <Card
+              className="DashboardWindow-content-card"
+              hoverable
               bodyStyle={{
                 alignItems: 'center',
                 display: 'flex',
@@ -794,6 +796,8 @@ class DashboardWindow extends React.Component {
               <Row gutter={16}>
                 <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
                   <Card
+                    className="DashboardWindow-content-card"
+                    hoverable
                     title={<FormattedMessage id="app.dashboard.level_and_grade" defaultMessage="Level / Rank" />}
                     bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
                   >
@@ -845,6 +849,8 @@ class DashboardWindow extends React.Component {
                     return (
                       <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
                         <Card
+                          className="DashboardWindow-content-card"
+                          hoverable
                           title={<FormattedMessage id="rank" defaultMessage="Rank" />}
                           bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
                         >
@@ -1299,11 +1305,11 @@ class DashboardWindow extends React.Component {
                 {(() => {
                   if (this.state.shopGears !== null) {
                     return (
-                      <Col className="DashboardWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                      <Col className="DashboardWindow-content-column" md={24} lg={12}>
                         <Card
                           hoverable
                           title={<FormattedMessage id="app.gear_shop" defaultMessage="Gear Shop" />}
-                          headStyle={{ borderBottom: '2px solid #e8e8e8' }}
+                          headStyle={{ marginBottom: '0' }}
                           bodyStyle={{ padding: '0' }}
                           style={{ cursor: 'default' }}
                         >
