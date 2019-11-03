@@ -478,6 +478,12 @@ class JobModal extends React.Component {
                             </Button>
                           </Link>
                           <Divider type="vertical" />
+                          <Link to={'/stats/jobs?with={0}'.format(record.id)}>
+                            <Button type="link">
+                              <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
+                            </Button>
+                          </Link>
+                          <Divider type="vertical" />
                           <Link to={'/battles?with={0}'.format(record.id)}>
                             <Button type="link">
                               <FormattedMessage
@@ -485,6 +491,12 @@ class JobModal extends React.Component {
                                 defaultMessage="Show battles with {name}"
                                 values={{ name: record.nickname }}
                               />
+                            </Button>
+                          </Link>
+                          <Divider type="vertical" />
+                          <Link to={'/stats/battles?with={0}'.format(record.id)}>
+                            <Button type="link">
+                              <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
                             </Button>
                           </Link>
                         </span>
