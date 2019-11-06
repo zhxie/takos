@@ -205,6 +205,20 @@ class TimeConverter {
     );
   };
 
+  static getBattleElapsedTime = time => {
+    const days = parseInt(parseInt(time) / 86400);
+    const hours = parseInt((parseInt(time) - 86400 * days) / 3600);
+    const minutes = parseInt((parseInt(time) - 86400 * days - 3600 * hours) / 60);
+    const seconds = '0' + (parseInt(time) - 86400 * days - 3600 * hours - 60 * minutes);
+    if (days > 0) {
+      return days + ':' + ('0' + hours).substr(-2) + ':' + ('0' + minutes).substr(-2) + ':' + seconds.substr(-2);
+    } else if (hours > 0) {
+      return ('0' + hours).substr(-2) + ':' + ('0' + minutes).substr(-2) + ':' + seconds.substr(-2);
+    } else {
+      return minutes + ':' + seconds.substr(-2);
+    }
+  };
+
   static formatBattleElapsedTime = time => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = '0' + (parseInt(time) - 60 * minutes);

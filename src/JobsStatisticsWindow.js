@@ -216,6 +216,9 @@ class JobsStatisticsWindow extends React.Component {
           const data = this.filteredJobs();
           // Job
           let waves = 0;
+          let clear = 0;
+          let timeLimit = 0;
+          let wipeOut = 0;
           let hazardLevel = 0;
           let maxHazardLevel = 0;
           let score = 0;
@@ -267,6 +270,19 @@ class JobsStatisticsWindow extends React.Component {
             waves = waves + element.waves.length;
             if (element.result !== JobResult.clear) {
               waves = waves - 1;
+            }
+            switch (element.result) {
+              case JobResult.clear:
+                clear++;
+                break;
+              case JobResult.timeLimit:
+                timeLimit++;
+                break;
+              case JobResult.wipeOut:
+                wipeOut++;
+                break;
+              default:
+                throw new RangeError();
             }
             hazardLevel = hazardLevel + parseFloat(element.hazardLevel);
             if (parseFloat(element.hazardLevel) > maxHazardLevel) {
@@ -447,44 +463,28 @@ class JobsStatisticsWindow extends React.Component {
                           <Statistic
                             className="JobsStatisticsWindow-content-statistic"
                             title={<FormattedMessage id="job_result.clear" defaultMessage="Clear!" />}
-                            value={
-                              data.filter(element => {
-                                return element.result === JobResult.clear;
-                              }).length
-                            }
+                            value={clear}
                           />
                         </Col>
                         <Col className="JobsStatisticsWindow-content-column" span={12}>
                           <Statistic
                             className="JobsStatisticsWindow-content-statistic"
                             title={<FormattedMessage id="job_result.defeat" defaultMessage="Defeat" />}
-                            value={
-                              data.filter(element => {
-                                return element.result !== JobResult.clear;
-                              }).length
-                            }
+                            value={timeLimit + wipeOut}
                           />
                         </Col>
                         <Col className="JobsStatisticsWindow-content-column" span={12}>
                           <Statistic
                             className="JobsStatisticsWindow-content-statistic"
                             title={<FormattedMessage id="job_result.time_limit" defaultMessage="Time Up!" />}
-                            value={
-                              data.filter(element => {
-                                return element.result === JobResult.timeLimit;
-                              }).length
-                            }
+                            value={timeLimit}
                           />
                         </Col>
                         <Col className="JobsStatisticsWindow-content-column" span={12}>
                           <Statistic
                             className="JobsStatisticsWindow-content-statistic"
                             title={<FormattedMessage id="job_result.wipe_out" defaultMessage="DEFEAT!" />}
-                            value={
-                              data.filter(element => {
-                                return element.result === JobResult.wipeOut;
-                              }).length
-                            }
+                            value={wipeOut}
                           />
                         </Col>
                       </Row>

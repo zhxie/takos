@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Layout, Menu, Icon } from 'antd';
 
 import './MainWindow.css';
+import BattlesStatisticsWindow from './BattlesStatisticsWindow';
 import BattlesWindow from './BattlesWindow';
 import DashboardWindow from './DashboardWindow';
 import GearShopWindow from './GearShopWindow';
@@ -217,7 +218,7 @@ class MainWindow extends React.Component {
             <Route exact path={`${this.props.match.url}stats/stages`} component={StagesStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/weapons`} component={WeaponsStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/gears`} component={GearsStatisticsWindow} />
-            <Route exact path={`${this.props.match.url}stats/battles`} component={ConstructionResult} />
+            <Route exact path={`${this.props.match.url}stats/battles`} component={BattlesStatisticsWindow} />
             <Route exact path={`${this.props.match.url}stats/jobs`} component={JobsStatisticsWindow} />
             <Route path={`${this.props.match.url}battles`} component={BattlesWindow} />
             <Route path={`${this.props.match.url}jobs`} component={JobsWindow} />

@@ -188,7 +188,7 @@ class WeaponsStatisticsWindow extends React.Component {
                         {battles.map(element => {
                           return (
                             <div
-                              className="BattlesStatisticsWindow-content-card"
+                              className="WeaponStatisticsWindow-content-card"
                               key={element.weapon.mainWeapon.value}
                               id={element.weapon.mainWeapon.value}
                             >
@@ -208,7 +208,7 @@ class WeaponsStatisticsWindow extends React.Component {
                         {jobs.map(element => {
                           return (
                             <div
-                              className="BattlesStatisticsWindow-content-card"
+                              className="WeaponStatisticsWindow-content-card"
                               key={element.weapon.mainWeapon.value}
                               id={'salmon-' + element.weapon.mainWeapon.value}
                             >
