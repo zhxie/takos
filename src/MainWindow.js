@@ -17,7 +17,6 @@ import ShiftsWindow from './ShiftsWindow';
 import StagesStatisticsWindow from './StagesStatisticsWindow';
 import WeaponsStatisticsWindow from './WeaponsStatisticsWindow';
 import logo from './assets/images/logo.svg';
-import ConstructionResult from './components/ConstructionResult';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
