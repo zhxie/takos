@@ -746,7 +746,7 @@ class SplatfestBattle extends Battle {
   }
 
   get isCalculating() {
-    return this.splatfestPower === 0;
+    return parseFloat(this.splatfestPower) === 0;
   }
 }
 

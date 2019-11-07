@@ -11,12 +11,13 @@ import ErrorResult from './components/ErrorResult';
 import LoadingResult from './components/LoadingResult';
 import StatisticsCard from './components/StatisticsCard';
 import WindowLayout from './components/WindowLayout';
-import { RankedBattle, LeagueBattle } from './models/Battle';
+import { RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle } from './models/Battle';
+import { Mode } from './models/Mode';
+import { Rank } from './models/Player';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
-import { Rank } from './models/Player';
 
 class BattlesStatisticsWindow extends React.Component {
   state = {
@@ -232,6 +233,33 @@ class BattlesStatisticsWindow extends React.Component {
           let knockedOut = 0;
           let elapsedTime = 0;
           let maxElapsedTime = 0;
+          let rankedBattleCount = 0;
+          let estimatedRankPower = 0;
+          let maxEstimatedRankPower = 0;
+          let xPowerCount = 0;
+          let currentXPower = [];
+          let currentMaxXPower = 0;
+          let xPower = 0;
+          let maxXPower = 0;
+          let leagueBattleCount = 0;
+          let myEstimatedLeaguePoint = 0;
+          let maxMyEstimatedLeaguePoint = 0;
+          let otherEstimatedLeaguePoint = 0;
+          let maxOtherEstimatedLeaguePoint = 0;
+          let leaguePointCount = 0;
+          let leaguePoint = 0;
+          let maxLeaguePoint = 0;
+          let splatfestBattleCount = 0;
+          let myEstimatedSplatfestPower = 0;
+          let maxMyEstimatedSplatfestPower = 0;
+          let otherEstimatedSplatfestPower = 0;
+          let maxOtherEstimatedSplatfestPower = 0;
+          let splatfestPowerCount = 0;
+          let splatfestPower = 0;
+          let maxSplatfestPower = 0;
+          let contributionPoint = 0;
+          let maxContributionPoint = 0;
+          let maxTotalContributionPoint = 0;
           // Player
           let selfCurrentRank = [];
           let selfCurrentMaxRank = Rank.cMinus;
@@ -264,6 +292,61 @@ class BattlesStatisticsWindow extends React.Component {
             }
             elapsedTime = elapsedTime + element.elapsedTime;
             maxElapsedTime = Math.max(maxElapsedTime, element.elapsedTime);
+            if (element instanceof RankedBattle) {
+              rankedBattleCount++;
+              estimatedRankPower = estimatedRankPower + element.estimatedRankPower;
+              maxEstimatedRankPower = Math.max(maxEstimatedRankPower, element.estimatedRankPower);
+              if (element instanceof RankedXBattle && !element.isCalculating) {
+                currentXPower.push({
+                  rule: element.rule,
+                  xPower: element.xPowerAfter
+                });
+              } else {
+                currentXPower.push({
+                  rule: element.rule,
+                  xPower: 0
+                });
+              }
+              if (element instanceof RankedXBattle) {
+                if (!element.isCalculating) {
+                  xPowerCount++;
+                  xPower = xPower + element.xPowerAfter;
+                  if (element.xPowerAfter > maxXPower) {
+                    maxXPower = element.xPowerAfter;
+                  }
+                }
+              }
+            }
+            if (element instanceof LeagueBattle) {
+              leagueBattleCount++;
+              myEstimatedLeaguePoint = myEstimatedLeaguePoint + element.myEstimatedLeaguePoint;
+              maxMyEstimatedLeaguePoint = Math.max(maxMyEstimatedLeaguePoint, element.myEstimatedLeaguePoint);
+              otherEstimatedLeaguePoint = otherEstimatedLeaguePoint + element.otherEstimatedLeaguePoint;
+              maxOtherEstimatedLeaguePoint = Math.max(maxOtherEstimatedLeaguePoint, element.otherEstimatedLeaguePoint);
+              if (!element.isCalculating) {
+                leaguePointCount++;
+                leaguePoint = leaguePoint + parseFloat(element.leaguePoint);
+                maxLeaguePoint = Math.max(maxLeaguePoint, parseFloat(element.maxLeaguePoint));
+              }
+            }
+            if (element instanceof SplatfestBattle) {
+              splatfestBattleCount++;
+              myEstimatedSplatfestPower = myEstimatedSplatfestPower + element.myEstimatedSplatfestPower;
+              maxMyEstimatedSplatfestPower = Math.max(maxMyEstimatedSplatfestPower, element.myEstimatedSplatfestPower);
+              otherEstimatedSplatfestPower = otherEstimatedSplatfestPower + element.otherEstimatedSplatfestPower;
+              maxOtherEstimatedSplatfestPower = Math.max(
+                maxOtherEstimatedSplatfestPower,
+                element.otherEstimatedSplatfestPower
+              );
+              if (!element.isCalculating) {
+                splatfestPowerCount++;
+                splatfestPower = splatfestPower + parseFloat(element.splatfestPower);
+                maxSplatfestPower = Math.max(maxSplatfestPower, parseFloat(element.maxSplatfestPower));
+              }
+              contributionPoint = contributionPoint + element.contributionPoint;
+              maxContributionPoint = Math.max(maxContributionPoint, element.contributionPoint);
+              maxTotalContributionPoint = Math.max(maxTotalContributionPoint, element.totalContributionPoint);
+            }
             // Player
             if (element instanceof RankedBattle) {
               if (
@@ -301,6 +384,140 @@ class BattlesStatisticsWindow extends React.Component {
               selfCurrentMaxRank = element.rank;
             }
           });
+          currentXPower.forEach(element => {
+            if (element.xPower > currentMaxXPower) {
+              currentMaxXPower = element.xPower;
+            }
+          });
+          let rankedChartData = [];
+          let teamLeaguePowerChartData = [];
+          let leaguePowerChartData = [];
+          let teamSplatfestPowerChartData = [];
+          let splatfestPowerChartData = [];
+          data
+            .filter(e => {
+              return e.gameMode === Mode.rankedBattle;
+            })
+            .sort((a, b) => {
+              return a.number - b.number;
+            })
+            .slice(-20)
+            .forEach(element => {
+              if (element instanceof RankedXBattle && !element.isCalculating) {
+                rankedChartData.push({
+                  number: element.number.toString(),
+                  estimatedRankPower: element.estimatedRankPower,
+                  xPower: element.xPowerAfter
+                });
+              } else {
+                rankedChartData.push({
+                  number: element.number.toString(),
+                  estimatedRankPower: element.estimatedRankPower
+                });
+              }
+            });
+          data
+            .filter(e => {
+              return e.gameMode === Mode.leagueBattle;
+            })
+            .sort((a, b) => {
+              return a.number - b.number;
+            })
+            .slice(-20)
+            .forEach(element => {
+              if (!element.isCalculating) {
+                teamLeaguePowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  estimatedLeaguePoint: element.myEstimatedLeaguePoint
+                });
+                teamLeaguePowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  estimatedLeaguePoint: element.otherEstimatedLeaguePoint
+                });
+                leaguePowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  leaguePoint: parseFloat(element.leaguePoint)
+                });
+                leaguePowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  leaguePoint: parseFloat(element.maxLeaguePoint)
+                });
+              } else {
+                teamLeaguePowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  estimatedLeaguePoint: element.myEstimatedLeaguePoint
+                });
+                teamLeaguePowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  estimatedLeaguePoint: element.otherEstimatedLeaguePoint
+                });
+                leaguePowerChartData.push({
+                  group: '1',
+                  number: element.number.toString()
+                });
+                leaguePowerChartData.push({
+                  group: '2',
+                  number: element.number.toString()
+                });
+              }
+            });
+          data
+            .filter(e => {
+              return e.gameMode === Mode.splatfest;
+            })
+            .sort((a, b) => {
+              return a.number - b.number;
+            })
+            .slice(-20)
+            .forEach(element => {
+              if (!element.isCalculating) {
+                teamSplatfestPowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  estimatedSplatfestPower: element.myEstimatedSplatfestPower
+                });
+                teamSplatfestPowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  estimatedSplatfestPower: element.otherEstimatedSplatfestPower
+                });
+                splatfestPowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  splatfestPower: parseFloat(element.splatfestPower)
+                });
+                splatfestPowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  splatfestPower: parseFloat(element.maxSplatfestPower)
+                });
+              } else {
+                teamSplatfestPowerChartData.push({
+                  group: '1',
+                  number: element.number.toString(),
+                  estimatedSplatfestPower: element.myEstimatedSplatfestPower
+                });
+                teamSplatfestPowerChartData.push({
+                  group: '2',
+                  number: element.number.toString(),
+                  estimatedSplatfestPower: element.otherEstimatedSplatfestPower
+                });
+                splatfestPowerChartData.push({
+                  group: '1',
+                  number: element.number.toString()
+                });
+                splatfestPowerChartData.push({
+                  group: '2',
+                  number: element.number.toString()
+                });
+              }
+            });
           if (data.length > 0) {
             return (
               <div>
@@ -383,33 +600,216 @@ class BattlesStatisticsWindow extends React.Component {
                     />
                   </Col>
                 </Row>
-                <PageHeader title={<FormattedMessage id="player" defaultMessage="Player" />} />
-                <Row gutter={16}>
-                  <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
-                    <Card
-                      className="BattlesStatisticsWindow-content-card"
-                      hoverable
-                      title={<FormattedMessage id="rank.max" defaultMessage="Max Rank" />}
-                      bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
-                    >
+                {(() => {
+                  if (rankedBattleCount > 0) {
+                    return (
                       <Row gutter={16}>
-                        <Col className="BattlesStatisticsWindow-content-column" span={12}>
-                          <Statistic
-                            className="BattlesStatisticsWindow-content-statistic"
-                            title={<FormattedMessage id="app.current" defaultMessage="Current" />}
-                            value={this.props.intl.formatMessage({ id: selfCurrentMaxRank.name })}
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={<FormattedMessage id="battle.power" defaultMessage="Power Level" />}
+                            average={(estimatedRankPower / rankedBattleCount).toFixed(2)}
+                            max={maxEstimatedRankPower}
                           />
                         </Col>
-                        <Col className="BattlesStatisticsWindow-content-column" span={12}>
-                          <Statistic
-                            className="BattlesStatisticsWindow-content-statistic"
-                            title={<FormattedMessage id="app.history" defaultMessage="History" />}
-                            value={this.props.intl.formatMessage({ id: selfMaxRank.name })}
+                        {(() => {
+                          if (xPowerCount > 0) {
+                            return (
+                              <Col
+                                className="BattlesStatisticsWindow-content-column"
+                                xs={24}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={6}
+                              >
+                                <Card
+                                  className="BattlesStatisticsWindow-content-card"
+                                  hoverable
+                                  title={<FormattedMessage id="battle.power.x" defaultMessage="X Power" />}
+                                  bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                                >
+                                  <Row gutter={16}>
+                                    <Col className="BattlesStatisticsWindow-content-column" span={24}>
+                                      <Statistic
+                                        className="BattlesStatisticsWindow-content-statistic"
+                                        title={<FormattedMessage id="app.average" defaultMessage="Average" />}
+                                        value={(xPower / xPowerCount).toFixed(2)}
+                                      />
+                                    </Col>
+                                    <Col className="BattlesStatisticsWindow-content-column" span={12}>
+                                      <Statistic
+                                        className="BattlesStatisticsWindow-content-statistic"
+                                        title={<FormattedMessage id="app.max.current" defaultMessage="Current Max" />}
+                                        value={currentMaxXPower}
+                                      />
+                                    </Col>
+                                    <Col className="BattlesStatisticsWindow-content-column" span={12}>
+                                      <Statistic
+                                        className="BattlesStatisticsWindow-content-statistic"
+                                        title={<FormattedMessage id="app.max.history" defaultMessage="History Max" />}
+                                        value={maxXPower}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Card>
+                              </Col>
+                            );
+                          }
+                        })()}
+                      </Row>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (leagueBattleCount > 0) {
+                    return (
+                      <Row gutter={16}>
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={
+                              <FormattedMessage id="battle.power.league.my" defaultMessage="My Team League Power" />
+                            }
+                            average={(myEstimatedLeaguePoint / leagueBattleCount).toFixed(2)}
+                            max={maxMyEstimatedLeaguePoint}
+                          />
+                        </Col>
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={
+                              <FormattedMessage
+                                id="battle.power.league.other"
+                                defaultMessage="Other Team League Power"
+                              />
+                            }
+                            average={(otherEstimatedLeaguePoint / leagueBattleCount).toFixed(2)}
+                            max={maxOtherEstimatedLeaguePoint}
+                          />
+                        </Col>
+                        {(() => {
+                          if (leaguePointCount > 0) {
+                            return (
+                              <Col
+                                className="BattlesStatisticsWindow-content-column"
+                                xs={24}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={6}
+                              >
+                                <StatisticsCard
+                                  title={<FormattedMessage id="battle.power.league" defaultMessage="League Power" />}
+                                  average={(leaguePoint / leaguePointCount).toFixed(2)}
+                                  max={maxLeaguePoint}
+                                />
+                              </Col>
+                            );
+                          }
+                        })()}
+                      </Row>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (splatfestBattleCount > 0) {
+                    return (
+                      <Row gutter={16}>
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={
+                              <FormattedMessage
+                                id="battle.power.splatfest.my"
+                                defaultMessage="My Team Splatfest Power"
+                              />
+                            }
+                            average={(myEstimatedSplatfestPower / splatfestBattleCount).toFixed(2)}
+                            max={maxMyEstimatedSplatfestPower}
+                          />
+                        </Col>
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={
+                              <FormattedMessage
+                                id="battle.power.splatfest.other"
+                                defaultMessage="Other Team Splatfest Power"
+                              />
+                            }
+                            average={(otherEstimatedSplatfestPower / splatfestBattleCount).toFixed(2)}
+                            max={maxOtherEstimatedSplatfestPower}
+                          />
+                        </Col>
+                        {(() => {
+                          if (splatfestPowerCount > 0) {
+                            return (
+                              <Col
+                                className="BattlesStatisticsWindow-content-column"
+                                xs={24}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={6}
+                              >
+                                <StatisticsCard
+                                  title={
+                                    <FormattedMessage id="battle.power.splatfest" defaultMessage="Splatfest Power" />
+                                  }
+                                  average={(splatfestPower / splatfestPowerCount).toFixed(2)}
+                                  max={maxSplatfestPower}
+                                />
+                              </Col>
+                            );
+                          }
+                        })()}
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={<FormattedMessage id="battle.contribution" defaultMessage="Clout" />}
+                            total={contributionPoint}
+                            average={(contributionPoint / splatfestBattleCount).toFixed(2)}
+                            max={maxContributionPoint}
+                          />
+                        </Col>
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <StatisticsCard
+                            title={<FormattedMessage id="battle.contribution.total" defaultMessage="Total Clouts" />}
+                            max={maxTotalContributionPoint}
                           />
                         </Col>
                       </Row>
-                    </Card>
-                  </Col>
+                    );
+                  }
+                })()}
+                <PageHeader title={<FormattedMessage id="player" defaultMessage="Player" />} />
+                <Row gutter={16}>
+                  {(() => {
+                    if (rankedBattleCount > 0) {
+                      return (
+                        <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
+                          <Card
+                            className="BattlesStatisticsWindow-content-card"
+                            hoverable
+                            title={<FormattedMessage id="rank" defaultMessage="Rank" />}
+                            bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
+                          >
+                            <Row gutter={16}>
+                              <Col className="BattlesStatisticsWindow-content-column" span={12}>
+                                <Statistic
+                                  className="BattlesStatisticsWindow-content-statistic"
+                                  title={<FormattedMessage id="app.max.current" defaultMessage="Current Max" />}
+                                  value={this.props.intl.formatMessage({ id: selfCurrentMaxRank.name })}
+                                />
+                              </Col>
+                              <Col className="BattlesStatisticsWindow-content-column" span={12}>
+                                <Statistic
+                                  className="BattlesStatisticsWindow-content-statistic"
+                                  title={<FormattedMessage id="app.max.history" defaultMessage="History Max" />}
+                                  value={this.props.intl.formatMessage({ id: selfMaxRank.name })}
+                                />
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Col>
+                      );
+                    }
+                  })()}
                   <Col className="BattlesStatisticsWindow-content-column" xs={24} sm={12} md={12} lg={12} xl={6}>
                     <StatisticsCard
                       title={<FormattedMessage id="player.paint" defaultMessage="Ink" />}
@@ -459,6 +859,456 @@ class BattlesStatisticsWindow extends React.Component {
                     />
                   </Col>
                 </Row>
+                <PageHeader title={<FormattedMessage id="app.trending" defaultMessage="Trending" />} />
+                {(() => {
+                  if (rankedChartData.length > 0) {
+                    return (
+                      <Row gutter={16}>
+                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                          <Card
+                            className="BattlesStatisticsWindow-content-card"
+                            hoverable
+                            title={<FormattedMessage id="battle.power.ranked" defaultMessage="Power Level" />}
+                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                          >
+                            <Chart
+                              data={rankedChartData}
+                              scale={{
+                                number: { range: [0, 1] }
+                              }}
+                              height={200}
+                              padding={[0, 6]}
+                              forceFit
+                            >
+                              <Axis />
+                              <Tooltip
+                                crosshairs={{
+                                  type: 'y'
+                                }}
+                              />
+                              <Geom
+                                type="line"
+                                position="number*estimatedRankPower"
+                                tooltip={[
+                                  'number*estimatedRankPower',
+                                  (number, estimatedRankPower) => {
+                                    return {
+                                      name: this.props.intl.formatMessage({
+                                        id: 'battle.power.ranked',
+                                        defaultMessage: 'Power Level'
+                                      }),
+                                      title: this.props.intl.formatMessage(
+                                        {
+                                          id: 'battle.id',
+                                          defaultMessage: '#{id}'
+                                        },
+                                        { id: number }
+                                      ),
+                                      value: estimatedRankPower
+                                    };
+                                  }
+                                ]}
+                                size={2}
+                                shape={'smooth'}
+                                color="#fa8c16"
+                              />
+                            </Chart>
+                          </Card>
+                        </Col>
+                        {(() => {
+                          if (
+                            rankedChartData.some(element => {
+                              return element.xPower !== undefined;
+                            })
+                          ) {
+                            return (
+                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                <Card
+                                  className="BattlesStatisticsWindow-content-card"
+                                  hoverable
+                                  title={<FormattedMessage id="battle.power.x" defaultMessage="X Power" />}
+                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                >
+                                  <Chart
+                                    data={rankedChartData}
+                                    scale={{
+                                      number: { range: [0, 1] }
+                                    }}
+                                    height={200}
+                                    padding={[0, 6]}
+                                    forceFit
+                                  >
+                                    <Axis />
+                                    <Tooltip
+                                      crosshairs={{
+                                        type: 'y'
+                                      }}
+                                    />
+                                    <Geom
+                                      type="line"
+                                      position="number*xPower"
+                                      tooltip={[
+                                        'number*xPower',
+                                        (number, estimatedRankPower) => {
+                                          return {
+                                            name: this.props.intl.formatMessage({
+                                              id: 'battle.power.x',
+                                              defaultMessage: 'X Powere'
+                                            }),
+                                            title: this.props.intl.formatMessage(
+                                              {
+                                                id: 'battle.id',
+                                                defaultMessage: '#{id}'
+                                              },
+                                              { id: number }
+                                            ),
+                                            value: xPower
+                                          };
+                                        }
+                                      ]}
+                                      size={2}
+                                      shape={'smooth'}
+                                      color="#fa8c16"
+                                    />
+                                  </Chart>
+                                </Card>
+                              </Col>
+                            );
+                          }
+                        })()}
+                      </Row>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (teamLeaguePowerChartData.length > 0) {
+                    return (
+                      <Row gutter={16}>
+                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                          <Card
+                            className="BattlesStatisticsWindow-content-card"
+                            hoverable
+                            title={
+                              <FormattedMessage id="battle.power.league.team" defaultMessage="Team League Power" />
+                            }
+                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                          >
+                            <Chart
+                              data={teamLeaguePowerChartData}
+                              scale={{
+                                number: { range: [0, 1] }
+                              }}
+                              height={200}
+                              padding={[0, 6]}
+                              forceFit
+                            >
+                              <Axis />
+                              <Tooltip
+                                crosshairs={{
+                                  type: 'y'
+                                }}
+                              />
+                              <Geom
+                                type="line"
+                                position="number*estimatedLeaguePoint"
+                                tooltip={[
+                                  'group*number*estimatedLeaguePoint',
+                                  (group, number, estimatedLeaguePoint) => {
+                                    switch (group) {
+                                      case '1':
+                                        return {
+                                          name: this.props.intl.formatMessage({
+                                            id: 'battle.power.league.my',
+                                            defaultMessage: 'My Team League Power'
+                                          }),
+                                          title: this.props.intl.formatMessage(
+                                            {
+                                              id: 'battle.id',
+                                              defaultMessage: '#{id}'
+                                            },
+                                            { id: number }
+                                          ),
+                                          value: estimatedLeaguePoint
+                                        };
+                                      case '2':
+                                        return {
+                                          name: this.props.intl.formatMessage({
+                                            id: 'battle.power.league.other',
+                                            defaultMessage: 'Other Team League Power'
+                                          }),
+                                          title: this.props.intl.formatMessage(
+                                            {
+                                              id: 'battle.id',
+                                              defaultMessage: '#{id}'
+                                            },
+                                            { id: number }
+                                          ),
+                                          value: estimatedLeaguePoint
+                                        };
+                                      default:
+                                        throw new RangeError();
+                                    }
+                                  }
+                                ]}
+                                size={2}
+                                shape={'smooth'}
+                                color={['group', ['#eb2f96', '#52c41a']]}
+                              />
+                            </Chart>
+                          </Card>
+                        </Col>
+                        {(() => {
+                          if (
+                            leaguePowerChartData.some(element => {
+                              return element.leaguePoint !== undefined;
+                            })
+                          ) {
+                            return (
+                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                <Card
+                                  className="BattlesStatisticsWindow-content-card"
+                                  hoverable
+                                  title={<FormattedMessage id="battle.power.league" defaultMessage="League Power" />}
+                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                >
+                                  <Chart
+                                    data={leaguePowerChartData}
+                                    scale={{
+                                      number: { range: [0, 1] }
+                                    }}
+                                    height={200}
+                                    padding={[0, 6]}
+                                    forceFit
+                                  >
+                                    <Axis />
+                                    <Tooltip
+                                      crosshairs={{
+                                        type: 'y'
+                                      }}
+                                    />
+                                    <Geom
+                                      type="line"
+                                      position="number*leaguePoint"
+                                      tooltip={[
+                                        'group*number*leaguePoint',
+                                        (group, number, leaguePoint) => {
+                                          switch (group) {
+                                            case '1':
+                                              return {
+                                                name: this.props.intl.formatMessage({
+                                                  id: 'battle.power.league.current',
+                                                  defaultMessage: 'Current League Power'
+                                                }),
+                                                title: this.props.intl.formatMessage(
+                                                  {
+                                                    id: 'battle.id',
+                                                    defaultMessage: '#{id}'
+                                                  },
+                                                  { id: number }
+                                                ),
+                                                value: leaguePoint
+                                              };
+                                            case '2':
+                                              return {
+                                                name: this.props.intl.formatMessage({
+                                                  id: 'battle.power.league.highest',
+                                                  defaultMessage: 'Highest League Power'
+                                                }),
+                                                title: this.props.intl.formatMessage(
+                                                  {
+                                                    id: 'battle.id',
+                                                    defaultMessage: '#{id}'
+                                                  },
+                                                  { id: number }
+                                                ),
+                                                value: leaguePoint
+                                              };
+                                            default:
+                                              throw new RangeError();
+                                          }
+                                        }
+                                      ]}
+                                      size={2}
+                                      shape={'smooth'}
+                                      color={['group', ['#fa8c16', '#eb2f96']]}
+                                    />
+                                  </Chart>
+                                </Card>
+                              </Col>
+                            );
+                          }
+                        })()}
+                      </Row>
+                    );
+                  }
+                })()}
+                {(() => {
+                  if (teamSplatfestPowerChartData.length > 0) {
+                    return (
+                      <Row gutter={16}>
+                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                          <Card
+                            className="BattlesStatisticsWindow-content-card"
+                            hoverable
+                            title={
+                              <FormattedMessage
+                                id="battle.power.splatfest.team"
+                                defaultMessage="Team Splatfest Power"
+                              />
+                            }
+                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                          >
+                            <Chart
+                              data={teamSplatfestPowerChartData}
+                              scale={{
+                                number: { range: [0, 1] }
+                              }}
+                              height={200}
+                              padding={[0, 6]}
+                              forceFit
+                            >
+                              <Axis />
+                              <Tooltip
+                                crosshairs={{
+                                  type: 'y'
+                                }}
+                              />
+                              <Geom
+                                type="line"
+                                position="number*estimatedSplatfestPower"
+                                tooltip={[
+                                  'group*number*estimatedSplatfestPower',
+                                  (group, number, estimatedSplatfestPower) => {
+                                    switch (group) {
+                                      case '1':
+                                        return {
+                                          name: this.props.intl.formatMessage({
+                                            id: 'battle.power.splatfest.my',
+                                            defaultMessage: 'My Team Splatfest Power'
+                                          }),
+                                          title: this.props.intl.formatMessage(
+                                            {
+                                              id: 'battle.id',
+                                              defaultMessage: '#{id}'
+                                            },
+                                            { id: number }
+                                          ),
+                                          value: estimatedSplatfestPower
+                                        };
+                                      case '2':
+                                        return {
+                                          name: this.props.intl.formatMessage({
+                                            id: 'battle.power.splatfest.other',
+                                            defaultMessage: 'Other Team Splatfest Power'
+                                          }),
+                                          title: this.props.intl.formatMessage(
+                                            {
+                                              id: 'battle.id',
+                                              defaultMessage: '#{id}'
+                                            },
+                                            { id: number }
+                                          ),
+                                          value: estimatedSplatfestPower
+                                        };
+                                      default:
+                                        throw new RangeError();
+                                    }
+                                  }
+                                ]}
+                                size={2}
+                                shape={'smooth'}
+                                color={['group', ['#eb2f96', '#52c41a']]}
+                              />
+                            </Chart>
+                          </Card>
+                        </Col>
+                        {(() => {
+                          if (
+                            splatfestPowerChartData.some(element => {
+                              return element.splatfestPower !== undefined;
+                            })
+                          ) {
+                            return (
+                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                <Card
+                                  className="BattlesStatisticsWindow-content-card"
+                                  hoverable
+                                  title={
+                                    <FormattedMessage id="battle.power.splatfest" defaultMessage="Splatfest Power" />
+                                  }
+                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                >
+                                  <Chart
+                                    data={splatfestPowerChartData}
+                                    scale={{
+                                      number: { range: [0, 1] }
+                                    }}
+                                    height={200}
+                                    padding={[0, 6]}
+                                    forceFit
+                                  >
+                                    <Axis />
+                                    <Tooltip
+                                      crosshairs={{
+                                        type: 'y'
+                                      }}
+                                    />
+                                    <Geom
+                                      type="line"
+                                      position="number*splatfestPower"
+                                      tooltip={[
+                                        'group*number*splatfestPower',
+                                        (group, number, splatfestPower) => {
+                                          switch (group) {
+                                            case '1':
+                                              return {
+                                                name: this.props.intl.formatMessage({
+                                                  id: 'battle.power.splatfest.current',
+                                                  defaultMessage: 'Current Splatfest Power'
+                                                }),
+                                                title: this.props.intl.formatMessage(
+                                                  {
+                                                    id: 'battle.id',
+                                                    defaultMessage: '#{id}'
+                                                  },
+                                                  { id: number }
+                                                ),
+                                                value: splatfestPower
+                                              };
+                                            case '2':
+                                              return {
+                                                name: this.props.intl.formatMessage({
+                                                  id: 'battle.power.splatfest.highest',
+                                                  defaultMessage: 'Highest Splatfest Power'
+                                                }),
+                                                title: this.props.intl.formatMessage(
+                                                  {
+                                                    id: 'battle.id',
+                                                    defaultMessage: '#{id}'
+                                                  },
+                                                  { id: number }
+                                                ),
+                                                value: splatfestPower
+                                              };
+                                            default:
+                                              throw new RangeError();
+                                          }
+                                        }
+                                      ]}
+                                      size={2}
+                                      shape={'smooth'}
+                                      color={['group', ['#fa8c16', '#eb2f96']]}
+                                    />
+                                  </Chart>
+                                </Card>
+                              </Col>
+                            );
+                          }
+                        })()}
+                      </Row>
+                    );
+                  }
+                })()}
               </div>
             );
           }
