@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import { PageHeader, Alert, Button, Row, Col, Card, Statistic } from 'antd';
+import { PageHeader, Alert, Button, Form, Select, Row, Col, Card, Statistic } from 'antd';
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
 import './BattlesStatisticsWindow.css';
@@ -14,10 +14,13 @@ import WindowLayout from './components/WindowLayout';
 import { RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle } from './models/Battle';
 import { Mode } from './models/Mode';
 import { Rank } from './models/Player';
+import Rule from './models/Rule';
 import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
+
+const { Option } = Select;
 
 class BattlesStatisticsWindow extends React.Component {
   state = {
@@ -30,7 +33,21 @@ class BattlesStatisticsWindow extends React.Component {
     updateCurrent: 0,
     updateTotal: 0,
     updated: false,
-    search: null
+    search: null,
+    mode: [
+      Mode.regularBattle.value,
+      Mode.rankedBattle.value,
+      Mode.leagueBattle.value,
+      Mode.privateBattle.value,
+      Mode.splatfest.value
+    ],
+    rule: [
+      Rule.turfWar.value,
+      Rule.splatZones.value,
+      Rule.towerControl.value,
+      Rule.rainmaker.value,
+      Rule.clamBlitz.value
+    ]
   };
 
   constructor(props) {
@@ -152,10 +169,20 @@ class BattlesStatisticsWindow extends React.Component {
   };
 
   filteredBattles = () => {
-    if (this.state.search === null) {
-      return this.state.data;
-    } else {
-      let data = this.state.data;
+    let data = this.state.data;
+    // Mode and rule
+    data = data.filter(element => {
+      return (
+        this.state.mode.find(ele => {
+          return ele === element.gameMode.value;
+        }) !== undefined &&
+        this.state.rule.find(ele => {
+          return ele === element.rule.value;
+        }) !== undefined
+      );
+    });
+    // With
+    if (this.state.search !== null) {
       if (this.state.search.with !== undefined) {
         data = data.filter(element => {
           let isWith = false;
@@ -176,8 +203,16 @@ class BattlesStatisticsWindow extends React.Component {
           return isWith;
         });
       }
-      return data;
     }
+    return data;
+  };
+
+  filterMode = value => {
+    this.setState({ mode: value });
+  };
+
+  filterRule = value => {
+    this.setState({ rule: value });
   };
 
   renderContent = () => {
@@ -222,6 +257,79 @@ class BattlesStatisticsWindow extends React.Component {
             );
           }
         })()}
+        <PageHeader title={<FormattedMessage id="app.filter" defaultMessage="Filter" />} />
+        <Form className="BattlesStatisticsWindow-content-form" labelCol={{ span: 24 }}>
+          <Form.Item label={<FormattedMessage id="mode" defaultMessage="Mode" />}>
+            <Row gutter={8}>
+              <Col sm={18} md={12}>
+                <Select
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={this.props.intl.formatMessage({ id: 'mode', defaultMessage: 'Mode' })}
+                  defaultValue={[
+                    Mode.regularBattle.value,
+                    Mode.rankedBattle.value,
+                    Mode.leagueBattle.value,
+                    Mode.privateBattle.value,
+                    Mode.splatfest.value
+                  ]}
+                  onChange={this.filterMode}
+                >
+                  <Option value={Mode.regularBattle.value}>
+                    <FormattedMessage id="mode.regular_battle" defaultMessage="Regular Battle" />
+                  </Option>
+                  <Option value={Mode.rankedBattle.value}>
+                    <FormattedMessage id="mode.ranked_battle" defaultMessage="Ranked Battle" />
+                  </Option>
+                  <Option value={Mode.leagueBattle.value}>
+                    <FormattedMessage id="mode.league_battle" defaultMessage="League Battle" />
+                  </Option>
+                  <Option value={Mode.privateBattle.value}>
+                    <FormattedMessage id="mode.private_battle" defaultMessage="Private Battle" />
+                  </Option>
+                  <Option value={Mode.splatfest.value}>
+                    <FormattedMessage id="mode.splatfest" defaultMessage="Splatfest" />
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+          </Form.Item>
+          <Form.Item label={<FormattedMessage id="rule" defaultMessage="Rule" />}>
+            <Row gutter={8}>
+              <Col sm={18} md={12}>
+                <Select
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={this.props.intl.formatMessage({ id: 'rule', defaultMessage: 'Rule' })}
+                  defaultValue={[
+                    Rule.turfWar.value,
+                    Rule.splatZones.value,
+                    Rule.towerControl.value,
+                    Rule.rainmaker.value,
+                    Rule.clamBlitz.value
+                  ]}
+                  onChange={this.filterRule}
+                >
+                  <Option value={Rule.turfWar.value}>
+                    <FormattedMessage id="rule.turf_war" defaultMessage="Turf War" />
+                  </Option>
+                  <Option value={Rule.splatZones.value}>
+                    <FormattedMessage id="rule.splat_zones" defaultMessage="Splat Zones" />
+                  </Option>
+                  <Option value={Rule.towerControl.value}>
+                    <FormattedMessage id="rule.tower_control" defaultMessage="Tower Control" />
+                  </Option>
+                  <Option value={Rule.rainmaker.value}>
+                    <FormattedMessage id="rule.rainmaker" defaultMessage="Rainmaker" />
+                  </Option>
+                  <Option value={Rule.clamBlitz.value}>
+                    <FormattedMessage id="rule.clam_blitz" defaultMessage="Clam Blitz" />
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+          </Form.Item>
+        </Form>
         {(() => {
           const data = this.filteredBattles().sort((a, b) => {
             return b.number - a.number;

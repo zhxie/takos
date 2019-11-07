@@ -1158,6 +1158,7 @@ const en_US = {
   'app.done': 'Done',
   'app.retry': 'Retry',
   'app.share': 'Share',
+  'app.filter': 'Filter',
   'app.local': 'Local',
   'app.splatnet': 'SplatNet',
   'app.total': 'Total',
