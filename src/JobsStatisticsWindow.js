@@ -783,6 +783,8 @@ class JobsStatisticsWindow extends React.Component {
                       max={selfMaxDeath}
                     />
                   </Col>
+                </Row>
+                <Row gutter={16}>
                   {selfBossSalmoniods.map(element => {
                     return (
                       <Col
