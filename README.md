@@ -14,6 +14,8 @@
 - Get current and coming schedules and shifts
 - Get battles and jobs with details including weapons and gears
 - View battles and jobs with filter
+- Analyze battles and jobs in statistics
+- Order gears in SplatNet Gear Shop
 - English (North America), Japanese and Chinese
 
 ## Security and Privacy
