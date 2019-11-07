@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import { PageHeader, Alert, Button, Row, Col, Card, Statistic } from 'antd';
+import { PageHeader, Alert, Button, Form, DatePicker, Row, Col, Card, Statistic } from 'antd';
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
 import './JobsStatisticsWindow.css';
@@ -16,6 +16,8 @@ import JobHelper from './utils/JobHelper';
 import StorageHelper from './utils/StorageHelper';
 import { JobResult, WaterLevel, EventType } from './models/Job';
 
+const { RangePicker } = DatePicker;
+
 class JobsStatisticsWindow extends React.Component {
   state = {
     // Data
@@ -27,7 +29,8 @@ class JobsStatisticsWindow extends React.Component {
     updateCurrent: 0,
     updateTotal: 0,
     updated: false,
-    search: null
+    search: null,
+    startTime: []
   };
 
   constructor(props) {
@@ -149,10 +152,15 @@ class JobsStatisticsWindow extends React.Component {
   };
 
   filteredJobs = () => {
-    if (this.state.search === null) {
-      return this.state.data;
-    } else {
-      let data = this.state.data;
+    let data = this.state.data;
+    // Start time
+    if (this.state.startTime.length !== 0) {
+      data = data.filter(element => {
+        return element.startTime > this.state.startTime[0] && element.startTime < this.state.startTime[1];
+      });
+    }
+    // With
+    if (this.state.search !== null) {
       if (this.state.search.with !== undefined) {
         data = data.filter(element => {
           let isWith = false;
@@ -166,8 +174,16 @@ class JobsStatisticsWindow extends React.Component {
           return isWith;
         });
       }
-      return data;
     }
+    return data;
+  };
+
+  filterStartTime = date => {
+    let startTime = [];
+    date.forEach(element => {
+      startTime.push(element._d.getTime() / 1000);
+    });
+    this.setState({ startTime: startTime });
   };
 
   renderContent = () => {
@@ -212,6 +228,16 @@ class JobsStatisticsWindow extends React.Component {
             );
           }
         })()}
+        <PageHeader title={<FormattedMessage id="app.filter" defaultMessage="Filter" />} />
+        <Form className="JobsStatisticsWindow-content-form" labelCol={{ span: 24 }}>
+          <Form.Item label={<FormattedMessage id="job.time.start" defaultMessage="Start Time" />}>
+            <Row gutter={8}>
+              <Col sm={18} md={12}>
+                <RangePicker onChange={this.filterStartTime} />
+              </Col>
+            </Row>
+          </Form.Item>
+        </Form>
         {(() => {
           const data = this.filteredJobs();
           // Job

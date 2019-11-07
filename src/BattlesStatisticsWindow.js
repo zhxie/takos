@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import { PageHeader, Alert, Button, Form, Select, Row, Col, Card, Statistic } from 'antd';
+import { PageHeader, Alert, Button, Form, Select, DatePicker, Row, Col, Card, Statistic } from 'antd';
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
 import './BattlesStatisticsWindow.css';
@@ -20,6 +20,7 @@ import TakosError from './utils/ErrorHelper';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
 
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 class BattlesStatisticsWindow extends React.Component {
@@ -47,7 +48,8 @@ class BattlesStatisticsWindow extends React.Component {
       Rule.towerControl.value,
       Rule.rainmaker.value,
       Rule.clamBlitz.value
-    ]
+    ],
+    startTime: []
   };
 
   constructor(props) {
@@ -181,6 +183,12 @@ class BattlesStatisticsWindow extends React.Component {
         }) !== undefined
       );
     });
+    // Start time
+    if (this.state.startTime.length !== 0) {
+      data = data.filter(element => {
+        return element.startTime > this.state.startTime[0] && element.startTime < this.state.startTime[1];
+      });
+    }
     // With
     if (this.state.search !== null) {
       if (this.state.search.with !== undefined) {
@@ -213,6 +221,14 @@ class BattlesStatisticsWindow extends React.Component {
 
   filterRule = value => {
     this.setState({ rule: value });
+  };
+
+  filterStartTime = date => {
+    let startTime = [];
+    date.forEach(element => {
+      startTime.push(element._d.getTime() / 1000);
+    });
+    this.setState({ startTime: startTime });
   };
 
   renderContent = () => {
@@ -326,6 +342,13 @@ class BattlesStatisticsWindow extends React.Component {
                     <FormattedMessage id="rule.clam_blitz" defaultMessage="Clam Blitz" />
                   </Option>
                 </Select>
+              </Col>
+            </Row>
+          </Form.Item>
+          <Form.Item label={<FormattedMessage id="battle.time.start" defaultMessage="Start Time" />}>
+            <Row gutter={8}>
+              <Col sm={18} md={12}>
+                <RangePicker onChange={this.filterStartTime} />
               </Col>
             </Row>
           </Form.Item>
