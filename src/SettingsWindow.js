@@ -707,7 +707,7 @@ class SettingsWindow extends React.Component {
     const month = '0' + (date.getMonth() + 1);
     const day = '0' + date.getDate();
     // Construct data
-    let data = { version: '0.2.0' };
+    let data = { version: '0.3.0' };
     // Battles
     StorageHelper.battles()
       .then(res => {
@@ -1153,7 +1153,10 @@ class SettingsWindow extends React.Component {
         this.setState({ language: 'en_US' });
         break;
     }
-    this.setState({ useSimpleLists: StorageHelper.useSimpleLists(), showSplatNetStats: StorageHelper.showSplatNetStats() });
+    this.setState({
+      useSimpleLists: StorageHelper.useSimpleLists(),
+      showSplatNetStats: StorageHelper.showSplatNetStats()
+    });
   }
 }
 
