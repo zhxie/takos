@@ -784,35 +784,32 @@ class BattleModal extends React.Component {
                   return () => {
                     return (
                       <span>
+                        <FormattedMessage
+                          id="app.with"
+                          defaultMessage="Show ... with {name}"
+                          values={{ name: record.nickname }}
+                        />
                         <Link to={'/battles?with={0}'.format(record.id)}>
                           <Button type="link">
-                            <FormattedMessage
-                              id="app.battles.with"
-                              defaultMessage="Show battles with {name}"
-                              values={{ name: record.nickname }}
-                            />
+                            <FormattedMessage id="app.battles" defaultMessage="Battles" />
                           </Button>
                         </Link>
                         <Divider type="vertical" />
                         <Link to={'/stats/battles?with={0}'.format(record.id)}>
                           <Button type="link">
-                            <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
+                            <FormattedMessage id="app.statistics.battles" defaultMessage="Battles Statistics" />
                           </Button>
                         </Link>
                         <Divider type="vertical" />
                         <Link to={'/jobs?with={0}'.format(record.id)}>
                           <Button type="link">
-                            <FormattedMessage
-                              id="app.jobs.with"
-                              defaultMessage="Show jobs with {name}"
-                              values={{ name: record.nickname }}
-                            />
+                            <FormattedMessage id="app.jobs" defaultMessage="Jobs" />
                           </Button>
                         </Link>
                         <Divider type="vertical" />
                         <Link to={'/stats/jobs?with={0}'.format(record.id)}>
                           <Button type="link">
-                            <FormattedMessage id="app.statistics" defaultMessage="Statistics" />
+                            <FormattedMessage id="app.statistics.jobs" defaultMessage="Jobs Statistics" />
                           </Button>
                         </Link>
                       </span>
