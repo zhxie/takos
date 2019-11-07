@@ -554,12 +554,14 @@ class BattlesStatisticsWindow extends React.Component {
               if (element instanceof RankedXBattle && !element.isCalculating) {
                 rankedChartData.push({
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedRankPower: element.estimatedRankPower,
                   xPower: element.xPowerAfter
                 });
               } else {
                 rankedChartData.push({
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedRankPower: element.estimatedRankPower
                 });
               }
@@ -577,11 +579,13 @@ class BattlesStatisticsWindow extends React.Component {
                 teamLeaguePowerChartData.push({
                   group: '1',
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedLeaguePoint: element.myEstimatedLeaguePoint
                 });
                 teamLeaguePowerChartData.push({
                   group: '2',
                   number: element.number.toString(),
+                  isWin: !element.isWin,
                   estimatedLeaguePoint: element.otherEstimatedLeaguePoint
                 });
                 leaguePowerChartData.push({
@@ -598,11 +602,13 @@ class BattlesStatisticsWindow extends React.Component {
                 teamLeaguePowerChartData.push({
                   group: '1',
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedLeaguePoint: element.myEstimatedLeaguePoint
                 });
                 teamLeaguePowerChartData.push({
                   group: '2',
                   number: element.number.toString(),
+                  isWin: !element.isWin,
                   estimatedLeaguePoint: element.otherEstimatedLeaguePoint
                 });
                 leaguePowerChartData.push({
@@ -628,11 +634,13 @@ class BattlesStatisticsWindow extends React.Component {
                 teamSplatfestPowerChartData.push({
                   group: '1',
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedSplatfestPower: element.myEstimatedSplatfestPower
                 });
                 teamSplatfestPowerChartData.push({
                   group: '2',
                   number: element.number.toString(),
+                  isWin: !element.isWin,
                   estimatedSplatfestPower: element.otherEstimatedSplatfestPower
                 });
                 splatfestPowerChartData.push({
@@ -649,11 +657,13 @@ class BattlesStatisticsWindow extends React.Component {
                 teamSplatfestPowerChartData.push({
                   group: '1',
                   number: element.number.toString(),
+                  isWin: element.isWin,
                   estimatedSplatfestPower: element.myEstimatedSplatfestPower
                 });
                 teamSplatfestPowerChartData.push({
                   group: '2',
                   number: element.number.toString(),
+                  isWin: !element.isWin,
                   estimatedSplatfestPower: element.otherEstimatedSplatfestPower
                 });
                 splatfestPowerChartData.push({
@@ -679,17 +689,23 @@ class BattlesStatisticsWindow extends React.Component {
                       bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
                     >
                       <Row gutter={16}>
-                        <Col className="BattlesStatisticsWindow-content-column" span={12}>
-                          <Statistic
-                            className="BattlesStatisticsWindow-content-statistic"
-                            title={<FormattedMessage id="app.splatnet" defaultMessage="SplatNet" />}
-                            value={
-                              this.state.data.sort((a, b) => {
-                                return b.number - a.number;
-                              })[0].number
-                            }
-                          />
-                        </Col>
+                        {(() => {
+                          if (data.length === this.state.data.length) {
+                            return (
+                              <Col className="BattlesStatisticsWindow-content-column" span={12}>
+                                <Statistic
+                                  className="BattlesStatisticsWindow-content-statistic"
+                                  title={<FormattedMessage id="app.splatnet" defaultMessage="SplatNet" />}
+                                  value={
+                                    this.state.data.sort((a, b) => {
+                                      return b.number - a.number;
+                                    })[0].number
+                                  }
+                                />
+                              </Col>
+                            );
+                          }
+                        })()}
                         <Col className="BattlesStatisticsWindow-content-column" span={12}>
                           <Statistic
                             className="BattlesStatisticsWindow-content-statistic"
@@ -1007,453 +1023,533 @@ class BattlesStatisticsWindow extends React.Component {
                     />
                   </Col>
                 </Row>
-                <PageHeader title={<FormattedMessage id="app.trending" defaultMessage="Trending" />} />
                 {(() => {
-                  if (rankedChartData.length > 0) {
+                  if (
+                    rankedChartData.length > 0 ||
+                    teamLeaguePowerChartData.length > 0 ||
+                    teamSplatfestPowerChartData.length > 0
+                  ) {
                     return (
-                      <Row gutter={16}>
-                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                          <Card
-                            className="BattlesStatisticsWindow-content-card"
-                            hoverable
-                            title={<FormattedMessage id="battle.power.ranked" defaultMessage="Power Level" />}
-                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                          >
-                            <Chart
-                              data={rankedChartData}
-                              scale={{
-                                number: { range: [0, 1] }
-                              }}
-                              height={200}
-                              padding={[0, 6]}
-                              forceFit
-                            >
-                              <Axis />
-                              <Tooltip
-                                crosshairs={{
-                                  type: 'y'
-                                }}
-                              />
-                              <Geom
-                                type="line"
-                                position="number*estimatedRankPower"
-                                tooltip={[
-                                  'number*estimatedRankPower',
-                                  (number, estimatedRankPower) => {
-                                    return {
-                                      name: this.props.intl.formatMessage({
-                                        id: 'battle.power.ranked',
-                                        defaultMessage: 'Power Level'
-                                      }),
-                                      title: this.props.intl.formatMessage(
-                                        {
-                                          id: 'battle.id',
-                                          defaultMessage: '#{id}'
-                                        },
-                                        { id: number }
-                                      ),
-                                      value: estimatedRankPower
-                                    };
-                                  }
-                                ]}
-                                size={2}
-                                shape={'smooth'}
-                                color="#fa8c16"
-                              />
-                            </Chart>
-                          </Card>
-                        </Col>
+                      <div>
+                        <PageHeader title={<FormattedMessage id="app.trending" defaultMessage="Trending" />} />
                         {(() => {
-                          if (
-                            rankedChartData.some(element => {
-                              return element.xPower !== undefined;
-                            })
-                          ) {
+                          if (rankedChartData.length > 0) {
                             return (
-                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                                <Card
-                                  className="BattlesStatisticsWindow-content-card"
-                                  hoverable
-                                  title={<FormattedMessage id="battle.power.x" defaultMessage="X Power" />}
-                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                                >
-                                  <Chart
-                                    data={rankedChartData}
-                                    scale={{
-                                      number: { range: [0, 1] }
-                                    }}
-                                    height={200}
-                                    padding={[0, 6]}
-                                    forceFit
+                              <Row gutter={16}>
+                                <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                  <Card
+                                    className="BattlesStatisticsWindow-content-card"
+                                    hoverable
+                                    title={<FormattedMessage id="battle.power.ranked" defaultMessage="Power Level" />}
+                                    bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
                                   >
-                                    <Axis />
-                                    <Tooltip
-                                      crosshairs={{
-                                        type: 'y'
+                                    <Chart
+                                      data={rankedChartData}
+                                      scale={{
+                                        number: { range: [0, 1] }
                                       }}
-                                    />
-                                    <Geom
-                                      type="line"
-                                      position="number*xPower"
-                                      tooltip={[
-                                        'number*xPower',
-                                        (number, estimatedRankPower) => {
-                                          return {
-                                            name: this.props.intl.formatMessage({
-                                              id: 'battle.power.x',
-                                              defaultMessage: 'X Powere'
-                                            }),
-                                            title: this.props.intl.formatMessage(
-                                              {
-                                                id: 'battle.id',
-                                                defaultMessage: '#{id}'
-                                              },
-                                              { id: number }
-                                            ),
-                                            value: xPower
-                                          };
-                                        }
-                                      ]}
-                                      size={2}
-                                      shape={'smooth'}
-                                      color="#fa8c16"
-                                    />
-                                  </Chart>
-                                </Card>
-                              </Col>
-                            );
-                          }
-                        })()}
-                      </Row>
-                    );
-                  }
-                })()}
-                {(() => {
-                  if (teamLeaguePowerChartData.length > 0) {
-                    return (
-                      <Row gutter={16}>
-                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                          <Card
-                            className="BattlesStatisticsWindow-content-card"
-                            hoverable
-                            title={
-                              <FormattedMessage id="battle.power.league.team" defaultMessage="Team League Power" />
-                            }
-                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                          >
-                            <Chart
-                              data={teamLeaguePowerChartData}
-                              scale={{
-                                number: { range: [0, 1] }
-                              }}
-                              height={200}
-                              padding={[0, 6]}
-                              forceFit
-                            >
-                              <Axis />
-                              <Tooltip
-                                crosshairs={{
-                                  type: 'y'
-                                }}
-                              />
-                              <Geom
-                                type="line"
-                                position="number*estimatedLeaguePoint"
-                                tooltip={[
-                                  'group*number*estimatedLeaguePoint',
-                                  (group, number, estimatedLeaguePoint) => {
-                                    switch (group) {
-                                      case '1':
-                                        return {
-                                          name: this.props.intl.formatMessage({
-                                            id: 'battle.power.league.my',
-                                            defaultMessage: 'My Team League Power'
-                                          }),
-                                          title: this.props.intl.formatMessage(
-                                            {
-                                              id: 'battle.id',
-                                              defaultMessage: '#{id}'
-                                            },
-                                            { id: number }
-                                          ),
-                                          value: estimatedLeaguePoint
-                                        };
-                                      case '2':
-                                        return {
-                                          name: this.props.intl.formatMessage({
-                                            id: 'battle.power.league.other',
-                                            defaultMessage: 'Other Team League Power'
-                                          }),
-                                          title: this.props.intl.formatMessage(
-                                            {
-                                              id: 'battle.id',
-                                              defaultMessage: '#{id}'
-                                            },
-                                            { id: number }
-                                          ),
-                                          value: estimatedLeaguePoint
-                                        };
-                                      default:
-                                        throw new RangeError();
-                                    }
-                                  }
-                                ]}
-                                size={2}
-                                shape={'smooth'}
-                                color={['group', ['#eb2f96', '#52c41a']]}
-                              />
-                            </Chart>
-                          </Card>
-                        </Col>
-                        {(() => {
-                          if (
-                            leaguePowerChartData.some(element => {
-                              return element.leaguePoint !== undefined;
-                            })
-                          ) {
-                            return (
-                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                                <Card
-                                  className="BattlesStatisticsWindow-content-card"
-                                  hoverable
-                                  title={<FormattedMessage id="battle.power.league" defaultMessage="League Power" />}
-                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                                >
-                                  <Chart
-                                    data={leaguePowerChartData}
-                                    scale={{
-                                      number: { range: [0, 1] }
-                                    }}
-                                    height={200}
-                                    padding={[0, 6]}
-                                    forceFit
-                                  >
-                                    <Axis />
-                                    <Tooltip
-                                      crosshairs={{
-                                        type: 'y'
-                                      }}
-                                    />
-                                    <Geom
-                                      type="line"
-                                      position="number*leaguePoint"
-                                      tooltip={[
-                                        'group*number*leaguePoint',
-                                        (group, number, leaguePoint) => {
-                                          switch (group) {
-                                            case '1':
-                                              return {
-                                                name: this.props.intl.formatMessage({
-                                                  id: 'battle.power.league.current',
-                                                  defaultMessage: 'Current League Power'
-                                                }),
-                                                title: this.props.intl.formatMessage(
-                                                  {
-                                                    id: 'battle.id',
-                                                    defaultMessage: '#{id}'
-                                                  },
-                                                  { id: number }
-                                                ),
-                                                value: leaguePoint
-                                              };
-                                            case '2':
-                                              return {
-                                                name: this.props.intl.formatMessage({
-                                                  id: 'battle.power.league.highest',
-                                                  defaultMessage: 'Highest League Power'
-                                                }),
-                                                title: this.props.intl.formatMessage(
-                                                  {
-                                                    id: 'battle.id',
-                                                    defaultMessage: '#{id}'
-                                                  },
-                                                  { id: number }
-                                                ),
-                                                value: leaguePoint
-                                              };
-                                            default:
-                                              throw new RangeError();
+                                      height={200}
+                                      padding={[0, 6]}
+                                      forceFit
+                                    >
+                                      <Axis />
+                                      <Tooltip
+                                        crosshairs={{
+                                          type: 'y'
+                                        }}
+                                      />
+                                      <Geom
+                                        type="line"
+                                        position="number*estimatedRankPower"
+                                        tooltip={[
+                                          'number*estimatedRankPower',
+                                          (number, estimatedRankPower) => {
+                                            return {
+                                              name: this.props.intl.formatMessage({
+                                                id: 'battle.power.ranked',
+                                                defaultMessage: 'Power Level'
+                                              }),
+                                              title: this.props.intl.formatMessage(
+                                                {
+                                                  id: 'battle.id',
+                                                  defaultMessage: '#{id}'
+                                                },
+                                                { id: number }
+                                              ),
+                                              value: estimatedRankPower
+                                            };
                                           }
-                                        }
-                                      ]}
-                                      size={2}
-                                      shape={'smooth'}
-                                      color={['group', ['#fa8c16', '#eb2f96']]}
-                                    />
-                                  </Chart>
-                                </Card>
-                              </Col>
-                            );
-                          }
-                        })()}
-                      </Row>
-                    );
-                  }
-                })()}
-                {(() => {
-                  if (teamSplatfestPowerChartData.length > 0) {
-                    return (
-                      <Row gutter={16}>
-                        <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                          <Card
-                            className="BattlesStatisticsWindow-content-card"
-                            hoverable
-                            title={
-                              <FormattedMessage
-                                id="battle.power.splatfest.team"
-                                defaultMessage="Team Splatfest Power"
-                              />
-                            }
-                            bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                          >
-                            <Chart
-                              data={teamSplatfestPowerChartData}
-                              scale={{
-                                number: { range: [0, 1] }
-                              }}
-                              height={200}
-                              padding={[0, 6]}
-                              forceFit
-                            >
-                              <Axis />
-                              <Tooltip
-                                crosshairs={{
-                                  type: 'y'
-                                }}
-                              />
-                              <Geom
-                                type="line"
-                                position="number*estimatedSplatfestPower"
-                                tooltip={[
-                                  'group*number*estimatedSplatfestPower',
-                                  (group, number, estimatedSplatfestPower) => {
-                                    switch (group) {
-                                      case '1':
-                                        return {
-                                          name: this.props.intl.formatMessage({
-                                            id: 'battle.power.splatfest.my',
-                                            defaultMessage: 'My Team Splatfest Power'
-                                          }),
-                                          title: this.props.intl.formatMessage(
-                                            {
-                                              id: 'battle.id',
-                                              defaultMessage: '#{id}'
-                                            },
-                                            { id: number }
-                                          ),
-                                          value: estimatedSplatfestPower
-                                        };
-                                      case '2':
-                                        return {
-                                          name: this.props.intl.formatMessage({
-                                            id: 'battle.power.splatfest.other',
-                                            defaultMessage: 'Other Team Splatfest Power'
-                                          }),
-                                          title: this.props.intl.formatMessage(
-                                            {
-                                              id: 'battle.id',
-                                              defaultMessage: '#{id}'
-                                            },
-                                            { id: number }
-                                          ),
-                                          value: estimatedSplatfestPower
-                                        };
-                                      default:
-                                        throw new RangeError();
-                                    }
-                                  }
-                                ]}
-                                size={2}
-                                shape={'smooth'}
-                                color={['group', ['#eb2f96', '#52c41a']]}
-                              />
-                            </Chart>
-                          </Card>
-                        </Col>
-                        {(() => {
-                          if (
-                            splatfestPowerChartData.some(element => {
-                              return element.splatfestPower !== undefined;
-                            })
-                          ) {
-                            return (
-                              <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
-                                <Card
-                                  className="BattlesStatisticsWindow-content-card"
-                                  hoverable
-                                  title={
-                                    <FormattedMessage id="battle.power.splatfest" defaultMessage="Splatfest Power" />
-                                  }
-                                  bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
-                                >
-                                  <Chart
-                                    data={splatfestPowerChartData}
-                                    scale={{
-                                      number: { range: [0, 1] }
-                                    }}
-                                    height={200}
-                                    padding={[0, 6]}
-                                    forceFit
-                                  >
-                                    <Axis />
-                                    <Tooltip
-                                      crosshairs={{
-                                        type: 'y'
-                                      }}
-                                    />
-                                    <Geom
-                                      type="line"
-                                      position="number*splatfestPower"
-                                      tooltip={[
-                                        'group*number*splatfestPower',
-                                        (group, number, splatfestPower) => {
-                                          switch (group) {
-                                            case '1':
-                                              return {
-                                                name: this.props.intl.formatMessage({
-                                                  id: 'battle.power.splatfest.current',
-                                                  defaultMessage: 'Current Splatfest Power'
-                                                }),
-                                                title: this.props.intl.formatMessage(
-                                                  {
-                                                    id: 'battle.id',
-                                                    defaultMessage: '#{id}'
-                                                  },
-                                                  { id: number }
-                                                ),
-                                                value: splatfestPower
-                                              };
-                                            case '2':
-                                              return {
-                                                name: this.props.intl.formatMessage({
-                                                  id: 'battle.power.splatfest.highest',
-                                                  defaultMessage: 'Highest Splatfest Power'
-                                                }),
-                                                title: this.props.intl.formatMessage(
-                                                  {
-                                                    id: 'battle.id',
-                                                    defaultMessage: '#{id}'
-                                                  },
-                                                  { id: number }
-                                                ),
-                                                value: splatfestPower
-                                              };
-                                            default:
-                                              throw new RangeError();
+                                        ]}
+                                        size={2}
+                                        shape={'smooth'}
+                                        color="#fa8c16"
+                                      />
+                                      <Geom
+                                        type="point"
+                                        position="number*estimatedRankPower"
+                                        size={4}
+                                        shape={[
+                                          'isWin',
+                                          isWin => {
+                                            if (isWin) {
+                                              return 'circle';
+                                            } else {
+                                              return 'cross';
+                                            }
                                           }
-                                        }
-                                      ]}
-                                      size={2}
-                                      shape={'smooth'}
-                                      color={['group', ['#fa8c16', '#eb2f96']]}
-                                    />
-                                  </Chart>
-                                </Card>
-                              </Col>
+                                        ]}
+                                        color="#fa8c16"
+                                        style={{
+                                          stroke: '#fff',
+                                          lineWidth: 1
+                                        }}
+                                      />
+                                    </Chart>
+                                  </Card>
+                                </Col>
+                                {(() => {
+                                  if (
+                                    rankedChartData.some(element => {
+                                      return element.xPower !== undefined;
+                                    })
+                                  ) {
+                                    return (
+                                      <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                        <Card
+                                          className="BattlesStatisticsWindow-content-card"
+                                          hoverable
+                                          title={<FormattedMessage id="battle.power.x" defaultMessage="X Power" />}
+                                          bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                        >
+                                          <Chart
+                                            data={rankedChartData}
+                                            scale={{
+                                              number: { range: [0, 1] }
+                                            }}
+                                            height={200}
+                                            padding={[0, 6]}
+                                            forceFit
+                                          >
+                                            <Axis />
+                                            <Tooltip
+                                              crosshairs={{
+                                                type: 'y'
+                                              }}
+                                            />
+                                            <Geom
+                                              type="line"
+                                              position="number*xPower"
+                                              tooltip={[
+                                                'number*xPower',
+                                                (number, estimatedRankPower) => {
+                                                  return {
+                                                    name: this.props.intl.formatMessage({
+                                                      id: 'battle.power.x',
+                                                      defaultMessage: 'X Powere'
+                                                    }),
+                                                    title: this.props.intl.formatMessage(
+                                                      {
+                                                        id: 'battle.id',
+                                                        defaultMessage: '#{id}'
+                                                      },
+                                                      { id: number }
+                                                    ),
+                                                    value: xPower
+                                                  };
+                                                }
+                                              ]}
+                                              size={2}
+                                              shape={'smooth'}
+                                              color="#fa8c16"
+                                            />
+                                          </Chart>
+                                        </Card>
+                                      </Col>
+                                    );
+                                  }
+                                })()}
+                              </Row>
                             );
                           }
                         })()}
-                      </Row>
+                        {(() => {
+                          if (teamLeaguePowerChartData.length > 0) {
+                            return (
+                              <Row gutter={16}>
+                                <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                  <Card
+                                    className="BattlesStatisticsWindow-content-card"
+                                    hoverable
+                                    title={
+                                      <FormattedMessage
+                                        id="battle.power.league.team"
+                                        defaultMessage="Team League Power"
+                                      />
+                                    }
+                                    bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                  >
+                                    <Chart
+                                      data={teamLeaguePowerChartData}
+                                      scale={{
+                                        number: { range: [0, 1] }
+                                      }}
+                                      height={200}
+                                      padding={[0, 6]}
+                                      forceFit
+                                    >
+                                      <Axis />
+                                      <Tooltip
+                                        crosshairs={{
+                                          type: 'y'
+                                        }}
+                                      />
+                                      <Geom
+                                        type="line"
+                                        position="number*estimatedLeaguePoint"
+                                        tooltip={[
+                                          'group*number*estimatedLeaguePoint',
+                                          (group, number, estimatedLeaguePoint) => {
+                                            switch (group) {
+                                              case '1':
+                                                return {
+                                                  name: this.props.intl.formatMessage({
+                                                    id: 'battle.power.league.my',
+                                                    defaultMessage: 'My Team League Power'
+                                                  }),
+                                                  title: this.props.intl.formatMessage(
+                                                    {
+                                                      id: 'battle.id',
+                                                      defaultMessage: '#{id}'
+                                                    },
+                                                    { id: number }
+                                                  ),
+                                                  value: estimatedLeaguePoint
+                                                };
+                                              case '2':
+                                                return {
+                                                  name: this.props.intl.formatMessage({
+                                                    id: 'battle.power.league.other',
+                                                    defaultMessage: 'Other Team League Power'
+                                                  }),
+                                                  title: this.props.intl.formatMessage(
+                                                    {
+                                                      id: 'battle.id',
+                                                      defaultMessage: '#{id}'
+                                                    },
+                                                    { id: number }
+                                                  ),
+                                                  value: estimatedLeaguePoint
+                                                };
+                                              default:
+                                                throw new RangeError();
+                                            }
+                                          }
+                                        ]}
+                                        size={2}
+                                        shape={'smooth'}
+                                        color={['group', ['#eb2f96', '#52c41a']]}
+                                      />
+                                      <Geom
+                                        type="point"
+                                        position="number*estimatedLeaguePoint"
+                                        size={4}
+                                        shape={[
+                                          'isWin',
+                                          isWin => {
+                                            if (isWin) {
+                                              return 'circle';
+                                            } else {
+                                              return 'cross';
+                                            }
+                                          }
+                                        ]}
+                                        color={['group', ['#eb2f96', '#52c41a']]}
+                                        style={{
+                                          stroke: '#fff',
+                                          lineWidth: 1
+                                        }}
+                                      />
+                                    </Chart>
+                                  </Card>
+                                </Col>
+                                {(() => {
+                                  if (
+                                    leaguePowerChartData.some(element => {
+                                      return element.leaguePoint !== undefined;
+                                    })
+                                  ) {
+                                    return (
+                                      <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                        <Card
+                                          className="BattlesStatisticsWindow-content-card"
+                                          hoverable
+                                          title={
+                                            <FormattedMessage id="battle.power.league" defaultMessage="League Power" />
+                                          }
+                                          bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                        >
+                                          <Chart
+                                            data={leaguePowerChartData}
+                                            scale={{
+                                              number: { range: [0, 1] }
+                                            }}
+                                            height={200}
+                                            padding={[0, 6]}
+                                            forceFit
+                                          >
+                                            <Axis />
+                                            <Tooltip
+                                              crosshairs={{
+                                                type: 'y'
+                                              }}
+                                            />
+                                            <Geom
+                                              type="line"
+                                              position="number*leaguePoint"
+                                              tooltip={[
+                                                'group*number*leaguePoint',
+                                                (group, number, leaguePoint) => {
+                                                  switch (group) {
+                                                    case '1':
+                                                      return {
+                                                        name: this.props.intl.formatMessage({
+                                                          id: 'battle.power.league.current',
+                                                          defaultMessage: 'Current League Power'
+                                                        }),
+                                                        title: this.props.intl.formatMessage(
+                                                          {
+                                                            id: 'battle.id',
+                                                            defaultMessage: '#{id}'
+                                                          },
+                                                          { id: number }
+                                                        ),
+                                                        value: leaguePoint
+                                                      };
+                                                    case '2':
+                                                      return {
+                                                        name: this.props.intl.formatMessage({
+                                                          id: 'battle.power.league.highest',
+                                                          defaultMessage: 'Highest League Power'
+                                                        }),
+                                                        title: this.props.intl.formatMessage(
+                                                          {
+                                                            id: 'battle.id',
+                                                            defaultMessage: '#{id}'
+                                                          },
+                                                          { id: number }
+                                                        ),
+                                                        value: leaguePoint
+                                                      };
+                                                    default:
+                                                      throw new RangeError();
+                                                  }
+                                                }
+                                              ]}
+                                              size={2}
+                                              shape={'smooth'}
+                                              color={['group', ['#fa8c16', '#eb2f96']]}
+                                            />
+                                          </Chart>
+                                        </Card>
+                                      </Col>
+                                    );
+                                  }
+                                })()}
+                              </Row>
+                            );
+                          }
+                        })()}
+                        {(() => {
+                          if (teamSplatfestPowerChartData.length > 0) {
+                            return (
+                              <Row gutter={16}>
+                                <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                  <Card
+                                    className="BattlesStatisticsWindow-content-card"
+                                    hoverable
+                                    title={
+                                      <FormattedMessage
+                                        id="battle.power.splatfest.team"
+                                        defaultMessage="Team Splatfest Power"
+                                      />
+                                    }
+                                    bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                  >
+                                    <Chart
+                                      data={teamSplatfestPowerChartData}
+                                      scale={{
+                                        number: { range: [0, 1] }
+                                      }}
+                                      height={200}
+                                      padding={[0, 6]}
+                                      forceFit
+                                    >
+                                      <Axis />
+                                      <Tooltip
+                                        crosshairs={{
+                                          type: 'y'
+                                        }}
+                                      />
+                                      <Geom
+                                        type="line"
+                                        position="number*estimatedSplatfestPower"
+                                        tooltip={[
+                                          'group*number*estimatedSplatfestPower',
+                                          (group, number, estimatedSplatfestPower) => {
+                                            switch (group) {
+                                              case '1':
+                                                return {
+                                                  name: this.props.intl.formatMessage({
+                                                    id: 'battle.power.splatfest.my',
+                                                    defaultMessage: 'My Team Splatfest Power'
+                                                  }),
+                                                  title: this.props.intl.formatMessage(
+                                                    {
+                                                      id: 'battle.id',
+                                                      defaultMessage: '#{id}'
+                                                    },
+                                                    { id: number }
+                                                  ),
+                                                  value: estimatedSplatfestPower
+                                                };
+                                              case '2':
+                                                return {
+                                                  name: this.props.intl.formatMessage({
+                                                    id: 'battle.power.splatfest.other',
+                                                    defaultMessage: 'Other Team Splatfest Power'
+                                                  }),
+                                                  title: this.props.intl.formatMessage(
+                                                    {
+                                                      id: 'battle.id',
+                                                      defaultMessage: '#{id}'
+                                                    },
+                                                    { id: number }
+                                                  ),
+                                                  value: estimatedSplatfestPower
+                                                };
+                                              default:
+                                                throw new RangeError();
+                                            }
+                                          }
+                                        ]}
+                                        size={2}
+                                        shape={'smooth'}
+                                        color={['group', ['#eb2f96', '#52c41a']]}
+                                      />
+                                      <Geom
+                                        type="point"
+                                        position="number*estimatedSplatfestPower"
+                                        size={4}
+                                        shape={[
+                                          'isWin',
+                                          isWin => {
+                                            if (isWin) {
+                                              return 'circle';
+                                            } else {
+                                              return 'cross';
+                                            }
+                                          }
+                                        ]}
+                                        color={['group', ['#eb2f96', '#52c41a']]}
+                                        style={{
+                                          stroke: '#fff',
+                                          lineWidth: 1
+                                        }}
+                                      />
+                                    </Chart>
+                                  </Card>
+                                </Col>
+                                {(() => {
+                                  if (
+                                    splatfestPowerChartData.some(element => {
+                                      return element.splatfestPower !== undefined;
+                                    })
+                                  ) {
+                                    return (
+                                      <Col className="BattlesStatisticsWindow-content-column" md={24} lg={12}>
+                                        <Card
+                                          className="BattlesStatisticsWindow-content-card"
+                                          hoverable
+                                          title={
+                                            <FormattedMessage
+                                              id="battle.power.splatfest"
+                                              defaultMessage="Splatfest Power"
+                                            />
+                                          }
+                                          bodyStyle={{ padding: '16px 10px', minHeight: '170px' }}
+                                        >
+                                          <Chart
+                                            data={splatfestPowerChartData}
+                                            scale={{
+                                              number: { range: [0, 1] }
+                                            }}
+                                            height={200}
+                                            padding={[0, 6]}
+                                            forceFit
+                                          >
+                                            <Axis />
+                                            <Tooltip
+                                              crosshairs={{
+                                                type: 'y'
+                                              }}
+                                            />
+                                            <Geom
+                                              type="line"
+                                              position="number*splatfestPower"
+                                              tooltip={[
+                                                'group*number*splatfestPower',
+                                                (group, number, splatfestPower) => {
+                                                  switch (group) {
+                                                    case '1':
+                                                      return {
+                                                        name: this.props.intl.formatMessage({
+                                                          id: 'battle.power.splatfest.current',
+                                                          defaultMessage: 'Current Splatfest Power'
+                                                        }),
+                                                        title: this.props.intl.formatMessage(
+                                                          {
+                                                            id: 'battle.id',
+                                                            defaultMessage: '#{id}'
+                                                          },
+                                                          { id: number }
+                                                        ),
+                                                        value: splatfestPower
+                                                      };
+                                                    case '2':
+                                                      return {
+                                                        name: this.props.intl.formatMessage({
+                                                          id: 'battle.power.splatfest.highest',
+                                                          defaultMessage: 'Highest Splatfest Power'
+                                                        }),
+                                                        title: this.props.intl.formatMessage(
+                                                          {
+                                                            id: 'battle.id',
+                                                            defaultMessage: '#{id}'
+                                                          },
+                                                          { id: number }
+                                                        ),
+                                                        value: splatfestPower
+                                                      };
+                                                    default:
+                                                      throw new RangeError();
+                                                  }
+                                                }
+                                              ]}
+                                              size={2}
+                                              shape={'smooth'}
+                                              color={['group', ['#fa8c16', '#eb2f96']]}
+                                            />
+                                          </Chart>
+                                        </Card>
+                                      </Col>
+                                    );
+                                  }
+                                })()}
+                              </Row>
+                            );
+                          }
+                        })()}
+                      </div>
                     );
                   }
                 })()}

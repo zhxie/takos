@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
-import moment from 'moment'
+import moment from 'moment';
 import { PageHeader, Alert, Button, Form, DatePicker, Row, Col, Card, Statistic } from 'antd';
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
@@ -189,7 +189,10 @@ class JobsStatisticsWindow extends React.Component {
 
   range = () => {
     const today = this.props.intl.formatMessage({ id: 'app.time.today', defaultMessage: 'Today' });
-    const lastThreeDays = this.props.intl.formatMessage({ id: 'app.time.last_three_days', defaultMessage: 'Last 3 Days' });
+    const lastThreeDays = this.props.intl.formatMessage({
+      id: 'app.time.last_three_days',
+      defaultMessage: 'Last 3 Days'
+    });
     const thisWeek = this.props.intl.formatMessage({ id: 'app.time.this_week', defaultMessage: 'This Week' });
     const thisMonth = this.props.intl.formatMessage({ id: 'app.time.this_month', defaultMessage: 'This Month' });
     let range = {};
@@ -451,6 +454,7 @@ class JobsStatisticsWindow extends React.Component {
             .forEach(element => {
               chartData.push({
                 number: element.number.toString(),
+                isClear: element.isClear,
                 hazardLevel: parseFloat(element.hazardLevel),
                 rate: element.rate,
                 score: element.score,
@@ -470,17 +474,23 @@ class JobsStatisticsWindow extends React.Component {
                       bodyStyle={{ padding: '16px 16px 0 16px', minHeight: '170px' }}
                     >
                       <Row gutter={16}>
-                        <Col className="JobsStatisticsWindow-content-column" span={12}>
-                          <Statistic
-                            className="JobsStatisticsWindow-content-statistic"
-                            title={<FormattedMessage id="app.splatnet" defaultMessage="SplatNet" />}
-                            value={
-                              this.state.data.sort((a, b) => {
-                                return b.number - a.number;
-                              })[0].number
-                            }
-                          />
-                        </Col>
+                        {(() => {
+                          if (data.length === this.state.data.length) {
+                            return (
+                              <Col className="JobsStatisticsWindow-content-column" span={12}>
+                                <Statistic
+                                  className="JobsStatisticsWindow-content-statistic"
+                                  title={<FormattedMessage id="app.splatnet" defaultMessage="SplatNet" />}
+                                  value={
+                                    this.state.data.sort((a, b) => {
+                                      return b.number - a.number;
+                                    })[0].number
+                                  }
+                                />
+                              </Col>
+                            );
+                          }
+                        })()}
                         <Col className="JobsStatisticsWindow-content-column" span={12}>
                           <Statistic
                             className="JobsStatisticsWindow-content-statistic"
@@ -903,6 +913,26 @@ class JobsStatisticsWindow extends React.Component {
                           shape={'smooth'}
                           color="#fa8c16"
                         />
+                        <Geom
+                          type="point"
+                          position="number*hazardLevel"
+                          size={4}
+                          shape={[
+                            'isClear',
+                            isClear => {
+                              if (isClear) {
+                                return 'circle';
+                              } else {
+                                return 'cross';
+                              }
+                            }
+                          ]}
+                          color="#fa8c16"
+                          style={{
+                            stroke: '#fff',
+                            lineWidth: 1
+                          }}
+                        />
                       </Chart>
                     </Card>
                   </Col>
@@ -960,6 +990,26 @@ class JobsStatisticsWindow extends React.Component {
                           shape={'smooth'}
                           color="#fa8c16"
                         />
+                        <Geom
+                          type="point"
+                          position="number*rate"
+                          size={4}
+                          shape={[
+                            'isClear',
+                            isClear => {
+                              if (isClear) {
+                                return 'circle';
+                              } else {
+                                return 'cross';
+                              }
+                            }
+                          ]}
+                          color="#fa8c16"
+                          style={{
+                            stroke: '#fff',
+                            lineWidth: 1
+                          }}
+                        />
                       </Chart>
                     </Card>
                   </Col>
@@ -1011,6 +1061,26 @@ class JobsStatisticsWindow extends React.Component {
                           shape={'smooth'}
                           color="#fa8c16"
                         />
+                        <Geom
+                          type="point"
+                          position="number*score"
+                          size={4}
+                          shape={[
+                            'isClear',
+                            isClear => {
+                              if (isClear) {
+                                return 'circle';
+                              } else {
+                                return 'cross';
+                              }
+                            }
+                          ]}
+                          color="#fa8c16"
+                          style={{
+                            stroke: '#fff',
+                            lineWidth: 1
+                          }}
+                        />
                       </Chart>
                     </Card>
                   </Col>
@@ -1061,6 +1131,26 @@ class JobsStatisticsWindow extends React.Component {
                           size={2}
                           shape={'smooth'}
                           color="#fa8c16"
+                        />
+                        <Geom
+                          type="point"
+                          position="number*grizzcoPoint"
+                          size={4}
+                          shape={[
+                            'isClear',
+                            isClear => {
+                              if (isClear) {
+                                return 'circle';
+                              } else {
+                                return 'cross';
+                              }
+                            }
+                          ]}
+                          color="#fa8c16"
+                          style={{
+                            stroke: '#fff',
+                            lineWidth: 1
+                          }}
                         />
                       </Chart>
                     </Card>
