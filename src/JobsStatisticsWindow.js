@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
+import moment from 'moment'
 import { PageHeader, Alert, Button, Form, DatePicker, Row, Col, Card, Statistic } from 'antd';
 import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
 
@@ -181,9 +182,22 @@ class JobsStatisticsWindow extends React.Component {
   filterStartTime = date => {
     let startTime = [];
     date.forEach(element => {
-      startTime.push(element._d.getTime() / 1000);
+      startTime.push(element.utc() / 1000);
     });
     this.setState({ startTime: startTime });
+  };
+
+  range = () => {
+    const today = this.props.intl.formatMessage({ id: 'app.time.today', defaultMessage: 'Today' });
+    const lastThreeDays = this.props.intl.formatMessage({ id: 'app.time.last_three_days', defaultMessage: 'Last 3 Days' });
+    const thisWeek = this.props.intl.formatMessage({ id: 'app.time.this_week', defaultMessage: 'This Week' });
+    const thisMonth = this.props.intl.formatMessage({ id: 'app.time.this_month', defaultMessage: 'This Month' });
+    let range = {};
+    range[today] = [moment(), moment()];
+    range[lastThreeDays] = [moment().subtract(3, 'days'), moment()];
+    range[thisWeek] = [moment().startOf('week'), moment().endOf('week')];
+    range[thisMonth] = [moment().startOf('month'), moment().endOf('month')];
+    return range;
   };
 
   renderContent = () => {
@@ -233,7 +247,7 @@ class JobsStatisticsWindow extends React.Component {
           <Form.Item label={<FormattedMessage id="job.time.start" defaultMessage="Start Time" />}>
             <Row gutter={8}>
               <Col sm={18} md={12}>
-                <RangePicker onChange={this.filterStartTime} />
+                <RangePicker ranges={this.range()} onChange={this.filterStartTime} />
               </Col>
             </Row>
           </Form.Item>

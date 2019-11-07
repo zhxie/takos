@@ -75,6 +75,7 @@
     "electron-is-dev": "^1.1.0",
     "http-proxy-middleware": "^0.20.0",
     "localforage": "^1.7.3",
+    "moment": "^2.24.0",
     "query-string": "^6.8.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

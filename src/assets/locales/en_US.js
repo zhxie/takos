@@ -1279,7 +1279,11 @@ const en_US = {
   'app.time.span.remain.day_hour_min': '{day} day {hour} hour {min} min remaining',
   'app.time.span.elapsed.in.sec': 'in {sec} sec',
   'app.time.span.elapsed.in.min_sec': 'in {min} min {sec} sec',
-  'app.time.span.elapsed.sec': '({sec} seconds)'
+  'app.time.span.elapsed.sec': '({sec} seconds)',
+  'app.time.today': 'Today',
+  'app.time.last_three_days': 'Last 3 Days',
+  'app.time.this_week': 'This Week',
+  'app.time.this_month': 'This Month'
 };
 
 export default en_US;

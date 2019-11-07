@@ -213,7 +213,7 @@ class TimeConverter {
     if (days > 0) {
       return days + ':' + ('0' + hours).substr(-2) + ':' + ('0' + minutes).substr(-2) + ':' + seconds.substr(-2);
     } else if (hours > 0) {
-      return ('0' + hours).substr(-2) + ':' + ('0' + minutes).substr(-2) + ':' + seconds.substr(-2);
+      return hours + ':' + ('0' + minutes).substr(-2) + ':' + seconds.substr(-2);
     } else {
       return minutes + ':' + seconds.substr(-2);
     }

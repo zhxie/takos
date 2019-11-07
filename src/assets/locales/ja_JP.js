@@ -1286,7 +1286,11 @@ const ja_JP = {
   'app.time.span.remain.day_hour_min': '残り {day} 日 {hour} 時間 {min} 分',
   'app.time.span.elapsed.in.sec': '{sec} 秒以内',
   'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒以内',
-  'app.time.span.elapsed.sec': '({sec} 秒)'
+  'app.time.span.elapsed.sec': '({sec} 秒)',
+  'app.time.today': '今日',
+  'app.time.last_three_days': '過去 3 日間',
+  'app.time.this_week': '今週',
+  'app.time.this_month': '今月'
 };
 
 export default ja_JP;

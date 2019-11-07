@@ -1260,7 +1260,11 @@ const zh_CN = {
   'app.time.span.remain.day_hour_min': '剩余 {day} 日 {hour} 小时 {min} 分',
   'app.time.span.elapsed.in.sec': '{sec} 秒内',
   'app.time.span.elapsed.in.min_sec': '{min} 分 {sec} 秒内',
-  'app.time.span.elapsed.sec': '({sec} 秒)'
+  'app.time.span.elapsed.sec': '({sec} 秒)',
+  'app.time.today': '今日',
+  'app.time.last_three_days': '过去 3 日',
+  'app.time.this_week': '本周',
+  'app.time.this_month': '本月'
 };
 
 export default zh_CN;
