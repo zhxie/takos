@@ -325,7 +325,7 @@ class DashboardWindow extends React.Component {
       })
       .then(() => {
         // Update schedules and shifts
-        return Promise.all([
+        return Promise.allSettled([
           ScheduleHelper.updateSchedules(res => {
             this.setState({ schedules: res });
             // Set update interval
@@ -345,18 +345,18 @@ class DashboardWindow extends React.Component {
             this.shopGearsTimer = setInterval(this.shopGearTimeout, 60000);
           })
         ])
-          .then(values => {
-            if (values[0] instanceof TakosError) {
-              errorSchedules = values[0];
+          .then(results => {
+            if (results[0].value instanceof TakosError) {
+              errorSchedules = results[0].value;
             }
-            if (values[1] instanceof TakosError) {
-              errorShifts = values[1];
+            if (results[1].value instanceof TakosError) {
+              errorShifts = results[1].value;
             }
-            if (values[2] instanceof TakosError) {
-              errorRewardGear = values[2];
+            if (results[2].value instanceof TakosError) {
+              errorRewardGear = results[2].value;
             }
-            if (values[3] instanceof TakosError) {
-              errorShopGears = values[3];
+            if (results[3].value instanceof TakosError) {
+              errorShopGears = results[3].value;
             }
           })
           .catch(e => {

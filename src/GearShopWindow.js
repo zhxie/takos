@@ -35,7 +35,7 @@ class GearShopWindow extends React.Component {
     let errorOrder = null;
     let errorGears = null;
     let firstErrorLog = null;
-    return Promise.all([
+    return Promise.allSettled([
       GearShopHelper.updateOrderedGear(res => {
         this.setState({ order: res });
       }),
@@ -45,12 +45,12 @@ class GearShopWindow extends React.Component {
         this.timer = setInterval(this.timeout, 60000);
       })
     ])
-      .then(values => {
-        if (values[0] instanceof TakosError) {
-          errorOrder = values[0];
+      .then(results => {
+        if (results[0].value instanceof TakosError) {
+          errorOrder = results[0].value;
         }
-        if (values[1] instanceof TakosError) {
-          errorGears = values[1];
+        if (results[1].value instanceof TakosError) {
+          errorGears = results[1].value;
         }
       })
       .catch(e => {

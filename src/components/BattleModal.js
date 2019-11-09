@@ -105,11 +105,11 @@ class BattleModal extends React.Component {
           icons.push(BattleHelper.getPlayerIcon(element.id));
         }
       });
-      Promise.all(icons)
-        .then(values => {
+      Promise.allSettled(icons)
+        .then(results => {
           let result = this.state.icons;
-          for (let i = 0; i < values.length; ++i) {
-            result.push({ id: ids[i], icon: values[i] });
+          for (let i = 0; i < results.length; ++i) {
+            result.push({ id: ids[i], icon: results[i].value });
           }
           this.setState({ icons: result });
         })
