@@ -413,47 +413,43 @@ class LoginWindow extends React.Component {
         }
       })
       .then(() => {
-        // Update battles
-        if (this.state.battlesRange.to >= this.state.battlesRange.from) {
-          return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then(res => {
-            if (res instanceof TakosError) {
-              throw res;
-            }
-          });
-        } else {
-          return;
-        }
+        // Update battles and jobs
+        const updateBattles = () => {
+          if (this.state.battlesRange.to >= this.state.battlesRange.from) {
+            return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then(res => {
+              if (res instanceof TakosError) {
+                throw res;
+              }
+            });
+          }
+        };
+        const updateJobs = () => {
+          if (this.state.jobsRange.to >= this.state.jobsRange.from) {
+            return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
+              if (res instanceof TakosError) {
+                throw res;
+              }
+            });
+          }
+        };
+        return Promise.allSettled([updateBattles(), updateJobs()]);
       })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          throw e;
-        } else {
-          console.error(e);
+      .then(results => {
+        if (results[0].value instanceof TakosError) {
+          throw new TakosError(results[0].value);
+        } else if (results[0].value instanceof Error) {
+          console.error(results[0].value);
           throw new TakosError('can_not_update_battles');
+        }
+        if (results[1].value instanceof TakosError) {
+          throw new TakosError(results[1].value);
+        } else if (results[1].value instanceof Error) {
+          console.error(results[1].value);
+          throw new TakosError('can_not_update_jobs');
         }
       })
       .then(() => {
-        // Update jobs
-        if (this.state.jobsRange.to >= this.state.jobsRange.from) {
-          return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
-            if (res instanceof TakosError) {
-              throw res;
-            } else {
-              this.toNext();
-            }
-          });
-        } else {
-          this.toNext();
-          return;
-        }
-      })
-      .catch(e => {
-        if (e instanceof TakosError) {
-          throw e;
-        } else {
-          console.error(e);
-          throw new TakosError('can_not_update_jobs');
-        }
+        this.toNext();
       })
       .catch(e => {
         if (e instanceof TakosError) {
