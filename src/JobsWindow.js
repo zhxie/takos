@@ -10,7 +10,7 @@ import { OctolingsDeathIcon } from './components/CustomIcons';
 import ErrorResult from './components/ErrorResult';
 import JobModal from './components/JobModal';
 import LoadingResult from './components/LoadingResult';
-import WindowLayout from './components/WindowLayout'
+import WindowLayout from './components/WindowLayout';
 import { Stage } from './models/Stage';
 import { MainWeapon, SpecialWeapon } from './models/Weapon';
 import TakosError from './utils/ErrorHelper';
@@ -113,12 +113,14 @@ class JobsWindow extends React.Component {
         if (res.to >= res.from) {
           this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
         } else {
+          this.setState({ updateTotal: -1 });
           return this.getJobs();
         }
         return getJobRecursively(res.from, res.to).then(res => {
           if (res instanceof TakosError) {
             throw res;
           } else {
+            this.setState({ updateTotal: -1 });
             return this.getJobs();
           }
         });
@@ -127,6 +129,7 @@ class JobsWindow extends React.Component {
         this.setState({ loaded: true });
       })
       .catch(e => {
+        this.setState({ updateTotal: -1 });
         this.getJobs()
           .then(() => {
             if (e instanceof TakosError) {
@@ -951,42 +954,42 @@ class JobsWindow extends React.Component {
       );
     } else {
       return (
-        <WindowLayout icon={icon} title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />} >
+        <WindowLayout icon={icon} title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />}>
           {(() => {
-              if (!this.state.loaded) {
-                if (this.state.updateTotal === 0) {
-                  return (
-                    <LoadingResult
-                      description={
-                        <FormattedMessage
-                          id="app.result.loading.description.check_update_data"
-                          defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
-                        />
-                      }
-                    />
-                  );
-                } else if (this.state.updateCurrent > this.state.updateTotal) {
-                  return <LoadingResult />;
-                } else {
-                  return (
-                    <LoadingResult
-                      description={
-                        <FormattedMessage
-                          id="app.result.loading.description.update_data"
-                          defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
-                          values={{
-                            current: this.state.updateCurrent,
-                            total: this.state.updateTotal
-                          }}
-                        />
-                      }
-                    />
-                  );
-                }
+            if (!this.state.loaded) {
+              if (this.state.updateTotal === 0) {
+                return (
+                  <LoadingResult
+                    description={
+                      <FormattedMessage
+                        id="app.result.loading.description.check_update_data"
+                        defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
+                      />
+                    }
+                  />
+                );
+              } else if (this.state.updateCurrent > this.state.updateTotal) {
+                return <LoadingResult />;
               } else {
-                return this.renderContent();
+                return (
+                  <LoadingResult
+                    description={
+                      <FormattedMessage
+                        id="app.result.loading.description.update_data"
+                        defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
+                        values={{
+                          current: this.state.updateCurrent,
+                          total: this.state.updateTotal
+                        }}
+                      />
+                    }
+                  />
+                );
               }
-            })()}
+            } else {
+              return this.renderContent();
+            }
+          })()}
         </WindowLayout>
       );
     }

@@ -321,6 +321,9 @@ class DashboardWindow extends React.Component {
         }
       })
       .then(() => {
+        this.setState({ updateTotal: -1 });
+      })
+      .then(() => {
         // Update schedules and shifts
         return Promise.all([
           ScheduleHelper.updateSchedules(res => {
