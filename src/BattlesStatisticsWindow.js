@@ -16,7 +16,6 @@ import { RankedBattle, RankedXBattle, LeagueBattle, SplatfestBattle } from './mo
 import { Mode } from './models/Mode';
 import { Rank } from './models/Player';
 import Rule from './models/Rule';
-import BattleHelper from './utils/BattleHelper';
 import TakosError from './utils/ErrorHelper';
 import StorageHelper from './utils/StorageHelper';
 import TimeConverter from './utils/TimeConverter';
@@ -32,9 +31,6 @@ class BattlesStatisticsWindow extends React.Component {
     loaded: false,
     error: false,
     errorLog: 'unknown_error',
-    updateCurrent: 0,
-    updateTotal: 0,
-    updated: false,
     search: null,
     mode: [
       Mode.regularBattle.value,
@@ -62,112 +58,22 @@ class BattlesStatisticsWindow extends React.Component {
     }
   }
 
-  updateBattles = () => {
-    // TODO: this method should be extracted
-    const getBattleRecursively = (from, to) => {
-      return BattleHelper.getBattle(from)
-        .then(res => {
-          if (res.error !== null) {
-            // Handle previous error
-            throw new TakosError(res.error);
-          } else {
-            return StorageHelper.addBattle(res);
-          }
-        })
-        .then(res => {
-          if (res instanceof TakosError) {
-            throw res;
-          } else {
-            this.setState({ updateCurrent: this.state.updateCurrent + 1 });
-            if (from < to) {
-              return getBattleRecursively(from + 1, to);
-            }
-          }
-        })
-        .catch(e => {
-          if (e instanceof TakosError) {
-            return e;
-          } else {
-            console.error(e);
-            return new TakosError('can_not_get_battle');
-          }
-        });
-    };
-
+  updateData = () => {
     this.setState({
       loaded: false,
-      error: false,
-      updateCurrent: 0,
-      updateTotal: 0,
-      updated: false
+      error: false
     });
-    StorageHelper.latestBattle()
-      .then(res => {
-        if (res === -1) {
-          throw new TakosError('can_not_get_the_latest_battle_from_database');
-        } else {
-          return res;
-        }
-      })
-      .then(res => {
-        const currentNumber = res;
-        return BattleHelper.getTheLatestBattleNumber().then(res => {
-          if (res === 0) {
-            throw new TakosError('can_not_get_battles');
-          } else {
-            const from = Math.max(1, res - 49, currentNumber + 1);
-            const to = res;
-            return { from, to };
-          }
-        });
-      })
-      .then(res => {
-        if (res.to >= res.from) {
-          this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
-        } else {
-          return this.getBattles();
-        }
-        return getBattleRecursively(res.from, res.to).then(res => {
-          if (res instanceof TakosError) {
-            throw res;
-          } else {
-            return this.getBattles();
-          }
-        });
-      })
-      .then(() => {
-        this.setState({ loaded: true });
-      })
-      .catch(e => {
-        this.getBattles()
-          .then(() => {
-            if (e instanceof TakosError) {
-              this.setState({ error: true, errorLog: e.message, updated: true });
-            } else {
-              console.error(e);
-              this.setState({
-                error: true,
-                errorLog: 'can_not_update_battles',
-                updated: true
-              });
-            }
-          })
-          .catch();
-      })
-      .catch(e => {
-        console.error(e);
-      });
-  };
-
-  getBattles = () => {
     return StorageHelper.battles()
       .then(res => {
-        this.setState({
-          data: res
-        });
+        this.setState({ data: res, loaded: true });
       })
       .catch(e => {
-        console.error(e);
+        if (e instanceof TakosError) {
+          this.setState({ error: true, errorLog: e.message });
+        } else {
+          console.error(e);
+          this.setState({ error: true, errorLog: 'can_not_update_battles' });
+        }
       });
   };
 
@@ -1566,17 +1472,9 @@ class BattlesStatisticsWindow extends React.Component {
       return (
         <ErrorResult
           error={this.state.errorLog}
-          checklist={[
-            <FormattedMessage
-              key="network"
-              id="app.problem.troubleshoot.network"
-              defaultMessage="Your network connection"
-            />,
-            <FormattedMessage key="cookie" id="app.problem.troubleshoot.cookie" defaultMessage="Your SplatNet cookie" />
-          ]}
           extra={[
             [
-              <Button key="retry" onClick={this.updateBattles} type="primary">
+              <Button key="retry" onClick={this.updateData} type="primary">
                 <FormattedMessage id="app.retry" defaultMessage="Retry" />
               </Button>,
               <Link to="/settings" key="toSettings">
@@ -1602,35 +1500,7 @@ class BattlesStatisticsWindow extends React.Component {
         <WindowLayout icon={icon} title={<FormattedMessage id="app.battles" defaultMessage="Battles" />}>
           {(() => {
             if (!this.state.loaded) {
-              if (this.state.updateTotal === 0) {
-                return (
-                  <LoadingResult
-                    description={
-                      <FormattedMessage
-                        id="app.result.loading.description.check_update_data"
-                        defaultMessage="Takos is checking for updated data, which will last for a few seconds to a few minutes..."
-                      />
-                    }
-                  />
-                );
-              } else if (this.state.updateCurrent > this.state.updateTotal) {
-                return <LoadingResult />;
-              } else {
-                return (
-                  <LoadingResult
-                    description={
-                      <FormattedMessage
-                        id="app.result.loading.description.update_data"
-                        defaultMessage="Takos is updating data {current}/{total}, which will last for a few seconds to a few minutes..."
-                        values={{
-                          current: this.state.updateCurrent,
-                          total: this.state.updateTotal
-                        }}
-                      />
-                    }
-                  />
-                );
-              }
+              return <LoadingResult />;
             } else {
               return this.renderContent();
             }
@@ -1641,7 +1511,7 @@ class BattlesStatisticsWindow extends React.Component {
   }
 
   componentDidMount() {
-    this.updateBattles();
+    this.updateData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -1653,7 +1523,7 @@ class BattlesStatisticsWindow extends React.Component {
       this.setState({ search: search });
     }
     if (this.state.loaded !== prevState.loaded && this.state.loaded === false) {
-      this.updateBattles();
+      this.updateData();
     }
   }
 }
