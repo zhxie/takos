@@ -31,75 +31,43 @@ class StagesStatisticsWindow extends React.Component {
       error: false,
       updated: false
     });
-    let errorRecords = null;
-    let errorStatistics = null;
-    let firstErrorLog = null;
-    return Promise.all([
-      StatisticsHelper.updateStagesRecords(res => {
-        this.setState({ records: res });
-      }),
-      StatisticsHelper.updateStagesStatistics(res => {
-        this.setState({ statistics: res });
-      })
-    ])
-      .then(values => {
-        if (values[0] instanceof TakosError) {
-          errorRecords = values[0];
-        }
-        if (values[1] instanceof TakosError) {
-          errorStatistics = values[1];
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        errorRecords = e;
-        errorStatistics = e;
-      })
-      .then(() => {
-        if (errorRecords !== null) {
-          // Handle error
-          if (errorRecords instanceof TakosError) {
-            if (firstErrorLog === null) {
-              firstErrorLog = errorRecords.message;
-            } else {
-              console.error(errorRecords);
-            }
-          } else {
-            if (firstErrorLog === null) {
-              firstErrorLog = 'can_not_update_stages_records';
-            }
-          }
-          this.setState({ updated: true });
+    return new Promise(resolve => {
+      if (StorageHelper.showSplatNetStats()) {
+        resolve(
+          StatisticsHelper.updateStagesRecords(res => {
+            this.setState({ records: res });
+          })
+        );
+      } else {
+        resolve(
+          StatisticsHelper.updateStagesStatistics(res => {
+            this.setState({ statistics: res });
+          })
+        );
+      }
+    })
+      .then(res => {
+        if (res instanceof TakosError) {
+          throw res;
         }
       })
       .then(() => {
-        if (errorStatistics !== null) {
-          // Handle error
-          if (errorStatistics instanceof TakosError) {
-            if (firstErrorLog === null) {
-              firstErrorLog = errorStatistics.message;
-            } else {
-              console.error(errorStatistics);
-            }
-          } else {
-            if (firstErrorLog === null) {
-              firstErrorLog = 'can_not_update_stages_statistics';
-            }
-          }
-        }
-      })
-      .then(() => {
-        if (firstErrorLog !== null) {
-          throw new Error();
-        } else {
-          this.setState({ loaded: true });
-        }
+        this.setState({ loaded: true });
       })
       .then(() => {
         this.scrollToAnchor(this.props.location.hash.replace('#', ''));
       })
-      .catch(() => {
-        this.setState({ error: true, errorLog: firstErrorLog });
+      .catch(e => {
+        if (e instanceof TakosError) {
+          this.setState({ error: true, errorLog: e.message, updated: true });
+        } else {
+          console.error(e);
+          if (StorageHelper.showSplatNetStats()) {
+            this.setState({ error: true, errorLog: 'can_not_update_stages_records', updated: true });
+          } else {
+            this.setState({ error: true, errorLog: 'can_not_update_stages_statistics', updated: true });
+          }
+        }
       });
   };
 
