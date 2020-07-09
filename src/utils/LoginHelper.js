@@ -5,15 +5,12 @@ import FileFolderUrl from './FileFolderUrl';
 import './StringHelper';
 
 class LoginHelper {
-  static random = size => {
+  static random = (size) => {
     return this.safeBase64(randomBytes(size).toString('base64'));
   };
 
-  static safeBase64 = s => {
-    return s
-      .replace(/=/g, '')
-      .replace(/\//g, '_')
-      .replace(/\+/g, '-');
+  static safeBase64 = (s) => {
+    return s.replace(/=/g, '').replace(/\//g, '_').replace(/\+/g, '-');
   };
 
   static generateParameters = () => {
@@ -43,8 +40,8 @@ class LoginHelper {
       })
     };
     return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_SESSION_TOKEN, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.session_token !== undefined && res.session_token !== null) {
           return res.session_token;
@@ -52,13 +49,13 @@ class LoginHelper {
           throw new RangeError();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static getCookie = sessionToken => {
+  static getCookie = (sessionToken) => {
     console.log(sessionToken);
     const body1 = {
       client_id: '71b963c1b7b6d119',
@@ -73,20 +70,21 @@ class LoginHelper {
       })
     };
     return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_TOKEN, init1)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (
           res.access_token !== undefined &&
           res.access_token !== null &&
-          (res.id_token !== undefined && res.id_token !== null)
+          res.access_token !== undefined &&
+          res.access_token !== null
         ) {
-          return { accessToken: res.access_token, idToken: res.id_token };
+          return { accessToken: res.access_token, idToken: res.access_token };
         } else {
           throw new RangeError();
         }
       })
-      .then(data => {
+      .then((data) => {
         let init = {
           method: 'GET',
           headers: new Headers({
@@ -94,14 +92,16 @@ class LoginHelper {
           })
         };
         return fetch(FileFolderUrl.NINTENDO_ACCOUNTS_API_USER_INFO, init)
-          .then(res => res.json())
-          .then(res => {
+          .then((res) => res.json())
+          .then((res) => {
             console.log(res);
             if (
               res.country !== undefined &&
               res.country !== null &&
-              (res.birthday !== undefined && res.birthday !== null) &&
-              (res.language !== undefined && res.language !== null)
+              res.birthday !== undefined &&
+              res.birthday !== null &&
+              res.language !== undefined &&
+              res.language !== null
             ) {
               return { idToken: data.idToken, country: res.country, birthday: res.birthday, language: res.language };
             } else {
@@ -109,14 +109,14 @@ class LoginHelper {
             }
           });
       })
-      .then(data => {
+      .then((data) => {
         const timestamp = Math.floor(Date.now() / 1000).toString();
         let body = {
           naIdToken: data.idToken,
           timestamp: timestamp
         };
         let formBody = Object.keys(body)
-          .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(body[key]))
+          .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(body[key]))
           .join('&');
         let init = {
           method: 'POST',
@@ -127,8 +127,8 @@ class LoginHelper {
           })
         };
         return fetch(FileFolderUrl.ELI_FESSLER_GEN2, init)
-          .then(res => res.json())
-          .then(res => {
+          .then((res) => res.json())
+          .then((res) => {
             console.log(res);
             if (res.hash !== undefined && res.hash !== null) {
               return {
@@ -144,7 +144,7 @@ class LoginHelper {
             }
           });
       })
-      .then(data => {
+      .then((data) => {
         let init = {
           method: 'GET',
           headers: new Headers({
@@ -152,40 +152,33 @@ class LoginHelper {
             'x-time': data.timestamp,
             'x-guid': uuid.v4(),
             'x-hash': data.hash,
-            'x-ver': '2',
-            'x-iid': randomBytes(4).toString('hex')
+            'x-ver': '3',
+            'x-iid': 'nso'
           })
         };
         return fetch(FileFolderUrl.FLAPG_LOGIN, init)
-          .then(res => res.json())
-          .then(res => {
+          .then((res) => res.json())
+          .then((res) => {
             console.log(res);
             if (
-              res.login_nso.f !== undefined &&
-              res.login_nso.f !== null &&
-              (res.login_nso.p1 !== undefined && res.login_nso.p1 !== null) &&
-              (res.login_nso.p2 !== undefined && res.login_nso.p2 !== null) &&
-              (res.login_nso.p3 !== undefined && res.login_nso.p3 !== null) &&
-              (res.login_app.f !== undefined && res.login_app.f !== null) &&
-              (res.login_app.p1 !== undefined && res.login_app.p1 !== null) &&
-              (res.login_app.p2 !== undefined && res.login_app.p2 !== null) &&
-              (res.login_app.p3 !== undefined && res.login_app.p3 !== null)
+              res.result.f !== undefined &&
+              res.result.f !== null &&
+              res.result.p1 !== undefined &&
+              res.result.p1 !== null &&
+              res.result.p2 !== undefined &&
+              res.result.p2 !== null &&
+              res.result.p3 !== undefined &&
+              res.result.p3 !== null
             ) {
               return {
                 country: data.country,
                 birthday: data.birthday,
                 language: data.language,
                 loginNso: {
-                  f: res.login_nso.f,
-                  p1: res.login_nso.p1,
-                  p2: res.login_nso.p2,
-                  p3: res.login_nso.p3
-                },
-                loginApp: {
-                  f: res.login_app.f,
-                  p1: res.login_app.p1,
-                  p2: res.login_app.p2,
-                  p3: res.login_app.p3
+                  f: res.result.f,
+                  p1: res.result.p1,
+                  p2: res.result.p2,
+                  p3: res.result.p3
                 }
               };
             } else {
@@ -193,7 +186,7 @@ class LoginHelper {
             }
           });
       })
-      .then(data => {
+      .then((data) => {
         let body = {
           parameter: {
             f: data.loginNso.f,
@@ -211,13 +204,13 @@ class LoginHelper {
           headers: new Headers({
             Authorization: 'Bearer',
             'Content-Type': 'application/json; charset=UTF-8',
-            'X-ProductVersion': '1.5.2',
+            'X-ProductVersion': '1.6.1.2',
             'X-Platform': 'Android'
           })
         };
         return fetch(FileFolderUrl.NINTENDO_SERVICE_LOGIN, init)
-          .then(res => res.json())
-          .then(res => {
+          .then((res) => res.json())
+          .then((res) => {
             console.log(res);
             if (
               res.result.webApiServerCredential.accessToken !== undefined &&
@@ -229,7 +222,50 @@ class LoginHelper {
             }
           });
       })
-      .then(data => {
+      .then((data) => {
+        let init = {
+          method: 'GET',
+          headers: new Headers({
+            'x-token': data.accessToken,
+            'x-time': data.timestamp,
+            'x-guid': uuid.v4(),
+            'x-hash': data.hash,
+            'x-ver': '3',
+            'x-iid': 'app'
+          })
+        };
+        return fetch(FileFolderUrl.FLAPG_LOGIN, init)
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            if (
+              res.result.f !== undefined &&
+              res.result.f !== null &&
+              res.result.p1 !== undefined &&
+              res.result.p1 !== null &&
+              res.result.p2 !== undefined &&
+              res.result.p2 !== null &&
+              res.result.p3 !== undefined &&
+              res.result.p3 !== null
+            ) {
+              return {
+                country: data.country,
+                birthday: data.birthday,
+                language: data.language,
+                loginNso: data.loginNso,
+                loginApp: {
+                  f: res.result.f,
+                  p1: res.result.p1,
+                  p2: res.result.p2,
+                  p3: res.result.p3
+                }
+              };
+            } else {
+              throw new RangeError();
+            }
+          });
+      })
+      .then((data) => {
         let body = {
           parameter: {
             id: '5741031244955648',
@@ -248,8 +284,8 @@ class LoginHelper {
           })
         };
         return fetch(FileFolderUrl.NINTENDO_SERVICE_WEB_SERVICE_TOKEN, init)
-          .then(res => res.json())
-          .then(res => {
+          .then((res) => res.json())
+          .then((res) => {
             console.log(res);
             if (res.result.accessToken !== undefined && res.result.accessToken !== null) {
               return { accessToken: res.result.accessToken };
@@ -258,8 +294,8 @@ class LoginHelper {
             }
           });
       })
-      .then(data => {
-        return LoginHelper.getCookieFinal(data.accessToken).then(data => {
+      .then((data) => {
+        return LoginHelper.getCookieFinal(data.accessToken).then((data) => {
           if (data === null) {
             throw new RangeError();
           } else {
@@ -267,13 +303,13 @@ class LoginHelper {
           }
         });
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static getCookieFinal = accessToken => {
+  static getCookieFinal = (accessToken) => {
     console.log(accessToken);
     const init = {
       method: 'GET',
@@ -282,7 +318,7 @@ class LoginHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET + '/Cookie', init)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         const re = /iksm_session=([a-f0-9]+);/;
         if (res.headers.get('Cookie') !== undefined && res.headers.get('Cookie') !== null) {
@@ -295,7 +331,7 @@ class LoginHelper {
           return accessToken;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });

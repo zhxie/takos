@@ -1188,9 +1188,9 @@ const en_US = {
   'app.alert.info.jobs_filtered':
     'The jobs shown have been filtered, please click <l>here</l> to cancel the screening.',
   'app.alert.info.use_automatic_cookie_generation':
-    'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
+    'If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this account", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.use_automatic_cookie_generation_first_time':
-    'If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".',
+    'If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this account", copy the link address, paste it into the text box below, and press "Update cookie".',
   'app.alert.info.switch_account':
     'If you want to switch account, please log out first. Note that when you log out, all saved data, including battles and jobs, will be cleared.',
   // App.modal

@@ -46,12 +46,12 @@ class LoginWindow extends React.Component {
   constructor(props) {
     super(props);
     StorageHelper.initializeStorage()
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message });
         } else {
@@ -62,7 +62,7 @@ class LoginWindow extends React.Component {
     this.loginParameters = LoginHelper.generateParameters();
   }
 
-  changeLanguage = value => {
+  changeLanguage = (value) => {
     if (this.state.language !== value) {
       this.setState({ language: value });
     }
@@ -83,7 +83,7 @@ class LoginWindow extends React.Component {
     this.setState({ step: this.state.step - 1 });
   };
 
-  cookieOnChange = value => {
+  cookieOnChange = (value) => {
     if (this.state.cookie !== value) {
       this.setState({ cookie: value });
     }
@@ -101,7 +101,7 @@ class LoginWindow extends React.Component {
 
   getSessionToken = () => {
     return LoginHelper.getSessionToken(this.loginParameters.sessionTokenCode, this.loginParameters.codeVerifier)
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           throw new RangeError();
         } else {
@@ -126,7 +126,7 @@ class LoginWindow extends React.Component {
 
   updateCookie = () => {
     return LoginHelper.getCookie(window.localStorage.sessionToken)
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           throw new RangeError();
         } else if (result.length !== 40) {
@@ -158,9 +158,9 @@ class LoginWindow extends React.Component {
                       'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                   },
                   {
-                    a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
-                    a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
-                    a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                    a1: (msg) => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                    a2: (msg) => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                    a3: (msg) => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
                   }
                 )}
               </p>
@@ -170,7 +170,7 @@ class LoginWindow extends React.Component {
       });
   };
 
-  updateCookieFinal = accessToken => {
+  updateCookieFinal = (accessToken) => {
     // Cookie can not get by javascript because it is HttpOnly
     const thisHandler = this;
     Modal.confirm({
@@ -210,7 +210,7 @@ class LoginWindow extends React.Component {
       icon: <Icon type="info-circle" />,
       onOk() {
         return LoginHelper.getCookieFinal(accessToken)
-          .then(result => {
+          .then((result) => {
             if (result === null) {
               throw new RangeError();
             } else {
@@ -263,9 +263,9 @@ class LoginWindow extends React.Component {
                           'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                       },
                       {
-                        a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
-                        a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
-                        a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                        a1: (msg) => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                        a2: (msg) => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                        a3: (msg) => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
                       }
                     )}
                   </p>
@@ -282,7 +282,7 @@ class LoginWindow extends React.Component {
     // TODO: this method should be extracted
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -290,7 +290,7 @@ class LoginWindow extends React.Component {
             return StorageHelper.addBattle(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -300,7 +300,7 @@ class LoginWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -312,7 +312,7 @@ class LoginWindow extends React.Component {
     // TODO: this method should be extracted
     const getJobRecursively = (from, to) => {
       return JobHelper.getJob(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -320,7 +320,7 @@ class LoginWindow extends React.Component {
             return StorageHelper.addJob(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -330,7 +330,7 @@ class LoginWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -342,16 +342,16 @@ class LoginWindow extends React.Component {
 
     this.setState({ errorUpdate: false });
     return StorageHelper.latestBattle()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_battle_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return BattleHelper.getTheLatestBattleNumber().then(res => {
+        return BattleHelper.getTheLatestBattleNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_battles');
           } else {
@@ -361,7 +361,7 @@ class LoginWindow extends React.Component {
           }
         });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           throw e;
         } else {
@@ -372,16 +372,16 @@ class LoginWindow extends React.Component {
       .then(() => {
         return StorageHelper.latestJob();
       })
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_job_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return JobHelper.getTheLatestJobNumber().then(res => {
+        return JobHelper.getTheLatestJobNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_jobs');
           } else {
@@ -391,7 +391,7 @@ class LoginWindow extends React.Component {
           }
         });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           throw e;
         } else {
@@ -416,7 +416,7 @@ class LoginWindow extends React.Component {
         // Update battles and jobs
         const updateBattles = () => {
           if (this.state.battlesRange.to >= this.state.battlesRange.from) {
-            return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then(res => {
+            return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to).then((res) => {
               if (res instanceof TakosError) {
                 throw res;
               }
@@ -425,7 +425,7 @@ class LoginWindow extends React.Component {
         };
         const updateJobs = () => {
           if (this.state.jobsRange.to >= this.state.jobsRange.from) {
-            return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then(res => {
+            return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to).then((res) => {
               if (res instanceof TakosError) {
                 throw res;
               }
@@ -434,7 +434,7 @@ class LoginWindow extends React.Component {
         };
         return Promise.allSettled([updateBattles(), updateJobs()]);
       })
-      .then(results => {
+      .then((results) => {
         if (results[0].value instanceof TakosError) {
           throw new TakosError(results[0].value);
         } else if (results[0].value instanceof Error) {
@@ -451,7 +451,7 @@ class LoginWindow extends React.Component {
       .then(() => {
         this.toNext();
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ errorUpdate: true, errorUpdateLog: e.message });
         } else {
@@ -481,7 +481,7 @@ class LoginWindow extends React.Component {
               'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
           },
           {
-            a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+            a: (msg) => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
           }
         ),
         onOk() {
@@ -514,7 +514,7 @@ class LoginWindow extends React.Component {
                 'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
             },
             {
-              a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+              a: (msg) => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
             }
           ),
           onOk() {
@@ -581,8 +581,10 @@ class LoginWindow extends React.Component {
                   id="app.welcome.cookie.2"
                   defaultMessage="Takos uses cookies to access the SplatNet. This cookie may be obtained automatically by automatic cookie generation introducted in <a1>splatnet2statink</a1>, or be retrieved by other methods manually, like intercepting into the device's traffice with SplatNet, which is also called <a2>the MitM</a2>."
                   values={{
-                    a1: msg => <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">{msg}</a>,
-                    a2: msg => (
+                    a1: (msg) => (
+                      <a href="https://github.com/frozenpandaman/splatnet2statink#cookie-generation">{msg}</a>
+                    ),
+                    a2: (msg) => (
                       <a href="https://github.com/frozenpandaman/splatnet2statink/wiki/mitmproxy-instructions">{msg}</a>
                     )
                   }}
@@ -601,7 +603,7 @@ class LoginWindow extends React.Component {
                     id="app.alert.warning.automatic_cookie_generation"
                     defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
                     values={{
-                      a: msg => (
+                      a: (msg) => (
                         <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
                       )
                     }}
@@ -619,9 +621,9 @@ class LoginWindow extends React.Component {
                   <FormattedMessage
                     id="app.alert.info.use_automatic_cookie_generation_first_time"
                     s
-                    defaultMessage='If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this person", copy the link address, paste it into the text box below, and press "Update cookie".'
+                    defaultMessage='If you have not used automatic cookie generation and want to use, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this account", copy the link address, paste it into the text box below, and press "Update cookie".'
                     values={{
-                      a: msg => (
+                      a: (msg) => (
                         <a
                           href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
                             this.loginParameters.state,
@@ -653,7 +655,7 @@ class LoginWindow extends React.Component {
                   <Col span={16}>
                     <Input
                       value={this.state.cookie}
-                      onChange={e => {
+                      onChange={(e) => {
                         this.cookieOnChange(e.target.value);
                       }}
                       allowClear

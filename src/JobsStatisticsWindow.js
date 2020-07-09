@@ -13,7 +13,6 @@ import LoadingResult from './components/LoadingResult';
 import StatisticsCard from './components/StatisticsCard';
 import WindowLayout from './components/WindowLayout';
 import TakosError from './utils/ErrorHelper';
-import JobHelper from './utils/JobHelper';
 import StorageHelper from './utils/StorageHelper';
 import { JobResult, WaterLevel, EventType } from './models/Job';
 
@@ -46,10 +45,10 @@ class JobsStatisticsWindow extends React.Component {
       error: false
     });
     return StorageHelper.jobs()
-      .then(res => {
+      .then((res) => {
         this.setState({ data: res, loaded: true });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message });
         } else {
@@ -63,17 +62,17 @@ class JobsStatisticsWindow extends React.Component {
     let data = this.state.data;
     // Start time
     if (this.state.startTime.length !== 0) {
-      data = data.filter(element => {
+      data = data.filter((element) => {
         return element.startTime > this.state.startTime[0] && element.startTime < this.state.startTime[1];
       });
     }
     // With
     if (this.state.search !== null) {
       if (this.state.search.with !== undefined) {
-        data = data.filter(element => {
+        data = data.filter((element) => {
           let isWith = false;
           if (
-            element.players.find(ele => {
+            element.players.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
@@ -86,9 +85,9 @@ class JobsStatisticsWindow extends React.Component {
     return data;
   };
 
-  filterStartTime = date => {
+  filterStartTime = (date) => {
     let startTime = [];
-    date.forEach(element => {
+    date.forEach((element) => {
       startTime.push(element.utc() / 1000);
     });
     this.setState({ startTime: startTime });
@@ -141,7 +140,7 @@ class JobsStatisticsWindow extends React.Component {
                     id="app.alert.info.jobs_filtered"
                     defaultMessage="The jobs shown have been filtered, please click <l>here</l> to cancel the screening."
                     values={{
-                      l: msg => <Link to="/stats/jobs">{msg}</Link>
+                      l: (msg) => <Link to="/stats/jobs">{msg}</Link>
                     }}
                   />
                 }
@@ -215,7 +214,7 @@ class JobsStatisticsWindow extends React.Component {
           let appearances = 0;
           let maxAppearances = 0;
           let bossSalmoniods = [];
-          data.forEach(element => {
+          data.forEach((element) => {
             // Job
             waves = waves + element.waves.length;
             if (element.result !== JobResult.clear) {
@@ -253,7 +252,7 @@ class JobsStatisticsWindow extends React.Component {
             powerEgg = powerEgg + element.powerEgg;
             maxPowerEgg = Math.max(maxPowerEgg, element.powerEgg);
             // Wave
-            element.waves.forEach(ele => {
+            element.waves.forEach((ele) => {
               switch (ele.waterLevel) {
                 case WaterLevel.normal:
                   normal++;
@@ -305,8 +304,8 @@ class JobsStatisticsWindow extends React.Component {
             selfMaxHelp = Math.max(selfMaxHelp, element.selfPlayer.help);
             selfDeath = selfDeath + element.selfPlayer.death;
             selfMaxDeath = Math.max(selfMaxDeath, element.selfPlayer.death);
-            element.selfPlayer.bossSalmoniodKills.forEach(ele => {
-              let bossSalmoniod = selfBossSalmoniods.find(e => {
+            element.selfPlayer.bossSalmoniodKills.forEach((ele) => {
+              let bossSalmoniod = selfBossSalmoniods.find((e) => {
                 return e.salmoniod === ele.salmoniod;
               });
               if (bossSalmoniod === undefined) {
@@ -316,7 +315,7 @@ class JobsStatisticsWindow extends React.Component {
                   maxKill: 0
                 });
                 // Find boss salmoniod again
-                bossSalmoniod = selfBossSalmoniods.find(e => {
+                bossSalmoniod = selfBossSalmoniods.find((e) => {
                   return e.salmoniod === ele.salmoniod;
                 });
               }
@@ -328,8 +327,8 @@ class JobsStatisticsWindow extends React.Component {
             maxKill = Math.max(maxKill, element.kill);
             appearances = appearances + element.appearances;
             maxAppearances = Math.max(maxAppearances, element.appearances);
-            element.bossSalmoniodAppearances.forEach(ele => {
-              let bossSalmoniod = bossSalmoniods.find(e => {
+            element.bossSalmoniodAppearances.forEach((ele) => {
+              let bossSalmoniod = bossSalmoniods.find((e) => {
                 return e.salmoniod === ele.salmoniod;
               });
               if (bossSalmoniod === undefined) {
@@ -341,7 +340,7 @@ class JobsStatisticsWindow extends React.Component {
                   maxAppearance: 0
                 });
                 // Find boss salmoniod again
-                bossSalmoniod = bossSalmoniods.find(e => {
+                bossSalmoniod = bossSalmoniods.find((e) => {
                   return e.salmoniod === ele.salmoniod;
                 });
               }
@@ -358,7 +357,7 @@ class JobsStatisticsWindow extends React.Component {
               return a.number - b.number;
             })
             .slice(-20)
-            .forEach(element => {
+            .forEach((element) => {
               chartData.push({
                 number: element.number.toString(),
                 isClear: element.isClear,
@@ -637,7 +636,7 @@ class JobsStatisticsWindow extends React.Component {
                       max={maxKill}
                     />
                   </Col>
-                  {bossSalmoniods.map(element => {
+                  {bossSalmoniods.map((element) => {
                     return (
                       <Col
                         className="JobsStatisticsWindow-content-column"
@@ -667,7 +666,7 @@ class JobsStatisticsWindow extends React.Component {
                       max={maxAppearances}
                     />
                   </Col>
-                  {bossSalmoniods.map(element => {
+                  {bossSalmoniods.map((element) => {
                     return (
                       <Col
                         className="JobsStatisticsWindow-content-column"
@@ -742,7 +741,7 @@ class JobsStatisticsWindow extends React.Component {
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  {selfBossSalmoniods.map(element => {
+                  {selfBossSalmoniods.map((element) => {
                     return (
                       <Col
                         className="JobsStatisticsWindow-content-column"
@@ -826,7 +825,7 @@ class JobsStatisticsWindow extends React.Component {
                           size={4}
                           shape={[
                             'isClear',
-                            isClear => {
+                            (isClear) => {
                               if (isClear) {
                                 return 'circle';
                               } else {
@@ -903,7 +902,7 @@ class JobsStatisticsWindow extends React.Component {
                           size={4}
                           shape={[
                             'isClear',
-                            isClear => {
+                            (isClear) => {
                               if (isClear) {
                                 return 'circle';
                               } else {
@@ -974,7 +973,7 @@ class JobsStatisticsWindow extends React.Component {
                           size={4}
                           shape={[
                             'isClear',
-                            isClear => {
+                            (isClear) => {
                               if (isClear) {
                                 return 'circle';
                               } else {
@@ -1045,7 +1044,7 @@ class JobsStatisticsWindow extends React.Component {
                           size={4}
                           shape={[
                             'isClear',
-                            isClear => {
+                            (isClear) => {
                               if (isClear) {
                                 return 'circle';
                               } else {

@@ -38,7 +38,7 @@ const ELI_FESSLER_GEN2 = '/s2s/api/gen2';
 
 const FLAPG = 'https://flapg.com';
 const FLAPG_PROXY = '/flapgApi';
-const FLAPG_LOGIN = '/ika2/api/login';
+const FLAPG_LOGIN = '/ika2/api/login?public';
 
 const NINTENDO_SERVICE = 'https://api-lp1.znc.srv.nintendo.net';
 const NINTENDO_SERVICE_PROXY = '/nintendoServiceApi';
@@ -47,7 +47,7 @@ const NINTENDO_SERVICE_WEB_SERVICE_TOKEN = '/v2/Game/GetWebServiceToken';
 
 class FileFolderUrl {
   // Set to true to proxy through http-proxy-middleware
-  static useProxy = false;
+  static useProxy = true;
 
   static get USER_AGENT() {
     return USER_AGENT;
