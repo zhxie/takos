@@ -145,12 +145,13 @@ class LoginHelper {
           });
       })
       .then((data) => {
+        let guid = uuid.v4();
         let init = {
           method: 'GET',
           headers: new Headers({
             'x-token': data.idToken,
             'x-time': data.timestamp,
-            'x-guid': uuid.v4(),
+            'x-guid': guid,
             'x-hash': data.hash,
             'x-ver': '3',
             'x-iid': 'nso'
@@ -171,9 +172,12 @@ class LoginHelper {
               res.result.p3 !== null
             ) {
               return {
+                idToken: data.idToken,
                 country: data.country,
                 birthday: data.birthday,
                 language: data.language,
+                timestamp: data.timestamp,
+                guid,
                 loginNso: {
                   f: res.result.f,
                   p1: res.result.p1,
@@ -216,7 +220,45 @@ class LoginHelper {
               res.result.webApiServerCredential.accessToken !== undefined &&
               res.result.webApiServerCredential.accessToken !== null
             ) {
-              return { loginApp: data.loginApp, accessToken: res.result.webApiServerCredential.accessToken };
+              return {
+                timestamp: data.timestamp,
+                guid: data.guid,
+                loginApp: data.loginApp,
+                accessToken: res.result.webApiServerCredential.accessToken
+              };
+            } else {
+              throw new RangeError();
+            }
+          });
+      })
+      .then((data) => {
+        let body = {
+          naIdToken: data.accessToken,
+          timestamp: data.timestamp
+        };
+        let formBody = Object.keys(body)
+          .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(body[key]))
+          .join('&');
+        let init = {
+          method: 'POST',
+          body: formBody,
+          headers: new Headers({
+            'User-Agent': FileFolderUrl.USER_AGENT,
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          })
+        };
+        return fetch(FileFolderUrl.ELI_FESSLER_GEN2, init)
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            if (res.hash !== undefined && res.hash !== null) {
+              return {
+                timestamp: data.timestamp,
+                guid: data.guid,
+                loginApp: data.loginApp,
+                accessToken: data.accessToken,
+                hash: res.hash
+              };
             } else {
               throw new RangeError();
             }
@@ -228,7 +270,7 @@ class LoginHelper {
           headers: new Headers({
             'x-token': data.accessToken,
             'x-time': data.timestamp,
-            'x-guid': uuid.v4(),
+            'x-guid': data.guid,
             'x-hash': data.hash,
             'x-ver': '3',
             'x-iid': 'app'
@@ -249,10 +291,7 @@ class LoginHelper {
               res.result.p3 !== null
             ) {
               return {
-                country: data.country,
-                birthday: data.birthday,
-                language: data.language,
-                loginNso: data.loginNso,
+                accessToken: data.accessToken,
                 loginApp: {
                   f: res.result.f,
                   p1: res.result.p1,
@@ -280,7 +319,9 @@ class LoginHelper {
           body: JSON.stringify(body),
           headers: new Headers({
             Authorization: 'Bearer {0}'.format(data.accessToken),
-            'Content-Type': 'application/json; charset=UTF-8'
+            'Content-Type': 'application/json; charset=UTF-8',
+            'X-ProductVersion': '1.6.1.2',
+            'X-Platform': 'Android'
           })
         };
         return fetch(FileFolderUrl.NINTENDO_SERVICE_WEB_SERVICE_TOKEN, init)
