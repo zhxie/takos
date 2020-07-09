@@ -67,7 +67,7 @@ class DashboardWindow extends React.Component {
     jobsRange: {}
   };
 
-  modeIconSelector = mode => {
+  modeIconSelector = (mode) => {
     switch (mode) {
       case Mode.regularBattle:
         return regularIcon;
@@ -84,7 +84,7 @@ class DashboardWindow extends React.Component {
     }
   };
 
-  ruleIconSelector = rule => {
+  ruleIconSelector = (rule) => {
     switch (rule) {
       case Rule.turfWar:
         return turfWarIcon;
@@ -105,7 +105,7 @@ class DashboardWindow extends React.Component {
     // TODO: this method should be extracted
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -113,7 +113,7 @@ class DashboardWindow extends React.Component {
             return StorageHelper.addBattle(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -123,7 +123,7 @@ class DashboardWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -135,7 +135,7 @@ class DashboardWindow extends React.Component {
     // TODO: this method should be extracted
     const getJobRecursively = (from, to) => {
       return JobHelper.getJob(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -143,7 +143,7 @@ class DashboardWindow extends React.Component {
             return StorageHelper.addJob(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -153,7 +153,7 @@ class DashboardWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -188,16 +188,16 @@ class DashboardWindow extends React.Component {
     let firstErrorLog = null;
     // Update battles
     return StorageHelper.latestBattle()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_battle_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return BattleHelper.getTheLatestBattleNumber().then(res => {
+        return BattleHelper.getTheLatestBattleNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_battles');
           } else {
@@ -207,7 +207,7 @@ class DashboardWindow extends React.Component {
           }
         });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           errorBattles = e;
         } else {
@@ -218,16 +218,16 @@ class DashboardWindow extends React.Component {
       .then(() => {
         return StorageHelper.latestJob();
       })
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_job_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return JobHelper.getTheLatestJobNumber().then(res => {
+        return JobHelper.getTheLatestJobNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_jobs');
           } else {
@@ -237,7 +237,7 @@ class DashboardWindow extends React.Component {
           }
         });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           errorJobs = e;
         } else {
@@ -263,14 +263,14 @@ class DashboardWindow extends React.Component {
         const updateBattles = () => {
           if (this.state.battlesRange.to >= this.state.battlesRange.from) {
             return getBattleRecursively(this.state.battlesRange.from, this.state.battlesRange.to)
-              .then(res => {
+              .then((res) => {
                 if (res instanceof TakosError) {
                   throw res;
                 } else {
                   return this.getBattles();
                 }
               })
-              .catch(e => {
+              .catch((e) => {
                 if (e instanceof TakosError) {
                   return e;
                 } else {
@@ -281,18 +281,18 @@ class DashboardWindow extends React.Component {
           } else {
             return this.getBattles();
           }
-        }
+        };
         const updateJobs = () => {
           if (this.state.jobsRange.to >= this.state.jobsRange.from) {
             return getJobRecursively(this.state.jobsRange.from, this.state.jobsRange.to)
-              .then(res => {
+              .then((res) => {
                 if (res instanceof TakosError) {
                   throw res;
                 } else {
                   return this.getJobs();
                 }
               })
-              .catch(e => {
+              .catch((e) => {
                 if (e instanceof TakosError) {
                   return e;
                 } else {
@@ -303,12 +303,10 @@ class DashboardWindow extends React.Component {
           } else {
             return this.getJobs();
           }
-        }
-        return Promise.allSettled([
-          updateBattles(), updateJobs()
-        ])
+        };
+        return Promise.allSettled([updateBattles(), updateJobs()]);
       })
-      .then(results => {
+      .then((results) => {
         if (results[0].value instanceof TakosError) {
           errorBattles = results[0].value;
         } else if (results[0].value instanceof Error) {
@@ -326,26 +324,26 @@ class DashboardWindow extends React.Component {
       .then(() => {
         // Update schedules and shifts
         return Promise.allSettled([
-          ScheduleHelper.updateSchedules(res => {
+          ScheduleHelper.updateSchedules((res) => {
             this.setState({ schedules: res });
             // Set update interval
             this.schedulesTimer = setInterval(this.schedulesTimeout, 60000);
           }),
-          ShiftHelper.updateShifts(res => {
+          ShiftHelper.updateShifts((res) => {
             this.setState({ shifts: res });
             // Set update interval
             this.shiftsTimer = setInterval(this.shiftsTimeout, 60000);
           }),
-          ShiftHelper.updateRewardGear(res => {
+          ShiftHelper.updateRewardGear((res) => {
             this.setState({ shiftGear: res });
           }),
-          GearShopHelper.updateShopGears(res => {
+          GearShopHelper.updateShopGears((res) => {
             this.setState({ shopGears: res });
             // Set update interval
             this.shopGearsTimer = setInterval(this.shopGearTimeout, 60000);
           })
         ])
-          .then(results => {
+          .then((results) => {
             if (results[0].value instanceof TakosError) {
               errorSchedules = results[0].value;
             }
@@ -359,7 +357,7 @@ class DashboardWindow extends React.Component {
               errorShopGears = results[3].value;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             console.error(e);
             errorSchedules = e;
             errorShifts = e;
@@ -482,7 +480,7 @@ class DashboardWindow extends React.Component {
         }
         if (id !== null) {
           BattleHelper.getPlayerIcon(id)
-            .then(res => {
+            .then((res) => {
               if (res === null) {
                 throw new TakosError('can_not_get_player_icon');
               } else {
@@ -491,7 +489,7 @@ class DashboardWindow extends React.Component {
                 }
               }
             })
-            .catch(e => {
+            .catch((e) => {
               console.error(e);
             });
         }
@@ -523,21 +521,21 @@ class DashboardWindow extends React.Component {
 
   getBattles = () => {
     return StorageHelper.latestBattle()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_battle_from_database');
         } else if (res !== 0) {
           return StorageHelper.battle(res);
         }
       })
-      .then(res => {
+      .then((res) => {
         if (res.error !== null) {
           throw new TakosError(res.error);
         } else {
           this.setState({ battle: res });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
         } else {
           console.error(e);
@@ -547,21 +545,21 @@ class DashboardWindow extends React.Component {
 
   getJobs = () => {
     return StorageHelper.latestJob()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_job_from_database');
         } else if (res !== 0) {
           return StorageHelper.job(res);
         }
       })
-      .then(res => {
+      .then((res) => {
         if (res.error !== null) {
           throw new TakosError(res.error);
         } else {
           this.setState({ job: res });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
         } else {
           console.error(e);
@@ -571,10 +569,10 @@ class DashboardWindow extends React.Component {
 
   getRank = () => {
     return StorageHelper.rank()
-      .then(res => {
+      .then((res) => {
         this.setState({ rank: res });
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };

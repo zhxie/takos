@@ -25,7 +25,7 @@ class PrimaryAbility extends BaseAbility {
     super(name, AbilityType.primary, value);
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return PrimaryAbility.inkSaverMain;
@@ -125,7 +125,7 @@ class SecondaryAbility extends BaseAbility {
     super(name, AbilityType.secondary, value);
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return SecondaryAbility.inkSaverMain;
@@ -221,11 +221,11 @@ class Ability extends Base {
     }
   };
 
-  static parsePrimary = data => {
+  static parsePrimary = (data) => {
     return Ability.parse(AbilityType.primary, data);
   };
 
-  static parseSecondary = data => {
+  static parseSecondary = (data) => {
     return Ability.parse(AbilityType.secondary, data);
   };
 
@@ -256,11 +256,11 @@ class Ability extends Base {
     }
   };
 
-  static deserializePrimary = data => {
+  static deserializePrimary = (data) => {
     return Ability.deserialize(AbilityType.primary, data);
   };
 
-  static deserializeSecondary = data => {
+  static deserializeSecondary = (data) => {
     return Ability.deserialize(AbilityType.secondary, data);
   };
 }

@@ -9,7 +9,7 @@ class WaterLevel {
     this.value = value;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     switch (data.key) {
       case 'normal':
         return WaterLevel.normal;
@@ -22,7 +22,7 @@ class WaterLevel {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return WaterLevel.normal;
@@ -48,7 +48,7 @@ class EventType {
     this.value = value;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     switch (data.key) {
       case 'water-levels':
         return EventType.waterLevels;
@@ -69,7 +69,7 @@ class EventType {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return EventType.waterLevels;
@@ -116,7 +116,7 @@ class Wave extends Base {
     return this.goldenEgg >= this.quota;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       return new Wave(
         null,
@@ -133,7 +133,7 @@ class Wave extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       return new Wave(
         null,
@@ -156,7 +156,7 @@ class JobResult {
     this.value = value;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     if (data.failure_reason === null) {
       return JobResult.clear;
     } else {
@@ -171,7 +171,7 @@ class JobResult {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return JobResult.clear;
@@ -224,7 +224,7 @@ class Job extends Base {
   }
 
   get selfPlayer() {
-    return this.players.find(element => {
+    return this.players.find((element) => {
       return (element.isSelf = true);
     });
   }
@@ -242,28 +242,28 @@ class Job extends Base {
 
   get quota() {
     let quota = 0;
-    this.waves.forEach(element => {
+    this.waves.forEach((element) => {
       quota = quota + element.quota;
     });
     return quota;
   }
   get goldenEgg() {
     let goldenEgg = 0;
-    this.waves.forEach(element => {
+    this.waves.forEach((element) => {
       goldenEgg = goldenEgg + element.goldenEgg;
     });
     return goldenEgg;
   }
   get goldenEggPop() {
     let goldenEggPop = 0;
-    this.waves.forEach(element => {
+    this.waves.forEach((element) => {
       goldenEggPop = goldenEggPop + element.goldenEggPop;
     });
     return goldenEggPop;
   }
   get powerEgg() {
     let powerEgg = 0;
-    this.waves.forEach(element => {
+    this.waves.forEach((element) => {
       powerEgg = powerEgg + element.powerEgg;
     });
     return powerEgg;
@@ -283,7 +283,7 @@ class Job extends Base {
 
   get appearances() {
     let appearances = 0;
-    this.bossSalmoniodAppearances.forEach(element => {
+    this.bossSalmoniodAppearances.forEach((element) => {
       appearances = appearances + element.appearance;
     });
     return appearances;
@@ -291,16 +291,16 @@ class Job extends Base {
 
   get kill() {
     let kill = 0;
-    this.players.forEach(element => {
+    this.players.forEach((element) => {
       kill = kill + element.kill;
     });
     return kill;
   }
 
-  getBossSalmoniodKill = salmoniod => {
+  getBossSalmoniodKill = (salmoniod) => {
     let kill = 0;
-    this.players.forEach(element => {
-      const bossSalmoniodKill = element.bossSalmoniodKills.find(ele => {
+    this.players.forEach((element) => {
+      const bossSalmoniodKill = element.bossSalmoniodKills.find((ele) => {
         return ele.salmoniod === salmoniod;
       });
       if (bossSalmoniodKill !== undefined) {
@@ -310,7 +310,7 @@ class Job extends Base {
     return kill;
   };
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const shift = Shift.parse(data.schedule);
       if (shift.error !== null) {
@@ -324,7 +324,7 @@ class Job extends Base {
         hazardLevel = parseFloat(data.danger_rate).toFixed(1);
       }
       let waves = [];
-      data.wave_details.forEach(element => {
+      data.wave_details.forEach((element) => {
         const wave = Wave.parse(element);
         if (wave.error !== null) {
           // Handle previous error
@@ -335,17 +335,17 @@ class Job extends Base {
       });
       let players = [];
       players.push(JobPlayer.parse(data.my_result));
-      data.other_results.forEach(element => {
+      data.other_results.forEach((element) => {
         players.push(JobPlayer.parse(element));
       });
-      players.forEach(element => {
+      players.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new Job(element.error);
         }
       });
       let bossSalmoniodAppearances = [];
-      Object.keys(data.boss_counts).forEach(element => {
+      Object.keys(data.boss_counts).forEach((element) => {
         let bossSalmoniodAppearance = {};
         try {
           bossSalmoniodAppearance.salmoniod = Salmoniod.parse(parseInt(element));
@@ -378,7 +378,7 @@ class Job extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const shift = Shift.deserialize(data.shift);
       if (shift.error !== null) {
@@ -392,7 +392,7 @@ class Job extends Base {
         hazardLevel = parseFloat(data.hazardLevel).toFixed(1);
       }
       let waves = [];
-      data.waves.forEach(element => {
+      data.waves.forEach((element) => {
         const wave = Wave.deserialize(element);
         if (wave.error !== null) {
           // Handle previous error
@@ -402,17 +402,17 @@ class Job extends Base {
         }
       });
       let players = [];
-      data.players.forEach(element => {
+      data.players.forEach((element) => {
         players.push(JobPlayer.deserialize(element));
       });
-      players.forEach(element => {
+      players.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new Job(element.error);
         }
       });
       let bossSalmoniodAppearances = [];
-      data.bossSalmoniodAppearances.forEach(element => {
+      data.bossSalmoniodAppearances.forEach((element) => {
         let bossSalmoniodAppearance = {};
         try {
           bossSalmoniodAppearance.salmoniod = Salmoniod.parse(parseInt(element.salmoniod.value));

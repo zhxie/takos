@@ -11,47 +11,47 @@ class ScheduleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATOON2_INK_SCHEDULES, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         let regularSchedules = [];
         let rankedSchedules = [];
         let leagueSchedules = [];
-        res.regular.forEach(element => {
+        res.regular.forEach((element) => {
           regularSchedules.push(Schedule.parse(element));
         });
-        res.gachi.forEach(element => {
+        res.gachi.forEach((element) => {
           rankedSchedules.push(Schedule.parse(element));
         });
-        res.league.forEach(element => {
+        res.league.forEach((element) => {
           leagueSchedules.push(Schedule.parse(element));
         });
         return { regularSchedules, rankedSchedules, leagueSchedules };
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateSchedules = onSuccess => {
+  static updateSchedules = (onSuccess) => {
     return ScheduleHelper.getSchedules()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_get_schedules');
         } else {
-          res.regularSchedules.forEach(element => {
+          res.regularSchedules.forEach((element) => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
           });
-          res.rankedSchedules.forEach(element => {
+          res.rankedSchedules.forEach((element) => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
           });
-          res.leagueSchedules.forEach(element => {
+          res.leagueSchedules.forEach((element) => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
@@ -63,7 +63,7 @@ class ScheduleHelper {
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {

@@ -27,7 +27,7 @@ class MainWindow extends React.Component {
     selected: []
   };
 
-  onCollapse = collapsed => {
+  onCollapse = (collapsed) => {
     this.setState({ collapsed });
   };
 

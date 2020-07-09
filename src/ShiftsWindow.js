@@ -33,14 +33,14 @@ class ShiftsWindow extends React.Component {
     let errorRewardGear = null;
     let firstErrorLog = null;
     return Promise.allSettled([
-      ShiftHelper.updateShifts(res => {
+      ShiftHelper.updateShifts((res) => {
         this.setState({ shifts: res });
       }),
-      ShiftHelper.updateRewardGear(res => {
+      ShiftHelper.updateRewardGear((res) => {
         this.setState({ gear: res });
       })
     ])
-      .then(results => {
+      .then((results) => {
         if (results[0].value instanceof TakosError) {
           errorShifts = results[0].value;
         }
@@ -48,7 +48,7 @@ class ShiftsWindow extends React.Component {
           errorRewardGear = results[1].value;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         errorShifts = e;
         errorRewardGear = e;

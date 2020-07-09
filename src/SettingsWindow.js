@@ -46,7 +46,7 @@ class SettingsWindow extends React.Component {
     this.loginParameters = LoginHelper.generateParameters();
   }
 
-  cookieOnChange = value => {
+  cookieOnChange = (value) => {
     if (this.state.cookie !== value) {
       this.setState({ cookie: value });
     }
@@ -63,21 +63,21 @@ class SettingsWindow extends React.Component {
     }
   };
 
-  changeLanguage = value => {
+  changeLanguage = (value) => {
     if (this.state.language !== value) {
       this.setState({ language: value });
     }
     window.setLanguage(value);
   };
 
-  changeUseSimpleLists = value => {
+  changeUseSimpleLists = (value) => {
     if (this.state.useSimpleLists !== value) {
       this.setState({ useSimpleLists: value });
     }
     StorageHelper.setUseSimpleLists(value);
   };
 
-  changeShowSplatNetStats = value => {
+  changeShowSplatNetStats = (value) => {
     if (this.state.showSplatNetStats !== value) {
       this.setState({ showSplatNetStats: value });
     }
@@ -86,7 +86,7 @@ class SettingsWindow extends React.Component {
 
   getSessionToken = () => {
     return LoginHelper.getSessionToken(this.loginParameters.sessionTokenCode, this.loginParameters.codeVerifier)
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           throw new RangeError();
         } else {
@@ -111,7 +111,7 @@ class SettingsWindow extends React.Component {
 
   updateCookie = () => {
     return LoginHelper.getCookie(StorageHelper.sessionToken())
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           throw new RangeError();
         } else if (result.length !== 40) {
@@ -143,9 +143,9 @@ class SettingsWindow extends React.Component {
                       'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                   },
                   {
-                    a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
-                    a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
-                    a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                    a1: (msg) => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                    a2: (msg) => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                    a3: (msg) => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
                   }
                 )}
               </p>
@@ -155,7 +155,7 @@ class SettingsWindow extends React.Component {
       });
   };
 
-  updateCookieFinal = accessToken => {
+  updateCookieFinal = (accessToken) => {
     // Cookie can not get by javascript because it is HttpOnly
     const thisHandler = this;
     Modal.confirm({
@@ -195,7 +195,7 @@ class SettingsWindow extends React.Component {
       icon: <Icon type="info-circle" />,
       onOk() {
         return LoginHelper.getCookieFinal(accessToken)
-          .then(result => {
+          .then((result) => {
             if (result === null) {
               throw new RangeError();
             } else {
@@ -248,9 +248,9 @@ class SettingsWindow extends React.Component {
                           'And you can try using third-party apps like <a1>Ikas</a1>, <a2>splatnet2statink</a2>, <a3>Salmonia</a3> to get your cookie.'
                       },
                       {
-                        a1: msg => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
-                        a2: msg => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
-                        a3: msg => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
+                        a1: (msg) => <a href="https://github.com/zhxie/Ikas">{msg}</a>,
+                        a2: (msg) => <a href="https://github.com/frozenpandaman/splatnet2statink">{msg}</a>,
+                        a3: (msg) => <a href="https://github.com/tkgstrator/Salmonia">{msg}</a>
                       }
                     )}
                   </p>
@@ -263,19 +263,19 @@ class SettingsWindow extends React.Component {
     });
   };
 
-  importData = event => {
+  importData = (event) => {
     this.setState({ importing: true, importCurrent: 0, importTotal: 0 });
     let reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = (e) => {
       let firstError = null;
       const addBattleRecursively = (battles, i) => {
         return StorageHelper.addBattle(battles[i])
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               if (firstError === null) {
                 firstError = e.message;
@@ -298,12 +298,12 @@ class SettingsWindow extends React.Component {
       };
       const addJobRecursively = (jobs, i) => {
         return StorageHelper.addJob(jobs[i])
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               if (firstError === null) {
                 firstError = e.message;
@@ -403,7 +403,7 @@ class SettingsWindow extends React.Component {
                 this.setState({ importing: false });
               }
             })
-            .catch(e => {
+            .catch((e) => {
               if (e instanceof TakosError) {
                 this.setState({
                   error: true,
@@ -444,7 +444,7 @@ class SettingsWindow extends React.Component {
                 this.setState({ importing: false });
               }
             })
-            .catch(e => {
+            .catch((e) => {
               if (e instanceof TakosError) {
                 this.setState({
                   error: true,
@@ -493,21 +493,21 @@ class SettingsWindow extends React.Component {
     reader.readAsText(event.target.files[0]);
   };
 
-  importDataFromSplatnetJson = event => {
+  importDataFromSplatnetJson = (event) => {
     this.setState({ importing: true, importCurrent: 0, importTotal: 0 });
 
     let firstError = null;
     const getLocalBattleRecursively = (battles, i) => {
       if (battles.length === 0) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolve();
         });
       } else {
         console.log(battles[i]);
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolve(Battle.parse(battles[i]));
         })
-          .then(res => {
+          .then((res) => {
             console.log(res);
             if (res.error !== null) {
               // Handle previous error
@@ -516,7 +516,7 @@ class SettingsWindow extends React.Component {
               return StorageHelper.addBattle(res);
             }
           })
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError && !(res.message.startsWith('battle_') && res.message.endsWith('_exists'))) {
               throw res;
             } else {
@@ -533,7 +533,7 @@ class SettingsWindow extends React.Component {
               }
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               return e;
             } else {
@@ -545,15 +545,15 @@ class SettingsWindow extends React.Component {
     };
     const getLocalJobRecursively = (jobs, i) => {
       if (jobs.length === 0) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolve();
         });
       } else {
         console.log(jobs[i]);
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolve(Job.parse(jobs[i]));
         })
-          .then(res => {
+          .then((res) => {
             console.log(res);
             if (res.error !== null) {
               // Handle previous error
@@ -562,7 +562,7 @@ class SettingsWindow extends React.Component {
               return StorageHelper.addJob(res);
             }
           })
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError && !(res.message.startsWith('job_') && res.message.endsWith('_exists'))) {
               throw res;
             } else {
@@ -579,7 +579,7 @@ class SettingsWindow extends React.Component {
               }
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               return e;
             } else {
@@ -590,7 +590,7 @@ class SettingsWindow extends React.Component {
       }
     };
 
-    const readFileComplete = e => {
+    const readFileComplete = (e) => {
       if (e.target.readyState === FileReader.DONE) {
         try {
           data.push(JSON.parse(e.target.result));
@@ -605,7 +605,7 @@ class SettingsWindow extends React.Component {
             // Seperate battles and jobs
             let battles = [];
             let jobs = [];
-            data.forEach(element => {
+            data.forEach((element) => {
               if (element.job_id !== undefined) {
                 jobs.push(element);
               } else {
@@ -615,7 +615,7 @@ class SettingsWindow extends React.Component {
             this.setState({ importCurrent: 1, importTotal: data.length });
             // Battle
             return getLocalBattleRecursively(battles, 0)
-              .then(res => {
+              .then((res) => {
                 if (res instanceof TakosError) {
                   throw res;
                 } else {
@@ -630,7 +630,7 @@ class SettingsWindow extends React.Component {
                 // Job
                 return getLocalJobRecursively(jobs, 0);
               })
-              .then(res => {
+              .then((res) => {
                 if (res instanceof TakosError) {
                   throw res;
                 } else {
@@ -641,7 +641,7 @@ class SettingsWindow extends React.Component {
                   }
                 }
               })
-              .catch(e => {
+              .catch((e) => {
                 if (e instanceof TakosError) {
                   this.setState({
                     error: true,
@@ -710,9 +710,9 @@ class SettingsWindow extends React.Component {
     let data = { version: '0.3.0' };
     // Battles
     StorageHelper.battles()
-      .then(res => {
+      .then((res) => {
         let battles = [];
-        res.forEach(element => {
+        res.forEach((element) => {
           battles.push(element);
         });
         data.battles = battles;
@@ -721,9 +721,9 @@ class SettingsWindow extends React.Component {
         // Jobs
         return StorageHelper.jobs();
       })
-      .then(res => {
+      .then((res) => {
         let jobs = [];
-        res.forEach(element => {
+        res.forEach((element) => {
           jobs.push(element);
         });
         data.jobs = jobs;
@@ -756,7 +756,7 @@ class SettingsWindow extends React.Component {
               'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
           },
           {
-            a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+            a: (msg) => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
           }
         ),
         onOk() {
@@ -789,7 +789,7 @@ class SettingsWindow extends React.Component {
                 'Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
             },
             {
-              a: msg => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
+              a: (msg) => <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
             }
           ),
           onOk() {
@@ -818,14 +818,14 @@ class SettingsWindow extends React.Component {
       onOk() {
         // Will first initialize storage and then go to login while the login will initialize storage again
         StorageHelper.initializeStorage()
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             } else {
               thisHandler.setState({ toLogin: true });
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
@@ -855,12 +855,12 @@ class SettingsWindow extends React.Component {
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         StorageHelper.clearData()
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               thisHandler.setState({ error: true, errorLog: e.message, errorChecklist: [] });
             } else {
@@ -936,7 +936,7 @@ class SettingsWindow extends React.Component {
                   id="app.alert.warning.automatic_cookie_generation"
                   defaultMessage='Automatic cookie generation involves making a secure request to two non-Nintendo servers with minimal, non-identifying information. Please read "Security and Privacy" section in <a>README</a> carefully before you start.'
                   values={{
-                    a: msg => (
+                    a: (msg) => (
                       <a href="https://github.com/zhxie/takos/blob/master/README.md#security-and-privacy">{msg}</a>
                     )
                   }}
@@ -955,7 +955,7 @@ class SettingsWindow extends React.Component {
                   id="app.alert.info.use_automatic_cookie_generation"
                   defaultMessage='If you want to re-log in and use automatic cookie generation, please open <a>Nintendo Account</a> in browser, log in, right click on "Select this account", copy the link address, paste it into the text box below, and press "Update cookie".'
                   values={{
-                    a: msg => (
+                    a: (msg) => (
                       <a
                         href={FileFolderUrl.NINTENDO_ACCOUNTS_AUTHORIZE.format(
                           this.loginParameters.state,
@@ -993,7 +993,7 @@ class SettingsWindow extends React.Component {
                 <Col sm={18} md={12}>
                   <Input
                     value={this.state.cookie}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.cookieOnChange(e.target.value);
                     }}
                     allowClear

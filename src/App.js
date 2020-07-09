@@ -58,7 +58,7 @@ class App extends React.Component {
     this.setState({ isLogin: true });
   };
 
-  setLanguage = language => {
+  setLanguage = (language) => {
     switch (language) {
       case 'en_US':
         StorageHelper.setLanguage('en_US');
@@ -135,7 +135,7 @@ class App extends React.Component {
         >
           <HashRouter>
             <Switch>
-              <Route exact path="/login" render={props => <LoginWindow {...props} onDone={this.onLoginDone} />} />
+              <Route exact path="/login" render={(props) => <LoginWindow {...props} onDone={this.onLoginDone} />} />
               <Route exact path="/404" component={this.renderNotFound} />
               <PrivateRoute isLoggedIn={this.state.isLogin} path="/" component={MainWindow} />
             </Switch>

@@ -31,22 +31,22 @@ class StagesStatisticsWindow extends React.Component {
       error: false,
       updated: false
     });
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (StorageHelper.showSplatNetStats()) {
         resolve(
-          StatisticsHelper.updateStagesRecords(res => {
+          StatisticsHelper.updateStagesRecords((res) => {
             this.setState({ records: res });
           })
         );
       } else {
         resolve(
-          StatisticsHelper.updateStagesStatistics(res => {
+          StatisticsHelper.updateStagesStatistics((res) => {
             this.setState({ statistics: res });
           })
         );
       }
     })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
@@ -57,7 +57,7 @@ class StagesStatisticsWindow extends React.Component {
       .then(() => {
         this.scrollToAnchor(this.props.location.hash.replace('#', ''));
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
@@ -75,20 +75,20 @@ class StagesStatisticsWindow extends React.Component {
     let stages = [];
     if (StorageHelper.showSplatNetStats()) {
       // Records
-      this.state.records.forEach(element => {
+      this.state.records.forEach((element) => {
         element.isSalmonRun = false;
         stages.push(element);
       });
     } else {
       // Statistics
-      this.state.statistics.forEach(element => {
+      this.state.statistics.forEach((element) => {
         stages.push(element);
       });
     }
     return stages;
   };
 
-  scrollToAnchor = anchorName => {
+  scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
@@ -135,8 +135,8 @@ class StagesStatisticsWindow extends React.Component {
             return a.stage.stage.value - b.stage.stage.value;
           });
           if (data.length > 0) {
-            const battles = data.filter(element => !element.isSalmonRun);
-            const jobs = data.filter(element => element.isSalmonRun);
+            const battles = data.filter((element) => !element.isSalmonRun);
+            const jobs = data.filter((element) => element.isSalmonRun);
             return (
               <div>
                 {(() => {
@@ -144,7 +144,7 @@ class StagesStatisticsWindow extends React.Component {
                     return (
                       <div>
                         <PageHeader title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} />
-                        {battles.map(element => {
+                        {battles.map((element) => {
                           return (
                             <div
                               className="StagesStatisticsWindow-content-card"
@@ -164,7 +164,7 @@ class StagesStatisticsWindow extends React.Component {
                     return (
                       <div>
                         <PageHeader title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />} />
-                        {jobs.map(element => {
+                        {jobs.map((element) => {
                           return (
                             <div
                               className="StagesStatisticsWindow-content-card"

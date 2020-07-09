@@ -1,6 +1,6 @@
 /*eslint no-extend-native: ["error", { "exceptions": ["String"] }]*/
 
-String.prototype.format = function(args) {
+String.prototype.format = function (args) {
   let result = this;
   if (arguments.length > 0) {
     if (arguments.length === 1 && typeof args == 'object') {

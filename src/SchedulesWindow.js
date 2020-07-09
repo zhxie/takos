@@ -84,17 +84,17 @@ class SchedulesWindow extends React.Component {
       return;
     }
     this.setState({ error: false, updated: false, expired: false });
-    return ScheduleHelper.updateSchedules(res => {
+    return ScheduleHelper.updateSchedules((res) => {
       this.setState({ data: res, loaded: true });
       // Set update interval
       this.timer = setInterval(this.timeout, 60000);
     })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {

@@ -20,14 +20,14 @@ class StorageHelper {
       StorageHelper.connectDb();
     }
     return StorageHelper.clearBattles()
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         } else {
           return StorageHelper.clearJobs();
         }
       })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         } else {
@@ -36,7 +36,7 @@ class StorageHelper {
           window.localStorage.removeItem('cookie');
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -48,19 +48,19 @@ class StorageHelper {
 
   static clearData = () => {
     return StorageHelper.clearBattles()
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         } else {
           return StorageHelper.clearJobs();
         }
       })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -87,52 +87,52 @@ class StorageHelper {
   static language = () => {
     return window.localStorage.getItem('language');
   };
-  static setLanguage = value => {
+  static setLanguage = (value) => {
     window.localStorage.setItem('language', value);
   };
 
   static useSimpleLists = () => {
     return window.localStorage.getItem('useSimpleLists') === 'true';
   };
-  static setUseSimpleLists = value => {
+  static setUseSimpleLists = (value) => {
     window.localStorage.setItem('useSimpleLists', value);
   };
 
   static showSplatNetStats = () => {
     return window.localStorage.getItem('showSplatNetStats') === 'true';
   };
-  static setShowSplatNetStats = value => {
+  static setShowSplatNetStats = (value) => {
     window.localStorage.setItem('showSplatNetStats', value);
   };
 
   static sessionToken = () => {
     return window.localStorage.getItem('sessionToken');
   };
-  static setSessionToken = value => {
+  static setSessionToken = (value) => {
     window.localStorage.setItem('sessionToken', value);
   };
 
   static cookie = () => {
     return window.localStorage.getItem('cookie');
   };
-  static setCookie = value => {
+  static setCookie = (value) => {
     window.localStorage.setItem('cookie', value);
   };
 
-  static battle = number => {
+  static battle = (number) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
     return StorageHelper.battlesConnection
       .getItem(number.toString())
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new RangeError();
         } else {
           return Battle.deserialize(JSON.parse(res));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Battle('can_not_handle_database');
       });
@@ -143,7 +143,7 @@ class StorageHelper {
       StorageHelper.connectDb();
     }
     return StorageHelper.battlesConnection
-      .iterate(value => {
+      .iterate((value) => {
         const battle = Battle.deserialize(JSON.parse(value));
         if (battle.error === null) {
           battles.push(battle);
@@ -154,7 +154,7 @@ class StorageHelper {
       .then(() => {
         return battles;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return battles;
       });
@@ -165,18 +165,18 @@ class StorageHelper {
     }
     return StorageHelper.battlesConnection
       .keys()
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         throw new TakosError('can_not_handle_database');
       })
-      .then(res => {
+      .then((res) => {
         if (res.length === 0) {
           return 0;
         } else {
           return Math.max.apply(Math, res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return -1;
         } else {
@@ -185,13 +185,13 @@ class StorageHelper {
         }
       });
   };
-  static addBattle = battle => {
+  static addBattle = (battle) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
     return StorageHelper.battlesConnection
       .getItem(battle.number.toString())
-      .then(res => {
+      .then((res) => {
         if (res !== null) {
           throw new TakosError('battle_{0}_exists'.format(battle.number));
         } else {
@@ -199,7 +199,7 @@ class StorageHelper {
           return StorageHelper.battlesConnection.setItem(battle.number.toString(), JSON.stringify(battle));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -208,11 +208,11 @@ class StorageHelper {
         }
       });
   };
-  static removeBattle = number => {
+  static removeBattle = (number) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.battlesConnection.removeItem(number.toString()).catch(e => {
+    return StorageHelper.battlesConnection.removeItem(number.toString()).catch((e) => {
       console.error(e);
       return new TakosError('can_not_handle_database');
     });
@@ -221,7 +221,7 @@ class StorageHelper {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.battlesConnection.clear().catch(e => {
+    return StorageHelper.battlesConnection.clear().catch((e) => {
       console.error(e);
       return new TakosError('can_not_clear_battles');
     });
@@ -230,11 +230,11 @@ class StorageHelper {
   static rank = () => {
     let rank = {};
     return StorageHelper.battles()
-      .then(res => {
+      .then((res) => {
         res.sort((a, b) => {
           return b.number - a.number;
         });
-        res.every(element => {
+        res.every((element) => {
           if (element instanceof RankedBattle) {
             switch (element.rule) {
               case Rule.splatZones:
@@ -283,7 +283,7 @@ class StorageHelper {
           return rank;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         if (
           rank.splatZones === undefined &&
@@ -298,20 +298,20 @@ class StorageHelper {
       });
   };
 
-  static job = number => {
+  static job = (number) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
     return StorageHelper.jobsConnection
       .getItem(number.toString())
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new RangeError();
         } else {
           return Job.deserialize(JSON.parse(res));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Job('can_not_handle_database');
       });
@@ -322,7 +322,7 @@ class StorageHelper {
       StorageHelper.connectDb();
     }
     return StorageHelper.jobsConnection
-      .iterate(value => {
+      .iterate((value) => {
         const job = Job.deserialize(JSON.parse(value));
         if (job.error === null) {
           jobs.push(job);
@@ -333,7 +333,7 @@ class StorageHelper {
       .then(() => {
         return jobs;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return jobs;
       });
@@ -344,18 +344,18 @@ class StorageHelper {
     }
     return StorageHelper.jobsConnection
       .keys()
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         throw new TakosError('can_not_handle_database');
       })
-      .then(res => {
+      .then((res) => {
         if (res.length === 0) {
           return 0;
         } else {
           return Math.max.apply(Math, res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return -1;
         } else {
@@ -364,13 +364,13 @@ class StorageHelper {
         }
       });
   };
-  static addJob = job => {
+  static addJob = (job) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
     return StorageHelper.jobsConnection
       .getItem(job.number.toString())
-      .then(res => {
+      .then((res) => {
         if (res !== null) {
           throw new TakosError('job_{0}_exists'.format(job.number));
         } else {
@@ -378,7 +378,7 @@ class StorageHelper {
           return StorageHelper.jobsConnection.setItem(job.number.toString(), JSON.stringify(job));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -387,11 +387,11 @@ class StorageHelper {
         }
       });
   };
-  static removeJob = number => {
+  static removeJob = (number) => {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.jobsConnection.removeItem(number.toString()).catch(e => {
+    return StorageHelper.jobsConnection.removeItem(number.toString()).catch((e) => {
       console.error(e);
       return new TakosError('can_not_handle_database');
     });
@@ -400,7 +400,7 @@ class StorageHelper {
     if (!StorageHelper.dbConnected()) {
       StorageHelper.connectDb();
     }
-    return StorageHelper.jobsConnection.clear().catch(e => {
+    return StorageHelper.jobsConnection.clear().catch((e) => {
       console.error(e);
       return new TakosError('can_not_clear_jobs');
     });

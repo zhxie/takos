@@ -36,16 +36,16 @@ class GearShopWindow extends React.Component {
     let errorGears = null;
     let firstErrorLog = null;
     return Promise.allSettled([
-      GearShopHelper.updateOrderedGear(res => {
+      GearShopHelper.updateOrderedGear((res) => {
         this.setState({ order: res });
       }),
-      GearShopHelper.updateShopGears(res => {
+      GearShopHelper.updateShopGears((res) => {
         this.setState({ gears: res });
         // Set update interval
         this.timer = setInterval(this.timeout, 60000);
       })
     ])
-      .then(results => {
+      .then((results) => {
         if (results[0].value instanceof TakosError) {
           errorOrder = results[0].value;
         }
@@ -53,7 +53,7 @@ class GearShopWindow extends React.Component {
           errorGears = results[1].value;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         errorOrder = e;
         errorGears = e;
@@ -102,7 +102,7 @@ class GearShopWindow extends React.Component {
       .catch();
   };
 
-  orderGear = id => {
+  orderGear = (id) => {
     const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
@@ -117,7 +117,7 @@ class GearShopWindow extends React.Component {
       autoFocusButton: 'cancel',
       onOk() {
         return GearShopHelper.orderGear(id)
-          .then(res => {
+          .then((res) => {
             if (res === true) {
               thisHandler.setState({ loaded: false });
               thisHandler.updateData();
@@ -125,7 +125,7 @@ class GearShopWindow extends React.Component {
               throw new TakosError('can_not_order_gear');
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               thisHandler.setState({ loaded: false, error: true, errorLog: e.message });
             } else {

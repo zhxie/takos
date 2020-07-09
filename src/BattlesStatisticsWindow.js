@@ -64,10 +64,10 @@ class BattlesStatisticsWindow extends React.Component {
       error: false
     });
     return StorageHelper.battles()
-      .then(res => {
+      .then((res) => {
         this.setState({ data: res, loaded: true });
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message });
         } else {
@@ -80,36 +80,36 @@ class BattlesStatisticsWindow extends React.Component {
   filteredBattles = () => {
     let data = this.state.data;
     // Mode and rule
-    data = data.filter(element => {
+    data = data.filter((element) => {
       return (
-        this.state.mode.find(ele => {
+        this.state.mode.find((ele) => {
           return ele === element.gameMode.value;
         }) !== undefined &&
-        this.state.rule.find(ele => {
+        this.state.rule.find((ele) => {
           return ele === element.rule.value;
         }) !== undefined
       );
     });
     // Start time
     if (this.state.startTime.length !== 0) {
-      data = data.filter(element => {
+      data = data.filter((element) => {
         return element.startTime > this.state.startTime[0] && element.startTime < this.state.startTime[1];
       });
     }
     // With
     if (this.state.search !== null) {
       if (this.state.search.with !== undefined) {
-        data = data.filter(element => {
+        data = data.filter((element) => {
           let isWith = false;
           if (
-            element.myTeamMembers.find(ele => {
+            element.myTeamMembers.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
             isWith = true;
           }
           if (
-            element.otherTeamMembers.find(ele => {
+            element.otherTeamMembers.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
@@ -122,17 +122,17 @@ class BattlesStatisticsWindow extends React.Component {
     return data;
   };
 
-  filterMode = value => {
+  filterMode = (value) => {
     this.setState({ mode: value });
   };
 
-  filterRule = value => {
+  filterRule = (value) => {
     this.setState({ rule: value });
   };
 
-  filterStartTime = date => {
+  filterStartTime = (date) => {
     let startTime = [];
-    date.forEach(element => {
+    date.forEach((element) => {
       startTime.push(element.utc() / 1000);
     });
     this.setState({ startTime: startTime });
@@ -185,7 +185,7 @@ class BattlesStatisticsWindow extends React.Component {
                     id="app.alert.info.battles_filtered"
                     defaultMessage="The battles shown have been filtered, please click <l>here</l> to cancel the screening."
                     values={{
-                      l: msg => <Link to="/stats/battles">{msg}</Link>
+                      l: (msg) => <Link to="/stats/battles">{msg}</Link>
                     }}
                   />
                 }
@@ -330,7 +330,7 @@ class BattlesStatisticsWindow extends React.Component {
           let selfMaxDeath = 0;
           let selfSpecial = 0;
           let selfMaxSpecial = 0;
-          data.forEach(element => {
+          data.forEach((element) => {
             // Battle
             if (element.isWin) {
               win++;
@@ -404,7 +404,7 @@ class BattlesStatisticsWindow extends React.Component {
             // Player
             if (element instanceof RankedBattle) {
               if (
-                selfCurrentRank.find(ele => {
+                selfCurrentRank.find((ele) => {
                   return ele.rule === element.rule;
                 }) === undefined
               ) {
@@ -433,12 +433,12 @@ class BattlesStatisticsWindow extends React.Component {
             selfSpecial = selfSpecial + element.selfPlayer.special;
             selfMaxSpecial = Math.max(selfMaxSpecial, element.selfPlayer.special);
           });
-          selfCurrentRank.forEach(element => {
+          selfCurrentRank.forEach((element) => {
             if (element.rank.value > selfCurrentMaxRank.value) {
               selfCurrentMaxRank = element.rank;
             }
           });
-          currentXPower.forEach(element => {
+          currentXPower.forEach((element) => {
             if (element.xPower > currentMaxXPower) {
               currentMaxXPower = element.xPower;
             }
@@ -449,14 +449,14 @@ class BattlesStatisticsWindow extends React.Component {
           let teamSplatfestPowerChartData = [];
           let splatfestPowerChartData = [];
           data
-            .filter(e => {
+            .filter((e) => {
               return e.gameMode === Mode.rankedBattle;
             })
             .sort((a, b) => {
               return a.number - b.number;
             })
             .slice(-20)
-            .forEach(element => {
+            .forEach((element) => {
               if (element instanceof RankedXBattle && !element.isCalculating) {
                 rankedChartData.push({
                   number: element.number.toString(),
@@ -473,14 +473,14 @@ class BattlesStatisticsWindow extends React.Component {
               }
             });
           data
-            .filter(e => {
+            .filter((e) => {
               return e.gameMode === Mode.leagueBattle;
             })
             .sort((a, b) => {
               return a.number - b.number;
             })
             .slice(-20)
-            .forEach(element => {
+            .forEach((element) => {
               if (!element.isCalculating) {
                 teamLeaguePowerChartData.push({
                   group: '1',
@@ -528,14 +528,14 @@ class BattlesStatisticsWindow extends React.Component {
               }
             });
           data
-            .filter(e => {
+            .filter((e) => {
               return e.gameMode === Mode.splatfest;
             })
             .sort((a, b) => {
               return a.number - b.number;
             })
             .slice(-20)
-            .forEach(element => {
+            .forEach((element) => {
               if (!element.isCalculating) {
                 teamSplatfestPowerChartData.push({
                   group: '1',
@@ -996,7 +996,7 @@ class BattlesStatisticsWindow extends React.Component {
                                         size={4}
                                         shape={[
                                           'isWin',
-                                          isWin => {
+                                          (isWin) => {
                                             if (isWin) {
                                               return 'circle';
                                             } else {
@@ -1015,7 +1015,7 @@ class BattlesStatisticsWindow extends React.Component {
                                 </Col>
                                 {(() => {
                                   if (
-                                    rankedChartData.some(element => {
+                                    rankedChartData.some((element) => {
                                       return element.xPower !== undefined;
                                     })
                                   ) {
@@ -1161,7 +1161,7 @@ class BattlesStatisticsWindow extends React.Component {
                                         size={4}
                                         shape={[
                                           'isWin',
-                                          isWin => {
+                                          (isWin) => {
                                             if (isWin) {
                                               return 'circle';
                                             } else {
@@ -1180,7 +1180,7 @@ class BattlesStatisticsWindow extends React.Component {
                                 </Col>
                                 {(() => {
                                   if (
-                                    leaguePowerChartData.some(element => {
+                                    leaguePowerChartData.some((element) => {
                                       return element.leaguePoint !== undefined;
                                     })
                                   ) {
@@ -1348,7 +1348,7 @@ class BattlesStatisticsWindow extends React.Component {
                                         size={4}
                                         shape={[
                                           'isWin',
-                                          isWin => {
+                                          (isWin) => {
                                             if (isWin) {
                                               return 'circle';
                                             } else {
@@ -1367,7 +1367,7 @@ class BattlesStatisticsWindow extends React.Component {
                                 </Col>
                                 {(() => {
                                   if (
-                                    splatfestPowerChartData.some(element => {
+                                    splatfestPowerChartData.some((element) => {
                                       return element.splatfestPower !== undefined;
                                     })
                                   ) {

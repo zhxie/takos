@@ -30,7 +30,7 @@ class MainWeapon {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return MainWeapon.bold;
@@ -523,7 +523,7 @@ class SubWeapon {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return SubWeapon.splatBomb;
@@ -579,7 +579,7 @@ class SpecialWeapon {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return SpecialWeapon.tentaMissiles;
@@ -656,7 +656,7 @@ class Weapon extends Base {
     this.specialWeaponUrlB = specialWeaponUrlB;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.id));
       const subWeapon = SubWeapon.parse(parseInt(data.sub.id));
@@ -678,7 +678,7 @@ class Weapon extends Base {
     }
   };
 
-  static parseSalmonRunMain = data => {
+  static parseSalmonRunMain = (data) => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.id));
       let mainWeaponUrl;
@@ -694,7 +694,7 @@ class Weapon extends Base {
     }
   };
 
-  static parseSalmonRunSpecial = data => {
+  static parseSalmonRunSpecial = (data) => {
     try {
       const specialWeapon = SpecialWeapon.parse(parseInt(data.id));
       return new Weapon(null, null, null, null, null, null, specialWeapon, data.image_a, data.image_b);
@@ -704,7 +704,7 @@ class Weapon extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.mainWeapon.value));
       const subWeapon = SubWeapon.parse(parseInt(data.subWeapon.value));
@@ -726,7 +726,7 @@ class Weapon extends Base {
     }
   };
 
-  static deserializeSalmonRunMain = data => {
+  static deserializeSalmonRunMain = (data) => {
     try {
       const mainWeapon = MainWeapon.parse(parseInt(data.mainWeapon.value));
       return new Weapon(null, mainWeapon, data.mainWeaponUrl, null, null, null, null, null, null);
@@ -736,7 +736,7 @@ class Weapon extends Base {
     }
   };
 
-  static deserializeSalmonRunSpecial = data => {
+  static deserializeSalmonRunSpecial = (data) => {
     try {
       const specialWeapon = SpecialWeapon.parse(parseInt(data.specialWeapon.value));
       return new Weapon(
@@ -763,7 +763,7 @@ class Freshness {
     this.value = value;
   }
 
-  static parse = value => {
+  static parse = (value) => {
     if (value < 5) {
       return Freshness.dry;
     } else if (value < 10) {
@@ -793,7 +793,7 @@ class Badge {
     this.value = value;
   }
 
-  static parse = value => {
+  static parse = (value) => {
     if (value < 100000) {
       return Badge.noBadge;
     } else if (value < 500000) {

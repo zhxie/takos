@@ -12,32 +12,32 @@ class ShiftHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATOON2_INK_SHIFTS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         let shifts = [];
-        res.details.forEach(element => {
+        res.details.forEach((element) => {
           shifts.push(Shift.parse(element));
         });
-        res.schedules.slice(shifts.length).forEach(element => {
+        res.schedules.slice(shifts.length).forEach((element) => {
           shifts.push(Shift.parse(element));
         });
         return shifts;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateShifts = onSuccess => {
+  static updateShifts = (onSuccess) => {
     return ShiftHelper.getShifts()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_get_shifts');
         } else {
-          res.forEach(element => {
+          res.forEach((element) => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
@@ -49,7 +49,7 @@ class ShiftHelper {
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -67,22 +67,22 @@ class ShiftHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATOON2_INK_SHIFT_REWARD_GEAR, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         const gear = Gear.parseReward(res.coop.reward_gear.gear);
         return gear;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateRewardGear = onSuccess => {
+  static updateRewardGear = (onSuccess) => {
     return ShiftHelper.getRewardGear()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_get_reward_gear');
         } else {
@@ -93,7 +93,7 @@ class ShiftHelper {
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {

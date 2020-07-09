@@ -1,6 +1,6 @@
 const { override, addLessLoader, fixBabelImports } = require('customize-cra');
 
-const customizeImageLoader = () => config => {
+const customizeImageLoader = () => (config) => {
   config.module.rules[2].oneOf.push({
     test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
     loader: 'file-loader'

@@ -63,7 +63,7 @@ class BattlesWindow extends React.Component {
     }
   }
 
-  modeIconSelector = mode => {
+  modeIconSelector = (mode) => {
     switch (mode) {
       case Mode.regularBattle:
         return regularIcon;
@@ -80,7 +80,7 @@ class BattlesWindow extends React.Component {
     }
   };
 
-  ruleIconSelector = rule => {
+  ruleIconSelector = (rule) => {
     switch (rule) {
       case Rule.turfWar:
         return turfWarIcon;
@@ -101,7 +101,7 @@ class BattlesWindow extends React.Component {
     // TODO: this method should be extracted
     const getBattleRecursively = (from, to) => {
       return BattleHelper.getBattle(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -109,7 +109,7 @@ class BattlesWindow extends React.Component {
             return StorageHelper.addBattle(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -119,7 +119,7 @@ class BattlesWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -137,16 +137,16 @@ class BattlesWindow extends React.Component {
       updated: false
     });
     StorageHelper.latestBattle()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_battle_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return BattleHelper.getTheLatestBattleNumber().then(res => {
+        return BattleHelper.getTheLatestBattleNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_battles');
           } else {
@@ -156,14 +156,14 @@ class BattlesWindow extends React.Component {
           }
         });
       })
-      .then(res => {
+      .then((res) => {
         if (res.to >= res.from) {
           this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
         } else {
           this.setState({ updateTotal: -1 });
           return this.getBattles();
         }
-        return getBattleRecursively(res.from, res.to).then(res => {
+        return getBattleRecursively(res.from, res.to).then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -175,7 +175,7 @@ class BattlesWindow extends React.Component {
       .then(() => {
         this.setState({ loaded: true });
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({ updateTotal: -1 });
         this.getBattles()
           .then(() => {
@@ -192,7 +192,7 @@ class BattlesWindow extends React.Component {
           })
           .catch();
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -200,13 +200,13 @@ class BattlesWindow extends React.Component {
   getBattles = () => {
     // Every item in list should own an unique key property
     return StorageHelper.battles()
-      .then(res => {
-        res.forEach(element => {
+      .then((res) => {
+        res.forEach((element) => {
           element.key = element.number;
-          element.myTeamMembers.forEach(element => {
+          element.myTeamMembers.forEach((element) => {
             element.key = element.id;
           });
-          element.otherTeamMembers.forEach(element => {
+          element.otherTeamMembers.forEach((element) => {
             element.key = element.id;
           });
         });
@@ -214,7 +214,7 @@ class BattlesWindow extends React.Component {
           data: res
         });
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -225,17 +225,17 @@ class BattlesWindow extends React.Component {
     } else {
       let data = this.state.data;
       if (this.state.search.with !== undefined) {
-        data = data.filter(element => {
+        data = data.filter((element) => {
           let isWith = false;
           if (
-            element.myTeamMembers.find(ele => {
+            element.myTeamMembers.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
             isWith = true;
           }
           if (
-            element.otherTeamMembers.find(ele => {
+            element.otherTeamMembers.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
@@ -248,9 +248,9 @@ class BattlesWindow extends React.Component {
     }
   };
 
-  showBattle = number => {
+  showBattle = (number) => {
     if (this.state.data instanceof Array) {
-      const battle = this.state.data.find(element => {
+      const battle = this.state.data.find((element) => {
         return element.number === number;
       });
       if (battle !== undefined) {
@@ -264,7 +264,7 @@ class BattlesWindow extends React.Component {
         let toButtons = [];
         // Find previous battle
         let previous = 0;
-        filteredBattles.forEach(element => {
+        filteredBattles.forEach((element) => {
           if (element.number > previous && element.number < number) {
             previous = element.number;
           }
@@ -288,7 +288,7 @@ class BattlesWindow extends React.Component {
         }
         // Find next battle
         let next = Number.MAX_SAFE_INTEGER;
-        filteredBattles.forEach(element => {
+        filteredBattles.forEach((element) => {
           if (element.number < next && element.number > number) {
             next = element.number;
           }
@@ -309,7 +309,7 @@ class BattlesWindow extends React.Component {
         if (toButtons.length > 0) {
           buttons.push(
             <Button.Group key="group" style={{ marginLeft: '8px' }}>
-              {toButtons.map(element => {
+              {toButtons.map((element) => {
                 return element;
               })}
             </Button.Group>
@@ -327,7 +327,7 @@ class BattlesWindow extends React.Component {
     window.location.hash = '/battles' + this.props.location.search;
   };
 
-  deleteBattle = number => {
+  deleteBattle = (number) => {
     const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
@@ -344,7 +344,7 @@ class BattlesWindow extends React.Component {
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         StorageHelper.removeBattle(number)
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             } else {
@@ -361,7 +361,7 @@ class BattlesWindow extends React.Component {
               window.location.hash = '/battles' + thisHandler.props.location.search;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               thisHandler.setState({ error: true, errorLog: e.message, updated: true });
             } else {
@@ -405,7 +405,7 @@ class BattlesWindow extends React.Component {
                     id="app.alert.info.battles_filtered"
                     defaultMessage="The battles shown have been filtered, please click <l>here</l> to cancel the screening."
                     values={{
-                      l: msg => <Link to="/battles">{msg}</Link>
+                      l: (msg) => <Link to="/battles">{msg}</Link>
                     }}
                   />
                 }
@@ -447,7 +447,7 @@ class BattlesWindow extends React.Component {
               )
             }}
             scroll={{ x: 'max-content' }}
-            onRow={record => {
+            onRow={(record) => {
               return {
                 onClick: () => {
                   window.location.hash = '/battles{0}#'.format(this.props.location.search) + record.number;
@@ -468,7 +468,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="battle.result" defaultMessage="Result" />}
               key="result"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <span>
                     <Tooltip
@@ -555,7 +555,7 @@ class BattlesWindow extends React.Component {
                     title={<FormattedMessage id="battle.count" defaultMessage="Count" />}
                     key="count"
                     align="center"
-                    render={text => {
+                    render={(text) => {
                       return (
                         <span>
                           <Tooltip
@@ -618,7 +618,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="mode" defaultMessage="Mode" />}
               key="mode"
               align="center"
-              render={text => (
+              render={(text) => (
                 <Tooltip title={<FormattedMessage id={text.gameMode.name} />}>
                   <span>
                     <img
@@ -659,7 +659,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="rule" defaultMessage="Rule" />}
               key="rule"
               align="center"
-              render={text => (
+              render={(text) => (
                 <Tooltip title={<FormattedMessage id={text.rule.name} />}>
                   <span>
                     <img
@@ -700,7 +700,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="battle.level_and_rank" defaultMessage="Level / Rank" />}
               key="levelAndRank"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <span>
                     {(() => {
@@ -761,7 +761,7 @@ class BattlesWindow extends React.Component {
                     title={<FormattedMessage id="battle.power" defaultMessage="Power Level" />}
                     key="estimatedPower"
                     align="center"
-                    render={text => {
+                    render={(text) => {
                       return (
                         <span>
                           {(() => {
@@ -789,7 +789,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="stage" defaultMessage="Stage" />}
               key="stage"
               align="center"
-              render={text => (
+              render={(text) => (
                 <span>
                   <FormattedMessage id={text.stage.stage.name} />
                 </span>
@@ -993,7 +993,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="weapon.main" defaultMessage="Main Weapon" />}
               key="mainWeapon"
               align="center"
-              render={text => (
+              render={(text) => (
                 <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.mainWeapon.name} />}>
                   <span>
                     <img
@@ -1573,7 +1573,7 @@ class BattlesWindow extends React.Component {
                     title={<FormattedMessage id="weapon.sub" defaultMessage="Sub Weapon" />}
                     key="subWeapon"
                     align="center"
-                    render={text => (
+                    render={(text) => (
                       <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.subWeapon.name} />}>
                         <span>
                           <img
@@ -1652,7 +1652,7 @@ class BattlesWindow extends React.Component {
                     title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
                     key="specialWeapon"
                     align="center"
-                    render={text => (
+                    render={(text) => (
                       <Tooltip title={<FormattedMessage id={text.selfPlayer.weapon.specialWeapon.name} />}>
                         <span>
                           <img
@@ -1736,7 +1736,7 @@ class BattlesWindow extends React.Component {
               title={<FormattedMessage id="player.kill_and_death" defaultMessage="Kill / Death" />}
               key="killAndDeath"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <Tooltip
                     title={() => {

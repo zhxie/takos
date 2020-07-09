@@ -1,7 +1,7 @@
 const proxy = require('http-proxy-middleware');
 
 function splatnetOnProxyRes(proxyRes, req, res) {
-  Object.keys(proxyRes.headers).forEach(function(key) {
+  Object.keys(proxyRes.headers).forEach(function (key) {
     res.append(key, proxyRes.headers[key]);
   });
   res.append('x-cookie', proxyRes.headers['set-cookie']);
@@ -13,7 +13,7 @@ function splatnetOnProxyReq(proxyReq, req, res) {
   }
 }
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     '/splatoon2inkApi',
     proxy({

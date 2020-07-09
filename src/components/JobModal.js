@@ -34,9 +34,9 @@ class JobModal extends React.Component {
     if (this.props.value !== null) {
       let ids = [];
       let icons = [];
-      this.props.value.players.forEach(element => {
+      this.props.value.players.forEach((element) => {
         if (
-          this.state.icons.find(ele => {
+          this.state.icons.find((ele) => {
             return ele.id === element.id;
           }) === undefined
         ) {
@@ -45,20 +45,20 @@ class JobModal extends React.Component {
         }
       });
       Promise.allSettled(icons)
-        .then(results => {
+        .then((results) => {
           let result = this.state.icons;
           for (let i = 0; i < results.length; ++i) {
             result.push({ id: ids[i], icon: results[i].value });
           }
           this.setState({ icons: result });
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     }
   };
 
-  iconSelector = salmoniod => {
+  iconSelector = (salmoniod) => {
     switch (salmoniod) {
       case Salmoniod.goldie:
         return goldieIcon;
@@ -331,7 +331,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="job.wave.result" defaultMessage="Result" />}
             key="result"
             align="center"
-            render={text => {
+            render={(text) => {
               if (text.isClear) {
                 return (
                   <Tag className="JobModal-waves-tag" color="green" key="result">
@@ -351,7 +351,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="water_level" defaultMessage="Water Level" />}
             key="waterLevel"
             align="center"
-            render={text => {
+            render={(text) => {
               return (
                 <Tooltip title={<FormattedMessage id={text.waterLevel.name} />}>
                   <Progress
@@ -379,7 +379,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="event_type" defaultMessage="Event Type" />}
             key="eventType"
             align="center"
-            render={text => {
+            render={(text) => {
               return <FormattedMessage id={text.eventType.name} />;
             }}
           />
@@ -443,7 +443,7 @@ class JobModal extends React.Component {
               <Table
                 className="JobModal-players-expand"
                 dataSource={record.bossSalmoniodKills.filter(
-                  element => this.props.value.getBossSalmoniodKill(element.salmoniod) !== 0
+                  (element) => this.props.value.getBossSalmoniodKill(element.salmoniod) !== 0
                 )}
                 locale={{
                   emptyText: (
@@ -506,7 +506,7 @@ class JobModal extends React.Component {
                   title={<FormattedMessage id="salmoniod" defaultMessage="Salmoniod" />}
                   key="salmoniod"
                   align="center"
-                  render={text => {
+                  render={(text) => {
                     return (
                       <span>
                         <img
@@ -523,9 +523,9 @@ class JobModal extends React.Component {
                   title={<FormattedMessage id="player.salmoniod.kill_ratio" defaultMessage="Splat Ratio" />}
                   key="killRatio"
                   align="center"
-                  render={text => {
+                  render={(text) => {
                     const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
-                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                    const appearance = this.props.value.bossSalmoniodAppearances.find((element) => {
                       return element.salmoniod === text.salmoniod;
                     }).appearance;
                     let ratio = 0;
@@ -557,7 +557,7 @@ class JobModal extends React.Component {
                   title={<FormattedMessage id="player.salmoniod.kill" defaultMessage="Player's Splat" />}
                   key="thisKill"
                   align="center"
-                  render={text => {
+                  render={(text) => {
                     const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
                     if (kill === text.kill) {
                       return <b>{text.kill}</b>;
@@ -570,9 +570,9 @@ class JobModal extends React.Component {
                   title={<FormattedMessage id="job.salmoniod.kill" defaultMessage="Splat" />}
                   key="kill"
                   align="center"
-                  render={text => {
+                  render={(text) => {
                     const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
-                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                    const appearance = this.props.value.bossSalmoniodAppearances.find((element) => {
                       return element.salmoniod === text.salmoniod;
                     }).appearance;
                     if (kill === text.kill || kill === appearance) {
@@ -586,9 +586,9 @@ class JobModal extends React.Component {
                   title={<FormattedMessage id="job.salmoniod.appearance" defaultMessage="Appearances" />}
                   key="appearance"
                   align="center"
-                  render={text => {
+                  render={(text) => {
                     const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
-                    const appearance = this.props.value.bossSalmoniodAppearances.find(element => {
+                    const appearance = this.props.value.bossSalmoniodAppearances.find((element) => {
                       return element.salmoniod === text.salmoniod;
                     }).appearance;
                     if (kill === appearance) {
@@ -606,11 +606,11 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="player.nickname" defaultMessage="Nickname" />}
             key="nickname"
             align="center"
-            render={text => {
+            render={(text) => {
               return (
                 <span className="JobModal-players-span">
                   {(() => {
-                    const icon = this.state.icons.find(element => {
+                    const icon = this.state.icons.find((element) => {
                       return element.id === text.id;
                     });
                     if (icon !== undefined) {
@@ -655,7 +655,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="weapons" defaultMessage="Weapons" />}
             key="weapons"
             align="center"
-            render={text => {
+            render={(text) => {
               return text.weapons.map((element, index) => {
                 if (index === 0) {
                   return (
@@ -685,7 +685,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
             key="specialWeapon"
             align="center"
-            render={text => {
+            render={(text) => {
               return (
                 <Tooltip title={<FormattedMessage id={text.specialWeapon.specialWeapon.name} />}>
                   <img
@@ -701,7 +701,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="player.special_use" defaultMessage="Special Use" />}
             key="specialUse"
             align="center"
-            render={text => {
+            render={(text) => {
               let str = '';
               let use = 0;
               text.specialCounts.forEach((element, index) => {
@@ -759,7 +759,7 @@ class JobModal extends React.Component {
       <div>
         <PageHeader title={<FormattedMessage id="salmoniods" defaultMessage="Salmoniods" />} />
         <Table
-          dataSource={this.props.value.bossSalmoniodAppearances.filter(element => element.appearance !== 0)}
+          dataSource={this.props.value.bossSalmoniodAppearances.filter((element) => element.appearance !== 0)}
           locale={{
             emptyText: (
               <Empty
@@ -784,7 +784,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="salmoniod" defaultMessage="Salmoniod" />}
             key="salmoniod"
             align="center"
-            render={text => {
+            render={(text) => {
               return (
                 <span>
                   <img className="JobModal-salmoniods-icon" src={this.iconSelector(text.salmoniod)} alt="salmoniod" />
@@ -797,7 +797,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="job.salmoniod.kill_ratio" defaultMessage="Splat Ratio" />}
             key="killRatio"
             align="center"
-            render={text => {
+            render={(text) => {
               const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
               const appearance = text.appearance;
               let ratio = 0;
@@ -820,7 +820,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="job.salmoniod.kill" defaultMessage="Splat" />}
             key="kill"
             align="center"
-            render={text => {
+            render={(text) => {
               const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
               if (kill === text.appearance) {
                 return <b>{kill}</b>;
@@ -833,7 +833,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="job.salmoniod.appearance_ratio" defaultMessage="Appearance Ratio" />}
             key="appearanceRatio"
             align="center"
-            render={text => {
+            render={(text) => {
               const appearance = text.appearance;
               const totalAppearance = this.props.value.appearances;
               let ratio = 0;
@@ -856,7 +856,7 @@ class JobModal extends React.Component {
             title={<FormattedMessage id="job.salmoniod.appearance" defaultMessage="Appearances" />}
             key="appearance"
             align="center"
-            render={text => {
+            render={(text) => {
               const kill = this.props.value.getBossSalmoniodKill(text.salmoniod);
               if (kill === text.appearance) {
                 return <b>{text.appearance}</b>;

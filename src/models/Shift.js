@@ -18,7 +18,7 @@ class Shift extends Base {
     return this.stage !== null;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       let stage = null;
       let weapon1 = null;
@@ -68,7 +68,7 @@ class Shift extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       let stage = null;
       let weapon1 = null;

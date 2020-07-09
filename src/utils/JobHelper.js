@@ -14,8 +14,8 @@ class JobHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_COOP_RESULTS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.results[0].job_id !== undefined && res.results[0].job_id !== null) {
           return parseInt(res.results[0].job_id);
@@ -23,7 +23,7 @@ class JobHelper {
           throw new RangeError();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return 0;
       });
@@ -38,8 +38,8 @@ class JobHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_COOP_RESULTS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.results[0].job_id !== undefined && res.results[0].job_id !== null) {
           return parseInt(res.results[0].job_id);
@@ -47,16 +47,16 @@ class JobHelper {
           throw new RangeError();
         }
       })
-      .then(res => {
+      .then((res) => {
         return JobHelper.getJob(res);
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Job('can_not_get_the_latest_battle');
       });
   };
 
-  static getJob = number => {
+  static getJob = (number) => {
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -65,19 +65,19 @@ class JobHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_COOP_RESULT.format(number), init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         return Job.parse(res);
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Job('can_not_get_job_{0}'.format(number));
       });
   };
 
-  static getPlayerIcon = id => {
+  static getPlayerIcon = (id) => {
     return BattleHelper.getPlayerIcon(id);
   };
 }

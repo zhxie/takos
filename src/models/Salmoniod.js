@@ -4,7 +4,7 @@ class Salmoniod {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 3:
         return Salmoniod.goldie;

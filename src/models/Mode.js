@@ -4,7 +4,7 @@ class Mode {
     this.value = value;
   }
 
-  static parse = key => {
+  static parse = (key) => {
     switch (key) {
       case 'regular':
         return Mode.regularBattle;
@@ -25,7 +25,7 @@ class Mode {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return Mode.regularBattle;
@@ -57,7 +57,7 @@ class SplatfestMode {
     this.value = value;
   }
 
-  static parse = key => {
+  static parse = (key) => {
     if (key.includes('challenge')) {
       return SplatfestMode.challenge;
     } else if (key.includes('regular')) {
@@ -67,7 +67,7 @@ class SplatfestMode {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (parseInt(data.value)) {
       case 0:
         return SplatfestMode.challenge;

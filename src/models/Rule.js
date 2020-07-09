@@ -4,7 +4,7 @@ class Rule {
     this.value = value;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     switch (data.key) {
       case 'turf_war':
         return Rule.turfWar;
@@ -21,7 +21,7 @@ class Rule {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return Rule.turfWar;

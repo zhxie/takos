@@ -17,12 +17,12 @@ class StatisticsHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_RECORDS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         let stages = [];
-        Object.keys(res.records.stage_stats).forEach(element => {
+        Object.keys(res.records.stage_stats).forEach((element) => {
           const stage = ScheduledStage.parse(res.records.stage_stats[element].stage);
           stages.push({
             stage: stage,
@@ -52,22 +52,22 @@ class StatisticsHelper {
         });
         return stages;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateStagesRecords = onSuccess => {
+  static updateStagesRecords = (onSuccess) => {
     return StatisticsHelper.getStagesRecords()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_parse_stages_records');
         } else {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -80,9 +80,9 @@ class StatisticsHelper {
   static getStagesStatistics = () => {
     let stages = [];
     return StorageHelper.battles()
-      .then(res => {
-        res.forEach(element => {
-          let stage = stages.find(ele => {
+      .then((res) => {
+        res.forEach((element) => {
+          let stage = stages.find((ele) => {
             return ele.stage.stage === element.stage.stage;
           });
           if (stage === undefined) {
@@ -128,28 +128,28 @@ class StatisticsHelper {
               ]
             });
             // Find stage again
-            stage = stages.find(ele => {
+            stage = stages.find((ele) => {
               return ele.stage.stage === element.stage.stage;
             });
           }
           if (element.isWin) {
-            stage.result.find(el => {
+            stage.result.find((el) => {
               return el.rule === element.rule;
             }).win++;
             if (element instanceof RankedBattle || element instanceof LeagueBattle) {
               if (element.isKnockOut) {
-                stage.result.find(el => {
+                stage.result.find((el) => {
                   return el.rule === element.rule;
                 }).knockOut++;
               }
             }
           } else {
-            stage.result.find(el => {
+            stage.result.find((el) => {
               return el.rule === element.rule;
             }).lose++;
             if (element instanceof RankedBattle || element instanceof LeagueBattle) {
               if (element.isKnockedOut) {
-                stage.result.find(el => {
+                stage.result.find((el) => {
                   return el.rule === element.rule;
                 }).knockedOut++;
               }
@@ -160,9 +160,9 @@ class StatisticsHelper {
       .then(() => {
         return StorageHelper.jobs();
       })
-      .then(res => {
-        res.forEach(element => {
-          let stage = stages.find(ele => {
+      .then((res) => {
+        res.forEach((element) => {
+          let stage = stages.find((ele) => {
             return ele.stage.stage === element.shift.stage.stage;
           });
           if (stage === undefined) {
@@ -188,7 +188,7 @@ class StatisticsHelper {
               ]
             });
             // Find stage again
-            stage = stages.find(ele => {
+            stage = stages.find((ele) => {
               return ele.stage.stage === element.shift.stage.stage;
             });
           }
@@ -214,22 +214,22 @@ class StatisticsHelper {
       .then(() => {
         return stages;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateStagesStatistics = onSuccess => {
+  static updateStagesStatistics = (onSuccess) => {
     return StatisticsHelper.getStagesStatistics()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_parse_stages_statistics');
         } else {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -248,12 +248,12 @@ class StatisticsHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_RECORDS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         let weapons = [];
-        Object.keys(res.records.weapon_stats).forEach(element => {
+        Object.keys(res.records.weapon_stats).forEach((element) => {
           const weapon = Weapon.parse(res.records.weapon_stats[element].weapon);
           let winMeter;
           if (res.records.weapon_stats[element].win_meter % 1 === 0) {
@@ -278,22 +278,22 @@ class StatisticsHelper {
         });
         return weapons;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateWeaponsRecords = onSuccess => {
+  static updateWeaponsRecords = (onSuccess) => {
     return StatisticsHelper.getWeaponsRecords()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_parse_weapons_records');
         } else {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -306,14 +306,14 @@ class StatisticsHelper {
   static getWeaponsStatistics = () => {
     let weapons = [];
     return StorageHelper.battles()
-      .then(res =>
+      .then((res) =>
         res.sort((a, b) => {
           return b.number - a.number;
         })
       )
-      .then(res => {
-        res.forEach(element => {
-          let weapon = weapons.find(ele => {
+      .then((res) => {
+        res.forEach((element) => {
+          let weapon = weapons.find((ele) => {
             return !ele.isSalmonRun && ele.weapon.mainWeapon === element.selfPlayer.weapon.mainWeapon;
           });
           if (weapon === undefined) {
@@ -327,7 +327,7 @@ class StatisticsHelper {
               totalPaint: 0
             });
             // Find weapon again
-            weapon = weapons.find(ele => {
+            weapon = weapons.find((ele) => {
               return !ele.isSalmonRun && ele.weapon.mainWeapon === element.selfPlayer.weapon.mainWeapon;
             });
           }
@@ -353,11 +353,11 @@ class StatisticsHelper {
       .then(() => {
         return StorageHelper.jobs();
       })
-      .then(res => {
-        res.forEach(element => {
+      .then((res) => {
+        res.forEach((element) => {
           // Weapons
-          element.selfPlayer.weapons.forEach(ele => {
-            let weapon = weapons.find(e => {
+          element.selfPlayer.weapons.forEach((ele) => {
+            let weapon = weapons.find((e) => {
               return e.isSalmonRun && e.weapon.mainWeapon === ele.mainWeapon;
             });
             if (weapon === undefined) {
@@ -369,7 +369,7 @@ class StatisticsHelper {
                 wipeOut: 0
               });
               // Find weapon again
-              weapon = weapons.find(e => {
+              weapon = weapons.find((e) => {
                 return e.isSalmonRun && e.weapon.mainWeapon === ele.mainWeapon;
               });
             }
@@ -392,22 +392,22 @@ class StatisticsHelper {
       .then(() => {
         return weapons;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateWeaponsStatistics = onSuccess => {
+  static updateWeaponsStatistics = (onSuccess) => {
     return StatisticsHelper.getWeaponsStatistics()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_parse_weapons_statistics');
         } else {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -424,29 +424,29 @@ class StatisticsHelper {
       shoes: []
     };
     return StorageHelper.battles()
-      .then(res =>
+      .then((res) =>
         res.sort((a, b) => {
           return b.number - a.number;
         })
       )
-      .then(res => {
-        res.forEach(element => {
+      .then((res) => {
+        res.forEach((element) => {
           // Headgear
-          let headgear = gears.headgears.find(ele => {
+          let headgear = gears.headgears.find((ele) => {
             return ele.gear === element.selfPlayer.headgearGear.gear;
           });
           if (headgear === undefined) {
             gears.headgears.push(element.selfPlayer.headgearGear);
           }
           // Clothes
-          let clothes = gears.clothes.find(ele => {
+          let clothes = gears.clothes.find((ele) => {
             return ele.gear === element.selfPlayer.clothesGear.gear;
           });
           if (clothes === undefined) {
             gears.clothes.push(element.selfPlayer.clothesGear);
           }
           // Shoes
-          let shoes = gears.shoes.find(ele => {
+          let shoes = gears.shoes.find((ele) => {
             return ele.gear === element.selfPlayer.shoesGear.gear;
           });
           if (shoes === undefined) {
@@ -457,22 +457,22 @@ class StatisticsHelper {
       .then(() => {
         return gears;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateGearsStatistics = onSuccess => {
+  static updateGearsStatistics = (onSuccess) => {
     return StatisticsHelper.getGearsStatistics()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_parse_gears_statistics');
         } else {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {

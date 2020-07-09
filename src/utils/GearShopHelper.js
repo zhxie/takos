@@ -12,29 +12,29 @@ class GearShopHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATOON2_INK_GEAR_SHOP, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         let gears = [];
-        res.merchandises.forEach(element => {
+        res.merchandises.forEach((element) => {
           gears.push(ShopGear.parse(element));
         });
         return gears;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });
   };
 
-  static updateShopGears = onSuccess => {
+  static updateShopGears = (onSuccess) => {
     return GearShopHelper.getShopGears()
-      .then(res => {
+      .then((res) => {
         if (res === null) {
           throw new TakosError('can_not_get_shop_gears');
         } else {
-          res.forEach(element => {
+          res.forEach((element) => {
             if (element.error !== null) {
               throw new TakosError(element.error);
             }
@@ -42,7 +42,7 @@ class GearShopHelper {
           onSuccess(res);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -61,8 +61,8 @@ class GearShopHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_GEAR_SHOP, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         if (res.ordered_info === null) {
@@ -72,15 +72,15 @@ class GearShopHelper {
           return gear;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new OrderedGear('can_not_get_ordered_gear');
       });
   };
 
-  static updateOrderedGear = onSuccess => {
+  static updateOrderedGear = (onSuccess) => {
     return GearShopHelper.getOrderedGear()
-      .then(res => {
+      .then((res) => {
         if (res !== null) {
           if (res.error != null) {
             throw res.error;
@@ -91,7 +91,7 @@ class GearShopHelper {
           onSuccess(null);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           return e;
         } else {
@@ -101,7 +101,7 @@ class GearShopHelper {
       });
   };
 
-  static orderGear = id => {
+  static orderGear = (id) => {
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -110,13 +110,13 @@ class GearShopHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_TIMELINE, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         return res.unique_id;
       })
-      .then(res => {
+      .then((res) => {
         let formData = new FormData();
         formData.append('override', 1);
         const init2 = {
@@ -131,8 +131,8 @@ class GearShopHelper {
         };
         return fetch(FileFolderUrl.SPLATNET_GEAR_SHOP_ORDER.format(id), init2);
       })
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.ordered_info !== undefined) {
           return true;
@@ -140,7 +140,7 @@ class GearShopHelper {
           return false;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return false;
       });

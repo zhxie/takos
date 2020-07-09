@@ -54,7 +54,7 @@ class JobsWindow extends React.Component {
     // TODO: this method should be extracted
     const getJobRecursively = (from, to) => {
       return JobHelper.getJob(from)
-        .then(res => {
+        .then((res) => {
           if (res.error !== null) {
             // Handle previous error
             throw new TakosError(res.error);
@@ -62,7 +62,7 @@ class JobsWindow extends React.Component {
             return StorageHelper.addJob(res);
           }
         })
-        .then(res => {
+        .then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -72,7 +72,7 @@ class JobsWindow extends React.Component {
             }
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e instanceof TakosError) {
             return e;
           } else {
@@ -90,16 +90,16 @@ class JobsWindow extends React.Component {
       updated: false
     });
     StorageHelper.latestJob()
-      .then(res => {
+      .then((res) => {
         if (res === -1) {
           throw new TakosError('can_not_get_the_latest_job_from_database');
         } else {
           return res;
         }
       })
-      .then(res => {
+      .then((res) => {
         const currentNumber = res;
-        return JobHelper.getTheLatestJobNumber().then(res => {
+        return JobHelper.getTheLatestJobNumber().then((res) => {
           if (res === 0) {
             throw new TakosError('can_not_get_jobs');
           } else {
@@ -109,14 +109,14 @@ class JobsWindow extends React.Component {
           }
         });
       })
-      .then(res => {
+      .then((res) => {
         if (res.to >= res.from) {
           this.setState({ updateCurrent: 1, updateTotal: res.to - res.from + 1 });
         } else {
           this.setState({ updateTotal: -1 });
           return this.getJobs();
         }
-        return getJobRecursively(res.from, res.to).then(res => {
+        return getJobRecursively(res.from, res.to).then((res) => {
           if (res instanceof TakosError) {
             throw res;
           } else {
@@ -128,7 +128,7 @@ class JobsWindow extends React.Component {
       .then(() => {
         this.setState({ loaded: true });
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({ updateTotal: -1 });
         this.getJobs()
           .then(() => {
@@ -145,7 +145,7 @@ class JobsWindow extends React.Component {
           })
           .catch();
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -153,19 +153,19 @@ class JobsWindow extends React.Component {
   getJobs = () => {
     // Every item in list should own an unique key property
     return StorageHelper.jobs()
-      .then(res => {
-        res.forEach(element => {
+      .then((res) => {
+        res.forEach((element) => {
           element.key = element.number;
-          element.players.forEach(element => {
+          element.players.forEach((element) => {
             element.key = element.id;
-            element.bossSalmoniodKills.forEach(element => {
+            element.bossSalmoniodKills.forEach((element) => {
               element.key = element.salmoniod.value;
             });
           });
           element.waves.forEach((element, index) => {
             element.key = index;
           });
-          element.bossSalmoniodAppearances.forEach(element => {
+          element.bossSalmoniodAppearances.forEach((element) => {
             element.key = element.salmoniod.value;
           });
         });
@@ -173,7 +173,7 @@ class JobsWindow extends React.Component {
           data: res
         });
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -184,10 +184,10 @@ class JobsWindow extends React.Component {
     } else {
       let data = this.state.data;
       if (this.state.search.with !== undefined) {
-        data = data.filter(element => {
+        data = data.filter((element) => {
           let isWith = false;
           if (
-            element.players.find(ele => {
+            element.players.find((ele) => {
               return ele.id === this.state.search.with;
             }) !== undefined
           ) {
@@ -200,9 +200,9 @@ class JobsWindow extends React.Component {
     }
   };
 
-  showJob = number => {
+  showJob = (number) => {
     if (this.state.data instanceof Array) {
-      const job = this.state.data.find(element => {
+      const job = this.state.data.find((element) => {
         return element.number === number;
       });
       if (job !== undefined) {
@@ -216,7 +216,7 @@ class JobsWindow extends React.Component {
         let toButtons = [];
         // Find previous job
         let previous = 0;
-        filteredJobs.forEach(element => {
+        filteredJobs.forEach((element) => {
           if (element.number > previous && element.number < number) {
             previous = element.number;
           }
@@ -236,7 +236,7 @@ class JobsWindow extends React.Component {
         }
         // Find next job
         let next = Number.MAX_SAFE_INTEGER;
-        filteredJobs.forEach(element => {
+        filteredJobs.forEach((element) => {
           if (element.number < next && element.number > number) {
             next = element.number;
           }
@@ -257,7 +257,7 @@ class JobsWindow extends React.Component {
         if (toButtons.length > 0) {
           buttons.push(
             <Button.Group key="group" style={{ marginLeft: '8px' }}>
-              {toButtons.map(element => {
+              {toButtons.map((element) => {
                 return element;
               })}
             </Button.Group>
@@ -275,7 +275,7 @@ class JobsWindow extends React.Component {
     window.location.hash = '/jobs' + this.props.location.search;
   };
 
-  deleteJob = number => {
+  deleteJob = (number) => {
     const thisHandler = this;
     confirm({
       title: this.props.intl.formatMessage({
@@ -292,7 +292,7 @@ class JobsWindow extends React.Component {
       icon: <Icon type="exclamation-circle" />,
       onOk() {
         StorageHelper.removeJob(number)
-          .then(res => {
+          .then((res) => {
             if (res instanceof TakosError) {
               throw res;
             } else {
@@ -309,7 +309,7 @@ class JobsWindow extends React.Component {
               window.location.hash = '/jobs' + thisHandler.props.location.search;
             }
           })
-          .catch(e => {
+          .catch((e) => {
             if (e instanceof TakosError) {
               thisHandler.setState({ error: true, errorLog: e.message, updated: true });
             } else {
@@ -353,7 +353,7 @@ class JobsWindow extends React.Component {
                     id="app.alert.info.jobs_filtered"
                     defaultMessage="The jobs shown have been filtered, please click <l>here</l> to cancel the screening."
                     values={{
-                      l: msg => <Link to="/jobs">{msg}</Link>
+                      l: (msg) => <Link to="/jobs">{msg}</Link>
                     }}
                   />
                 }
@@ -395,7 +395,7 @@ class JobsWindow extends React.Component {
               )
             }}
             scroll={{ x: 'max-content' }}
-            onRow={record => {
+            onRow={(record) => {
               return {
                 onClick: () => {
                   window.location.hash = '/jobs{0}#'.format(this.props.location.search) + record.number;
@@ -416,7 +416,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="job.result" defaultMessage="Result" />}
               key="result"
               align="center"
-              render={text => {
+              render={(text) => {
                 if (text.isClear) {
                   return (
                     <Tag className="JobsWindow-content-tag" color="green" key="result">
@@ -441,7 +441,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="grade" defaultMessage="Rank" />}
               key="grade"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <span>
                     {(() => {
@@ -476,7 +476,7 @@ class JobsWindow extends React.Component {
                     title={<FormattedMessage id="job.hazard_level" defaultMessage="Hazard Level" />}
                     key="hazardLevel"
                     align="center"
-                    render={text => {
+                    render={(text) => {
                       if (text.hazardLevel >= 200) {
                         return (
                           <Tooltip
@@ -511,7 +511,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="stage" defaultMessage="Stage" />}
               key="stage"
               align="center"
-              render={text => (
+              render={(text) => (
                 <span>
                   <FormattedMessage id={text.shift.stage.stage.name} />
                 </span>
@@ -546,7 +546,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="weapon.main" defaultMessage="Main Weapon" />}
               key="mainWeapon"
               align="center"
-              render={text =>
+              render={(text) =>
                 text.selfPlayer.weapons.map((element, index) => {
                   return (
                     <Tooltip key={index} title={<FormattedMessage id={element.mainWeapon.name} />}>
@@ -799,7 +799,7 @@ class JobsWindow extends React.Component {
               ]}
               onFilter={(value, record) => {
                 return (
-                  record.selfPlayer.weapons.find(element => {
+                  record.selfPlayer.weapons.find((element) => {
                     return element.mainWeapon.value === value;
                   }) !== undefined
                 );
@@ -809,7 +809,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="weapon.special" defaultMessage="Special Weapon" />}
               key="specialWeapon"
               align="center"
-              render={text => (
+              render={(text) => (
                 <Tooltip title={<FormattedMessage id={text.selfPlayer.specialWeapon.specialWeapon.name} />}>
                   <span>
                     <img
@@ -846,7 +846,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="job.golden_egg" defaultMessage="Golden Egg" />}
               key="goldenEgg"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <span>
                     {text.selfPlayer.goldenEgg} / {text.goldenEgg}
@@ -858,7 +858,7 @@ class JobsWindow extends React.Component {
               title={<FormattedMessage id="job.power_egg" defaultMessage="Power Egg" />}
               key="powerEgg"
               align="center"
-              render={text => {
+              render={(text) => {
                 return (
                   <span>
                     {text.selfPlayer.powerEgg} / {text.powerEgg}

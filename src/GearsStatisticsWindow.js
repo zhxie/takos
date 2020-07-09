@@ -28,10 +28,10 @@ class GearsStatisticsWindow extends React.Component {
       loaded: false,
       error: false
     });
-    return StatisticsHelper.updateGearsStatistics(res => {
+    return StatisticsHelper.updateGearsStatistics((res) => {
       this.setState({ statistics: res });
     })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
@@ -56,7 +56,7 @@ class GearsStatisticsWindow extends React.Component {
             break;
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message });
         } else {
@@ -66,7 +66,7 @@ class GearsStatisticsWindow extends React.Component {
       });
   };
 
-  scrollToAnchor = anchorName => {
+  scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
@@ -96,7 +96,7 @@ class GearsStatisticsWindow extends React.Component {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="gear.headgears" defaultMessage="Headgears" />} />
-                {this.state.statistics.headgears.map(element => {
+                {this.state.statistics.headgears.map((element) => {
                   return (
                     <div
                       className="GearsStatisticsWindow-content-card"
@@ -116,7 +116,7 @@ class GearsStatisticsWindow extends React.Component {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="gear.clothes" defaultMessage="Clothes" />} />
-                {this.state.statistics.clothes.map(element => {
+                {this.state.statistics.clothes.map((element) => {
                   return (
                     <div
                       className="GearsStatisticsWindow-content-card"
@@ -136,7 +136,7 @@ class GearsStatisticsWindow extends React.Component {
             return (
               <div>
                 <PageHeader title={<FormattedMessage id="gear.shoes" defaultMessage="Shoes" />} />
-                {this.state.statistics.shoes.map(element => {
+                {this.state.statistics.shoes.map((element) => {
                   return (
                     <div
                       className="GearsStatisticsWindow-content-card"

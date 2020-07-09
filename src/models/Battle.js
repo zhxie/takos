@@ -40,7 +40,7 @@ class Battle extends Base {
   }
 
   get selfPlayer() {
-    return this.myTeamMembers.find(element => {
+    return this.myTeamMembers.find((element) => {
       return element.isSelf === true;
     });
   }
@@ -59,21 +59,21 @@ class Battle extends Base {
 
   get myTeamPaint() {
     let paint = 0;
-    this.myTeamMembers.forEach(element => {
+    this.myTeamMembers.forEach((element) => {
       paint = paint + element.paint;
     });
     return paint;
   }
   get myTeamKill() {
     let kill = 0;
-    this.myTeamMembers.forEach(element => {
+    this.myTeamMembers.forEach((element) => {
       kill = kill + element.kill;
     });
     return kill;
   }
   get myTeamAssist() {
     let assist = 0;
-    this.myTeamMembers.forEach(element => {
+    this.myTeamMembers.forEach((element) => {
       assist = assist + element.assist;
     });
     return assist;
@@ -83,14 +83,14 @@ class Battle extends Base {
   }
   get myTeamDeath() {
     let death = 0;
-    this.myTeamMembers.forEach(element => {
+    this.myTeamMembers.forEach((element) => {
       death = death + element.death;
     });
     return death;
   }
   get myTeamSpecial() {
     let special = 0;
-    this.myTeamMembers.forEach(element => {
+    this.myTeamMembers.forEach((element) => {
       special = special + element.special;
     });
     return special;
@@ -98,21 +98,21 @@ class Battle extends Base {
 
   get otherTeamPaint() {
     let paint = 0;
-    this.otherTeamMembers.forEach(element => {
+    this.otherTeamMembers.forEach((element) => {
       paint = paint + element.paint;
     });
     return paint;
   }
   get otherTeamKill() {
     let kill = 0;
-    this.otherTeamMembers.forEach(element => {
+    this.otherTeamMembers.forEach((element) => {
       kill = kill + element.kill;
     });
     return kill;
   }
   get otherTeamAssist() {
     let assist = 0;
-    this.otherTeamMembers.forEach(element => {
+    this.otherTeamMembers.forEach((element) => {
       assist = assist + element.assist;
     });
     return assist;
@@ -122,14 +122,14 @@ class Battle extends Base {
   }
   get otherTeamDeath() {
     let death = 0;
-    this.otherTeamMembers.forEach(element => {
+    this.otherTeamMembers.forEach((element) => {
       death = death + element.death;
     });
     return death;
   }
   get otherTeamSpecial() {
     let special = 0;
-    this.otherTeamMembers.forEach(element => {
+    this.otherTeamMembers.forEach((element) => {
       special = special + element.special;
     });
     return special;
@@ -139,7 +139,7 @@ class Battle extends Base {
     return parseInt(this.levelAfter / 100);
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const raw = JSON.stringify(data);
       const type = Mode.parse(data.type);
@@ -155,18 +155,18 @@ class Battle extends Base {
       let myTeamMembers = [];
       let otherTeamMembers = [];
       myTeamMembers.push(BattlePlayer.parse(data.player_result, true));
-      data.my_team_members.forEach(element => {
+      data.my_team_members.forEach((element) => {
         myTeamMembers.push(BattlePlayer.parse(element, false));
       });
-      myTeamMembers.forEach(element => {
+      myTeamMembers.forEach((element) => {
         if (element.error !== null) {
           return new Battle(element.error);
         }
       });
-      data.other_team_members.forEach(element => {
+      data.other_team_members.forEach((element) => {
         otherTeamMembers.push(BattlePlayer.parse(element, false));
       });
-      otherTeamMembers.forEach(element => {
+      otherTeamMembers.forEach((element) => {
         if (element.error !== null) {
           return new Battle(element.error);
         }
@@ -200,7 +200,7 @@ class Battle extends Base {
         }
         case Mode.rankedBattle: {
           if (
-            myTeamMembers.find(element => {
+            myTeamMembers.find((element) => {
               return element.isSelf;
             }).Rank !== Rank.x ||
             gameMode !== Mode.rankedBattle
@@ -319,7 +319,7 @@ class Battle extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const raw = data.raw;
       const type = Mode.deserialize(data.type);
@@ -333,20 +333,20 @@ class Battle extends Base {
         return new Battle(stage.error);
       }
       let myTeamMembers = [];
-      data.myTeamMembers.forEach(element => {
+      data.myTeamMembers.forEach((element) => {
         myTeamMembers.push(BattlePlayer.deserialize(element));
       });
-      myTeamMembers.forEach(element => {
+      myTeamMembers.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new Battle(element.error);
         }
       });
       let otherTeamMembers = [];
-      data.otherTeamMembers.forEach(element => {
+      data.otherTeamMembers.forEach((element) => {
         otherTeamMembers.push(BattlePlayer.deserialize(element));
       });
-      otherTeamMembers.forEach(element => {
+      otherTeamMembers.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new Battle(element.error);
@@ -381,7 +381,7 @@ class Battle extends Base {
         }
         case Mode.rankedBattle: {
           if (
-            myTeamMembers.find(element => {
+            myTeamMembers.find((element) => {
               return element.isSelf;
             }).Rank !== Rank.x ||
             gameMode !== Mode.rankedBattle

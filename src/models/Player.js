@@ -9,7 +9,7 @@ class Species {
     this.value = value;
   }
 
-  static parse = name => {
+  static parse = (name) => {
     switch (name) {
       case 'inklings':
         return Species.inklings;
@@ -20,7 +20,7 @@ class Species {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (parseInt(data.value)) {
       case 0:
         return Species.inklings;
@@ -43,7 +43,7 @@ class Style {
     this.value = value;
   }
 
-  static parse = name => {
+  static parse = (name) => {
     switch (name) {
       case 'girl':
         return Style.girl;
@@ -54,7 +54,7 @@ class Style {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (parseInt(data.value)) {
       case 0:
         return Style.girl;
@@ -101,7 +101,7 @@ class Rank {
     this.value = value;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     if (data.name === null) {
       return Rank.cMinus;
     }
@@ -161,7 +161,7 @@ class Rank {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     switch (data.value) {
       case 0:
         return Rank.cMinus;
@@ -375,7 +375,7 @@ class BattlePlayer extends Player {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const species = Species.deserialize(data.species);
       const style = Style.deserialize(data.style);
@@ -551,7 +551,7 @@ class Grade {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return Grade.intern;
@@ -608,7 +608,7 @@ class JobPlayer extends Player {
 
   get specialRemained() {
     let used = 0;
-    this.specialCounts.forEach(element => {
+    this.specialCounts.forEach((element) => {
       used = used + element;
     });
     return 2 - used;
@@ -616,7 +616,7 @@ class JobPlayer extends Player {
 
   get kill() {
     let kill = 0;
-    this.bossSalmoniodKills.forEach(element => {
+    this.bossSalmoniodKills.forEach((element) => {
       kill = kill + element.kill;
     });
     return kill;
@@ -625,10 +625,10 @@ class JobPlayer extends Player {
   static parse = (data, isSelf) => {
     try {
       let weapons = [];
-      data.weapon_list.forEach(element => {
+      data.weapon_list.forEach((element) => {
         weapons.push(Weapon.parseSalmonRunMain(element));
       });
-      weapons.forEach(element => {
+      weapons.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new JobPlayer(element.error);
@@ -640,11 +640,11 @@ class JobPlayer extends Player {
         return new JobPlayer(specialWeapon.error);
       }
       let specialCounts = [];
-      data.special_counts.forEach(element => {
+      data.special_counts.forEach((element) => {
         specialCounts.push(parseInt(element));
       });
       let bossSalmoniodKills = [];
-      Object.keys(data.boss_kill_counts).forEach(element => {
+      Object.keys(data.boss_kill_counts).forEach((element) => {
         let bossSalmoniodKill = {};
         try {
           bossSalmoniodKill.salmoniod = Salmoniod.parse(parseInt(element));
@@ -677,13 +677,13 @@ class JobPlayer extends Player {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       let weapons = [];
-      data.weapons.forEach(element => {
+      data.weapons.forEach((element) => {
         weapons.push(Weapon.deserializeSalmonRunMain(element));
       });
-      weapons.forEach(element => {
+      weapons.forEach((element) => {
         if (element.error !== null) {
           // Handle previous error
           return new JobPlayer(element.error);
@@ -695,11 +695,11 @@ class JobPlayer extends Player {
         return new JobPlayer(specialWeapon.error);
       }
       let specialCounts = [];
-      data.specialCounts.forEach(element => {
+      data.specialCounts.forEach((element) => {
         specialCounts.push(parseInt(element));
       });
       let bossSalmoniodKills = [];
-      data.bossSalmoniodKills.forEach(element => {
+      data.bossSalmoniodKills.forEach((element) => {
         let bossSalmoniodKill = {};
         try {
           bossSalmoniodKill.salmoniod = Salmoniod.parse(parseInt(element.salmoniod.value));

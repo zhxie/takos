@@ -23,7 +23,7 @@ class StageStatisticsCard extends React.Component {
           </Descriptions.Item>
           {(() => {
             if (!this.props.stage.isSalmonRun) {
-              return this.props.stage.result.map(element => {
+              return this.props.stage.result.map((element) => {
                 return (
                   <Descriptions.Item
                     key={element.rule.value}

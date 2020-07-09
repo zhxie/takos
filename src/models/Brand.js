@@ -7,7 +7,7 @@ class BaseBrand {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return BaseBrand.squidforce;
@@ -80,7 +80,7 @@ class Brand extends Base {
     this.favoredAbility = favoredAbility;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const brand = BaseBrand.parse(parseInt(data.id));
       let favoredAbility = null;
@@ -94,7 +94,7 @@ class Brand extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const brand = BaseBrand.parse(parseInt(data.brand.value));
       let favoredAbility = null;

@@ -6,7 +6,7 @@ class Stage {
     this.value = value;
   }
 
-  static parse = id => {
+  static parse = (id) => {
     switch (id) {
       case 0:
         return Stage.theReef;
@@ -119,7 +119,7 @@ class Stage {
     }
   };
 
-  static parseShift = url => {
+  static parseShift = (url) => {
     switch (url) {
       case '/images/coop_stage/65c68c6f0641cc5654434b78a6f10b0ad32ccdee.png':
         return Stage.spawningGrounds;
@@ -201,7 +201,7 @@ class ScheduledStage extends Base {
     this.url = url;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const stage = Stage.parse(parseInt(data.id));
       return new ScheduledStage(null, stage, data.image);
@@ -211,7 +211,7 @@ class ScheduledStage extends Base {
     }
   };
 
-  static parseShift = data => {
+  static parseShift = (data) => {
     try {
       const stage = Stage.parseShift(data.image);
       return new ScheduledStage(null, stage, data.image);
@@ -221,7 +221,7 @@ class ScheduledStage extends Base {
     }
   };
 
-  static deserialize = data => {
+  static deserialize = (data) => {
     try {
       const stage = Stage.parse(parseInt(data.stage.value));
       return new ScheduledStage(null, stage, data.url);

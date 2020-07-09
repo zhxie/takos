@@ -4,7 +4,7 @@ import { FormattedMessage, FormattedDate, FormattedTime } from 'react-intl';
 import './StringHelper';
 
 class TimeConverter {
-  static formatScheduleTime = time => {
+  static formatScheduleTime = (time) => {
     const date = new Date(time * 1000);
     const hours = date.getHours();
     const minutes = '0' + date.getMinutes();
@@ -30,7 +30,7 @@ class TimeConverter {
     );
   };
 
-  static formatShiftTime = time => {
+  static formatShiftTime = (time) => {
     const date = new Date(time * 1000);
     const month = date.getMonth() + 1;
     const day = '0' + date.getDate();
@@ -60,7 +60,7 @@ class TimeConverter {
     );
   };
 
-  static getTimeTo = time => {
+  static getTimeTo = (time) => {
     const now = new Date();
     const diff = new Date(time * 1000) - now;
     if (diff < 0) {
@@ -114,7 +114,7 @@ class TimeConverter {
     }
   };
 
-  static getTimeRemained = time => {
+  static getTimeRemained = (time) => {
     const now = new Date();
     const diff = new Date(time * 1000) - now;
     if (diff < 0) {
@@ -168,7 +168,7 @@ class TimeConverter {
     }
   };
 
-  static formatBattleKoElapsedTime = time => {
+  static formatBattleKoElapsedTime = (time) => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = parseInt(time) - 60 * minutes;
     if (minutes > 0) {
@@ -195,7 +195,7 @@ class TimeConverter {
     }
   };
 
-  static formatResultStartTime = time => {
+  static formatResultStartTime = (time) => {
     const date = new Date(time * 1000);
     return (
       <span>
@@ -205,7 +205,7 @@ class TimeConverter {
     );
   };
 
-  static getBattleElapsedTime = time => {
+  static getBattleElapsedTime = (time) => {
     const days = parseInt(parseInt(time) / 86400);
     const hours = parseInt((parseInt(time) - 86400 * days) / 3600);
     const minutes = parseInt((parseInt(time) - 86400 * days - 3600 * hours) / 60);
@@ -219,7 +219,7 @@ class TimeConverter {
     }
   };
 
-  static formatBattleElapsedTime = time => {
+  static formatBattleElapsedTime = (time) => {
     const minutes = parseInt(parseInt(time) / 60);
     const seconds = '0' + (parseInt(time) - 60 * minutes);
     if (minutes > 0) {

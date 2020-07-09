@@ -14,8 +14,8 @@ class BattleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_RESULTS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.results[0].battle_number !== undefined && res.results[0].battle_number !== null) {
           return parseInt(res.results[0].battle_number);
@@ -23,7 +23,7 @@ class BattleHelper {
           throw new RangeError();
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return 0;
       });
@@ -38,8 +38,8 @@ class BattleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_RESULTS, init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.results[0].battle_number !== undefined && res.results[0].battle_number !== null) {
           return parseInt(res.results[0].battle_number);
@@ -47,16 +47,16 @@ class BattleHelper {
           throw new RangeError();
         }
       })
-      .then(res => {
+      .then((res) => {
         return BattleHelper.getBattle(res);
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Battle('can_not_get_the_latest_battle');
       });
   };
 
-  static getBattle = number => {
+  static getBattle = (number) => {
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -65,19 +65,19 @@ class BattleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_RESULT.format(number), init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         return Battle.parse(res);
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new Battle('can_not_get_battle_{0}'.format(number));
       });
   };
 
-  static getBattleImage = number => {
+  static getBattleImage = (number) => {
     const init = {
       method: 'POST',
       headers: new Headers({
@@ -87,19 +87,19 @@ class BattleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_SHARE_RESULT.format(number), init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         // Parse response
         return res.url;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return new TakosError('can_not_get_battle_image_{0}'.format(number));
       });
   };
 
-  static getPlayerIcon = id => {
+  static getPlayerIcon = (id) => {
     const init = {
       method: 'GET',
       headers: new Headers({
@@ -108,8 +108,8 @@ class BattleHelper {
       })
     };
     return fetch(FileFolderUrl.SPLATNET_NICKNAME_AND_ICON.format(id), init)
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         console.log(res);
         if (res.nickname_and_icons.length !== 0) {
           if (
@@ -124,7 +124,7 @@ class BattleHelper {
           return '';
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
         return null;
       });

@@ -14,7 +14,7 @@ export default function deepCopy(target) {
       obj = [];
     }
     copiedObjects.push({ target: target, copyTarget: obj });
-    Object.keys(target).forEach(key => {
+    Object.keys(target).forEach((key) => {
       if (obj[key]) {
         return;
       }

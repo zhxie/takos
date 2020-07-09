@@ -14,7 +14,7 @@ class Schedule extends Base {
     this.stage2 = stage2;
   }
 
-  static parse = data => {
+  static parse = (data) => {
     try {
       const mode = Mode.parse(data.game_mode.key);
       const rule = Rule.parse(data.rule);

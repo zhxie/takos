@@ -32,22 +32,22 @@ class WeaponsStatisticsWindow extends React.Component {
       error: false,
       updated: false
     });
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (StorageHelper.showSplatNetStats()) {
         resolve(
-          StatisticsHelper.updateWeaponsRecords(res => {
+          StatisticsHelper.updateWeaponsRecords((res) => {
             this.setState({ records: res });
           })
         );
       } else {
         resolve(
-          StatisticsHelper.updateWeaponsStatistics(res => {
+          StatisticsHelper.updateWeaponsStatistics((res) => {
             this.setState({ statistics: res });
           })
         );
       }
     })
-      .then(res => {
+      .then((res) => {
         if (res instanceof TakosError) {
           throw res;
         }
@@ -63,7 +63,7 @@ class WeaponsStatisticsWindow extends React.Component {
           this.scrollToAnchor(this.props.location.hash.replace('#', ''));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e instanceof TakosError) {
           this.setState({ error: true, errorLog: e.message, updated: true });
         } else {
@@ -81,13 +81,13 @@ class WeaponsStatisticsWindow extends React.Component {
     let weapons = [];
     if (StorageHelper.showSplatNetStats()) {
       // Records
-      this.state.records.forEach(element => {
+      this.state.records.forEach((element) => {
         element.isSalmonRun = false;
         weapons.push(element);
       });
     } else {
       // Statistics
-      this.state.statistics.forEach(element => {
+      this.state.statistics.forEach((element) => {
         if (element.winMeter === null) {
           element.winMeter = 0;
         }
@@ -97,7 +97,7 @@ class WeaponsStatisticsWindow extends React.Component {
     return weapons;
   };
 
-  scrollToAnchor = anchorName => {
+  scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
@@ -144,8 +144,8 @@ class WeaponsStatisticsWindow extends React.Component {
             return a.weapon.mainWeapon.value - b.weapon.mainWeapon.value;
           });
           if (data.length > 0) {
-            const battles = data.filter(element => !element.isSalmonRun);
-            const jobs = data.filter(element => element.isSalmonRun);
+            const battles = data.filter((element) => !element.isSalmonRun);
+            const jobs = data.filter((element) => element.isSalmonRun);
             return (
               <div>
                 {(() => {
@@ -153,7 +153,7 @@ class WeaponsStatisticsWindow extends React.Component {
                     return (
                       <div>
                         <PageHeader title={<FormattedMessage id="app.battles" defaultMessage="Battles" />} />
-                        {battles.map(element => {
+                        {battles.map((element) => {
                           return (
                             <div
                               className="WeaponStatisticsWindow-content-card"
@@ -173,7 +173,7 @@ class WeaponsStatisticsWindow extends React.Component {
                     return (
                       <div>
                         <PageHeader title={<FormattedMessage id="app.jobs" defaultMessage="Jobs" />} />
-                        {jobs.map(element => {
+                        {jobs.map((element) => {
                           return (
                             <div
                               className="WeaponStatisticsWindow-content-card"

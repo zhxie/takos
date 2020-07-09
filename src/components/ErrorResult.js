@@ -43,7 +43,7 @@ class ErrorResult extends React.Component {
                 })()}
               </Text>
             </Paragraph>
-            {this.props.checklist.map(element => {
+            {this.props.checklist.map((element) => {
               return (
                 <Paragraph key={element.key}>
                   <Icon style={{ color: 'red' }} type="info-circle" /> {element}
@@ -56,7 +56,7 @@ class ErrorResult extends React.Component {
                   id="app.problem.report"
                   defaultMessage="If the problem persists, you can <a>Report the issue on Github &gt;</a>"
                   values={{
-                    a: msg => <a href="https://github.com/zhxie/takos/issues">{msg}</a>
+                    a: (msg) => <a href="https://github.com/zhxie/takos/issues">{msg}</a>
                   }}
                 />
               </Text>

@@ -45,7 +45,7 @@ class NotFoundResult extends React.Component {
                   id="app.problem.report"
                   defaultMessage="If the problem persists, you can <a>Report the issue on Github &gt;</a>"
                   values={{
-                    a: msg => <a href="https://github.com/zhxie/takos/issues">{msg}</a>
+                    a: (msg) => <a href="https://github.com/zhxie/takos/issues">{msg}</a>
                   }}
                 />
               </Text>
