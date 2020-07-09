@@ -1,6 +1,6 @@
 {
   "name": "takos",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Cross-platform schedule and battle statistic client of Splatoon 2.",
   "homepage": "./",
   "license": "MIT",

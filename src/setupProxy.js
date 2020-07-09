@@ -54,7 +54,7 @@ module.exports = function (app) {
       target: 'https://elifessler.com',
       changeOrigin: true,
       pathRewrite: { '^/eliFesslerApi': '' },
-      headers: { 'User-Agent': 'Takos/0.3.0' }
+      headers: { 'User-Agent': 'Takos/0.3.1' }
     })
   );
   app.use(

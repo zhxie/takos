@@ -707,7 +707,7 @@ class SettingsWindow extends React.Component {
     const month = '0' + (date.getMonth() + 1);
     const day = '0' + date.getDate();
     // Construct data
-    let data = { version: '0.3.0' };
+    let data = { version: '0.3.1' };
     // Battles
     StorageHelper.battles()
       .then((res) => {
