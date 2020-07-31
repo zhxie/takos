@@ -208,7 +208,7 @@ class LoginHelper {
           headers: new Headers({
             Authorization: 'Bearer',
             'Content-Type': 'application/json; charset=UTF-8',
-            'X-ProductVersion': '1.6.1.2',
+            'X-ProductVersion': '1.8.0',
             'X-Platform': 'Android'
           })
         };
@@ -320,7 +320,7 @@ class LoginHelper {
           headers: new Headers({
             Authorization: 'Bearer {0}'.format(data.accessToken),
             'Content-Type': 'application/json; charset=UTF-8',
-            'X-ProductVersion': '1.6.1.2',
+            'X-ProductVersion': '1.8.0',
             'X-Platform': 'Android'
           })
         };
