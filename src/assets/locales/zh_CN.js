@@ -32,7 +32,7 @@ const zh_CN = {
   'stage.shellendorf_institute': '海洋博物馆*',
   'stage.makomart': '鲭鲨超市*',
   'stage.walleye_warehouse': '箱鲀仓库*',
-  'stage.arowana_mall': '龙鱼商业街*',
+  'stage.arowana_mall': '骨舌鱼商业街*',
   'stage.camp_triggerfish': '鲀鱼营地',
   'stage.piranha_pit': '水虎鱼矿山*',
   'stage.goby_arena': '虾虎鱼篮球场*',
