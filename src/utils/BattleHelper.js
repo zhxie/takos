@@ -69,6 +69,9 @@ class BattleHelper {
       .then((res) => {
         console.log(res);
         // Parse response
+        if (res.code === 'NOT_FOUND_ERROR') {
+          return new Battle('not_found');
+        }
         return Battle.parse(res);
       })
       .catch((e) => {

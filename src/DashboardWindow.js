@@ -108,7 +108,11 @@ class DashboardWindow extends React.Component {
         .then((res) => {
           if (res.error !== null) {
             // Handle previous error
-            throw new TakosError(res.error);
+            if (res.error === 'not_found') {
+              return;
+            } else {
+              throw new TakosError(res.error);
+            }
           } else {
             return StorageHelper.addBattle(res);
           }
