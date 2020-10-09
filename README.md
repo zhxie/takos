@@ -8,6 +8,8 @@
 
 **Takos** is a cross-platform schedule and battle statistic client of Splatoon 2.
 
+*This project is no longer actively maintained, so you'd better use alternative utility like Nintendo Switch Online, [splatnet2statink](https://github.com/frozenpandaman/splatnet2statink), ikaWidget2 and [Salmonia](https://github.com/tkgstrator/Salmonia).*
+
 ## Features
 
 - Automatic cookie generation of SplatNet
